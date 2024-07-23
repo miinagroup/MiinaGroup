@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+      "file-saver": "^2.0.5",
+      "isodate": "^0.1.4",
+      "react-idle-timer": "^5.7.2",
+      "sheetjs-style": "^0.15.8",
+      "url-exist": "^3.0.1"
+    }
+  }
+  
