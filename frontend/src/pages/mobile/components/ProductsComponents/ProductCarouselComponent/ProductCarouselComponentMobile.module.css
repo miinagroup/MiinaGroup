@@ -1,0 +1,17 @@
+  .carousel {
+    position: relative;
+    width: 100%;
+    background-color: #F8F9FA;
+    height: 230px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+  }
+
+  .carousel img {
+    width: 100%;
+    display: inline-block;
+    pointer-events: none;
+    height: 200px !important;
+    object-fit: fill !important;
+}

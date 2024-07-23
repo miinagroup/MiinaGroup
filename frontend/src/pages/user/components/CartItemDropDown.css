@@ -1,0 +1,27 @@
+.cartDropDownComponent_container {
+    font-size: 14px;
+}
+
+.cart_product_attr {
+    font-size: 11px;
+}
+
+.cart_product_detail {
+    font-size: 14px;
+}
+
+.my-trash-icon {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.remove_from_cart_btn {
+    text-align: center;
+}
+
+
+.cart_items_map {
+    max-height: 300px; /* set the maximum height of the box */
+    overflow-y: auto; /* enable vertical scrolling when the content overflows */
+  
+}

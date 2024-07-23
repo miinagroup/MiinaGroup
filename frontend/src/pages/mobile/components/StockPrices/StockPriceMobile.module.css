@@ -1,0 +1,66 @@
+.marquee_container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #e9f3ff;
+}
+
+.stocks_price_positive {
+  color: red;
+}
+
+.stocks_price_negative {
+  color: green;
+}
+
+.marquee_content:hover {
+  animation-play-state: paused;
+}
+
+.marquee_content {
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  /* animation: stocksMarquee 70s linear infinite; */
+
+  animation-name: stocksMarquee;
+  animation-duration: 70s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  -webkit-animation-name: stocksMarquee;
+  -webkit-animation-duration: 70s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+
+  -moz-animation-name: stocksMarquee;
+  -moz-animation-duration: 70s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+}
+
+
+@keyframes stocksMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(800%);
+  }
+}
+
+@-webkit-keyframes stocksMarquee {
+  0% {
+    transform: translateX(0);
+    -webkit-transform:  translateX(0); 
+  }
+  100% {
+    transform: translateX(800%);
+    -webkit-transform: translateX(800%);
+  }
+}
+
+@-moz-keyframes stocksMarquee {
+  0% { -moz-transform:  translateX(0); }
+  100% { -moz-transform:translateX(800%); }
+}

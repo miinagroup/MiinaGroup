@@ -1,0 +1,62 @@
+
+html{
+  /* position: relative;
+    min-height: 100%; */
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* background-image: url("../public/images2/hexagon-blue-wave.jpg") ; */
+   /* background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgba(0,100,255,0.3)); */
+   position: relative;
+   min-height: 100vh;
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+iframe#webpack-dev-server-client-overlay{
+  display:none!important
+}
+
+@media (min-width: 340px) and (max-width: 500px) {
+  .carousel {
+    z-index: 1;
+  }
+  .carousel-item {
+    z-index: 1;
+  }
+  .carousel .carousel-control-prev {
+    height: 50px !important;
+    transform: translateY(165%);
+  }
+
+  .carousel .carousel-control-next {
+    height: 50px !important;
+    transform: translateY(165%);
+  }
+
+  .carousel .carousel-control-next-icon,
+  .carousel .carousel-control-prev-icon {
+  visibility: hidden;
+  }
+
+  .carousel:hover .carousel-control-next-icon,
+  .carousel:hover .carousel-control-prev-icon {
+  visibility: visible;
+  }
+
+  .carousel-indicators {
+    margin-bottom: 0px !important;
+  }
+
+  .card-body {
+    padding: 20px 0px !important;
+  }
+}

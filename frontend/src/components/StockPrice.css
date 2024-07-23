@@ -1,0 +1,35 @@
+.marquee_container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #e9f3ff;
+}
+
+.stocks_price_positive {
+  color: red;
+}
+
+.stocks_price_negative {
+  color: green;
+}
+
+.marquee_content:hover {
+  animation-play-state: paused;
+}
+
+.marquee_content {
+  display: flex;
+  justify-content: end;
+  white-space: nowrap;
+  animation: stocksMarquee 200s linear infinite;
+}
+
+
+@keyframes stocksMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(800%);
+  }
+}

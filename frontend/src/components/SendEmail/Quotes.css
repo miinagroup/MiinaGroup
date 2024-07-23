@@ -1,0 +1,20 @@
+/* ***************  Quote Component *************** */
+.dropzone {
+    border: 2px dashed gray;
+    padding: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dropzone p {
+    margin: 0;
+}
+
+.managementAprroval_alert {
+    position: absolute;
+    top:-150px;
+    background-color: #073474;
+    color:white;
+    z-index: 99;
+    opacity: 0.9;
+}

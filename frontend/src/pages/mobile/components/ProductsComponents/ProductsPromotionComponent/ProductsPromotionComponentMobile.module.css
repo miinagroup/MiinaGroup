@@ -1,0 +1,33 @@
+.top_block {
+    padding: 10px 10px 10px 10px;
+}
+
+.blocks_card_body {
+    padding: 0;
+}
+
+.blocks_row {
+    margin: 0px 0.5rem;
+    padding: 0;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+.blocks_col {
+    padding: 0px 5px 5px 0px;
+}
+
+.blocks_card {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.promotional_video {
+    width: 100%;
+    height: 200px !important;
+}
+
+.promotional_video video {
+    object-fit: fill !important;
+
+}

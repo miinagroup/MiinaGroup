@@ -1,0 +1,25 @@
+
+.accordion_content {
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.subcatalogue:hover {
+ cursor: pointer;
+ color: wheat;
+}
+
+.rotate {
+
+  transition: 0.5s all ease-in-out;
+}
+
+.icon {
+  transform: rotate(90deg);
+  color: green;
+  transform: scaleX(5);
+}
+

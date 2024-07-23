@@ -1,0 +1,79 @@
+.verifyEmail {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	margin-top: 10%;
+	flex-direction: column;
+}
+
+.blue_btn {
+	border: none;
+	outline: none;
+	padding: 12px 0;
+	background-color: #366ab3;
+	border-radius: 20px;
+	width: 180px;
+	font-weight: bold;
+	font-size: 14px;
+	cursor: pointer;
+	color: white;
+	margin-top: 3rem;
+}
+
+.verified_logo {
+	width: 5%;
+}
+
+
+/* *************** reset password *************** */
+.password-input-group {
+	position: relative;
+	display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	overflow: hidden;
+	width: 16rem;
+  }
+  
+  .password-input-group input[type="password"],
+  .password-input-group input[type="text"] {
+	  flex-grow: 1;
+	  padding: 6px 10px;
+	  border: none;
+	  background: white;
+	  border-radius: 0;
+  }
+  
+  .password-input-group input[type="password"]:focus,
+  .password-input-group input[type="text"]:focus {
+	  background: white;
+  }
+  
+  
+  .password-toggle-button {
+	position: absolute;
+	right: 10px;
+	background: transparent;
+	cursor: pointer;
+	color: #777;
+  }
+  
+.password-toggle-button {
+	position: absolute;
+	right: 10px;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	color: #777;
+}
+
+.resetPassword {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	margin-top: 4rem;
+	flex-direction: column;
+}

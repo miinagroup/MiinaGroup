@@ -1,0 +1,196 @@
+const mongoose = require("mongoose");
+//我们需要usermodel，因为我们需要知道谁下的订单
+const User = require("./UserModel");
+
+const clientSkuSchema = new mongoose.Schema({
+  name: { type: String, required: false, unique: true },
+  number: { type: String, required: false }
+});
+
+const orderSchema = mongoose.Schema(
+  {
+    user: {
+      //ObjectID is going to be the ID of the user that has created the order and required througth.
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      //下面的user的东西，就直接从UserModel调用了。
+      // this field user refers to user model.
+      ref: User,
+    },
+    secondOwnerId: {
+      type: String,
+      required: false,
+    },
+    secondOwnerSite: {
+      type: String,
+      required: false,
+    },
+    createdUserId: {
+      type: String,
+      required: false,
+    },
+    createdUserName: {
+      type: String,
+      required: false,
+    },
+    userName: {
+      type: String,
+      required: true,
+    },
+    userCompany: {
+      type: String,
+      required: true,
+    },
+    orderTotal: {
+      itemsCount: { type: Number, required: true },
+      cartSubtotal: { type: Number, required: true },
+      taxAmount: { type: Number, required: false },
+    },
+    balance: { type: Number, required: true },
+    cartItems: [
+      {
+        productId: { type: String, required: false },
+        quoteId: { type: String, required: false },
+        name: { type: String, required: true },
+        saleunit: {
+          type: Number,
+          required: true,
+        },
+        cartProducts: [
+          {
+            price: { type: Number, required: true },
+            quantity: { type: Number, required: true },
+            suppliedQty: { type: Number, required: true },
+            backOrder: { type: Number, required: false },
+            count: { type: Number, required: false },
+            ctlsku: { type: String, required: false },
+            suppliersku: { type: String, required: false },
+            attrs: { type: String, required: true },
+            QuickBooksItemID: { type: String, required: false },
+            slrsku: { type: String, required: false },
+            slrRandallsSku: { type: String, required: false },
+            slrDaisyMilanoSku: { type: String, required: false },
+            slrMaxwellsSku: { type: String, required: false },
+            fmlCGOSku: { type: String, required: false },
+            fmlTMHCSku: { type: String, required: false },
+            evnMungariSku: { type: String, required: false },
+            color: { type: String, required: false },
+            size: { type: String, required: false },
+            // ID: { type: String, required: false },
+            clientsSku: { type: [clientSkuSchema], required: false},
+            currentClientSku: {
+              name: { type: String, required: false, unique: true },
+              number: { type: String, required: false }
+            }
+          },
+        ],
+        image: { type: String, required: true },
+      },
+    ],
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    purchaseNumber: {
+      type: String,
+      required: false,
+    },
+    invoiceNumber: {
+      type: String,
+      required: false,
+    },
+    quickBooksInvID: {
+      type: String,
+      required: false,
+    },
+    quickBooksCustomerId: {
+      type: String,
+      required: false,
+    },
+    quickBooksPaymentId: {
+      type: String,
+      required: false,
+    },
+    dueDays: {
+      type: Number,
+      required: false,
+    },
+    orderNote: {
+      type: String,
+      required: false,
+    },
+    adminNote: {
+      type: String,
+      required: false,
+    },
+    deliverySite: {
+      type: String,
+      required: false,
+    },
+    transactionResult: {
+      status: { type: String },
+      createTime: { type: String },
+      amount: { type: Number },
+    },
+    /*     isPaid: {
+          type: Boolean,
+          required: true,
+          default: false,
+        }, */
+    paidAt: {
+      type: String,
+    },
+    trackLink: {
+      type: String,
+      required: true,
+      default: false,
+    },
+    isDelivered: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    deliveredAt: {
+      type: Date,
+    },
+    invSent: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    invSentAt: {
+      type: Date,
+    },
+    invHasSent: {
+      type: Number,
+      required: false,
+    },
+    backOrder: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    editeHistroys: [
+      {
+        operator: {
+          type: String,
+          required: false,
+        },
+        editedAt: {
+          type: Date,
+          required: false,
+        },
+        function: {
+          type: String,
+          required: false,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Order = mongoose.model("Order", orderSchema);
+module.exports = Order;

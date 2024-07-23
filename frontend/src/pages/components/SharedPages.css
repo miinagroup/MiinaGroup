@@ -1,0 +1,88 @@
+.addToCartBtn {
+    width: 106px;
+    margin-left: 3rem;
+}
+
+.addToCartQty {
+    width: 120px;
+}
+
+.PriceContact {
+    font-size: 1.5rem;
+}
+
+
+/* preview product modal */
+/* bootstrap carousel */
+.preview_carousel .carousel-control-prev-icon,
+.preview_carousel .carousel-control-next-icon,
+.carousel-indicators .slide {
+  background-color: #1E4881;
+}
+
+.preview_carousel .carousel-control-prev,
+.preview_carousel .carousel-control-next {
+  color: #1E4881;
+}
+
+.preview_carousel .carousel-indicators> button {
+  background-color: #1E4881;
+}
+
+.preview_carousel .carousel-indicators .active {
+  background-color: #1E4881;
+}
+/* my-gallery */
+.my-gallery .image-gallery-thumbnail {
+    border: 2px solid #74bbf8;
+    width: 10%;
+}
+
+.my-gallery .active{
+    border: 2px solid #1E4881;
+}
+
+.my-gallery .image-gallery-thumbnail-image {
+    display: none;
+  }
+
+
+
+.product_description button{
+  color: #1E4881;
+}
+  
+
+.edite_product_short_infor .modal-content {
+  width: 200%;
+  margin-left: -50%;
+}
+.btn_blue{
+  background-color: #073474;
+}
+.btn_blue:hover{
+  background-color: #3a74c5;
+}
+.categoryHD{
+    margin-top: 0%;
+    margin-left: 0.5%;
+    color: gray;    
+    cursor: text;
+    pointer-events: none;
+    opacity: 0.60;
+}
+
+
+@media (min-width: 992px) {
+  .login_mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .login_desktop {
+    display: none;
+  }
+
+
+}

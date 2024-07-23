@@ -1,0 +1,93 @@
+.scroll_container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #F8F9FA;
+  padding-bottom: 10px;
+  padding-top: 3px;
+}
+
+.info {
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.mineral {
+  display: flex;
+ 
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  gap: 5px;
+  /* width: 100px; */
+}
+
+.mineral_name {
+  color: #1e4881;
+  font-weight: bold;
+
+}
+
+.mineral_price {
+  color: #1e4881;
+}
+
+.scroll_content {
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  /* width: max-content; */
+  /* animation: mineralsMarquee 15s linear infinite; */
+
+  animation-name: mineralsMarquee;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  -webkit-animation-name: mineralsMarquee;
+  -webkit-animation-duration: 5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+
+  -moz-animation-name: mineralsMarquee;
+  -moz-animation-duration: 5s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+}
+
+.scroll_content:hover {
+  animation-play-state: paused;
+}
+
+.mineral:hover {
+  border: 1px solid #1e4881;
+  transform: scale(1.1);
+}
+
+@keyframes mineralsMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@-webkit-keyframes mineralsMarquee {
+  0% {
+    transform: translateX(0);
+    -webkit-transform:  translateX(0); 
+  }
+  100% {
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+  }
+}
+
+@-moz-keyframes mineralsMarquee {
+  0% { -moz-transform:  translateX(0); }
+  100% { -moz-transform:translateX(-50%); }
+}

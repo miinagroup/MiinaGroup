@@ -1,0 +1,33 @@
+.form_label {
+    font-size: 14px;
+    color: black;
+    font-weight: 500;
+}
+
+.card_body {
+    border: none;
+    color: #1e4881;
+    margin-top: 0px;
+}
+
+.form_row {
+    padding: 0;
+}
+
+.form_check {
+    font-size: 14px;
+    padding: 0px;
+    padding-top: 10px;
+}
+
+.form_undertext {
+    font-size: 12px;
+}
+
+.alert_registration {
+    padding: 10px 10px;
+}
+
+.alert_text {
+    hyphens: auto;
+}

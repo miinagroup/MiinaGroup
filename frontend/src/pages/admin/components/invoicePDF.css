@@ -1,0 +1,179 @@
+.invoicePDF {
+    display: none;
+}
+
+.hiden {
+    display: none;
+}
+
+.Re_Order_Modal {
+    position: fixed;
+    top: 20%;
+}
+
+.showingout {
+    animation: showingout 1s;
+}
+
+@keyframes showingout {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.button-shadow {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.5s ease-out;
+}
+
+.reorder-button {
+    animation: flyout 1s forwards;
+}
+
+@keyframes flyout {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: translate(90vw, -260vh);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(140vw, -520vh);
+    }
+}
+
+.cart_detail_right {
+    margin-top: 0.7rem;
+}
+
+.empty_cart_btn {
+    border-radius: 0;
+    background-color: #1e4881;
+    border: 1px solid #1e4881;
+    color: white;
+    float: right;
+}
+
+.empty_cart_btn:hover {
+    color: #1e4881;
+    border: 1px solid #1e4881;
+    background-color: white;
+}
+
+
+.download_cart_btn {
+    color: white;
+    border-radius: 0;
+    margin-right: 0.5rem;
+}
+
+.download_cart_btn:hover {
+    color: #1e4881;
+    border: 1px solid #1e4881;
+    background-color: white;
+}
+
+/* ********* edit order name ********* */
+.edite_order_name .modal-content {
+    margin-top: 60%;
+}
+
+/* ********* order items preview ********* */
+.order_preview_items .modal-content {
+    width: 200%;
+    margin-left: -50%;
+    margin-top: 20%;
+}
+
+/**************User Events Preview***************/
+.userEvents_preview_items .modal-content {
+    width: 300%;
+    margin-left: -90%;
+    margin-top: 20%;
+    height:700px;
+    overflow-y: scroll;
+}
+
+/* ********* PaymentPageComponent ********* */
+.QBs_Payment_total_amount {
+    float: right;
+    margin-right: 16%;
+}
+
+.QBs_Payment_btn {
+    float: right;
+    margin-right: 5%;
+}
+
+
+
+.table_overflow_hidden {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin_processing_quotes_table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+
+
+.page-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-container {
+    flex: 0 0 auto;
+}
+
+/* ********* ProductsPage Replenishment ********* */
+.product_replenishment_items .modal-content {
+    margin-top: 20%;
+}
+
+@media screen and (min-width: 1024px) {
+    .product_replenishment_items .modal-content {
+        width: 150%;
+        margin-left: -25%;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .product_replenishment_items .modal-content {
+        width: 100%;
+    }
+}
+
+
+/* .product_replenishment_items .modal-content {
+    width: 150%;
+    margin-top: 20%;
+    margin-left: -25%;
+} */
+
+
+.no-wrap-td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  

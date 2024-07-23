@@ -1,0 +1,112 @@
+.blocks_card_body {
+    padding: 0;
+}
+
+.blocks_row {
+    margin: 0 0.5rem;
+    padding: 0;
+}
+.blocks_row_bottom {
+    margin: 0 0.5rem;
+    padding: 0;
+}
+
+.blocks_col {
+    /* margin-top: 0.6rem; */
+    /* margin-bottom: 1.5rem; */
+}
+
+.blocks_card {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.promotional_video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/*------------------------------------*/
+
+.bottom_blocks_row {
+    margin: 0 0 0 0;
+    padding: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.2rem;
+    background-color: rgb(255, 255, 255);
+    height: 26.2rem;
+    justify-content:center;
+    
+}
+.bottom_blocks_col {
+    margin-top: 0.6rem;
+    margin-bottom: 1rem;
+    /* margin-right: 3%;
+    margin-left: 3%; */
+
+    
+}
+.bottom_blocks_card {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    overflow: hidden;
+    height: 98%;
+}
+.bottom_blocks_card_body {
+    padding: 0;
+
+}
+.bottom_promotional_video {
+    width: 100%;
+    height: 99%;
+    object-fit: fill;
+}
+#video_buttons_prev{
+    left: 1%;
+}
+#video_buttons_next{
+   right: 1%;
+}
+.video_buttons{
+    display: none;
+    position: absolute;
+    top: 40%;
+    background-color: rgb(255, 255, 255);
+    border: 0;
+    height: 5rem;
+    border-radius: 4px;
+    transition: 1s ease-out 10ms;
+}
+.bottom_blocks_card_body:hover .video_buttons{
+    display: block;
+    opacity: 0.8;
+}
+#video_buttons_prev:hover{
+    background-color: lightskyblue;
+    opacity: 0.9;
+}
+#video_buttons_next:hover{
+    background-color: lightskyblue;
+    opacity: 0.9;
+}
+
+/* ********* order items preview ********* */
+.order_preview_items .modal-content {
+    width: 200%;
+    margin-left: -50%;
+    margin-top: 20%;
+}
+.login_preview_items .modal-content {
+    width: 200%;
+    margin-left: -50%;
+    margin-top: 20%;
+}
+
+
+/* ********* PO items preview ********* */
+.PO_preview_items .modal-content {
+    width: 250%;
+    margin-left: -70%;
+    margin-top: 20%;
+}
+

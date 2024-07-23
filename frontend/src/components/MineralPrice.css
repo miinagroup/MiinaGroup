@@ -1,0 +1,29 @@
+.scroll_container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: #e9f3ff;
+}
+
+.minerals_price {
+  color: #1d69d3;
+}
+
+.scroll_content {
+  display: flex;
+  width: max-content;
+  animation: mineralsMarquee 40s linear infinite;
+}
+
+.scroll_content:hover {
+  animation-play-state: paused;
+}
+
+@keyframes mineralsMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
