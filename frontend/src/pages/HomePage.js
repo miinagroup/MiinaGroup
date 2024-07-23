@@ -49,6 +49,8 @@ const HomePage = () => {
     }
   }, [perthTime]);
 
+  console.log("Test comment")
+
 
   return (
     <>
