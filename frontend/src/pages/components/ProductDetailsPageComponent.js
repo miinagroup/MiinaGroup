@@ -11,30 +11,27 @@ import {
   Table,
   Tooltip,
   OverlayTrigger,
-
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from "react-responsive-carousel";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "react-medium-image-zoom/dist/styles.css";
+import { useSelector, useDispatch, connect } from "react-redux";
+import axios from "axios";
+import moment from "moment-timezone";
+
 import FilterComponent from "../../components/filterQueryResultOptions/FilterComponent";
 import BreadcrumbComponent from "../../components/filterQueryResultOptions/BreadcrumbComponent";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import { getCategories } from "../../redux/actions/categoryActions";
 import QuotePriceComponent from "../../components/SendEmail/QuotePriceComponent";
-import { connect } from "react-redux";
-import moment from "moment-timezone";
 import EditProductShortInforComponent from "../admin/components/EditProductShortInforComponent";
-import "./SharedPages.css";
 import { useTrackEvents } from "../trackEvents/useTrackEvents";
 import ReturnProfitCalculator from "../ReturnProfitCalculator";
-import { getClientsSkuList } from "../../redux/actions/productsActions";
+
+import "./SharedPages.css";
 
 const ProductDetailsPageComponent = ({
   addToCartReduxAction,
@@ -44,6 +41,7 @@ const ProductDetailsPageComponent = ({
   createQuote,
   clientUpdateSku,
   addToPOCartHandler,
+  clientsSkuList
 }) => {
   const { id } = useParams();
   const [showCartMessage, setShowCartMessage] = useState(false);
@@ -57,9 +55,15 @@ const ProductDetailsPageComponent = ({
   const [userData, setUserData] = useState([]);
   const [quoteData, setQuoteData] = useState();
   const [edit, setEdit] = useState(false);
-  const [changedClientSKU, setChangedClientSKU] = useState();
+  const [changedClientSKU, setChangedClientSKU] = useState("");
   const [brandSearch, setBrandSearch] = useState("");
   const navigate = useNavigate();
+
+  const [clientSKU, setClientSKU] = useState('');
+  const [stockPrice, setStockPrice] = useState('');
+  const [stockCode, setstockCode] = useState('');
+  const [supplierCode, setsupplierCode] = useState('');
+  const [clientSkuName, setClientSkuName] = useState('');
 
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
@@ -69,11 +73,10 @@ const ProductDetailsPageComponent = ({
 
     useEffect(() => {
       dispatch(getCategories());
-      dispatch(getClientsSkuList());
     }, [dispatch]);
-  
+
     const { categories } = useSelector((state) => state.getCategories);
-    const { clientsSkuList } = useSelector((state) => state.products);
+    
   useEffect(() => {
     cartItems?.map((items) => {
       if (items.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) {
@@ -82,10 +85,6 @@ const ProductDetailsPageComponent = ({
     })
   }, [cartItems])
 
-  // console.log("product", product)
-  // console.log("userData", userData)
-
- 
   var displayTable = [];
   var tableHeadings = [
     "SPECIFICATIONS",
@@ -200,39 +199,38 @@ const ProductDetailsPageComponent = ({
     }
   };
 
-  let stockCount = null;
-  let stockPrice = null;
-  let stockCode = null;
-  let supplierCode = null;
-  let clientSku = null;
-  let clientSkuName = null;
+  useEffect(() => {
+    if (selectedProduct !== "Please-Select" && selectedStock) {
+      // stockCount = selectedStock.count;
+      // stockPrice = selectedStock.price;
+      // stockCode = selectedStock.ctlsku;
+      // supplierCode = selectedStock.suppliersku;
 
-  const clientSiteSku = userData?.siteSku;
+      setStockPrice(selectedStock.price);
+      setstockCode(selectedStock.ctlsku);
+      setsupplierCode(selectedStock.suppliersku);
+  
+      // if (clientSiteSku && selectedStock[clientSiteSku] !== undefined) {
+      //   clientSku = selectedStock[clientSiteSku];
+      // }
+  
+      clientsSkuList && clientsSkuList.map(skuName => {
+        if(skuName.sku.toLowerCase().includes(userData.location.replace(/\s+/g, '').toLowerCase())) {
+          setClientSkuName(skuName.sku);
+        }
+      })
 
-  if (selectedProduct !== "Please-Select" && selectedStock) {
-    stockCount = selectedStock.count;
-    stockPrice = selectedStock.price;
-    stockCode = selectedStock.ctlsku;
-    supplierCode = selectedStock.suppliersku;
-
-    // if (clientSiteSku && selectedStock[clientSiteSku] !== undefined) {
-    //   clientSku = selectedStock[clientSiteSku];
-    // }
-
-    clientsSkuList.map(skuName => {
-      if(skuName.sku.toLowerCase().includes(userData.location.toLowerCase())) {
-        clientSkuName = skuName.sku
+      if (selectedStock.clientsSku?.length > 0) {
+        const matchedSku = selectedStock.clientsSku.find(sku => 
+          sku.name.toLowerCase() === clientSkuName.toLowerCase()
+      );
+        return matchedSku ? setClientSKU(matchedSku.number) : setClientSKU('');
+      } else {
+        setClientSKU('')
       }
-    })
 
-    selectedStock.clientsSku?.map(sku => {
-      let matchClientSku = sku.name?.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(userData.location.toLowerCase());
-
-      if(matchClientSku){
-        clientSku = sku.number;
-      }
-    })
-  }
+    }
+  }, [selectedStock, selectedProduct]);
 
   const [buttonText, setButtonText] = useState("Add to cart");
 
@@ -544,11 +542,11 @@ const ProductDetailsPageComponent = ({
 
   const handleSaveClientSku = async () => {
     try {
-      if (!changedClientSKU) {
-        setEdit(false);
-        return;
-      }
-      await clientUpdateSku(stockCode, changedClientSKU, clientSkuName);
+      // if (!clientSKU) {
+      //   setEdit(false);
+      //   return;
+      // }
+      await clientUpdateSku(stockCode, clientSKU, clientSkuName);
       console.log("Client SKU updated successfully");
 
       const updatedProduct = await fetchProduct(id);
@@ -562,15 +560,17 @@ const ProductDetailsPageComponent = ({
       }
 
       setEdit(false);
-      setChangedClientSKU();
+      setChangedClientSKU("");
+      setClientSKU('')
     } catch (error) {
       console.error("Failed to save client SKU", error);
     }
   };
 
+
   const hanldeSkuChange = (e) => {
-    setChangedClientSKU(e.target.value)
-    setEdit(true);
+      setClientSKU(e.target.value)
+      setEdit(true);
   };
 
   const brandSearchHandler = () => {
@@ -650,6 +650,7 @@ const ProductDetailsPageComponent = ({
         setPoCartBtnText("Add to PO cart");
       });
   };
+
 
 
   return (
@@ -810,7 +811,7 @@ const ProductDetailsPageComponent = ({
                       <Col>
                         <h6>Product Code: {stockCode}</h6>
                         <h6 hidden={userData?.isAdmin === true}>
-                          Client Code:
+                          Client Code:{" "}
                           {userData?.isSitePerson === true ? (
                             <>
                               {edit === false ? (
@@ -818,7 +819,7 @@ const ProductDetailsPageComponent = ({
                                   style={{ display: "inline" }}
                                   className="ms-1"
                                 >
-                                  {clientSku ? clientSku : "N/A"}
+                                  {clientSKU ? clientSKU : "N/A"}
                                   <i
                                     onClick={handleEdit}
                                     className="bi bi-pencil-square"
@@ -841,11 +842,7 @@ const ProductDetailsPageComponent = ({
                                       verticalAlign: "middle",
                                     }}
                                     onChange={hanldeSkuChange}
-                                    value={
-                                      changedClientSKU
-                                        ? changedClientSKU
-                                        : clientSku
-                                    }
+                                    value={clientSKU}
                                   />
                                   <button
                                     className="btn btn-success p-0 pe-1 ps-1 ms-1 d-inline-block"
@@ -856,7 +853,9 @@ const ProductDetailsPageComponent = ({
                                   </button>
                                   <button
                                     className="btn btn-light p-0 pe-1 ps-1 ms-1 d-inline-block"
-                                    onClick={() => setEdit(false)}
+                                    onClick={() => {
+                                      setEdit(false)
+                                    }}
                                     disabled={!edit}
                                   >
                                     <i class="bi bi-x-circle"></i>
@@ -864,7 +863,7 @@ const ProductDetailsPageComponent = ({
                                 </div>
                               )}
                             </>
-                          ) : null}
+                          ) : (!clientSKU ? "N/A" : clientSKU)}
                         </h6>
 
                         <h6>

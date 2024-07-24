@@ -1,6 +1,6 @@
-import { Row, Col, ListGroup, Form, Table } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import RemoveFromOrderComponent from "./RemoveFromOrderComponent";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import React from "react";
 import axios from "axios";
@@ -31,7 +31,6 @@ const CartItemForOrderComponent = ({
 
   const [ctlsku, setCtlsku] = useState(item.cartProducts[0].ctlsku);
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
-  const [clientSiteSku, setClientSiteSku] = useState("")
   const [userEmail, setUserEmail] = useState(userInfo.email);
 
   const [clientsSku, setClientsSku] = useState(item.cartProducts[0].clientsSku);
@@ -40,47 +39,6 @@ const CartItemForOrderComponent = ({
     setClientSKU(item.cartProducts[0].currentClientSku)
     setPreviousClientSkuValue(item.cartProducts[0].currentClientSku.number)
   }, [item]);
-
-  function updateCurrentClientSku() {
-    const matchingClientSku = clientsSku?.find(sku =>
-      sku.name.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(selectedDeliverySite?.name.toLowerCase())
-    );
-
-    if (matchingClientSku) {
-      return matchingClientSku
-    }
-
-    return {
-      name: "",
-      number: ""
-    };
-  }
-  // useEffect(() => {
-  //   var clientSiteSKU = ""
-  //   if (userInfo?.siteSku) {
-  //     clientSiteSKU = userInfo?.siteSku
-  //   } else {
-
-  //     if (userInfo?.location === "RANDALLS")
-  //       clientSiteSKU = "slrRandallsSku"
-  //     else if (userInfo?.location === "DAISY MILANO")
-  //       clientSiteSKU = "slrDaisyMilanoSku"
-  //     else if (userInfo?.location === "MAXWELLS")
-  //       clientSiteSKU = "slrMaxwellsSku"
-  //     else if (userInfo?.location === "COOLGARDIE GOLD OPERATIONS")
-  //       clientSiteSKU = "fmlCGOSku"
-  //     else if (userInfo?.location === "THREE MILE HILL COOLGARDIE")
-  //       clientSiteSKU = "fmlTMHCSku"
-  //     else if (userInfo?.location === "MUNGARI")
-  //       clientSiteSKU = "evnMungariSku"
-  //     else
-  //       clientSiteSKU = "companySiteSku"
-
-  //     updateUserSiteSku(clientSiteSKU)
-  //   }
-  //   setClientSiteSku(clientSiteSKU)
-  //   //fetchClientSku();
-  // }, [userInfo])
 
   const getClientSKUByCTLSKU = async (ctlsku, clientSiteSku) => {
     try {
@@ -92,7 +50,6 @@ const CartItemForOrderComponent = ({
       return null;
     }
   };
-
 
   const changeClientSku = async (ctlsku, clientSku) => {
     try {
@@ -217,7 +174,6 @@ const CartItemForOrderComponent = ({
             </a>
           </td>
           <td style={{ width: "10%" }}>
-          {/* <p className="m-0">{item.cartProducts[0].currentClientSku.number}</p> */}
             {enterClientSKU === false ? (
               <p className="m-0">{clientSKU?.number}</p>
             ) : (

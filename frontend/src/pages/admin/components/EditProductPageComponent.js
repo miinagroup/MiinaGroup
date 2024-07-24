@@ -31,6 +31,7 @@ const onHover = {
 //需要的变量，以及随后会用到的功能
 const EditProductPageComponent = ({
   categories,
+  clientsSkuList,
   fetchProduct,
   updateProductApiRequest,
   reduxDispatch,
@@ -42,7 +43,6 @@ const EditProductPageComponent = ({
   uploadPdfApiRequest,
   uploadPdfCloudinaryApiRequest,
   pdfDeleteHandler,
-  getClientSkuList
 }) => {
   const [validated, setValidated] = useState(false);
   const [product, setProduct] = useState({});
@@ -70,20 +70,10 @@ const EditProductPageComponent = ({
   const createNewAttrVal = useRef(null);
 
   const [stockLength, setStockLength] = useState(0);
-
-  const [clientSkuList, setClientSkuList] = useState([]);
   const [ clientsSkus, setClientsSku] = useState([]);
 
   const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
   const [skuClientNumebr, setSkuClientNumber ] = useState({});
-
-  
-
-  useEffect(() => {
-   getClientSkuList().then((data) => {
-    setClientSkuList(data);
-   });
-  }, []);
 
   const setValuesForAttrFromDbSelectForm = (e) => {
     // 如果不等于choose attribute的话，就var 一个 selectedAttr
@@ -116,7 +106,6 @@ const EditProductPageComponent = ({
   useEffect(() => {
     fetchProduct(id)
       .then((product) => {
-        console.log(product)
         setProduct(product);
         const newClientsSkus = product.stock.map(item => {
           return item.clientsSku;
@@ -217,8 +206,6 @@ const EditProductPageComponent = ({
     event.stopPropagation();
     const form = event.currentTarget;
 
-    console.log(clientsSkus)
-
     const stock = [];
     for (
       let i = 0;
@@ -268,10 +255,7 @@ const EditProductPageComponent = ({
       const fmlTMHCSku = document.getElementsByName(`fmlTMHCSku-${i}`)[0].value;
       const evnMungariSku = document.getElementsByName(`evnMungariSku-${i}`)[0]
         .value;
-
-        const clientsSku = clientsSkus[i];
-        console.log("clientSku", clientsSku);
-
+      const clientsSku = clientsSkus[i];
       const finalCount = replenishment ? count + replenishment : count;
 
       stock.push({
@@ -445,7 +429,6 @@ const EditProductPageComponent = ({
         );
     }
 
-    console.log("formInputs", formInputs)
     setValidated(true);
   };
 
@@ -602,10 +585,6 @@ const EditProductPageComponent = ({
     setProduct({ ...product, stock: newStock });
     setStockLength(newStock.length);
   };
-
-  // console.log("dynamicPrices", dynamicPrices, rowCount, stockLength);
-  // console.log("product", product.stock);
-
 
   const handleSelect = (e, index) => {
     setSelectedClientSkuName({...selectedClientSkuName, [index]: e.target.value});
@@ -1018,7 +997,7 @@ const EditProductPageComponent = ({
                                   <option 
                                   value={selectedClientSkuName[index] === "" && ""}
                                   >Select SKU name</option>
-                                  { clientSkuList && clientSkuList.map(item => {
+                                  { clientsSkuList && clientsSkuList.map(item => {
                                       return <option value={item.sku}>{item.sku}</option>
                                     })
                                   }

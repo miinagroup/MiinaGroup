@@ -528,6 +528,7 @@ const adminCreateProduct = async (req, res, next) => {
           fmlCGOSku,
           fmlTMHCSku,
           evnMungariSku,
+          clientsSku
         } = item;
         product.stock.push({
           attrs: attrs || "",
@@ -545,6 +546,7 @@ const adminCreateProduct = async (req, res, next) => {
           fmlCGOSku: fmlCGOSku || "",
           fmlTMHCSku: fmlTMHCSku || "",
           evnMungariSku: evnMungariSku || "",
+          clientsSku: clientsSku || []
         });
       });
     } else {
@@ -654,8 +656,6 @@ const adminUpdateProduct = async (req, res, next) => {
       expireDate,
       editedBy,
     } = req.body;
-
-    console.log(stock);
     product.name = name.toUpperCase() || product.name;
     product.description = description || product.description;
     product.supplier = supplier || product.supplier;
@@ -717,12 +717,7 @@ const adminUpdateProduct = async (req, res, next) => {
     } else {
       product.stock = [];
     }
-    // console.log(product);
     await product.save();
-
-    // if (expireDate) {
-    //   await schedulePriceReset(req.params.id, expireDate);
-    // }
 
     res.json({
       message: "product updated",
@@ -734,15 +729,10 @@ const adminUpdateProduct = async (req, res, next) => {
 
 const getProductByCTLSKU = async (req, res, next) => {
   try {
-    // console.log("getProductByCTLSKU");
-
     const cltsku = req.query.ctlsku;
-
     const clientSiteSku = req.query.clientSiteSku;
-
-    // console.log(cltsku, clientSiteSku);
-
     const product = await Product.findOne({ "stock.ctlsku": cltsku });
+
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -757,30 +747,48 @@ const getProductByCTLSKU = async (req, res, next) => {
 };
 
 const userUpdateSKU = async (req, res, next) => {
-  try {
+  try { 
     const ctlsku = req.params.ctlsku;
     const clientSiteSku = Object.keys(req.body)[0];
-    // const clientSkuValue = req.body[clientSiteSku];
-    const clientSkuValue = req.body["clientSkuValue"];
+    const clientSkuNumber = req.body["clientSkuNumber"];
     const clientSkuName = req.body["clientSkuName"];
 
     if (!clientSiteSku) {
       return res.status(400).json({ error: "clientSiteSku is required" });
     }
 
-    const updatePath = `stock.$[elem].clientsSku.${clientSkuName}`;
-
-    const product = await Product.findOneAndUpdate(
-      { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName  },
-      // { $set: { [updatePath]: clientSkuValue } },
-     { $set: { 
-        "stock.$[elem].clientsSku.$[clientSku].number": clientSkuValue 
-      }},
-      {
-        arrayFilters: [{ "elem.ctlsku": ctlsku }, { "clientSku.name": clientSkuName }],
-        new: true,
-      }
-    );
+    let product = await Product.findOne({ "stock.ctlsku": ctlsku });
+    const productClientSku = await product.stock.find(item => item.ctlsku === ctlsku);
+    const productClientSkuName = await productClientSku.clientsSku.find(sku => sku.name === clientSkuName)
+   
+    if(productClientSkuName) {
+      product = await Product.findOneAndUpdate(
+        { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName  },
+        { $set: { 
+          "stock.$[elem].clientsSku.$[clientSku].number": clientSkuNumber 
+        }},
+        {
+          arrayFilters: [{ "elem.ctlsku": ctlsku }, { "clientSku.name": clientSkuName }],
+          new: true,
+        }
+    )
+    } else {
+      product = await Product.findOneAndUpdate(
+        { "stock.ctlsku": ctlsku },
+        {
+          $push: {
+          "stock.$[elem].clientsSku": {
+            number: clientSkuNumber,
+            name: clientSkuName,
+          }
+        }
+        },
+        {
+          arrayFilters: [{ "elem.ctlsku": ctlsku }],
+          new: true,
+        }
+      )
+    }
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -795,7 +803,6 @@ const userUpdateSKU = async (req, res, next) => {
 const adminUpdateSKU = async (req, res, next) => {
   try {
     const ctlsku = req.params.ctlsku;
-    // const clientSiteSku = Object.keys(req.body)[0];
     const clientSiteSku = req.body['clientSku'];
     const clientSkuName = req.body['clientSku']?.name;
     const clientSkuNumber = req.body['clientSku']?.number;
@@ -850,19 +857,6 @@ const adminUpdateSKU = async (req, res, next) => {
         }
       );
     }
-
-
-    
-
-    // const updatePath = `stock.$[elem].${clientSiteSku}`;
-    // const product = await Product.findOneAndUpdate(
-    //   { "stock.ctlsku": ctlsku },
-    //   { $set: { [updatePath]: clientSkuValue } },
-    //   {
-    //     arrayFilters: [{ "elem.ctlsku": ctlsku }],
-    //     new: true,
-    //   }
-    // );
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });

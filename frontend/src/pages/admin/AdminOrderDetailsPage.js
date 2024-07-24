@@ -24,9 +24,7 @@ const updateOrderClientCurrentSku = async(id, matchingClientSku, ctlsku, itemId)
   );
 
   return data;
-
 }
-
 
 const markAsDelivered = async (id, trackLink) => {
   const { data } = await axios.put("/api/orders/delivered/" + id, {

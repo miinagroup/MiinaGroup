@@ -164,33 +164,28 @@ const OrderDetailsPageComponent = ({
       );
   }, [isDelivered, invoiceSent, id, edit, removed, editLocation, refreshOrder]);
 
-
-  // useEffect(() => {
-  //   selectedDeliverySite && updateClientSku(cartItems, selectedDeliverySite.name)
-  // }, [selectedDeliverySite])
-
-
   const updateClientSku = async (data, site) => {
     try {
-      console.log("updateClientSku...")
+      const emptyClientSku = {
+        name: "",
+        number: ""
+      }
 
       const newCartItems = await Promise.all(data.map(async (item) => {
-        if (!item.cartProducts[0].currentClientSku || item.cartProducts[0].currentClientSku.number === "" || !item.cartProducts[0].currentClientSku.name.toLowerCase().includes(site.toLowerCase())) {
+
+      const differentDeiverySite = item.cartProducts[0].currentClientSku?.name.toLowerCase().includes(site.replace(/\s+/g, '').toLowerCase());
+      const noCurrentClientSku = item.cartProducts[0].currentClientSku;
+      const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku.number === "";
+
+        if (!noCurrentClientSku || currentClientSkuNumberEmpty || !differentDeiverySite) {
           const res = await fetchProduct(item.productId);
           const stockItem = res.stock.find(st => st.ctlsku === item.cartProducts[0].ctlsku);
           const matchingClientSku = stockItem.clientsSku?.find(sku =>
             sku.name?.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(site.toLowerCase())
           );
-
-          const emptyClientSku = {
-            name: "",
-            number: ""
-          }
-  
   
           if (matchingClientSku) {
             await updateOrderClientCurrentSku(id, matchingClientSku, item.cartProducts[0].ctlsku, item._id);
-  
             return {
               ...item,
               cartProducts: item.cartProducts.map((product, productIdx) => {
@@ -205,7 +200,6 @@ const OrderDetailsPageComponent = ({
             };
           } else {
             await updateOrderClientCurrentSku(id, emptyClientSku, item.cartProducts[0].ctlsku, item._id);
-
             return {
               ...item,
               cartProducts: item.cartProducts.map((product, productIdx) => {
@@ -283,7 +277,6 @@ const OrderDetailsPageComponent = ({
     maximumFractionDigits: 2,
   });
 
-  // console.log(cartSubtotal);
   // edit order
   const handleEdit = () => setEdit(true);
 
@@ -314,11 +307,9 @@ const OrderDetailsPageComponent = ({
     }, 500);
   };
   const changeCount = (orderId, itemId, price, suppliedQty) => {
-    // console.log("change count", orderId, itemId, price, suppliedQty);
     updateBackOrder(orderId, itemId, price, suppliedQty);
   };
   const changePrice = (orderId, itemId, suppliedQty, price) => {
-    // console.log("change price", orderId, itemId, price, suppliedQty)
     updateBackOrder(orderId, itemId, price, suppliedQty);
   };
 
@@ -497,7 +488,6 @@ const OrderDetailsPageComponent = ({
         formDataToSend,
         config
       );
-      // console.log(res.data);
       setSendingInv(false);
       setRefreshOrder(!refreshOrder);
       return true;
@@ -584,7 +574,6 @@ const OrderDetailsPageComponent = ({
   };
 
   // create back order
-  // console.log(order._id);
   const incrementInvoiceNumber = (invoiceNumber) => {
     const alphaPart = invoiceNumber.match(/[A-Z]*$/)[0];
     const numericPart = alphaPart

@@ -1,10 +1,11 @@
-import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
 import { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-
-import { addToCart } from "../redux/actions/cartActions";
 import axios from "axios";
+
+import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
+import { addToCart } from "../redux/actions/cartActions";
+import { getClientsSkuList } from "../redux/actions/productsActions";
+
 
 const getProductDetails = async (id) => {
   const { data } = await axios.get(`/api/products/get-one/${id}`);
@@ -15,15 +16,19 @@ const ProductDetailsPage = () => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
+  const { clientsSkuList } = useSelector((state) => state.products); 
+
+  useEffect(() => {
+    dispatch(getClientsSkuList());
+  }, [dispatch]);
+
   const getUser = async () => {
     const { data } = await axios.get("/api/users/profile/" + userInfo._id);
     return data;
   };
 
   const createQuote = async (formInputs) => {
-    //   console.log("submitQuoteApiRequest formInputs", formInputs);
     const { data } = await axios.post(`/api/quotes/create`, { ...formInputs });
-    // console.log(data);
     return data;
   };
 
@@ -33,7 +38,7 @@ const ProductDetailsPage = () => {
         `/api/products/client/updateSKU/${ctlsku}`,
         { [userInfo.siteSku]: clientSku,
           "clientSkuName": clientSkuName,
-          "clientSkuValue": clientSku
+          "clientSkuNumber": clientSku
          }
       );
       return response.data;
@@ -50,6 +55,7 @@ const ProductDetailsPage = () => {
 
   return (
     <ProductDetailsPageComponent
+      clientsSkuList={clientsSkuList}
       getUser={getUser}
       addToCartReduxAction={addToCart}
       reduxDispatch={dispatch}

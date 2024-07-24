@@ -1,15 +1,6 @@
 import {
-  Row,
-  Col,
-  Container,
-  ListGroup,
   Button,
-  Tab,
-  Tabs,
   Form,
-  Image,
-  Carousel,
-  Table,
   Modal,
   Dropdown,
   DropdownButton,
@@ -17,8 +8,6 @@ import {
   OverlayTrigger,
 } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
-// import Modal from "react-bootstrap/Modal";
-// import Button from "react-bootstrap/Button";
 import ProductForListPreviewComponent from "./ProductForListPreviewComponent";
 import ProductForStockPreviewComponent from "./ProductForStockPreviewComponent";
 import axios from "axios";
@@ -26,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/actions/cartActions";
 import "../pages/general.css";
 import QuotePriceComponent from "./SendEmail/QuotePriceComponent";
-// import ReactGA from "react-ga";
 
 const ProductForListComponent = ({
   productId,
@@ -53,19 +41,16 @@ const ProductForListComponent = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [userNameEmail, setUserNameEmail] = useState();
   const [quoteData, setQuoteData] = useState();
+  const [isUniform, setIsUniform] = useState(false);
 
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-
-  // console.log("userInfo", userInfo.location)
-  // console.log("stock", stock)
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   // useEffect(() => {
   //   ReactGA.pageview(window.location)
   // }, [])
 
   //check for uniform content in cart
-  const [isUniform, setIsUniform] = useState(false)
-  const cartItems = useSelector((state) => state.cart.cartItems);
   useEffect(() => {
     cartItems?.map((items) => {
       if (items.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) {
@@ -109,18 +94,13 @@ const ProductForListComponent = ({
       );
     });
     setCategoryList(filteredCategories);
-    // console.log("filteredCategories", filteredCategories);
   }, [categories]);
-
-  // console.log("categories", categories);
-  //console.log("categoryList", categoryList);
 
   function handleProductChange(event) {
     const attrs = event.target.value;
 
     if (attrs !== "choose-product") {
       const stockItem = stock.find((item) => item.attrs === attrs);
-      console.log(stockItem)
 
       const clientSku = stockItem.clientsSku.filter(sku => {
         const newClientSku = sku.name.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase();
@@ -132,8 +112,7 @@ const ProductForListComponent = ({
       } else {
         stockItem.currentClientSku = { number: '', name: '' };
       }
-  
-      console.log(stockItem);
+
       addToCartHandler(stockItem);
     } else {
       setSelectedStock(null);
@@ -144,7 +123,6 @@ const ProductForListComponent = ({
     setButtonText("Adding...");
     console.log("selectedItem", selectedItem)
     try {
-      //console.log(productId, qty, selectedItem)
       await reduxDispatch(addToCart(productId, qty, selectedItem));
       setButtonText("Added!");
       setTimeout(() => setButtonText("Add"), 1000);
@@ -210,7 +188,6 @@ const ProductForListComponent = ({
     const newValue = Math.round(e.target.value / saleunit) * saleunit;
     setQty(newValue);
   };
-  // console.log("sortOrder", sortOrder);
 
   /* ***************** QUOTE PRICE *************** */
   useEffect(() => {

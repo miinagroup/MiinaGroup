@@ -1,8 +1,7 @@
-import EditProductPageComponent from "./components/EditProductPageComponent";
-
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+
 import { saveAttributeToCatDoc, getCategories } from "../../redux/actions/categoryActions";
 import {
   uploadImagesApiRequest,
@@ -10,11 +9,8 @@ import {
   uploadPdfApiRequest,
   uploadPdfCloudinaryApiRequest,
 } from "./utils/utils";
-
-//categories。
-import { useEffect } from "react";
-
-
+import { getClientsSkuList } from "../../redux/actions/productsActions";
+import EditProductPageComponent from "./components/EditProductPageComponent";
 
 const fetchProduct = async (productId) => {
   const { data } = await axios.get(`/api/products/get-one/${productId}`);
@@ -28,19 +24,17 @@ const updateProductApiRequest = async (productId, formInputs) => {
   return data;
 };
 
-
-
 const AdminEditProductPage = () => {
   //categories
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCategories());
+    dispatch(getClientsSkuList());
   }, [dispatch]);
 
   const { categories } = useSelector((state) => state.getCategories);
-
-  const reduxDispatch = useDispatch();
+  const { clientsSkuList } = useSelector((state) => state.products);
 
   const imageDeleteHandler = async (imagePath, productId) => {
     // 在productController的 adminDeleteProductImage 里面 已经decode了url，所以这里要encode
@@ -54,8 +48,6 @@ const AdminEditProductPage = () => {
       );
     }
   };
-
-
 
   const pdfDeleteHandler = async (pdfPath, productId) => {
     // 在productController的 adminDeleteProductImage 里面 已经decode了url，所以这里要encode
@@ -71,21 +63,13 @@ const AdminEditProductPage = () => {
     }
   };
 
-  const getClientSkuList = async () => {
-    try {
-        const response = await axios.get('/api/products/getClientsSkuList');
-        return response.data
-    } catch (error) {
-        console.error('Axios error:', error);
-    }
-}
-
   return (
     <EditProductPageComponent
       categories={categories}
+      clientsSkuList={clientsSkuList}
       fetchProduct={fetchProduct}
       updateProductApiRequest={updateProductApiRequest}
-      reduxDispatch={reduxDispatch}
+      reduxDispatch={dispatch}
       saveAttributeToCatDoc={saveAttributeToCatDoc}
       imageDeleteHandler={imageDeleteHandler}
       uploadImagesApiRequest={uploadImagesApiRequest}
@@ -93,7 +77,6 @@ const AdminEditProductPage = () => {
       uploadPdfApiRequest={uploadPdfApiRequest}
       uploadPdfCloudinaryApiRequest={uploadPdfCloudinaryApiRequest}
       pdfDeleteHandler={pdfDeleteHandler}
-      getClientSkuList={getClientSkuList}
     />
   );
 };

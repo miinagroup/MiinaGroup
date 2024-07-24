@@ -29,12 +29,12 @@ const CreateProductPageComponent = ({
   uploadPdfApiRequest,
   uploadPdfCloudinaryApiRequest,
   categories,
+  clientsSkuList,
   reduxDispatch,
   newCategory,
   deleteCategory,
   saveAttributeToCatDoc,
   getCTLSku,
-  getClientSkuList
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -60,16 +60,12 @@ const CreateProductPageComponent = ({
   const createNewAttrKey = useRef(null);
   const createNewAttrVal = useRef(null);
 
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [ clientsSkus, setClientsSku] = useState([]);
+  const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
+  const [skuClientNumebr, setSkuClientNumber ] = useState({});
   const [rowCount, setRowCount] = useState(1);
-  const [clientSkuList, setClientSkuList] = useState([]);
-
-  
-
-  useEffect(() => {
-   getClientSkuList().then((data) => {
-    setClientSkuList(data);
-   });
-  }, []);
 
   useEffect(() => {
     ctlskuList.length = 0;
@@ -84,7 +80,6 @@ const CreateProductPageComponent = ({
     let skucounter = 100100;
     let foundNextSku = false;
     ctlskuList.sort();
-    // console.log(ctlskuList);
     ctlskuList?.forEach((ctlsku) => {
       if (foundNextSku === false) {
         const ctlNumber = parseInt(ctlsku?.replace("CTL", ""));
@@ -101,8 +96,6 @@ const CreateProductPageComponent = ({
     setNewCTLSKU(nextCtlSku);
     setNewCtlSkus([nextCtlSku]);
   }, [ctlskuList]);
-
-  // console.log("newCTLSKU", newCTLSKU)
 
   const handleNewProduct = () => {
     setNewCtlSkus([...newCtlSkus, newCTLSKU]);
@@ -146,8 +139,6 @@ const CreateProductPageComponent = ({
     };
     setDynamicPrices(newDynamicPrices);
   };
-
-
 
   const navigate = useNavigate();
 
@@ -194,9 +185,8 @@ const CreateProductPageComponent = ({
       const fmlCGOSku = document.getElementsByName(`fmlCGOSku-${i}`)[0].value;
       const fmlTMHCSku = document.getElementsByName(`fmlTMHCSku-${i}`)[0].value;
       const evnMungariSku = document.getElementsByName(`evnMungariSku-${i}`)[0].value;
+      const clientsSku = clientsSkus[i];
   
-
-
       stock.push({
         count,
         price: price,
@@ -213,6 +203,7 @@ const CreateProductPageComponent = ({
         fmlCGOSku,
         fmlTMHCSku,
         evnMungariSku,
+        clientsSku
       });
     }
 
@@ -285,7 +276,6 @@ const CreateProductPageComponent = ({
               : er.response.data,
           });
         });
-      // console.log(formInputs);
     }
 
     setValidated(true);
@@ -380,14 +370,6 @@ const CreateProductPageComponent = ({
       ))
     );
   };
-
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  const [ clientsSkus, setClientsSku] = useState([]);
-
-  const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
-  const [skuClientNumebr, setSkuClientNumber ] = useState({});
-
 
   const handleSelect = (e, index) => {
     setSelectedClientSkuName({...selectedClientSkuName, [index]: e.target.value});
@@ -736,7 +718,7 @@ const CreateProductPageComponent = ({
                       <div style={{display: "flex", gap: "20px", marginBottom: "20px"}}>
                         <Form.Select value={selectedClientSkuName[index]} onChange={(e) => handleSelect(e, index)}>
                                   <option value={selectedClientSkuName[index] === "" && ""}>Select SKU name</option>
-                                  { clientSkuList && clientSkuList.map(item => {
+                                  { clientsSkuList && clientsSkuList.map(item => {
                                       return <option value={item.sku}>{item.sku}</option>
                                     })
                                   }

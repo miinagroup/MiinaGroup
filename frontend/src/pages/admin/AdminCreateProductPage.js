@@ -1,5 +1,7 @@
-import CreateProductPageComponent from "./components/CreateProductPageComponent";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+
 import {
   uploadImagesApiRequest,
   uploadImagesCloudinaryApiRequest,
@@ -8,16 +10,14 @@ import {
   uploadPdfApiRequest,
   uploadPdfCloudinaryApiRequest,
 } from "./utils/utils";
-import { useSelector } from "react-redux";
 import {
   newCategory,
   deleteCategory,
   saveAttributeToCatDoc,
   getCategories
 } from "../../redux/actions/categoryActions";
-import { useDispatch } from "react-redux";
-//categories。
-import { useEffect } from "react";
+import { getClientsSkuList } from "../../redux/actions/productsActions";
+import CreateProductPageComponent from "./components/CreateProductPageComponent";
 
 
 const createProductApiRequest = async (formInputs) => {
@@ -36,18 +36,11 @@ const AdminCreateProductPage = () => {
 
   useEffect(() => {
     dispatch(getCategories());
+    dispatch(getClientsSkuList());
   }, [dispatch]);
 
   const { categories } = useSelector((state) => state.getCategories);
-
-  const getClientSkuList = async () => {
-    try {
-        const response = await axios.get('/api/products/getClientsSkuList');
-        return response.data
-    } catch (error) {
-        console.error('Axios error:', error);
-    }
-}
+  const { clientsSkuList } = useSelector((state) => state.products);
 
   return (
     <CreateProductPageComponent
@@ -57,12 +50,12 @@ const AdminCreateProductPage = () => {
       uploadPdfApiRequest={uploadPdfApiRequest}
       uploadPdfCloudinaryApiRequest={uploadPdfCloudinaryApiRequest}
       categories={categories}
+      clientsSkuList={clientsSkuList}
       reduxDispatch={dispatch}
       newCategory={newCategory}
       deleteCategory={deleteCategory}
       saveAttributeToCatDoc={saveAttributeToCatDoc}
       getCTLSku={getCTLSku}
-      getClientSkuList={getClientSkuList}
     />
   );
 };

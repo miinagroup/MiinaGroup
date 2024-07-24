@@ -4,16 +4,16 @@ const Quote = require("../models/QuoteModel");
 const ObjectId = require("mongodb").ObjectId;
 const mongoose = require("mongoose");
 const Decimal = require('decimal.js');
-//console.log("orders", req.user);
+
 const getUserOrders = async (req, res, next) => {
   try {
-    // console.log(req.user);
     const orders = await Order.find({ $or: [{ user: ObjectId(req.user._id) }, { secondOwnerId: (req.user._id) }, { createdUserId: (req.user._id) }] });
     res.send(orders);
   } catch (error) {
     next(error);
   }
 };
+
 const getUserOrdersByCompany = async (req, res, next) => {
   try {
     const orders = await Order.find({ userCompany: (req.params.userCompany) });
@@ -664,7 +664,6 @@ const getSupplier = async (req, res) => {
       }
     ]);
 
-    // console.log(results);
     res.json(results);
   } catch (error) {
     console.error("Error fetching suppliers:", error);
@@ -675,7 +674,6 @@ const getSupplier = async (req, res) => {
 const adminUpdateOrderClientSku = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const clientSiteSku = req.body['clientSku'];
     const clientSkuName = req.body['clientSku']?.name;
     const clientSkuNumber = req.body['clientSku']?.number;
     const ctlsku = req.body['ctlsku'];
@@ -711,7 +709,6 @@ const adminUpdateOrderClientSku = async (req, res, next) => {
         new: true,
       }
     );
-
     } else {
       order = await Order.findOneAndUpdate(
         {
@@ -733,7 +730,6 @@ const adminUpdateOrderClientSku = async (req, res, next) => {
             { "cartProduct.ctlsku": ctlsku }
           ],
           new: true,
-          
         },
       );
     }
