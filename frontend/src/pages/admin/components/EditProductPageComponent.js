@@ -70,7 +70,8 @@ const EditProductPageComponent = ({
   const createNewAttrVal = useRef(null);
 
   const [stockLength, setStockLength] = useState(0);
-  const [ clientsSkus, setClientsSku] = useState([]);
+  const [clientsSkus, setClientsSku] = useState([]);
+  const [newProductClientsSkus, setNewProductClientSkus] = useState([]);
 
   const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
   const [skuClientNumebr, setSkuClientNumber ] = useState({});
@@ -110,7 +111,8 @@ const EditProductPageComponent = ({
         const newClientsSkus = product.stock.map(item => {
           return item.clientsSku;
         });
-        setClientsSku(prevSkus => [...prevSkus, ...newClientsSkus]);
+        // setClientsSku(prevSkus => [...prevSkus, ...newClientsSkus]);
+        setClientsSku([...newClientsSkus])
         setStockLength(product.stock.length);
       })
       .catch((er) => console.log(er));
@@ -242,19 +244,6 @@ const EditProductPageComponent = ({
       const slrsku = document.getElementsByName(`slrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
-      const slrRandallsSku = document.getElementsByName(
-        `slrRandallsSku-${i}`
-      )[0].value;
-      const slrDaisyMilanoSku = document.getElementsByName(
-        `slrDaisyMilanoSku-${i}`
-      )[0].value;
-      const slrMaxwellsSku = document.getElementsByName(
-        `slrMaxwellsSku-${i}`
-      )[0].value;
-      const fmlCGOSku = document.getElementsByName(`fmlCGOSku-${i}`)[0].value;
-      const fmlTMHCSku = document.getElementsByName(`fmlTMHCSku-${i}`)[0].value;
-      const evnMungariSku = document.getElementsByName(`evnMungariSku-${i}`)[0]
-        .value;
       const clientsSku = clientsSkus[i];
       const finalCount = replenishment ? count + replenishment : count;
 
@@ -269,12 +258,6 @@ const EditProductPageComponent = ({
         ctlsku,
         slrsku,
         suppliersku,
-        slrRandallsSku,
-        slrDaisyMilanoSku,
-        slrMaxwellsSku,
-        fmlCGOSku,
-        fmlTMHCSku,
-        evnMungariSku,
         clientsSku
       });
     }
@@ -314,24 +297,7 @@ const EditProductPageComponent = ({
       const slrsku = document.getElementsByName(`newSlrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`newSuppliersku-${i}`)[0]
         .value;
-      const slrRandallsSku = document.getElementsByName(
-        `newSlrRandallsSku-${i}`
-      )[0].value;
-      const slrDaisyMilanoSku = document.getElementsByName(
-        `newSlrDaisyMilanoSku-${i}`
-      )[0].value;
-      const slrMaxwellsSku = document.getElementsByName(
-        `newSlrMaxwellsSku-${i}`
-      )[0].value;
-      const fmlCGOSku = document.getElementsByName(`newFmlCGOSku-${i}`)[0]
-        .value;
-      const fmlTMHCSku = document.getElementsByName(`newFmlTMHCSku-${i}`)[0]
-        .value;
-      const evnMungariSku = document.getElementsByName(
-        `newEvnMungariSku-${i}`
-      )[0].value;
-
-      const clientsSku = clientsSkus[i];
+      const clientsSku = newProductClientsSkus[i];
 
 
       stockNew.push({
@@ -344,12 +310,6 @@ const EditProductPageComponent = ({
         ctlsku,
         slrsku,
         suppliersku,
-        slrRandallsSku,
-        slrDaisyMilanoSku,
-        slrMaxwellsSku,
-        fmlCGOSku,
-        fmlTMHCSku,
-        evnMungariSku,
         clientsSku
       });
     }
@@ -595,20 +555,20 @@ const EditProductPageComponent = ({
   };
 
 
-  const addNewClientSku = (e,index) => {
-    const isSkuName = clientsSkus[index]?.some(el => el.name === selectedClientSkuName[index]);
+  const addNewClientSku = (array, setArray, index) => {
+    const isSkuName = array[index]?.some(el => el.name === selectedClientSkuName[index]);
     if (selectedClientSkuName[index] && skuClientNumebr[index]) {
       if (isSkuName) {
         alert('This SKU name already exists for this item in stock.');
         return;
       }
-      const updatedClientsSkus = [...clientsSkus];
+      const updatedClientsSkus = [...array];
       if (updatedClientsSkus[index]) {
         updatedClientsSkus[index].push({ name: selectedClientSkuName[index], number: skuClientNumebr[index] });
       } else {
         updatedClientsSkus[index] = [{ name: selectedClientSkuName[index], number: skuClientNumebr[index] }];
       }
-      setClientsSku(updatedClientsSkus);
+      setArray(updatedClientsSkus);
       setSelectedClientSkuName({...selectedClientSkuName, [index]: ""});
       setSkuClientNumber({...skuClientNumebr, [index]: ""});
     } else {
@@ -616,12 +576,11 @@ const EditProductPageComponent = ({
     }
   };
 
-  const removeClientSku = (index, i) => {
-    const updatedClientsSkus = [...clientsSkus];
+  const removeClientSku = (array, setArray, index, i) => {
+    const updatedClientsSkus = [...array];
     updatedClientsSkus[index] = updatedClientsSkus[index].filter((_, index) => index !== i);
-    setClientsSku(updatedClientsSkus);
+    setArray(updatedClientsSkus);
   };
-
 
   return (
     <Container fluid>
@@ -903,90 +862,6 @@ const EditProductPageComponent = ({
                           />
                         </Form.Group>
 
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicslrRandallsSku-${index}`}
-                        >
-                          <Form.Label>slr Randalls Sku</Form.Label>
-                          <Form.Control
-                            name={`slrRandallsSku-${index}`}
-                            type="text"
-                            defaultValue={item.slrRandallsSku}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicslrDaisyMilanoSku-${index}`}
-                        >
-                          <Form.Label>slr Daisy Milano Sku</Form.Label>
-                          <Form.Control
-                            name={`slrDaisyMilanoSku-${index}`}
-                            type="text"
-                            defaultValue={item.slrDaisyMilanoSku}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicslrMaxwellsSku-${index}`}
-                        >
-                          <Form.Label>slr Maxwells Sku</Form.Label>
-                          <Form.Control
-                            name={`slrMaxwellsSku-${index}`}
-                            type="text"
-                            defaultValue={item.slrMaxwellsSku}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicfmlCGOSku-${index}`}
-                        >
-                          <Form.Label>FML Three Mile Hill</Form.Label>
-                          <Form.Control
-                            name={`fmlCGOSku-${index}`}
-                            type="text"
-                            defaultValue={item.fmlCGOSku}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicfmlTMHCSku-${index}`}
-                        >
-                          <Form.Label>FML Gold Operations</Form.Label>
-                          <Form.Control
-                            name={`fmlTMHCSku-${index}`}
-                            type="text"
-                            defaultValue={item.fmlTMHCSku}
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicevnMungariSku-${index}`}
-                        >
-                          <Form.Label>evn Mungari Sku</Form.Label>
-                          <Form.Control
-                            name={`evnMungariSku-${index}`}
-                            type="text"
-                            defaultValue={item.evnMungariSku}
-                          />
-                        </Form.Group>
-
                         <Form.Group>
                       <Form.Label>Client Sku</Form.Label>
                       <div style={{display: "flex", gap: "20px", marginBottom: "20px"}}>
@@ -1012,7 +887,7 @@ const EditProductPageComponent = ({
                       </div>
                       
                       <Button 
-                      onClick={(e) => addNewClientSku(e,index)}
+                      onClick={(e) => addNewClientSku(clientsSkus, setClientsSku, index)}
                       >Save</Button>
 
                       <Table>
@@ -1030,7 +905,7 @@ const EditProductPageComponent = ({
                             <td>{i + 1}</td>
                             <td>{skus.name}</td>
                             <td>{skus.number}</td>
-                            <td><i onClick={() => removeClientSku(index, i)} className="bi bi-x-circle close" style={{cursor:"pointer"}}></i></td>
+                            <td><i onClick={() => removeClientSku(clientsSkus, setClientsSku, index, i)} className="bi bi-x-circle close" style={{cursor:"pointer"}}></i></td>
                           </tr> 
                         })}
                       </tbody>
@@ -1226,90 +1101,63 @@ const EditProductPageComponent = ({
                       <Form.Control name={`newSlrsku-${index}`} type="text" />
                     </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewSlrRandallsSku-${index}`}
-                    >
-                      <Form.Label>slr Randalls Sku</Form.Label>
+                    <Form.Group>
+                      <Form.Label>Client Sku</Form.Label>
+                      <div style={{display: "flex", gap: "20px", marginBottom: "20px"}}>
+                        <Form.Select 
+                        value={selectedClientSkuName[index]} 
+                        onChange={(e) => handleSelect(e, index)}
+                        >
+                                  <option 
+                                  value={selectedClientSkuName[index] === "" && ""}
+                                  >Select SKU name</option>
+                                  { clientsSkuList && clientsSkuList.map(item => {
+                                      return <option value={item.sku}>{item.sku}</option>
+                                    })
+                                  }
+                    </Form.Select>
+
+
                       <Form.Control
-                        name={`newSlrRandallsSku-${index}`}
-                        type="text"
+                              type="text"
+                              value={skuClientNumebr[index] || ""}
+                              onChange={(e) => handleInputChange(e, index)}
                       />
+                      </div>
+                      
+                      <Button 
+                      onClick={(e) => addNewClientSku(newProductClientsSkus, setNewProductClientSkus, index)}
+                      >Save</Button>
+
+                      <Table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Client SKU</th>
+                          <th>Number</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {newProductClientsSkus[index] && newProductClientsSkus[index].map((skus, i) => {
+                          return <tr>
+                            <td>{i + 1}</td>
+                            <td>{skus.name}</td>
+                            <td>{skus.number}</td>
+                            <td><i onClick={() => removeClientSku(newProductClientsSkus, setNewProductClientSkus, index, i)} className="bi bi-x-circle close" style={{cursor:"pointer"}}></i></td>
+                          </tr> 
+                        })}
+                      </tbody>
+                      </Table>
                     </Form.Group>
 
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewSlrDaisyMilanoSku-${index}`}
-                    >
-                      <Form.Label>slr Daisy Milano Sku</Form.Label>
-                      <Form.Control
-                        name={`newSlrDaisyMilanoSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewSlrMaxwellsSku-${index}`}
-                    >
-                      <Form.Label>slr Maxwells Sku</Form.Label>
-                      <Form.Control
-                        name={`newSlrMaxwellsSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewFmlCGOSku-${index}`}
-                    >
-                      <Form.Label>FML Three Mile Hill</Form.Label>
-                      <Form.Control
-                        name={`newFmlCGOSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewFmlTMHCSku-${index}`}
-                    >
-                      <Form.Label>FML Gold Operations</Form.Label>
-                      <Form.Control
-                        name={`newFmlTMHCSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewEvnMungariSku-${index}`}
-                    >
-                      <Form.Label>evn Mungari Sku</Form.Label>
-                      <Form.Control
-                        name={`newEvnMungariSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
                   </React.Fragment>
                 </Row>
               </>
             ))}
 
             <hr />
-            <p
+            {/* <p
               onClick={handleNewProduct}
               style={{
                 cursor: "pointer",
@@ -1318,7 +1166,19 @@ const EditProductPageComponent = ({
               }}
             >
               Add New Product
-            </p>
+            </p> */}
+            <Button
+              onClick={handleNewProduct}
+              style={{
+                cursor: "hand",
+                textAlign: "center",
+                fontStyle: "italic",
+                margin: "0 auto",
+                display: "flex"
+              }}
+            >
+              Add a New Product
+            </Button>
             <hr />
 
             {/* {selectedStock && (

@@ -178,13 +178,12 @@ const CreateProductPageComponent = ({
       const slrsku = document.getElementsByName(`slrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
-      const slrRandallsSku = document.getElementsByName(`slrRandallsSku-${i}`)[0]
-        .value;
-      const slrDaisyMilanoSku = document.getElementsByName(`slrDaisyMilanoSku-${i}`)[0].value;
-      const slrMaxwellsSku = document.getElementsByName(`slrMaxwellsSku-${i}`)[0].value;
-      const fmlCGOSku = document.getElementsByName(`fmlCGOSku-${i}`)[0].value;
-      const fmlTMHCSku = document.getElementsByName(`fmlTMHCSku-${i}`)[0].value;
-      const evnMungariSku = document.getElementsByName(`evnMungariSku-${i}`)[0].value;
+      // const slrRandallsSku = document.getElementsByName(`slrRandallsSku-${i}`)[0].value;
+      // const slrDaisyMilanoSku = document.getElementsByName(`slrDaisyMilanoSku-${i}`)[0].value;
+      // const slrMaxwellsSku = document.getElementsByName(`slrMaxwellsSku-${i}`)[0].value;
+      // const fmlCGOSku = document.getElementsByName(`fmlCGOSku-${i}`)[0].value;
+      // const fmlTMHCSku = document.getElementsByName(`fmlTMHCSku-${i}`)[0].value;
+      // const evnMungariSku = document.getElementsByName(`evnMungariSku-${i}`)[0].value;
       const clientsSku = clientsSkus[i];
   
       stock.push({
@@ -197,12 +196,12 @@ const CreateProductPageComponent = ({
         ctlsku,
         slrsku,
         suppliersku,
-        slrRandallsSku,
-        slrDaisyMilanoSku,
-        slrMaxwellsSku,
-        fmlCGOSku,
-        fmlTMHCSku,
-        evnMungariSku,
+        // slrRandallsSku,
+        // slrDaisyMilanoSku,
+        // slrMaxwellsSku,
+        // fmlCGOSku,
+        // fmlTMHCSku,
+        // evnMungariSku,
         clientsSku
       });
     }
@@ -635,7 +634,7 @@ const CreateProductPageComponent = ({
                       />
                     </Form.Group>
 
-                    <Form.Group
+                    {/* <Form.Group
                       as={Col}
                       md="3"
                       className="mb-3"
@@ -711,7 +710,7 @@ const CreateProductPageComponent = ({
                         name={`evnMungariSku-${index}`}
                         type="text"
                       />
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <Form.Group>
                       <Form.Label>Client Sku</Form.Label>
