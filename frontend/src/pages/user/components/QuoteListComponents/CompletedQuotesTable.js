@@ -257,196 +257,196 @@ const CompletedQuotesTable = ({
 
   /* ***************** quote pdf download ***************** */
 
- // #region
- const [base64Data, setBase64Data] = useState([]);
- const [downloadingQuotePDF, setDownloadingQuotePDF] = useState(false);
+  // #region
+  const [base64Data, setBase64Data] = useState([]);
+  const [downloadingQuotePDF, setDownloadingQuotePDF] = useState(false);
 
- const generatePdf = async () => {
-   try {
-     const blob = await pdf(
-       <ClientQuote
-         selectedQuotes={selectedQuotes}
-         quoteListProducts={quoteListProducts}
-         totalAmount={totalAmount}
-         quoteExpiryDate={quoteExpiryDate}
-         quoteNumber={quoteNumber}
-       />
-     ).toBlob();
+  const generatePdf = async () => {
+    try {
+      const blob = await pdf(
+        <ClientQuote
+          selectedQuotes={selectedQuotes}
+          quoteListProducts={quoteListProducts}
+          totalAmount={totalAmount}
+          quoteExpiryDate={quoteExpiryDate}
+          quoteNumber={quoteNumber}
+        />
+      ).toBlob();
 
-     const reader = new FileReader();
-     reader.onloadend = () => {
-       const base64data = reader.result;
-       setBase64Data({
-         base64data,
-       });
-     };
-     reader.readAsDataURL(blob);
-   } catch (error) {
-     console.error("Failed to generate PDF:", error);
-   }
- };
-
-
-const [quoteNumber, setQuoteNumber] = useState(undefined);
-
-const handleGetQuoteNumber = async () => {
- return getQuotes().then((quotes) => {
-   const quoteNumbers = quotes
-     .filter((quote) => quote.quoteNumber)
-     .map((quote) => quote.quoteNumber);
-
-   const newQuoteNumbers = quoteNumbers.map((item) =>
-     item.replace(/\D/g, "")
-   );
-   if (newQuoteNumbers.length > 0) {
-     setQuoteNumber("Q" + (Math.max(...newQuoteNumbers) + 1));
-     return "Q" + (Math.max(...newQuoteNumbers) + 1);
-   }
-   return undefined;
- });
-};
-
-const handleUpdateQuoteNumber = async (quoteNumber, quoteIds, userEmail, base64Data) => {
- return handleDownloadQuotePDF(quoteNumber, quoteIds, userEmail, base64Data)
-   .then((response) => {
-     if (response && response.message === "Quotes number have been updated!!!") {
-       refreshQuotes();
-       return response;
-     }
-     throw new Error("Failed to update quote numbers");
-   });
-};
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        setBase64Data({
+          base64data,
+        });
+      };
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error("Failed to generate PDF:", error);
+    }
+  };
 
 
+  const [quoteNumber, setQuoteNumber] = useState(undefined);
 
-const openPDFInPopup = async () => {
- setDownloadingQuotePDF(true);
- const firstCustomerId = selectedQuotes[0].user._id;
- const allSameCustomer = selectedQuotes.every(
-   (quote) => quote.user._id === firstCustomerId
- );
+  const handleGetQuoteNumber = async () => {
+    return getQuotes().then((quotes) => {
+      const quoteNumbers = quotes
+        .filter((quote) => quote.quoteNumber)
+        .map((quote) => quote.quoteNumber);
 
- if (!allSameCustomer) {
-   alert("Selected quotes must be from the same client.");
-   return;
- }
+      const newQuoteNumbers = quoteNumbers.map((item) =>
+        item.replace(/\D/g, "")
+      );
+      if (newQuoteNumbers.length > 0) {
+        setQuoteNumber("Q" + (Math.max(...newQuoteNumbers) + 1));
+        return "Q" + (Math.max(...newQuoteNumbers) + 1);
+      }
+      return undefined;
+    });
+  };
 
- 
+  const handleUpdateQuoteNumber = async (quoteNumber, quoteIds, userEmail, base64Data) => {
+    return handleDownloadQuotePDF(quoteNumber, quoteIds, userEmail, base64Data)
+      .then((response) => {
+        if (response && response.message === "Quotes number have been updated!!!") {
+          refreshQuotes();
+          return response;
+        }
+        throw new Error("Failed to update quote numbers");
+      });
+  };
 
- // const newQuoteNumber = await handleGetQuoteNumber();
 
- if (quoteNumber === undefined) {
-   alert("Please try again.");
-   return;
- }
 
- // generatePdf(newQuoteNumber);
+  const openPDFInPopup = async () => {
+    setDownloadingQuotePDF(true);
+    const firstCustomerId = selectedQuotes[0].user._id;
+    const allSameCustomer = selectedQuotes.every(
+      (quote) => quote.user._id === firstCustomerId
+    );
 
- try {
-   const updateResponse = await handleUpdateQuoteNumber(
-     quoteNumber,
-     selectedQuotes.map((quote) => quote._id),
-     selectedQuotes[0].userEmail,
-     base64Data
-   );
-   console.log("updateResponse", updateResponse);
-   if (updateResponse.message === "Quotes number have been updated!!!") {
-     setQuoteNumber(quoteNumber);
+    if (!allSameCustomer) {
+      alert("Selected quotes must be from the same client.");
+      return;
+    }
 
-     const documentComponent = (
-       <ClientQuote
-         selectedQuotes={selectedQuotes}
-         quoteListProducts={quoteListProducts}
-         totalAmount={totalAmount}
-         quoteExpiryDate={quoteExpiryDate}
-         quoteNumber={quoteNumber}
-       />
-     );
 
-     const blob = await pdf(documentComponent).toBlob();
-     const url = URL.createObjectURL(blob);
 
-     const width = 1200;
-     const height = 800;
-     const left = window.innerWidth / 2 - width / 2 + window.screenX;
-     const top = window.innerHeight / 2 - height / 2 + window.screenY;
+    // const newQuoteNumber = await handleGetQuoteNumber();
 
-     const pdfWindow = window.open(
-       url,
-       "_blank",
-       `scrollbars=yes,toolbar=no,location=no,width=${width},height=${height},top=${top},left=${left}`
-     );
+    if (quoteNumber === undefined) {
+      alert("Please try again.");
+      return;
+    }
 
-     if (pdfWindow) {
-       pdfWindow.document.title = `${quoteNumber}.pdf`;
-       pdfWindow.addEventListener("load", () => {
-         pdfWindow.document.title = `${quoteNumber}.pdf`;
-         const a = pdfWindow.document.createElement("a");
-         a.href = url;
-         a.download = `${quoteNumber}.pdf`;
-         a.click();
-       });
-     }
-   }
- } catch (error) {
-   alert(
-     "An error occurred while download pdf, please refresh page and try again."
-   );
-   console.error(error);
- } finally {
-   setDownloadingQuotePDF(false);
- }
-};
+    // generatePdf(newQuoteNumber);
 
-const PDFPopupButton = ({ loadingText }) => (
- <div className="ms-0 me-2" style={{ float: "left" }}>
-   <Button
-     hidden={selectedQuotes?.length < 1}
-     className="ctl_blue_button"
-     onClick={() => openPDFInPopup()}
-   >
-     {downloadingQuotePDF ? "Downloading..." : loadingText }
-     <i class="bi bi-file-earmark-pdf-fill"></i>
-   </Button>
- </div>
-);
+    try {
+      const updateResponse = await handleUpdateQuoteNumber(
+        quoteNumber,
+        selectedQuotes.map((quote) => quote._id),
+        selectedQuotes[0].userEmail,
+        base64Data
+      );
+      console.log("updateResponse", updateResponse);
+      if (updateResponse.message === "Quotes number have been updated!!!") {
+        setQuoteNumber(quoteNumber);
 
-useEffect(() => {
- setTotalAmount(0);
- quoteListProducts.length = 0;
- quoteExpiryDateList.length = 0;
- selectedQuotes.map((data, index) => {
-   if (data.product !== null)
-     setQuoteListProducts((current) => [...current, data.product]);
-   setQuoteExpiryDateList((current) => [...current, data.expireDate]);
- });
-}, [selectedQuotes]);
+        const documentComponent = (
+          <ClientQuote
+            selectedQuotes={selectedQuotes}
+            quoteListProducts={quoteListProducts}
+            totalAmount={totalAmount}
+            quoteExpiryDate={quoteExpiryDate}
+            quoteNumber={quoteNumber}
+          />
+        );
 
-useEffect(() => {
- let amountTotal = 0;
- quoteListProducts.map((item, idx) => {
-   amountTotal += item.stock[0].price;
- });
- setTotalAmount(amountTotal);
-}, [quoteListProducts]);
+        const blob = await pdf(documentComponent).toBlob();
+        const url = URL.createObjectURL(blob);
 
-useEffect(() => {
- const sorted = quoteExpiryDateList?.sort(
-   (a, b) => new Date(a) - new Date(b)
- );
- setQuoteExpiryDate(sorted[0]);
-}, [quoteExpiryDateList]);
+        const width = 1200;
+        const height = 800;
+        const left = window.innerWidth / 2 - width / 2 + window.screenX;
+        const top = window.innerHeight / 2 - height / 2 + window.screenY;
 
-useEffect(() => {
- handleGetQuoteNumber();
- generatePdf();
-}, [selectedQuotes, quoteListProducts, quoteExpiryDateList, totalAmount]);
+        const pdfWindow = window.open(
+          url,
+          "_blank",
+          `scrollbars=yes,toolbar=no,location=no,width=${width},height=${height},top=${top},left=${left}`
+        );
 
-// console.log("quoteNumber", quoteNumber);
-// console.log("base64Data", base64Data);
-// console.log("selectedQuotes", selectedQuotes);
-// console.log(totalAmount);
-// #endregion
+        if (pdfWindow) {
+          pdfWindow.document.title = `${quoteNumber}.pdf`;
+          pdfWindow.addEventListener("load", () => {
+            pdfWindow.document.title = `${quoteNumber}.pdf`;
+            const a = pdfWindow.document.createElement("a");
+            a.href = url;
+            a.download = `${quoteNumber}.pdf`;
+            a.click();
+          });
+        }
+      }
+    } catch (error) {
+      alert(
+        "An error occurred while download pdf, please refresh page and try again."
+      );
+      console.error(error);
+    } finally {
+      setDownloadingQuotePDF(false);
+    }
+  };
+
+  const PDFPopupButton = ({ loadingText }) => (
+    <div className="ms-0 me-2" style={{ float: "left" }}>
+      <Button
+        hidden={selectedQuotes?.length < 1}
+        className="ctl_blue_button"
+        onClick={() => openPDFInPopup()}
+      >
+        {downloadingQuotePDF ? "Downloading..." : loadingText}
+        <i class="bi bi-file-earmark-pdf-fill"></i>
+      </Button>
+    </div>
+  );
+
+  useEffect(() => {
+    setTotalAmount(0);
+    quoteListProducts.length = 0;
+    quoteExpiryDateList.length = 0;
+    selectedQuotes.map((data, index) => {
+      if (data.product !== null)
+        setQuoteListProducts((current) => [...current, data.product]);
+      setQuoteExpiryDateList((current) => [...current, data.expireDate]);
+    });
+  }, [selectedQuotes]);
+
+  useEffect(() => {
+    let amountTotal = 0;
+    quoteListProducts.map((item, idx) => {
+      amountTotal += item.stock[0].price;
+    });
+    setTotalAmount(amountTotal);
+  }, [quoteListProducts]);
+
+  useEffect(() => {
+    const sorted = quoteExpiryDateList?.sort(
+      (a, b) => new Date(a) - new Date(b)
+    );
+    setQuoteExpiryDate(sorted[0]);
+  }, [quoteExpiryDateList]);
+
+  useEffect(() => {
+    handleGetQuoteNumber();
+    generatePdf();
+  }, [selectedQuotes, quoteListProducts, quoteExpiryDateList, totalAmount]);
+
+  // console.log("quoteNumber", quoteNumber);
+  // console.log("base64Data", base64Data);
+  // console.log("selectedQuotes", selectedQuotes);
+  // console.log(totalAmount);
+  // #endregion
 
 
   return (
@@ -554,7 +554,7 @@ useEffect(() => {
                   </div>
                 )}
               </td>
-              <td>
+              {/* <td>
                 <button
                   variant="danger"
                   className="btn-sm btn-light"
@@ -563,7 +563,7 @@ useEffect(() => {
                 >
                   <i className="bi bi-x-circle"></i>
                 </button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

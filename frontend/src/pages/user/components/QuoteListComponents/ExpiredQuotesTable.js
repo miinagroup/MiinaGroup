@@ -114,7 +114,7 @@ const ExpiredQuotesTable = ({
                   Re-request
                 </button>
               </td>
-              <td>
+              {/* <td>
                 <button
                   variant="danger"
                   className="btn-sm btn-light"
@@ -123,7 +123,7 @@ const ExpiredQuotesTable = ({
                 >
                   <i className="bi bi-x-circle"></i>
                 </button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

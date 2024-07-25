@@ -106,7 +106,7 @@ const ProcessingQuotesTable = ({
                 {quoteItem.status}
               </td>
               <td>{quoteItem.submittedAt?.substring(0, 10)}</td>
-              <td>
+              {/* <td>
                     <button
                       variant="danger"
                       className="btn-sm btn-light"
@@ -115,7 +115,7 @@ const ProcessingQuotesTable = ({
                     >
                       <i className="bi bi-x-circle"></i>
                     </button>
-                  </td>
+                  </td> */}
             </tr>
           ))}
         </tbody>
