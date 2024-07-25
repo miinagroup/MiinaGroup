@@ -106,16 +106,16 @@ const ProcessingQuotesTable = ({
                 {quoteItem.status}
               </td>
               <td>{quoteItem.submittedAt?.substring(0, 10)}</td>
-              {/* <td>
-                    <button
-                      variant="danger"
-                      className="btn-sm btn-light"
-                      onClick={() => deleteHandler(quoteItem._id)}
-                      style={{ border: "none" }}
-                    >
-                      <i className="bi bi-x-circle"></i>
-                    </button>
-                  </td> */}
+              <td>
+                <button
+                  variant="danger"
+                  className="btn-sm btn-light"
+                  onClick={() => deleteHandler(quoteItem._id)}
+                  style={{ border: "none" }}
+                >
+                  <i className="bi bi-x-circle"></i>
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

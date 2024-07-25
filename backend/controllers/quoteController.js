@@ -13,7 +13,7 @@ const axios = require("axios");
 
 const adminGetQuotes = async (req, res, next) => {
   try {
-    const quotes = await Quote.find({})
+    const quotes = await Quote.find({ display: true })
       .populate("user", "-password")
       .populate("product", "-description")
       .sort({
@@ -52,7 +52,7 @@ const adminGetQuotes = async (req, res, next) => {
 
 const userGetQuotes = async (req, res, next) => {
   try {
-    const quotes = await Quote.find({ user: ObjectId(req.user._id) })
+    const quotes = await Quote.find({ user: ObjectId(req.user._id), display: true })
       .populate("user")
       .populate("product", "-description")
       .sort({
@@ -603,23 +603,23 @@ const deleteQuote = async (req, res, next) => {
 
     const quote = await Quote.findById(req.params.quoteId).orFail();
 
-    if (isAdmin && !isSuperAdmin && !isSales) {
-      const editHistoryEntry = {
-        operator: email,
-        editedAt: new Date(),
-        function: "delete quote",
-      };
+    const editHistoryEntry = {
+      operator: email,
+      editedAt: new Date(),
+      function: "delete quote",
+    };
 
-      quote.editeHistroys.push(editHistoryEntry);
-      await quote.save();
+    quote.editeHistroys.push(editHistoryEntry);
+    quote.display = false
+    await quote.save();
+    res.send("quote display hidden")
+    // return res
+    //   .status(403)
+    //   .json({ message: "You do not have permission to delete quotes." });
 
-      return res
-        .status(403)
-        .json({ message: "You do not have permission to delete quotes." });
-    }
 
-    await quote.remove();
-    res.send("uote deleted");
+    // await quote.remove();
+    // res.send("uote deleted");
   } catch (err) {
     next(err);
   }

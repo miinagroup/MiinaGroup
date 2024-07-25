@@ -500,8 +500,8 @@ const ClientQuote = (quotePrintData) => {
 
               <View style={styles.tableRow}>
                 <View style={styles.tableColHeaderSide}>
-                  <Text style={styles.tableCellBill}>{user.name + " " + user.lastName}</Text>
-                  <Text style={styles.tableCellBill}>{user.company}</Text>
+                  <Text style={styles.tableCellBill}>{user?.name + " " + user?.lastName}</Text>
+                  <Text style={styles.tableCellBill}>{user?.company}</Text>
                 </View>
                 <View style={styles.tableColHeaderSide1}>
                   <Text>CTL Australia Pty Ltd</Text>

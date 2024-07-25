@@ -13,7 +13,7 @@ const quoteSchema = mongoose.Schema(
       required: true,
       ref: User,
     },
-    userName:{
+    userName: {
       type: String,
       required: true,
     },
@@ -77,6 +77,11 @@ const quoteSchema = mongoose.Schema(
       // price / no more needed / other
       type: String
     },
+    display: {
+      required: false,
+      type: Boolean,
+      default: true
+    },
     editeHistroys: [
       {
         operator: {
@@ -95,7 +100,7 @@ const quoteSchema = mongoose.Schema(
     ],
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

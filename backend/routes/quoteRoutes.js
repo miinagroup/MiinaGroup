@@ -33,7 +33,7 @@ router.post("/create", userCreateQuote);
 router.post("/accept", userAcceptQuote);
 router.post("/rerequest", userReRequestQuote);
 router.post("/requestPdf", userRequestQuotePdf);
-router.delete("/delete/:quoteId", deleteQuote);
+router.post("/delete/:quoteId", deleteQuote);
 router.post("/download", downloadQuotePDF);
 
 // admin routes

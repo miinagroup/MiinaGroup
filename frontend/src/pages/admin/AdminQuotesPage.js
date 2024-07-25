@@ -18,7 +18,7 @@ const markAsProcessing = async (quoteId, expiryDateString, adminMessage) => {
   console.log("Am i here?", expiryDateString, adminMessage);
   const response = await axios.post(
     "/api/quotes/admin/status?quoteId=" + quoteId,
-    { expireDate: expiryDateString, adminMessage:adminMessage }
+    { expireDate: expiryDateString, adminMessage: adminMessage }
   );
 
   if (response.data) {
@@ -37,7 +37,7 @@ const updateQuote = async (quoteId, quote) => {
 };
 
 const deleteQuote = async (quoteId) => {
-  const { data } = await axios.delete("/api/quotes/delete/" + quoteId);
+  const { data } = await axios.post("/api/quotes/delete/" + quoteId);
   if (data) {
     return data;
   }
@@ -87,7 +87,7 @@ const getAdminDeliveryBooks = async () => {
 }
 
 const handleDownloadQuotePDF = async (quoteNumber, quoteIds, userEmail, base64Data) => {
-  const { data } = await axios.post("/api/quotes/download?quoteNumber=" + quoteNumber, {quoteIds, userEmail, base64Data});
+  const { data } = await axios.post("/api/quotes/download?quoteNumber=" + quoteNumber, { quoteIds, userEmail, base64Data });
   return data;
 }
 

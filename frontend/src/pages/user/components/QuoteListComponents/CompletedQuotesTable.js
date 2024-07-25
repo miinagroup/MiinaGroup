@@ -554,7 +554,7 @@ const CompletedQuotesTable = ({
                   </div>
                 )}
               </td>
-              {/* <td>
+              <td>
                 <button
                   variant="danger"
                   className="btn-sm btn-light"
@@ -563,7 +563,7 @@ const CompletedQuotesTable = ({
                 >
                   <i className="bi bi-x-circle"></i>
                 </button>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

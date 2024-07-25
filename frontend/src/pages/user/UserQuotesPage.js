@@ -23,7 +23,7 @@ const userReRquestQuote = async (quoteId) => {
 }
 
 const userRequestPdf = async (quoteIds) => {
-  const response = await axios.post("/api/quotes/requestPdf", {quoteIds: quoteIds});
+  const response = await axios.post("/api/quotes/requestPdf", { quoteIds: quoteIds });
   console.log("response", response);
   if (response.data) {
     return response.data;
@@ -31,26 +31,26 @@ const userRequestPdf = async (quoteIds) => {
 }
 
 const deleteQuote = async (quoteId) => {
-  const { data } = await axios.delete("/api/quotes/delete/" + quoteId);
+  const { data } = await axios.post("/api/quotes/delete/" + quoteId);
   if (data) {
     return data;
   }
 };
 
 const handleDownloadQuotePDF = async (quoteNumber, quoteIds, userEmail, base64Data) => {
-  const { data } = await axios.post("/api/quotes/download?quoteNumber=" + quoteNumber, {quoteIds, userEmail, base64Data});
+  const { data } = await axios.post("/api/quotes/download?quoteNumber=" + quoteNumber, { quoteIds, userEmail, base64Data });
   return data;
 }
 
 const UserQuotesPage = () => {
   return <UserQuotesPageComponent
     getQuotes={getQuotes}
-    userQuoteAction={userQuoteAction} 
+    userQuoteAction={userQuoteAction}
     userReRquestQuote={userReRquestQuote}
     userRequestPdf={userRequestPdf}
     deleteQuote={deleteQuote}
     handleDownloadQuotePDF={handleDownloadQuotePDF}
-    />;
+  />;
 };
 
 export default UserQuotesPage;

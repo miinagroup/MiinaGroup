@@ -46,6 +46,7 @@ const QuotesPageComponent = ({
   };
 
   const refreshQuotes = () => {
+    console.log("deleted");
     getQuotes()
       .then((quotes) => {
         const currentDateTime = startOfDay(new Date());
@@ -81,7 +82,7 @@ const QuotesPageComponent = ({
 
   useEffect(() => {
     refreshQuotes();
-  }, []);
+  }, [deleteQuote]);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -226,6 +227,7 @@ const QuotesPageComponent = ({
                 quotes={purchasedQuotes}
                 search={search}
                 getStatusColor={getStatusColor}
+                refreshQuotes={refreshQuotes}
               />
             </Tab>
 

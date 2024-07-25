@@ -121,16 +121,23 @@ const QuoteItemForQuotePageComponent = ({
           if (imagePath.includes("http://")) {
             imagePath = imagePath.replace("http://", "https://");
           }
-          const isExists = await fetchImage(imagePath);
-          if (isExists.ok) {
-            imagesArray.push({
-              original: imagePath,
-              thumbnail: imagePath,
-              url: imagePath,
-              title: image.title,
-              caption: image.name,
-            });
-          }
+          imagesArray.push({
+            original: imagePath,
+            thumbnail: imagePath,
+            url: imagePath,
+            title: image.title,
+            caption: image.name,
+          });
+          // const isExists = await fetchImage(imagePath);
+          // if (isExists.ok) {
+          //   imagesArray.push({
+          //     original: imagePath,
+          //     thumbnail: imagePath,
+          //     url: imagePath,
+          //     title: image.title,
+          //     caption: image.name,
+          //   });
+          // }
         }
       } else {
         if (quote && quote.clientImages) {
@@ -364,13 +371,13 @@ const QuoteItemForQuotePageComponent = ({
                           style={{
                             color:
                               product?.expireDate &&
-                              new Date(
-                                product.expireDate
-                                  .split(" ")[1]
-                                  .split("/")
-                                  .reverse()
-                                  .join("-")
-                              ) < new Date()
+                                new Date(
+                                  product.expireDate
+                                    .split(" ")[1]
+                                    .split("/")
+                                    .reverse()
+                                    .join("-")
+                                ) < new Date()
                                 ? "red"
                                 : "",
                           }}
@@ -385,9 +392,8 @@ const QuoteItemForQuotePageComponent = ({
                           {quote?.expireDate?.substring(0, 10)} 【
                           <span
                             style={{
-                              color: `${
-                                Math.abs(daysDifference) > 7 ? "" : "red"
-                              }`,
+                              color: `${Math.abs(daysDifference) > 7 ? "" : "red"
+                                }`,
                             }}
                           >
                             {daysDifference}
@@ -447,7 +453,7 @@ const QuoteItemForQuotePageComponent = ({
                                 }
                               />
                               {completeQuoteResponseState ===
-                              "Product expire date does not exist!!!" ? (
+                                "Product expire date does not exist!!!" ? (
                                 <input
                                   className="mt-2"
                                   type="number"
@@ -503,15 +509,15 @@ const QuoteItemForQuotePageComponent = ({
                                 color: quote.accepted
                                   ? "green"
                                   : quote.accepted === undefined
-                                  ? "black"
-                                  : "red",
+                                    ? "black"
+                                    : "red",
                               }}
                             >
                               {quote.accepted === undefined
                                 ? "Waiting"
                                 : quote.accepted
-                                ? "Accepted"
-                                : "Declined"}
+                                  ? "Accepted"
+                                  : "Declined"}
                             </span>{" "}
                             {quote.accepted === false ? (
                               <button
@@ -689,7 +695,7 @@ const QuoteItemForQuotePageComponent = ({
                           style={{
                             color:
                               quote?.quoteType &&
-                              quote?.quoteType === "Exact_Product_Required"
+                                quote?.quoteType === "Exact_Product_Required"
                                 ? "red"
                                 : "#1E4881",
                           }}

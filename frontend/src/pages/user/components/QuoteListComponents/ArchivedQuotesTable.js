@@ -105,7 +105,7 @@ const ArchivedQuotesTable = ({
               >
                 Archived
               </td>
-              {/* <td>
+              <td>
                 <button
                   variant="danger"
                   className="btn-sm btn-light"
@@ -114,7 +114,7 @@ const ArchivedQuotesTable = ({
                 >
                   <i className="bi bi-x-circle"></i>
                 </button>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>
