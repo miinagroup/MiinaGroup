@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 
 const PDFPreviewForVisitor = () => {
-    const [pdfUrl, setPdfUrl] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
 
-    useEffect(() => {
-        const path = window.location.search;
-        const pathSegment = path.split('?')[1];
-        
-        if (pathSegment) {
-            const constructedUrl = `https://res.cloudinary.com/dxvwresim/image/upload/${pathSegment}`;
-            setPdfUrl(constructedUrl);
-        }
-    }, []);
+  useEffect(() => {
+    const path = window.location.search;
+    const pathSegment = path.split('?')[1];
+    console.log("pathSegment", pathSegment);
+    if (pathSegment) {
+      const constructedUrl = `https://ctladmin.b-cdn.net/CTLDocuments/${pathSegment}`;
+      setPdfUrl(constructedUrl);
+    }
+  }, []);
 
 
 
