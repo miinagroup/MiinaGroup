@@ -747,7 +747,7 @@ const getProductByCTLSKU = async (req, res, next) => {
 };
 
 const userUpdateSKU = async (req, res, next) => {
-  try { 
+  try {
     const ctlsku = req.params.ctlsku;
     const clientSiteSku = Object.keys(req.body)[0];
     const clientSkuNumber = req.body["clientSkuNumber"];
@@ -760,28 +760,30 @@ const userUpdateSKU = async (req, res, next) => {
     let product = await Product.findOne({ "stock.ctlsku": ctlsku });
     const productClientSku = await product.stock.find(item => item.ctlsku === ctlsku);
     const productClientSkuName = await productClientSku.clientsSku.find(sku => sku.name === clientSkuName)
-   
-    if(productClientSkuName) {
+
+    if (productClientSkuName) {
       product = await Product.findOneAndUpdate(
-        { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName  },
-        { $set: { 
-          "stock.$[elem].clientsSku.$[clientSku].number": clientSkuNumber 
-        }},
+        { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName },
+        {
+          $set: {
+            "stock.$[elem].clientsSku.$[clientSku].number": clientSkuNumber
+          }
+        },
         {
           arrayFilters: [{ "elem.ctlsku": ctlsku }, { "clientSku.name": clientSkuName }],
           new: true,
         }
-    )
+      )
     } else {
       product = await Product.findOneAndUpdate(
         { "stock.ctlsku": ctlsku },
         {
           $push: {
-          "stock.$[elem].clientsSku": {
-            number: clientSkuNumber,
-            name: clientSkuName,
+            "stock.$[elem].clientsSku": {
+              number: clientSkuNumber,
+              name: clientSkuName,
+            }
           }
-        }
         },
         {
           arrayFilters: [{ "elem.ctlsku": ctlsku }],
@@ -821,24 +823,24 @@ const adminUpdateSKU = async (req, res, next) => {
     const existingClientSku = stockItem.clientsSku.find(c => c.name === clientSkuName);
 
     if (existingClientSku !== undefined) {
-       product = await Product.findOneAndUpdate(
-            { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName },
-            { 
-              $set: { 
-                "stock.$[stock].clientsSku.$[clientSku].number": clientSkuNumber 
-              },
-            },
-            { 
-              arrayFilters: [
-                { "stock.ctlsku": ctlsku },
-                { "clientSku.name": clientSkuName }
-              ], 
-              new: true,
-              runValidators: true,
-            }
-          );
+      product = await Product.findOneAndUpdate(
+        { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName },
+        {
+          $set: {
+            "stock.$[stock].clientsSku.$[clientSku].number": clientSkuNumber
+          },
+        },
+        {
+          arrayFilters: [
+            { "stock.ctlsku": ctlsku },
+            { "clientSku.name": clientSkuName }
+          ],
+          new: true,
+          runValidators: true,
+        }
+      );
     } else {
-       product = await Product.findOneAndUpdate(
+      product = await Product.findOneAndUpdate(
         {
           "stock.ctlsku": ctlsku
         },
@@ -892,7 +894,7 @@ const adminUpdateCategory = async (req, res, next) => {
   try {
     const product = await Product.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: { category: req.body.selectedCategory },  },
+      { $set: { category: req.body.selectedCategory }, },
       { new: true }
     );
 
@@ -1192,18 +1194,24 @@ const productsCheck = async (req, res) => {
         updatedDisplayPrice.push(product);
       }
       let displayPriceChanged = false
+      let stockPriceChanged = false
       product.stock.forEach((stockItem) => {
         if (stockItem.price > 0) {
           if (product.displayPrice > stockItem.price) {
             product.displayPrice = stockItem.price
             displayPriceChanged = true
           }
+        } else if (stockItem.price === 0 && product.displayPrice !== 0) {
+          stockItem.price = product.displayPrice
+          stockPriceChanged = true
         }
       })
       if (displayPriceChanged === true) {
         await product.save();
       }
-
+      if (stockPriceChanged === true) {
+        await product.save();
+      }
 
       if (
         !product.name ||
@@ -1230,9 +1238,9 @@ const productsCheck = async (req, res) => {
       });
     }
 
-    console.log("Products with Updated DisplayPrice: ", updatedDisplayPrice);
-    console.log("Missing Main Fields: ", missingMainFields.length);
-    console.log("Missing Stock Fields: ", missingStockFields.length);
+    // console.log("Products with Updated DisplayPrice: ", updatedDisplayPrice);
+    // console.log("Missing Main Fields: ", missingMainFields.length);
+    // console.log("Missing Stock Fields: ", missingStockFields.length);
 
     const duplicateCtlSku = await Product.aggregate([
       { $unwind: "$stock" },
