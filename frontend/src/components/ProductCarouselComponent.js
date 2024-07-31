@@ -19,8 +19,9 @@ const ProductCarouselComponent = ({ banners }) => {
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
 
   const updateBannerUrl = (url) => {
-    const [start, end] = url.split("/upload");
-    return `${start}/upload/c_scale,h_400,w_1600${end}`;
+    // const [start, end] = url.split("/banners");
+    // return `${start}/banners/c_scale,h_400,w_1600${end}`;
+    return url;
   };
 
   // track how many times visitors visit the website

@@ -46,8 +46,9 @@ const ProductsPromotionComponent = ({ blocks }) => {
   const bottomBlocks = orderedBlocks?.slice(4);
 
   const updateImageUrl = (url) => {
-    const [start, end] = url.split("/upload");
-    return `${start}/upload/c_scale,h_400,w_600${end}`;
+    // const [start, end] = url.split("/upload");
+    // return `${start}/upload/c_scale,h_400,w_600${end}`;
+    return url
   };
 
   const renderBlocks = (blocksArray) => {
@@ -123,7 +124,7 @@ const ProductsPromotionComponent = ({ blocks }) => {
         <source src={item.source} type="video/mp4" />
       </video>
     ) : (
-      <Card.Img
+      < Card.Img
         variant="top"
         src={item.source}
         id="promotional_image"
@@ -162,15 +163,15 @@ const ProductsPromotionComponent = ({ blocks }) => {
         </>
       ) : (
         <>
-        <div className="mt-3 mb-3">
-          <Row className="blocks_row">{renderBlocks(topBlocks)}</Row>
-          <div className="mt-4 mb-4">
-            <StockPrice />
+          <div className="mt-3 mb-3">
+            <Row className="blocks_row">{renderBlocks(topBlocks)}</Row>
+            <div className="mt-4 mb-4">
+              <StockPrice />
+            </div>
+
+            <Row className="blocks_row_bottom">{renderBlocks(bottomBlocks)}</Row>
           </div>
-          
-          <Row className="blocks_row_bottom">{renderBlocks(bottomBlocks)}</Row>
-        </div>
-          
+
         </>
       )}
     </>
