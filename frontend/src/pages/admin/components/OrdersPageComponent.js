@@ -72,8 +72,8 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     if (search) {
       computedOrders = computedOrders.filter(
         (order) =>
-          order.createdAt.toUpperCase().includes(search.toUpperCase()) ||
-          order.purchaseNumber.toUpperCase().includes(search.toUpperCase()) ||
+          order.createdAt?.toUpperCase().includes(search.toUpperCase()) ||
+          order.purchaseNumber?.toUpperCase().includes(search.toUpperCase()) ||
           order.userCompany?.toUpperCase().includes(search.toUpperCase()) ||
           order.deliverySite?.toUpperCase().includes(search.toUpperCase()) ||
           order.userName?.toUpperCase().includes(search.toUpperCase()) ||
@@ -227,10 +227,13 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
 
   useEffect(() => {
     const thisMonth = new Date().getMonth();
+    const thisYear = new Date().getFullYear()
     let totalValue = 0
     orders.map((order) => {
       const month = new Date(order.createdAt).getMonth();
-      if (month === thisMonth) {
+      const year = new Date(order.createdAt).getFullYear();
+      console.log(thisYear, year, thisMonth, month);
+      if (month === thisMonth && year === thisYear) {
         totalValue = totalValue + order.orderTotal.cartSubtotal
       }
 
