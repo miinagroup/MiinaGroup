@@ -129,8 +129,11 @@ const AdminCartDetailsPageComponent = ({
       const newInvoiceNumbers = invoiceNumbers.map((item) => {
         return item.replace(/\D/g, "");
       });
+
       if (newInvoiceNumbers.length > 0) {
-        setLargestInvoice(Math.max(...newInvoiceNumbers));
+        const filteredInvoiceNumbers = newInvoiceNumbers.filter(num => num < 165000)
+        console.log(filteredInvoiceNumbers);
+        setLargestInvoice(Math.max(...filteredInvoiceNumbers));
       } else {
         setLargestInvoice(100000);
       }
@@ -275,8 +278,7 @@ const AdminCartDetailsPageComponent = ({
         taxAmount: taxAmount,
       },
       cartItems: cartItems.map((item) => {
-        console.log("item", item);
-        const currentClientSku =  updateCurrentClientSku(item.cartProducts[0].clientsSku)
+        const currentClientSku = updateCurrentClientSku(item.cartProducts[0].clientsSku)
         return {
           productId: item.productId,
           name: item.name,
