@@ -221,7 +221,7 @@ const ProductForListComponent = ({
   const [checkImageAvailable, setCheckImageAvailable] = useState(false)
   useEffect(() => {
     const extensions = [".jpg", ".png", ".webp", ".bmp"]
-    setCheckImageAvailable(extensions.some(el => images[0].path.includes(el)))
+    setCheckImageAvailable(extensions.some(el => images[0].path.toUpperCase().includes(el.toUpperCase())))
   })
   return (
     <>
