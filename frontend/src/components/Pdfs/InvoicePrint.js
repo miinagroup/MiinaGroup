@@ -452,7 +452,7 @@ const InvoicePrint = (invPrintData) => {
               <View style={styles.tableColImageHeader}>
                 <Image
                   style={styles.image}
-                  src="https://res.cloudinary.com/dxvwresim/image/upload/v1683083956/CTL%20Brand%20Images/CTL-blueDelivering_g3qe9u.png"
+                  src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                 />
               </View>
               <View style={styles.tableColHeader}></View>

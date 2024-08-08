@@ -95,7 +95,7 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="https://res.cloudinary.com/ctlaustralia/image/upload/v1684899049/CTL-blueDelivering_vxzmvk.png"
+                                        src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/signature.png"
                                         align="center"
                                         border="0"
                                         width="500"
@@ -293,7 +293,7 @@ module.exports.sendResetPasswordEmail = async (email, subject, text) => {
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="https://res.cloudinary.com/ctlaustralia/image/upload/v1684899049/CTL-blueDelivering_vxzmvk.png"
+                                        src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                                         align="center"
                                         border="0"
                                         width="500"

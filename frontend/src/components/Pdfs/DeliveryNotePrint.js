@@ -317,7 +317,7 @@ const InvoicePrint = (cartItems) => {
     const companyAccount = cartItems.companyAccount;
     var counter = 0;
     // console.log("invcart", InvCartItems)
-    // console.log("Delivery Note selectedDeliverySite", cartItems);
+    // console.log("Delivery Note selectedDeliverySite", InvUserInfo);
 
     function splitArrayIntoChunks(arr, chunkSize) {
         const result = [];
@@ -369,7 +369,7 @@ const InvoicePrint = (cartItems) => {
                             <View style={styles.tableColImageHeader}>
                                 <Image
                                     style={styles.image}
-                                    src="https://res.cloudinary.com/dxvwresim/image/upload/v1683083956/CTL%20Brand%20Images/CTL-blueDelivering_g3qe9u.png"
+                                    src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                                 />
                             </View>
                             <View style={styles.tableColHeader}>
@@ -640,7 +640,7 @@ const InvoicePrint = (cartItems) => {
                                                             </View>
                                                             <View style={styles.tableColHeaderShort}>
                                                                 <Text style={styles.tableColBillItem}>
-                                                                    {item.cartProducts[0].currentClientSku?.number}  
+                                                                    {item.cartProducts[0].currentClientSku?.number}
                                                                 </Text>
                                                             </View>
                                                             <View style={styles.tableColHeaderCenter}>

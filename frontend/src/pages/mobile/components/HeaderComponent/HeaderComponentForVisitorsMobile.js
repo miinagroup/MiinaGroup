@@ -53,7 +53,7 @@ const mainCategory = [
   },
 ];
 
-const HeaderComponentForVisitorsMobile = ({handleShow, stopAnimation, setStopAnimation, toggleShowSidebar, showSidebar}) => {
+const HeaderComponentForVisitorsMobile = ({ handleShow, stopAnimation, setStopAnimation, toggleShowSidebar, showSidebar }) => {
   //const dispatch = useDispatch();
   const reduxDispatch = useDispatch();
 
@@ -70,20 +70,20 @@ const HeaderComponentForVisitorsMobile = ({handleShow, stopAnimation, setStopAni
 
   useEffect(() => {
     let subCategories = {};
-    
+
     categories?.forEach(category => {
-      if(!category.display) return
+      if (!category.display) return
 
       const parts = category.name.split('/');
 
-      if(mainLinks.includes(parts[0])) {
+      if (mainLinks.includes(parts[0])) {
         if (parts.length >= 2) {
-          if(!subCategories[parts[0]]) {
+          if (!subCategories[parts[0]]) {
             subCategories[parts[0]] = [];
           }
-          if(!subCategories[parts[0]].includes(parts[1])) {
+          if (!subCategories[parts[0]].includes(parts[1])) {
             subCategories[parts[0]].push(parts[1])
-          }            
+          }
         }
       }
     });
@@ -136,9 +136,9 @@ const HeaderComponentForVisitorsMobile = ({handleShow, stopAnimation, setStopAni
     <>
       {/* ************   Login/register, will move down to replace carts  ***************  */}
 
-      <Navbar 
-      className={styles.header}
-      expand="lg">
+      <Navbar
+        className={styles.header}
+        expand="lg">
         <Container className={styles.header_wrapper}>
           <div className={styles.mobile_top_section}>
             <div className={styles.logo_container}>
@@ -163,7 +163,7 @@ const HeaderComponentForVisitorsMobile = ({handleShow, stopAnimation, setStopAni
                   Login
                 </a>{" "}
                 /{" "} */}
-                <a onClick={() => handleShow()}  className={styles.hd_c}>
+                <a onClick={() => handleShow()} className={styles.hd_c}>
                   REGISTER
                 </a>
               </div>
@@ -197,18 +197,18 @@ const HeaderComponentForVisitorsMobile = ({handleShow, stopAnimation, setStopAni
             <div className={styles.rfq_button}>
               <img
                 id="rfq_button"
-                src="https://res.cloudinary.com/dxvwresim/image/upload/v1684231122/CTL%20Brand%20Images/red-search.png"
+                src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/red-search.png"
                 alt=""
                 className="red_search_img_visitor"
                 style={{ cursor: "pointer" }}
-                // onClick={() => handleShow()}
+              // onClick={() => handleShow()}
               ></img>
             </div>
           </div>
         </Container>
       </Navbar>
 
-      
+
     </>
   );
 };

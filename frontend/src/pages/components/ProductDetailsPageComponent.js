@@ -68,15 +68,15 @@ const ProductDetailsPageComponent = ({
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems);
-    //categories
-    const dispatch = useDispatch();
+  //categories
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-      dispatch(getCategories());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
 
-    const { categories } = useSelector((state) => state.getCategories);
-    
+  const { categories } = useSelector((state) => state.getCategories);
+
   useEffect(() => {
     cartItems?.map((items) => {
       if (items.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) {
@@ -209,21 +209,21 @@ const ProductDetailsPageComponent = ({
       setStockPrice(selectedStock.price);
       setstockCode(selectedStock.ctlsku);
       setsupplierCode(selectedStock.suppliersku);
-  
+
       // if (clientSiteSku && selectedStock[clientSiteSku] !== undefined) {
       //   clientSku = selectedStock[clientSiteSku];
       // }
-  
+
       clientsSkuList && clientsSkuList.map(skuName => {
-        if(skuName.sku.toLowerCase().includes(userData.location.replace(/\s+/g, '').toLowerCase())) {
+        if (skuName.sku.toLowerCase().includes(userData.location.replace(/\s+/g, '').toLowerCase())) {
           setClientSkuName(skuName.sku);
         }
       })
 
       if (selectedStock.clientsSku?.length > 0) {
-        const matchedSku = selectedStock.clientsSku.find(sku => 
+        const matchedSku = selectedStock.clientsSku.find(sku =>
           sku.name.toLowerCase() === clientSkuName.toLowerCase()
-      );
+        );
         return matchedSku ? setClientSKU(matchedSku.number) : setClientSKU('');
       } else {
         setClientSKU('')
@@ -569,8 +569,8 @@ const ProductDetailsPageComponent = ({
 
 
   const hanldeSkuChange = (e) => {
-      setClientSKU(e.target.value)
-      setEdit(true);
+    setClientSKU(e.target.value)
+    setEdit(true);
   };
 
   const brandSearchHandler = () => {
@@ -1384,7 +1384,7 @@ const ProductDetailsPageComponent = ({
                                 return (
                                   <img
                                     key={"standards" + index}
-                                    src={`https://res.cloudinary.com/dxvwresim/image/upload/c_scale,h_120/STANDARDS/${item}.jpg`}
+                                    src={`https://ctladmin.b-cdn.net/STANDARDS/${item}.jpg`}
                                     target="_blank"
                                     alt=""
                                     style={{ maxWidth: "100%", height: "auto" }}
@@ -1403,7 +1403,7 @@ const ProductDetailsPageComponent = ({
                                 return (
                                   <div>
                                     <video width="560" height="315" controls controlsList="nofullscreen nodownload" disablePictureInPicture>
-                                      <source src={`https://res.cloudinary.com/dxvwresim/video/upload/v1714464030/Videos/${item}.mp4`} type="video/mp4" />
+                                      <source src={`https://ctladmin.b-cdn.net/video/${item}.mp4`} type="video/mp4" />
                                     </video>
                                   </div>
                                 );

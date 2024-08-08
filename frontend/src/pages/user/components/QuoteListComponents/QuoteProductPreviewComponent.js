@@ -122,103 +122,103 @@ const QuoteProductPreviewComponent = ({ product }) => {
   }
 
 
-    //Existing pdf list
-    async function fetchPdf(url) {
-      try {
-        const response = await fetch(url);
-        return response;
-      } catch (error) {
-        console.error(
-          "There has been a problem with your fetch operation:",
-          error
-        );
-      }
+  //Existing pdf list
+  async function fetchPdf(url) {
+    try {
+      const response = await fetch(url);
+      return response;
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
     }
+  }
 
-    const [pdfs, setPdfs] = useState([]);
-    useEffect(() => {
-      async function handlePdfs() {
-        const pdfArray = [];
-        if (product && product.pdfs) {
-          for (const pdf of product.pdfs) {
-            if (!pdf.path) {
-              continue
-            }
-            let pdfPath = pdf.path;
-            if (pdfPath.includes("http://")) {
-              pdfPath = pdfPath.replace("http://", "https://");
-            }
-            const isExists = await fetchPdf(pdfPath);
-            if (isExists.ok) {
-              pdfArray.push({
-                url: pdfPath,
-              });
-            }
+  const [pdfs, setPdfs] = useState([]);
+  useEffect(() => {
+    async function handlePdfs() {
+      const pdfArray = [];
+      if (product && product.pdfs) {
+        for (const pdf of product.pdfs) {
+          if (!pdf.path) {
+            continue
+          }
+          let pdfPath = pdf.path;
+          if (pdfPath.includes("http://")) {
+            pdfPath = pdfPath.replace("http://", "https://");
+          }
+          const isExists = await fetchPdf(pdfPath);
+          if (isExists.ok) {
+            pdfArray.push({
+              url: pdfPath,
+            });
           }
         }
-        setPdfs(pdfArray);
       }
-      handlePdfs();
-    }, [product]);
+      setPdfs(pdfArray);
+    }
+    handlePdfs();
+  }, [product]);
 
-    async function downloadPDF(pdfURL, pdfName) {
-      if (pdfURL.includes("http:")) {
-        pdfURL = pdfURL.replace("http:", "https:");
-      }
-  
-      const response = await fetch(pdfURL);
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const blob = await response.blob();
-      const blobURL = window.URL.createObjectURL(blob);
-      const tempLink = document.createElement("a");
-      tempLink.style.display = "none";
-      tempLink.href = blobURL;
-      tempLink.setAttribute("download", pdfName);
-      document.body.appendChild(tempLink);
-      tempLink.click();
-      document.body.removeChild(tempLink);
+  async function downloadPDF(pdfURL, pdfName) {
+    if (pdfURL.includes("http:")) {
+      pdfURL = pdfURL.replace("http:", "https:");
     }
 
-    const execustionDate = new Date('2024-1-4 12:00:00')
+    const response = await fetch(pdfURL);
 
-    var displayTable = [];
-    var tableHeadings = [
-      "SPECIFICATIONS",
-      "SPECIFICATION",
-      "TECHNICAL SPECIFICATIONS",
-      "TECHNICAL SPECIFICATION",
-      "TECHNICAL DETAILS"
-    ]
-    var headings = [
-      "APPLICATION INFO",
-      "DESCRIPTIONS",
-      "DESCRIPTION",
-      "FEATURES",
-      "FEATURE",
-      "SPECIFICATIONS",
-      "SPECIFICATION",
-      "TECHNICAL SPECIFICATIONS",
-      "TECHNICAL SPECIFICATION",
-      "TECHNICAL DETAILS"
-    ]
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const blob = await response.blob();
+    const blobURL = window.URL.createObjectURL(blob);
+    const tempLink = document.createElement("a");
+    tempLink.style.display = "none";
+    tempLink.href = blobURL;
+    tempLink.setAttribute("download", pdfName);
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+  }
+
+  const execustionDate = new Date('2024-1-4 12:00:00')
+
+  var displayTable = [];
+  var tableHeadings = [
+    "SPECIFICATIONS",
+    "SPECIFICATION",
+    "TECHNICAL SPECIFICATIONS",
+    "TECHNICAL SPECIFICATION",
+    "TECHNICAL DETAILS"
+  ]
+  var headings = [
+    "APPLICATION INFO",
+    "DESCRIPTIONS",
+    "DESCRIPTION",
+    "FEATURES",
+    "FEATURE",
+    "SPECIFICATIONS",
+    "SPECIFICATION",
+    "TECHNICAL SPECIFICATIONS",
+    "TECHNICAL SPECIFICATION",
+    "TECHNICAL DETAILS"
+  ]
 
 
-    const [standard, setStandard] = useState([]);
+  const [standard, setStandard] = useState([]);
 
-    useEffect(() => {
-      if (product?.standards) {
-        if (product.standards.includes("/")) {
-          const splittedStandards = product.standards.split("/");
-          setStandard(splittedStandards);
-        } else {
-          setStandard([product.standards]);
-        }
+  useEffect(() => {
+    if (product?.standards) {
+      if (product.standards.includes("/")) {
+        const splittedStandards = product.standards.split("/");
+        setStandard(splittedStandards);
+      } else {
+        setStandard([product.standards]);
       }
-    }, [product]);
+    }
+  }, [product]);
 
   return (
     <Container
@@ -344,295 +344,295 @@ const QuoteProductPreviewComponent = ({ product }) => {
                 </Row> */}
                 {/* ************   Product details  ***************  */}
                 <Row>
-                <Col className="mt-4">
-                  <Container className="border border-light border-2" fluid style={{ minHeight: "300px", maxHeight: "500px", overflowY: "auto", overflowX: "hidden" }}>
-                    <Tabs
-                      defaultActiveKey="Description"
-                      transition={false}
-                      id="noanim-tab-example"
-                      className="mb-3 product_description"
-                    >
-                      <Tab
-                        className="m-3 col-md-12"
-                        eventKey="Description"
-                        title="Specifications"
+                  <Col className="mt-4">
+                    <Container className="border border-light border-2" fluid style={{ minHeight: "300px", maxHeight: "500px", overflowY: "auto", overflowX: "hidden" }}>
+                      <Tabs
+                        defaultActiveKey="Description"
+                        transition={false}
+                        id="noanim-tab-example"
+                        className="mb-3 product_description"
                       >
-
-
-                        <div
-                          style={{
-                            whiteSpace: "pre-wrap",
-                            textAlign: "justify",
-                            width: "97%",
-                            overflowWrap: "break-word",
-                          }}
+                        <Tab
+                          className="m-3 col-md-12"
+                          eventKey="Description"
+                          title="Specifications"
                         >
-                          {
-                            new Date(product.createdAt) > execustionDate ? (
-                              <>
-                                <div>
-                                  {
-                                    product.description ?
-                                      product.description
-                                        .split("\n")
-                                        .map((item, index) => {
-                                          item = item.trimStart();
-                                          if (item !== "" && item !== " ") {
-                                            if (item.includes(":")
-                                              && item.charAt(0) !== "-"
-                                            ) {
-                                              displayTable.push(item)
-                                            } else if ((headings.includes(item.toUpperCase()) || item.charAt(0) === "<")
-                                              && item.charAt(0) !== "-"
-                                            ) {
-                                              return (
-                                                <div key={"boldUppercase" + index} style={{ paddingTop: "15px" }}>
-                                                  <strong>
-                                                    {
-                                                      !tableHeadings.includes(item.toUpperCase()) ?
-                                                        (item.charAt(0) === "<") ? (
-                                                          item.slice(1)
-                                                            .toUpperCase()
-                                                            .replace('""', '"')
 
-                                                        ) : (
-                                                          item
-                                                            .toUpperCase()
-                                                            .replace('""', '"')
-                                                        )
 
-                                                        : ""
-                                                    }
-                                                  </strong>
-                                                </div>
-                                              );
-                                            }
-                                            else if (item.includes(".") && item.charAt(0) !== "-") {
-                                              return (
-                                                <div key={"Normal" + index} style={{ paddingTop: "10px" }}>
-                                                  {item.trimStart()}
-
-                                                </div>
-                                              );
-                                            } else {
-                                              return (
-                                                <div
-                                                  key={"table2" + index}
-                                                  style={{
-                                                    textIndent: "-10px",
-                                                    paddingLeft: "15px",
-                                                    lineHeight: "1.6rem",
-                                                  }}
-                                                >
-                                                  <i className="bi bi-dot " />
-                                                  {
-                                                    item.charAt(0) === "-" ? (
-                                                      item.slice(1)
-                                                        .trimStart()
-                                                        .replace('""', '"')
-
-                                                    ) : (
-                                                      item
-                                                        .trimStart()
-                                                        .replace('""', '"')
-
-                                                    )
-                                                  }
-                                                </div>
-                                              );
-                                            }
-                                          }
-
-                                        })
-                                      : ("")
-                                  }
-                                </div>
-                                <div>
-                                  {displayTable.length > 0 ?
-                                    <h6 style={{ paddingTop: "15px" }}><b>SPECIFICATIONS</b></h6>
-                                    : ""}
-                                  <Table striped bordered hover>
-                                    <tbody>
-                                      {
-                                        displayTable.length > 0 ?
-                                          displayTable.map((items, idx) => {
-                                            if (items.includes(":")) {
-                                              let [key, value] =
-                                                items.split(":");
-                                              if (value !== "") {
+                          <div
+                            style={{
+                              whiteSpace: "pre-wrap",
+                              textAlign: "justify",
+                              width: "97%",
+                              overflowWrap: "break-word",
+                            }}
+                          >
+                            {
+                              new Date(product.createdAt) > execustionDate ? (
+                                <>
+                                  <div>
+                                    {
+                                      product.description ?
+                                        product.description
+                                          .split("\n")
+                                          .map((item, index) => {
+                                            item = item.trimStart();
+                                            if (item !== "" && item !== " ") {
+                                              if (item.includes(":")
+                                                && item.charAt(0) !== "-"
+                                              ) {
+                                                displayTable.push(item)
+                                              } else if ((headings.includes(item.toUpperCase()) || item.charAt(0) === "<")
+                                                && item.charAt(0) !== "-"
+                                              ) {
                                                 return (
-                                                  <tr
-                                                    key={"table1" + idx}
-                                                  >
-                                                    <td
-                                                      style={{
-                                                        textAlign: "left",
-                                                      }}
-                                                    >
-                                                      {key.toUpperCase()}
-
-                                                    </td>
-                                                    <td
-                                                      style={{
-                                                        textAlign: "left",
-                                                      }}
-                                                    >
-
+                                                  <div key={"boldUppercase" + index} style={{ paddingTop: "15px" }}>
+                                                    <strong>
                                                       {
-                                                        value.trimStart().replace('""', '"')
+                                                        !tableHeadings.includes(item.toUpperCase()) ?
+                                                          (item.charAt(0) === "<") ? (
+                                                            item.slice(1)
+                                                              .toUpperCase()
+                                                              .replace('""', '"')
+
+                                                          ) : (
+                                                            item
+                                                              .toUpperCase()
+                                                              .replace('""', '"')
+                                                          )
+
+                                                          : ""
                                                       }
-                                                    </td>
-                                                  </tr>
+                                                    </strong>
+                                                  </div>
+                                                );
+                                              }
+                                              else if (item.includes(".") && item.charAt(0) !== "-") {
+                                                return (
+                                                  <div key={"Normal" + index} style={{ paddingTop: "10px" }}>
+                                                    {item.trimStart()}
+
+                                                  </div>
                                                 );
                                               } else {
                                                 return (
-                                                  <tr
-                                                    key={"table1" + idx}>
-                                                    <td
-                                                      style={{
-                                                        textAlign: "left",
-                                                        backgroundColor: "lightblue",
+                                                  <div
+                                                    key={"table2" + index}
+                                                    style={{
+                                                      textIndent: "-10px",
+                                                      paddingLeft: "15px",
+                                                      lineHeight: "1.6rem",
+                                                    }}
+                                                  >
+                                                    <i className="bi bi-dot " />
+                                                    {
+                                                      item.charAt(0) === "-" ? (
+                                                        item.slice(1)
+                                                          .trimStart()
+                                                          .replace('""', '"')
 
-                                                      }} colspan="2">
-                                                      <strong>{key.toUpperCase()}</strong>
-                                                    </td>
-                                                  </tr>
-                                                )
+                                                      ) : (
+                                                        item
+                                                          .trimStart()
+                                                          .replace('""', '"')
+
+                                                      )
+                                                    }
+                                                  </div>
+                                                );
                                               }
                                             }
-                                          }) : ""
-                                      }
-                                    </tbody>
-                                  </Table>
-                                </div>
-                              </>
 
-                            ) : (
-                              <>
-                                {
-                                  product.description
-                                    ? (product.description
-                                      .split(">")
-                                      .map((item, index) => {
-                                        // console.log("itemmmm", item)
-                                        // Check if this item contains "^", which indicates it should be formatted as a table
-                                        if (
-                                          item.includes("^") &&
-                                          item.includes(":")
-                                        ) {
-                                          const tableItems = item
-                                            .split("^")
-                                            .filter(Boolean); // remove empty strings from the array
-                                          return (
-                                            <Table striped bordered hover>
-                                              <tbody>
+                                          })
+                                        : ("")
+                                    }
+                                  </div>
+                                  <div>
+                                    {displayTable.length > 0 ?
+                                      <h6 style={{ paddingTop: "15px" }}><b>SPECIFICATIONS</b></h6>
+                                      : ""}
+                                    <Table striped bordered hover>
+                                      <tbody>
+                                        {
+                                          displayTable.length > 0 ?
+                                            displayTable.map((items, idx) => {
+                                              if (items.includes(":")) {
+                                                let [key, value] =
+                                                  items.split(":");
+                                                if (value !== "") {
+                                                  return (
+                                                    <tr
+                                                      key={"table1" + idx}
+                                                    >
+                                                      <td
+                                                        style={{
+                                                          textAlign: "left",
+                                                        }}
+                                                      >
+                                                        {key.toUpperCase()}
+
+                                                      </td>
+                                                      <td
+                                                        style={{
+                                                          textAlign: "left",
+                                                        }}
+                                                      >
+
+                                                        {
+                                                          value.trimStart().replace('""', '"')
+                                                        }
+                                                      </td>
+                                                    </tr>
+                                                  );
+                                                } else {
+                                                  return (
+                                                    <tr
+                                                      key={"table1" + idx}>
+                                                      <td
+                                                        style={{
+                                                          textAlign: "left",
+                                                          backgroundColor: "lightblue",
+
+                                                        }} colspan="2">
+                                                        <strong>{key.toUpperCase()}</strong>
+                                                      </td>
+                                                    </tr>
+                                                  )
+                                                }
+                                              }
+                                            }) : ""
+                                        }
+                                      </tbody>
+                                    </Table>
+                                  </div>
+                                </>
+
+                              ) : (
+                                <>
+                                  {
+                                    product.description
+                                      ? (product.description
+                                        .split(">")
+                                        .map((item, index) => {
+                                          // console.log("itemmmm", item)
+                                          // Check if this item contains "^", which indicates it should be formatted as a table
+                                          if (
+                                            item.includes("^") &&
+                                            item.includes(":")
+                                          ) {
+                                            const tableItems = item
+                                              .split("^")
+                                              .filter(Boolean); // remove empty strings from the array
+                                            return (
+                                              <Table striped bordered hover>
+                                                <tbody>
+                                                  {tableItems.map(
+                                                    (tableItem, tableIndex) => {
+                                                      if (tableItem.includes(":")) {
+                                                        let [key, value] =
+                                                          tableItem.split(":");
+                                                        return (
+                                                          <tr
+                                                            key={"table1" + tableIndex}
+                                                          >
+                                                            <td
+                                                              style={{
+                                                                textAlign: "left",
+                                                              }}
+                                                            >
+                                                              {key.toUpperCase()}
+
+                                                            </td>
+                                                            <td
+                                                              style={{
+                                                                textAlign: "left",
+                                                              }}
+                                                            >
+
+                                                              {
+                                                                value.trimStart().replace('""', '"')
+                                                              }
+                                                            </td>
+                                                          </tr>
+                                                        );
+                                                      } else {
+                                                        return (
+                                                          <div
+                                                            key={"table2" + tableIndex}
+                                                            style={{
+                                                              textIndent: "-10px",
+                                                              paddingLeft: "15px",
+                                                              lineHeight: "1.6rem",
+                                                            }}
+                                                          >
+                                                            <i className="bi bi-dot " />
+                                                            {tableItem
+                                                              .trimStart()
+                                                              .replace('""', '"')}
+                                                          </div>
+                                                        );
+                                                      }
+                                                    }
+                                                  )}
+                                                </tbody>
+                                              </Table>
+                                            );
+                                          } else if (item.includes("^")) {
+                                            const tableItems = item
+                                              .split("^")
+                                              .filter(Boolean); // remove empty strings from the array
+                                            return (
+                                              <>
                                                 {tableItems.map(
                                                   (tableItem, tableIndex) => {
-                                                    if (tableItem.includes(":")) {
-                                                      let [key, value] =
-                                                        tableItem.split(":");
-                                                      return (
-                                                        <tr
-                                                          key={"table1" + tableIndex}
-                                                        >
-                                                          <td
-                                                            style={{
-                                                              textAlign: "left",
-                                                            }}
-                                                          >
-                                                            {key.toUpperCase()}
-
-                                                          </td>
-                                                          <td
-                                                            style={{
-                                                              textAlign: "left",
-                                                            }}
-                                                          >
-
-                                                            {
-                                                              value.trimStart().replace('""', '"')
-                                                            }
-                                                          </td>
-                                                        </tr>
-                                                      );
-                                                    } else {
-                                                      return (
-                                                        <div
-                                                          key={"table2" + tableIndex}
-                                                          style={{
-                                                            textIndent: "-10px",
-                                                            paddingLeft: "15px",
-                                                            lineHeight: "1.6rem",
-                                                          }}
-                                                        >
-                                                          <i className="bi bi-dot " />
-                                                          {tableItem
-                                                            .trimStart()
-                                                            .replace('""', '"')}
-                                                        </div>
-                                                      );
-                                                    }
+                                                    return (
+                                                      <div
+                                                        key={"table3" + tableIndex}
+                                                        style={{
+                                                          textIndent: "-10px",
+                                                          paddingLeft: "15px",
+                                                          lineHeight: "1.6rem",
+                                                          whiteSpace: "pre-line",
+                                                        }}
+                                                      >
+                                                        <i className="bi bi-dot " />
+                                                        {tableItem
+                                                          .trimStart()
+                                                          .replace('""', '"')}
+                                                      </div>
+                                                    );
                                                   }
                                                 )}
-                                              </tbody>
-                                            </Table>
-                                          );
-                                        } else if (item.includes("^")) {
-                                          const tableItems = item
-                                            .split("^")
-                                            .filter(Boolean); // remove empty strings from the array
-                                          return (
-                                            <>
-                                              {tableItems.map(
-                                                (tableItem, tableIndex) => {
-                                                  return (
-                                                    <div
-                                                      key={"table3" + tableIndex}
-                                                      style={{
-                                                        textIndent: "-10px",
-                                                        paddingLeft: "15px",
-                                                        lineHeight: "1.6rem",
-                                                        whiteSpace: "pre-line",
-                                                      }}
-                                                    >
-                                                      <i className="bi bi-dot " />
-                                                      {tableItem
-                                                        .trimStart()
-                                                        .replace('""', '"')}
-                                                    </div>
-                                                  );
-                                                }
-                                              )}
-                                            </>
-                                          );
-                                        }
-                                        // If the first character is "<", format the string in bold and uppercase, removing the "<"
-                                        if (item.charAt(0) === "<") {
-                                          return (
-                                            <div key={"boldUppercase" + index}>
-                                              <strong>
-                                                {item
-                                                  .slice(1)
-                                                  .toUpperCase()
-                                                  .replace('""', '"')}
-                                              </strong>
-                                            </div>
-                                          );
-                                        }
+                                              </>
+                                            );
+                                          }
+                                          // If the first character is "<", format the string in bold and uppercase, removing the "<"
+                                          if (item.charAt(0) === "<") {
+                                            return (
+                                              <div key={"boldUppercase" + index}>
+                                                <strong>
+                                                  {item
+                                                    .slice(1)
+                                                    .toUpperCase()
+                                                    .replace('""', '"')}
+                                                </strong>
+                                              </div>
+                                            );
+                                          }
 
-                                        return (
-                                          <div key={"Normal" + index}>{item}</div>
-                                        );
-                                      }))
-                                    : ("")
-                                }
-                              </>
-                            )
-                          }
-                        </div>
-                      </Tab>
-                      {/*START*/}
-                      {/* <div>
+                                          return (
+                                            <div key={"Normal" + index}>{item}</div>
+                                          );
+                                        }))
+                                      : ("")
+                                  }
+                                </>
+                              )
+                            }
+                          </div>
+                        </Tab>
+                        {/*START*/}
+                        {/* <div>
                             {
                               product.description ?
                                 product.description
@@ -724,10 +724,10 @@ const QuoteProductPreviewComponent = ({ product }) => {
                           </div>
                         </div> */}
 
-                      {/*STOP*/}
+                        {/*STOP*/}
 
 
-                      {/* <div
+                        {/* <div
                           style={{
                             whiteSpace: "pre-wrap",
                             textAlign: "justify",
@@ -851,63 +851,63 @@ const QuoteProductPreviewComponent = ({ product }) => {
                               })
                             : ""}
                         </div> */}
-                      {/* </Tab> */}
+                        {/* </Tab> */}
 
-                      {pdfs && pdfs.length > 0 ? (
-                        <Tab eventKey="Download" title="Downloads">
-                          {pdfs &&
-                            pdfs.map((pdf, idx) => {
-                              const pdfName = pdf.url?.split("/").pop(); // Get the file name from the url
-                              return pdf.url ? (
-                                <div
-                                  className="border border-light border-2 m-2 p-1"
-                                  key={"pdfDiv" + idx}
-                                >
-                                  <button
-                                    onClick={() =>
-                                      downloadPDF(pdf.url, pdfName)
-                                    }
-                                    className="border-0"
-                                    key={"pdfButton" + idx}
-                                    style={{
-                                      backgroundColor: "transparent",
-                                      color: "#1e4881",
-                                    }}
+                        {pdfs && pdfs.length > 0 ? (
+                          <Tab eventKey="Download" title="Downloads">
+                            {pdfs &&
+                              pdfs.map((pdf, idx) => {
+                                const pdfName = pdf.url?.split("/").pop(); // Get the file name from the url
+                                return pdf.url ? (
+                                  <div
+                                    className="border border-light border-2 m-2 p-1"
+                                    key={"pdfDiv" + idx}
                                   >
-                                    <i className="bi bi-file-earmark-pdf">
-                                      {" "}
-                                      {pdfName}
-                                    </i>
-                                  </button>
-                                </div>
-                              ) : ""
+                                    <button
+                                      onClick={() =>
+                                        downloadPDF(pdf.url, pdfName)
+                                      }
+                                      className="border-0"
+                                      key={"pdfButton" + idx}
+                                      style={{
+                                        backgroundColor: "transparent",
+                                        color: "#1e4881",
+                                      }}
+                                    >
+                                      <i className="bi bi-file-earmark-pdf">
+                                        {" "}
+                                        {pdfName}
+                                      </i>
+                                    </button>
+                                  </div>
+                                ) : ""
 
-                            })}
-                        </Tab>
-                      ) : null}
-                      {/* Standards */}
-                      {product.standards && product.standards.length > 0 ? (
-                        <Tab eventKey="Standards" title="Standards">
-                          <div className="border border-light border-2 m-3 p-3 d-flex justify-content-left">
-                            {standard &&
-                              standard.map((item, index) => {
-                                return (
-                                  <img
-                                    key={"standards" + index}
-                                    src={`https://res.cloudinary.com/dxvwresim/image/upload/c_scale,h_120/STANDARDS/${item}.jpg`}
-                                    target="_blank"
-                                    alt=""
-                                    style={{ maxWidth: "100%", height: "auto" }}
-                                  />
-                                );
                               })}
-                          </div>
-                        </Tab>
-                      ) : null}
-                    </Tabs>
-                  </Container>
-                </Col>
-              </Row>
+                          </Tab>
+                        ) : null}
+                        {/* Standards */}
+                        {product.standards && product.standards.length > 0 ? (
+                          <Tab eventKey="Standards" title="Standards">
+                            <div className="border border-light border-2 m-3 p-3 d-flex justify-content-left">
+                              {standard &&
+                                standard.map((item, index) => {
+                                  return (
+                                    <img
+                                      key={"standards" + index}
+                                      src={`https://ctladmin.b-cdn.net/STANDARDS/${item}.jpg`}
+                                      target="_blank"
+                                      alt=""
+                                      style={{ maxWidth: "100%", height: "auto" }}
+                                    />
+                                  );
+                                })}
+                            </div>
+                          </Tab>
+                        ) : null}
+                      </Tabs>
+                    </Container>
+                  </Col>
+                </Row>
               </ListGroup.Item>
             </ListGroup>
           </Row>

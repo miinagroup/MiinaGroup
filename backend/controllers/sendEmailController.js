@@ -306,7 +306,7 @@ const deliveryNotice = async (req, res, next) => {
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="https://res.cloudinary.com/ctlaustralia/image/upload/v1684899049/CTL-blueDelivering_vxzmvk.png"
+                                        src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                                         align="center"
                                         border="0"
                                         width="500"
@@ -511,7 +511,7 @@ const quoteCompletedNotice = async ({
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="https://res.cloudinary.com/ctlaustralia/image/upload/v1684899049/CTL-blueDelivering_vxzmvk.png"
+                                        src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                                         align="center"
                                         border="0"
                                         width="500"
@@ -762,7 +762,7 @@ const newUserNoticeToJosh = async ({
                                 <td width="100%" valign="top" align="center">
                                 <br />
                                     <img
-                                      src="https://res.cloudinary.com/ctlaustralia/image/upload/v1684899049/CTL-blueDelivering_vxzmvk.png"
+                                      src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                                       align="center"
                                       border="0"
                                       width="500"

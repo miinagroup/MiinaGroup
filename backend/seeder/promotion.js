@@ -4,17 +4,17 @@ const promotions = [
     detail: [
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182719/Promotions/banners/Commodore_banner_1.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Commodore_banner_1.jpg",
         description: "banner-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182771/Promotions/banners/Alemlube_banner_1.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Alemlube_banner_1.jpg",
         description: "banner-2",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182668/Promotions/banners/Coolon_Banner_1.png",
+          "https://ctladmin.b-cdn.net/promotion/banners/Coolon_Banner_1.png",
         description: "banner-3",
       },
     ],
@@ -26,17 +26,17 @@ const promotions = [
     detail: [
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182720/Promotions/banners/Commodore_banner_2.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Commodore_banner_2.jpg",
         description: "banner-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182773/Promotions/banners/Alemlube_banner_2.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Alemlube_banner_2.jpg",
         description: "banner-2",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182668/Promotions/banners/Coolon_Banner_2.png",
+          "https://ctladmin.b-cdn.net/promotion/banners/Coolon_Banner_2.png",
         description: "banner-3",
       },
     ],
@@ -48,17 +48,17 @@ const promotions = [
     detail: [
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182719/Promotions/banners/Commodore_banner_1.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Commodore_banner_1.jpg",
         description: "banner-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182771/Promotions/banners/Alemlube_banner_1.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Alemlube_banner_1.jpg",
         description: "banner-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182668/Promotions/banners/Coolon_Banner_1.png",
+          "https://ctladmin.b-cdn.net/promotion/banners/Coolon_Banner_1.png",
         description: "banner-1",
       },
     ],
@@ -70,17 +70,17 @@ const promotions = [
     detail: [
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182720/Promotions/banners/Commodore_banner_2.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Commodore_banner_2.jpg",
         description: "banner-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182773/Promotions/banners/Alemlube_banner_2.jpg",
+          "https://ctladmin.b-cdn.net/promotion/banners/Alemlube_banner_2.jpg",
         description: "banner-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690182668/Promotions/banners/Coolon_Banner_2.png",
+          "https://ctladmin.b-cdn.net/promotion/banners/Coolon_Banner_2.png",
         description: "banner-1",
       },
     ],
@@ -91,55 +91,55 @@ const promotions = [
     category: "blocks",
     detail: [
       {
-        image: "https://res.cloudinary.com/dxvwresim/video/upload/v1690795401/Promotions/blocks/Brilliant_Connected_Lights_by_Coolon_1.mp4",
+        image: "https://ctladmin.b-cdn.net/promotion/blocks/Brilliant_Connected_Lights_by_Coolon_1.mp4",
         redirectURL: "/product-list?brandName=COOLON",
         description: "video-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/video/upload/v1690796096/Promotions/blocks/Commodore_Australia___Making_Off-Grid_Solar_Simple.mp4",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Commodore_Australia___Making_Off-Grid_Solar_Simple.mp4",
         redirectURL:
-        "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=TRANSPORTABLE-POWER-SKIDS",
+          "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=TRANSPORTABLE-POWER-SKIDS",
         description: "video-2",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/v1690340727/Promotions/blocks/Commodore_block_9.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Commodore_block_9.jpg",
         redirectURL:
-        "/product-list?categoryName=POWER-AIR&subCategoryName=GENERATORS&childCategoryName=SINGLE-PHASE",
+          "/product-list?categoryName=POWER-AIR&subCategoryName=GENERATORS&childCategoryName=SINGLE-PHASE",
         description: "bottom-2",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/v1690340720/Promotions/blocks/Commodore_block_1.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Commodore_block_1.jpg",
         redirectURL:
-        "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=POWER-HUB-OFF-GRID-SYSTEMS",
+          "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=POWER-HUB-OFF-GRID-SYSTEMS",
         description: "bottom-3",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690340628/Promotions/blocks/Alemlube_block_1.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Alemlube_block_1.jpg",
         redirectURL:
           "/product-list?categoryName=INDUSTRIAL&subCategoryName=PUMPS-VALVES-PARTS&childCategoryName=PUMPS&fourCategoryName=GREASE-PUMP",
         description: "upper-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690340619/Promotions/blocks/Alemlube_block_5.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Alemlube_block_5.jpg",
         redirectURL:
-        "/product-list?categoryName=INDUSTRIAL&subCategoryName=HOSES-FITTINGS&childCategoryName=HOSE-REELS",
+          "/product-list?categoryName=INDUSTRIAL&subCategoryName=HOSES-FITTINGS&childCategoryName=HOSE-REELS",
         description: "upper-2",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/Promotions/blocks/Coolon_Block2.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Coolon_Block2.jpg",
         redirectURL:
           "/product-list?brandName=Coolon",
         description: "bottom-1",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/Promotions/blocks/Coolon_Block1.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Coolon_Block1.jpg",
         redirectURL:
           "/product-list?brandName=Coolon",
         description: "bottom-4",
@@ -152,55 +152,55 @@ const promotions = [
     category: "blocks",
     detail: [
       {
-        image: "https://res.cloudinary.com/dxvwresim/video/upload/v1690795401/Promotions/blocks/Brilliant_Connected_Lights_by_Coolon_1.mp4",
+        image: "https://ctladmin.b-cdn.net/promotion/blocks/Brilliant_Connected_Lights_by_Coolon_1.mp4",
         redirectURL: "/product-list?brandName=COOLON",
         description: "video-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/video/upload/v1690796096/Promotions/blocks/Commodore_Australia___Making_Off-Grid_Solar_Simple.mp4",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Commodore_Australia___Making_Off-Grid_Solar_Simple.mp4",
         redirectURL:
-        "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=TRANSPORTABLE-POWER-SKIDS",
+          "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=TRANSPORTABLE-POWER-SKIDS",
         description: "video-2",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/v1690340727/Promotions/blocks/Commodore_block_6.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Commodore_block_6.jpg",
         redirectURL:
-        "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=TRANSPORTABLE-POWER-SKIDS",
+          "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=TRANSPORTABLE-POWER-SKIDS",
         description: "bottom-2",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/v1690340720/Promotions/blocks/Commodore_block_4.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Commodore_block_4.jpg",
         redirectURL:
-        "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=POWER-HUB-OFF-GRID-SYSTEMS",
+          "/product-list?categoryName=POWER-AIR&subCategoryName=CLEAN-ENERGY&childCategoryName=POWER-HUB-OFF-GRID-SYSTEMS",
         description: "bottom-3",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690340628/Promotions/blocks/Alemlube_block_10.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Alemlube_block_10.jpg",
         redirectURL:
           "/product-list?categoryName=INDUSTRIAL&subCategoryName=PUMPS-VALVES-PARTS&childCategoryName=TRANSFER-KITS&fourCategoryName=TRANSFERING-KIT",
         description: "upper-1",
       },
       {
         image:
-          "https://res.cloudinary.com/dxvwresim/image/upload/v1690340628/Promotions/blocks/Alemlube_block_7.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Alemlube_block_7.jpg",
         redirectURL:
           "/product-list?categoryName=INDUSTRIAL&subCategoryName=PUMPS-VALVES-PARTS&childCategoryName=PUMPS&fourCategoryName=DIAPHRAGM-PUMP",
         description: "upper-2",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/Promotions/blocks/Coolon_Block9.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Coolon_Block9.jpg",
         redirectURL:
           "/product-list?brandName=Coolon",
         description: "bottom-1",
       },
       {
         image:
-        "https://res.cloudinary.com/dxvwresim/image/upload/Promotions/blocks/Coolon_Block6.jpg",
+          "https://ctladmin.b-cdn.net/promotion/blocks/Coolon_Block6.jpg",
         redirectURL:
           "/product-list?brandName=Coolon",
         description: "bottom-4",

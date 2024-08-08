@@ -1067,7 +1067,7 @@ const UniformDetailsPageComponent = ({
                                                                 return (
                                                                     <img
                                                                         key={"standards" + index}
-                                                                        src={`https://res.cloudinary.com/dxvwresim/image/upload/c_scale,h_120/STANDARDS/${item}.jpg`}
+                                                                        src={`https://ctladmin.b-cdn.net/STANDARDS/${item}.jpg`}
                                                                         target="_blank"
                                                                         alt=""
                                                                         style={{ maxWidth: "100%", height: "auto" }}

@@ -430,7 +430,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
 
   const purchaseData = purchaseOrderData;
   const purchaseTotal = purchaseOrderTotal;
-
+  //console.log("purchaseData", purchaseData, purchaseTotal);
 
   function splitArrayIntoChunks(arr, chunkSize) {
     const result = [];
@@ -457,8 +457,6 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
 
   const deliveryAddress = "CTL Australia, Unit 2/36 Finance Place, Malaga, WA - 6090";
 
-
-
   return (
     <>
       <Document id={"100"}>
@@ -469,7 +467,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
               <View style={styles.tableColImageHeader}>
                 <Image
                   style={styles.image}
-                  src="https://res.cloudinary.com/dxvwresim/image/upload/v1683083956/CTL%20Brand%20Images/CTL-blueDelivering_g3qe9u.png"
+                  src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                 />
               </View>
               <View style={styles.tableColHeaderLeft}>
@@ -533,7 +531,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
               <View style={styles.tableRow}>
                 <View style={styles.tableCellHeaderSide}>
                   <Text style={styles.tableCellBillBox}>
-                    {purchaseData?.supplierId.ctlCreditAccount}
+                    {purchaseData?.supplierId?.ctlCreditAccount}
                   </Text>
                 </View>
                 <View style={styles.tableCellHeader}>

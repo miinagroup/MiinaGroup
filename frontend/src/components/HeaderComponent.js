@@ -331,7 +331,7 @@ const HeaderComponent = () => {
               </InputGroup>
               <img
                 id="rfq_button"
-                src="https://res.cloudinary.com/dxvwresim/image/upload/v1684231122/CTL%20Brand%20Images/red-search.png"
+                src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/red-search.png"
                 alt=""
                 className="red_search_img"
                 style={{ cursor: "pointer" }}
@@ -496,6 +496,17 @@ const HeaderComponent = () => {
                               Orders
                             </a>
                           </li>
+                          {/* {
+                            userInfo.isUniformManager ? (
+                              <>
+                                <li>
+                                  <a href="/user/my-uniforms" className="hd_c">
+                                    Uniform
+                                  </a>
+                                </li>
+                              </>
+                            ) : ("")
+                          } */}
                           <li>
                             <a href="/user/my-uniforms" className="hd_c">
                               Uniform
