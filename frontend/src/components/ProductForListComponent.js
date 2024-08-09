@@ -160,11 +160,11 @@ const ProductForListComponent = ({
     }
   };
 
-  const updateProduct = (e) => {
+  const updateProductCategory = (e) => {
     const selectedCategory = e.target.value;
     if (window.confirm("Update Product?")) {
       try {
-        axios.put(`/api/products/admin/updateProduct/${productId}`, {
+        axios.put(`/api/products/admin/updateCategory/${productId}`, {
           selectedCategory,
         });
         window.location.reload(true);
@@ -284,7 +284,7 @@ const ProductForListComponent = ({
                     {/* <text className="Preview_Update_Text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></text> */}
                     <select
                       className="Preview_Update_Button"
-                      onChange={updateProduct}
+                      onChange={updateProductCategory}
                     >
                       {categoryList?.map((category, idx) => {
                         return category.name !== "" ? (
