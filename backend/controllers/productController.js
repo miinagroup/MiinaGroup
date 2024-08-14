@@ -909,7 +909,7 @@ const adminUpdateCategory = async (req, res, next) => {
 };
 
 const adminUpload = async (req, res, next) => {
-  if (req.query.cloudinary === "true") {
+  if (req.query.bunny === "true") {
     try {
       let product = await Product.findById(req.query.productId).orFail();
       product.images.push({ path: req.body.url });
@@ -968,7 +968,7 @@ const adminUpload = async (req, res, next) => {
 
 // PDFs
 const adminUploadPdf = async (req, res, next) => {
-  if (req.query.cloudinary === "true") {
+  if (req.query.bunny === "true") {
     try {
       let product = await Product.findById(req.query.productId).orFail();
       product.pdfs.push({ path: req.body.url });
