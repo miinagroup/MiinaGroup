@@ -48,14 +48,14 @@ const ProcessingQuotesPageComponent = ({
 
     if (search) {
       computedQuotes = computedQuotes?.filter(
-          (quotes) =>
-              quotes.submittedAt?.toUpperCase().includes(search.toUpperCase()) ||
-              quotes.ctlsku?.toUpperCase().includes(search.toUpperCase()) ||
-              quotes.name?.toUpperCase().includes(search.toUpperCase()) ||
-              (quotes.product?.name?.toUpperCase().includes(search.toUpperCase()) || "")
+        (quotes) =>
+          quotes.submittedAt?.toUpperCase().includes(search.toUpperCase()) ||
+          quotes.ctlsku?.toUpperCase().includes(search.toUpperCase()) ||
+          quotes.name?.toUpperCase().includes(search.toUpperCase()) ||
+          (quotes.product?.name?.toUpperCase().includes(search.toUpperCase()) || "")
       );
       setCurrentPage(1)
-  }
+    }
 
     setTotalItems(computedQuotes?.length);
 
@@ -97,11 +97,11 @@ const ProcessingQuotesPageComponent = ({
   };
 
   const receivedHandler = async (quoteId) => {
-      markAsProcessing(quoteId)
-        .then(() => {
-          refreshQuotes();
-        })
-        .catch((err) => console.error("Error in userQuoteAction:", err));
+    markAsProcessing(quoteId)
+      .then(() => {
+        refreshQuotes();
+      })
+      .catch((err) => console.error("Error in userQuoteAction:", err));
   };
 
 
@@ -116,7 +116,7 @@ const ProcessingQuotesPageComponent = ({
     setSelectedQuoteId(quoteId);
     setShow(true);
   };
-  
+
 
   /* *********** Date *********** */
   const calculateSubmittedDays = (createAt) => {
@@ -129,9 +129,6 @@ const ProcessingQuotesPageComponent = ({
     }
   };
 
-
-
-
   return (
     <>
       <table className="table table-striped admin_processing_quotes_table">
@@ -142,7 +139,7 @@ const ProcessingQuotesPageComponent = ({
         />
         <tbody>
           {quoteItems.processingQuotes?.map((quoteItem, idx) => (
-            <tr key={idx}>
+            <tr key={idx} style={{ backgroundColor: quoteItem.repeatPurchase.length > 0 ? "#f0ead2" : "", }}>
               <td>{idx + 1} </td>
               <td
                 onClick={() => handleShow(quoteItem._id)}
@@ -236,15 +233,15 @@ const ProcessingQuotesPageComponent = ({
                 )}
               </td>
               <td>
-                    <button
-                      variant="danger"
-                      className="btn-sm btn-light"
-                      onClick={() => deleteHandler(quoteItem._id)}
-                      style={{ border: "none" }}
-                    >
-                      <i className="bi bi-x-circle"></i>
-                    </button>
-                  </td>
+                <button
+                  variant="danger"
+                  className="btn-sm btn-light"
+                  onClick={() => deleteHandler(quoteItem._id)}
+                  style={{ border: "none" }}
+                >
+                  <i className="bi bi-x-circle"></i>
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -65,6 +65,16 @@ const quoteSchema = mongoose.Schema(
     purchased: {
       type: Boolean
     },
+    repeatPurchase: [{
+      isPurchased: {
+        type: Boolean,
+        required: false
+      },
+      purchasedDate: {
+        type: Date,
+        required: false,
+      },
+    }],
     reason: {
       // price / no more needed / other
       type: String

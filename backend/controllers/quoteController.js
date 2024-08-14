@@ -535,18 +535,20 @@ const userReRequestQuote = async (req, res, next) => {
     if (!quote) {
       return res.status(404).send({ message: "Quote not found" });
     }
-
+    const dateToday = new Date();
     const updates = {
       $unset: {
         accepted: "",
         reason: "",
         requested: "",
         expireDate: "",
+        purchased: "",
       },
       $set: {
         status: "Received",
         existingProduct: true,
         submittedAt: new Date(),
+        repeatPurchase: [...quote.repeatPurchase, { isPurchased: true, purchasedDate: dateToday }]
       },
     };
 

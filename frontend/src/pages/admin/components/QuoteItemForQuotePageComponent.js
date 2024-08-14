@@ -402,6 +402,20 @@ const QuoteItemForQuotePageComponent = ({
                         </h6>
                       </Col>
                     </Row>
+                    {
+                      quote.repeatPurchase.length > 0 ? (
+                        <Row className="m-1" style={{ backgroundColor: "#f0ead2", width: "50%" }}>
+                          <Col>
+                            <h6>Purchase History:</h6>
+                            {
+                              quote.repeatPurchase.map((item) => {
+                                return <p>Purchased on : {item.purchasedDate?.substring(0, 10)}</p>
+                              })
+                            }
+                          </Col>
+                        </Row>
+                      ) : ("")
+                    }
                     <Row>
                       <Col className="">
                         <div className="">

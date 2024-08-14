@@ -82,7 +82,7 @@ const ExpiredQuotesPageComponent = ({
     const dueDate = new Date(expireDate);
     return dueDate.getTime() - today.getTime();
   };
-  
+
 
   const quoteItems = useMemo(() => {
     let computedQuotes = quotes;
@@ -306,22 +306,27 @@ const ExpiredQuotesPageComponent = ({
                       : "red",
                 }}
               >
-                {quoteItem.accepted === undefined
-                  ? "Waiting"
-                  : quoteItem.accepted
-                    ? "Accepted"
-                    : "Declined"}
+                {quoteItem.purchased === true ? (
+                  "Purchased"
+                ) : (
+                  quoteItem.accepted === undefined
+                    ? "Waiting"
+                    : quoteItem.accepted
+                      ? "Accepted"
+                      : "Declined"
+                )
+                }
               </td>
               <td>
-                    <button
-                      variant="danger"
-                      className="btn-sm btn-light"
-                      onClick={() => deleteHandler(quoteItem._id)}
-                      style={{ border: "none" }}
-                    >
-                      <i className="bi bi-x-circle"></i>
-                    </button>
-                  </td>
+                <button
+                  variant="danger"
+                  className="btn-sm btn-light"
+                  onClick={() => deleteHandler(quoteItem._id)}
+                  style={{ border: "none" }}
+                >
+                  <i className="bi bi-x-circle"></i>
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

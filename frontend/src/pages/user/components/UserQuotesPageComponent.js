@@ -57,9 +57,7 @@ const UserQuotesPageComponent = ({
         setCompletedQuotes(
           filteredQuotes.filter(
             (quote) =>
-              quote.status === "Completed" &&
-              quote.accepted !== false &&
-              quote.purchased !== true
+              (quote.status === "Completed" && quote.purchased !== true)
           )
         );
         setRequestedQuotes(
@@ -100,19 +98,19 @@ const UserQuotesPageComponent = ({
       case '1':
         newUrl += '?tab=completedQuotes&pageNum=1';
         break;
-        case '2':
+      case '2':
         newUrl += '?tab=processingQuotes&pageNum=1';
         break;
       case '3':
         newUrl += '?tab=expiredQuotes&pageNum=1';
         break;
-        case '4':
+      case '4':
         newUrl += '?tab=archivedQuotes&pageNum=1';
         break;
       default:
         break;
     }
-    navigate(newUrl); 
+    navigate(newUrl);
   };
 
   return (
@@ -189,7 +187,7 @@ const UserQuotesPageComponent = ({
                 getStatusColor={getStatusColor}
                 search={search}
                 refreshQuotes={refreshQuotes}
-                deleteQuote = {deleteQuote}
+                deleteQuote={deleteQuote}
               />
             </Tab>
             {/* Purchased Quotes */}

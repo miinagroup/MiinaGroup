@@ -63,15 +63,16 @@ const QuotesPageComponent = ({
         );
 
         setQuotes(quotes);
-        setExpiredQuotes(
-          newExpiredQuotes.filter((quote) => quote.purchased !== true)
-        );
+        // setExpiredQuotes(
+        //   newExpiredQuotes.filter((quote) => quote.purchased !== true)
+        // );
+        setExpiredQuotes(newExpiredQuotes)
         setCompletedQuotes(
           filteredQuotes.filter(
-            (quote) => quote.status === "Completed" && quote.purchased !== true
+            (quote) => (quote.status === "Completed" && quote.purchased !== true)
           )
         );
-        setPurchasedQuotes(quotes.filter((quote) => quote.purchased === true));
+        setPurchasedQuotes(quotes.filter((quote) => quote.purchased === true && (startOfDay(new Date(quote.expireDate)) > currentDateTime)));
         setProcessingQuotes(
           quotes.filter((quote) => quote.status !== "Completed")
         );
