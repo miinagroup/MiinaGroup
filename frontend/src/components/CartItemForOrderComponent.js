@@ -37,7 +37,7 @@ const CartItemForOrderComponent = ({
 
   useEffect(() => {
     setClientSKU(item.cartProducts[0].currentClientSku)
-    setPreviousClientSkuValue(item.cartProducts[0].currentClientSku.number)
+    setPreviousClientSkuValue(item.cartProducts[0].currentClientSku?.number)
   }, [item]);
 
   const getClientSKUByCTLSKU = async (ctlsku, clientSiteSku) => {
