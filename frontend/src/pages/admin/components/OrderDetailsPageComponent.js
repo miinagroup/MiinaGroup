@@ -175,7 +175,7 @@ const OrderDetailsPageComponent = ({
 
       const differentDeiverySite = item.cartProducts[0].currentClientSku?.name.toLowerCase().includes(site.replace(/\s+/g, '').toLowerCase());
       const noCurrentClientSku = item.cartProducts[0].currentClientSku;
-      const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku.number === "";
+      const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku?.number === "";
 
         if (!noCurrentClientSku || currentClientSkuNumberEmpty || !differentDeiverySite) {
           const res = await fetchProduct(item.productId);

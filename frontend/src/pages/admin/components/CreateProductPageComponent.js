@@ -178,12 +178,6 @@ const CreateProductPageComponent = ({
       const slrsku = document.getElementsByName(`slrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
-      // const slrRandallsSku = document.getElementsByName(`slrRandallsSku-${i}`)[0].value;
-      // const slrDaisyMilanoSku = document.getElementsByName(`slrDaisyMilanoSku-${i}`)[0].value;
-      // const slrMaxwellsSku = document.getElementsByName(`slrMaxwellsSku-${i}`)[0].value;
-      // const fmlCGOSku = document.getElementsByName(`fmlCGOSku-${i}`)[0].value;
-      // const fmlTMHCSku = document.getElementsByName(`fmlTMHCSku-${i}`)[0].value;
-      // const evnMungariSku = document.getElementsByName(`evnMungariSku-${i}`)[0].value;
       const clientsSku = clientsSkus[i];
   
       stock.push({
@@ -196,12 +190,6 @@ const CreateProductPageComponent = ({
         ctlsku,
         slrsku,
         suppliersku,
-        // slrRandallsSku,
-        // slrDaisyMilanoSku,
-        // slrMaxwellsSku,
-        // fmlCGOSku,
-        // fmlTMHCSku,
-        // evnMungariSku,
         clientsSku
       });
     }
@@ -633,84 +621,6 @@ const CreateProductPageComponent = ({
                         type="text"
                       />
                     </Form.Group>
-
-                    {/* <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicslrRandallsSku-${index}`}
-                    >
-                      <Form.Label>slr Randalls Sku</Form.Label>
-                      <Form.Control
-                        name={`slrRandallsSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicslrDaisyMilanoSku-${index}`}
-                    >
-                      <Form.Label>slr Daisy Milano Sku</Form.Label>
-                      <Form.Control
-                        name={`slrDaisyMilanoSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicslrMaxwellsSku-${index}`}
-                    >
-                      <Form.Label>slr Maxwells Sku</Form.Label>
-                      <Form.Control
-                        name={`slrMaxwellsSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicfmlCGOSku-${index}`}
-                    >
-                      <Form.Label>FML Three Mile Hill</Form.Label>
-                      <Form.Control
-                        name={`fmlCGOSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicfmlTMHCSku-${index}`}
-                    >
-                      <Form.Label>FML Gold Operations</Form.Label>
-                      <Form.Control
-                        name={`fmlTMHCSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicevnMungariSku-${index}`}
-                    >
-                      <Form.Label>evn Mungari Sku</Form.Label>
-                      <Form.Control
-                        name={`evnMungariSku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group> */}
 
                     <Form.Group>
                       <Form.Label>Client Sku</Form.Label>

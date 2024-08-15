@@ -198,13 +198,7 @@ const getProducts = async (req, res, next) => {
             { supplier: regexPattern },
             { "stock.slrsku": regexPattern },
             { "stock.ctlsku": regexPattern },
-            { "stock.suppliersku": regexPattern },
-            { "stock.slrRandallsSku": regexPattern },
-            { "stock.slrDaisyMilanoSku": regexPattern },
-            { "stock.slrMaxwellsSku": regexPattern },
-            { "stock.fmlCGOSku": regexPattern },
-            { "stock.fmlTMHCSku": regexPattern },
-            { "stock.evnMungariSku": regexPattern },
+            { "stock.suppliersku": regexPattern }
           ],
         };
       } else {
@@ -522,12 +516,6 @@ const adminCreateProduct = async (req, res, next) => {
           ctlsku,
           slrsku,
           suppliersku,
-          slrRandallsSku,
-          slrDaisyMilanoSku,
-          slrMaxwellsSku,
-          fmlCGOSku,
-          fmlTMHCSku,
-          evnMungariSku,
           clientsSku
         } = item;
         product.stock.push({
@@ -540,12 +528,6 @@ const adminCreateProduct = async (req, res, next) => {
           ctlsku: ctlsku || "",
           slrsku: slrsku || "",
           suppliersku: suppliersku || "",
-          slrRandallsSku: slrRandallsSku || "",
-          slrDaisyMilanoSku: slrDaisyMilanoSku || "",
-          slrMaxwellsSku: slrMaxwellsSku || "",
-          fmlCGOSku: fmlCGOSku || "",
-          fmlTMHCSku: fmlTMHCSku || "",
-          evnMungariSku: evnMungariSku || "",
           clientsSku: clientsSku || []
         });
       });
@@ -686,12 +668,6 @@ const adminUpdateProduct = async (req, res, next) => {
           ctlsku,
           slrsku,
           suppliersku,
-          slrRandallsSku,
-          slrDaisyMilanoSku,
-          slrMaxwellsSku,
-          fmlCGOSku,
-          fmlTMHCSku,
-          evnMungariSku,
           clientsSku
         } = item;
         product.stock.push({
@@ -705,12 +681,6 @@ const adminUpdateProduct = async (req, res, next) => {
           ctlsku: ctlsku || "",
           slrsku: slrsku || "",
           suppliersku: suppliersku || "",
-          slrRandallsSku: slrRandallsSku || "",
-          slrDaisyMilanoSku: slrDaisyMilanoSku || "",
-          slrMaxwellsSku: slrMaxwellsSku || "",
-          fmlCGOSku: fmlCGOSku || "",
-          fmlTMHCSku: fmlTMHCSku || "",
-          evnMungariSku: evnMungariSku || "",
           clientsSku: clientsSku || []
         });
       });
@@ -1526,13 +1496,7 @@ const searchProducts = async (req, res, next) => {
         $or: [
           { "stock.slrsku": regex },
           { "stock.ctlsku": regex },
-          { "stock.suppliersku": regex },
-          { "stock.slrRandallsSku": regex },
-          { "stock.slrDaisyMilanoSku": regex },
-          { "stock.slrMaxwellsSku": regex },
-          { "stock.fmlCGOSku": regex },
-          { "stock.fmlTMHCSku": regex },
-          { "stock.evnMungariSku": regex }
+          { "stock.suppliersku": regex }
         ]
       }
 
