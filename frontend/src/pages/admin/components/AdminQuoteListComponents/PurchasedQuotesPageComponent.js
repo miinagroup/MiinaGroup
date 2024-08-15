@@ -141,7 +141,7 @@ const PurchasedQuotesPageComponent = ({
         />
         <tbody>
           {quoteItems.purchasedQuotes?.map((quoteItem, idx) => (
-            <tr key={idx}>
+            <tr key={idx} style={{ backgroundColor: quoteItem.repeatPurchase.length > 0 ? "#f0ead2" : "" }}>
               <td>{idx + 1} </td>
               <td
                 onClick={() => handleShow(quoteItem._id)}
@@ -165,7 +165,7 @@ const PurchasedQuotesPageComponent = ({
                   cursor: "pointer",
                   color:
                     quoteItem.product?.category === "QUOTE" ||
-                    quoteItem.product?.category === "CLIENTQUOTE"
+                      quoteItem.product?.category === "CLIENTQUOTE"
                       ? "red"
                       : "black",
                 }}
@@ -177,8 +177,8 @@ const PurchasedQuotesPageComponent = ({
                 style={{ cursor: "pointer" }}
               >
                 {quoteItem.product &&
-                quoteItem.product.displayPrice &&
-                quoteItem.product.displayPrice !== 0
+                  quoteItem.product.displayPrice &&
+                  quoteItem.product.displayPrice !== 0
                   ? `$ ${quoteItem.product.stock[0].price.toFixed(2)}`
                   : ""}
               </td>

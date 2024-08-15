@@ -139,7 +139,7 @@ const ProcessingQuotesPageComponent = ({
         />
         <tbody>
           {quoteItems.processingQuotes?.map((quoteItem, idx) => (
-            <tr key={idx} style={{ backgroundColor: quoteItem.repeatPurchase.length > 0 ? "#f0ead2" : "", }}>
+            <tr key={idx} style={{ backgroundColor: quoteItem.repeatPurchase.length > 0 ? "#f0ead2" : "" }}>
               <td>{idx + 1} </td>
               <td
                 onClick={() => handleShow(quoteItem._id)}

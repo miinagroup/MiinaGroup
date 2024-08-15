@@ -78,7 +78,7 @@ const CompletedQuotesPageComponent = ({
     return dueDate.getTime() - today.getTime();
   };
 
-  
+
   const quoteItems = useMemo(() => {
     let computedQuotes = quotes;
 
@@ -576,7 +576,7 @@ const CompletedQuotesPageComponent = ({
         />
         <tbody>
           {quoteItems.completedQuotes?.map((quoteItem, idx) => (
-            <tr key={idx}>
+            <tr key={idx} style={{ backgroundColor: quoteItem.repeatPurchase.length > 0 ? "#f0ead2" : "" }}>
               <td>
                 <input
                   type="checkbox"
@@ -617,8 +617,8 @@ const CompletedQuotesPageComponent = ({
                 style={{ cursor: "pointer" }}
               >
                 {quoteItem.product &&
-                quoteItem.product?.displayPrice &&
-                quoteItem.product?.displayPrice !== 0
+                  quoteItem.product?.displayPrice &&
+                  quoteItem.product?.displayPrice !== 0
                   ? `$ ${quoteItem.product.stock[0]?.price.toFixed(2)}`
                   : ""}
               </td>
@@ -633,15 +633,15 @@ const CompletedQuotesPageComponent = ({
                   color: quoteItem.accepted
                     ? "green"
                     : quoteItem.accepted === undefined
-                    ? "black"
-                    : "red",
+                      ? "black"
+                      : "red",
                 }}
               >
                 {quoteItem.accepted === undefined
                   ? "Waiting"
                   : quoteItem.accepted
-                  ? "Accepted"
-                  : "Declined"}
+                    ? "Accepted"
+                    : "Declined"}
               </td>
               <td>
                 <button
@@ -669,7 +669,7 @@ const CompletedQuotesPageComponent = ({
       <PDFPopupButton
         fileName={"Quote"}
         loadingText="Download Quote"
-        // onClick={() => openPDFInPopup()}
+      // onClick={() => openPDFInPopup()}
       />
       <Pagination
         total={totalItems}
