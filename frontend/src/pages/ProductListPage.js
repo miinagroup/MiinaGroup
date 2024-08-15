@@ -1,6 +1,4 @@
 import ProductListPageComponent from "./components/ProductListPageComponent";
-import ProductListPageComponent2 from "./components/ProductListPageComponent2";
-import ProductListPageComponent3 from "./components/ProductListPageComponent3";
 import axios from "axios";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -76,7 +74,7 @@ const ProductListPage = () => {
   };
 
   return (
-    <ProductListPageComponent3
+    <ProductListPageComponent
       getUser={getUser}
       getProducts={getProducts}
       categories={categories}
