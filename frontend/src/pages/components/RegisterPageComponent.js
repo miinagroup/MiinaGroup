@@ -73,7 +73,8 @@ const RegisterPageComponent = ({
     const phone = form.phone.value;
     const mobile = form.phone.value;
     const location = userLocation;
-    const company = form.company?.value.toUpperCase();
+    //const company = form.company?.value.toUpperCase();
+    const company = userCompany;
     const role = form.role.value;
     const deliveryAddress = "new user";
     const billAddress = "new user";
@@ -87,7 +88,7 @@ const RegisterPageComponent = ({
 
     // }
     /* 下面是一些form里面的判定 validation的判定 */
-    console.log(company);
+    console.log(company, location);
     if ((location === "") && (company !== "")) {
       alert("Please Select Your Site")
     } else if (
@@ -214,40 +215,48 @@ const RegisterPageComponent = ({
       if (!email.match(mailformat)) {
         alert("Invalid email format")
       } else {
-        setShow(true)
+        setShow(false)
         const emailHost = email.split("@")[1]
         const tempCompany = emailHost.split(".")[0]
         switch (emailHost.toLowerCase()) {
           case 'slrltd.com':
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
+            setUserLocation(userSites[0].sites[0])
             //handleSelectedSites("SILVERLAKE RESOURCES")
             break;
           case 'silverlakeresources.com.au':
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
+            setUserLocation(userSites[0].sites[0])
             break;
           case 'ctlservices.com.au':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
+            setUserLocation(userSites[1].sites[0])
             break;
           case 'ctlaus.com':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
+            setUserLocation(userSites[1].sites[0])
             break;
           case 'focusminerals.com.au':
             setUserCompany("FOCUS MINERALS OPERATIONS")
             setSelectedSites(userSites[2])
+            setUserLocation(userSites[2].sites[0])
             break;
           case 'evolutionmining.com':
             setUserCompany("EVOLUTION MINING (MUNGARI)")
             setSelectedSites(userSites[3])
+            setUserLocation(userSites[3].sites[0])
             break;
           default:
-            setUserCompany(tempCompany)
-            setUserLocation(tempCompany)
+            // setUserCompany(tempCompany)
+            // setUserLocation(tempCompany+"site-1")
+            setUserCompany("No Company")
+            setUserLocation("No Site")
             setShow(false)
-            setShowLocation(true)
+            setShowLocation(false)
             break;
         }
       }
@@ -350,10 +359,10 @@ const RegisterPageComponent = ({
                   required
                   type="text"
                   name="role"
-                  placeholder="Role"
+                  placeholder="Job Title"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Please mention your role.{" "}
+                  Please mention your Job Title.{" "}
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group as={Col} md="4" controlId="formBasicMobile">
@@ -396,6 +405,7 @@ const RegisterPageComponent = ({
                         value={userCompany}
                         aria-describedby="inputGroupPrepend"
                         required
+                        disabled
                       />
                       <Form.Control.Feedback type="invalid">
                         Please mention company name.{" "}
@@ -457,6 +467,7 @@ const RegisterPageComponent = ({
                         type="text"
                         name="location"
                         placeholder="Site"
+                        value={userLocation}
                         aria-describedby="inputGroupPrepend"
                         required
                       />

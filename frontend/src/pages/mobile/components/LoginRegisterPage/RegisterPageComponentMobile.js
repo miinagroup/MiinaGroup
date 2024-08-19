@@ -73,7 +73,8 @@ const RegisterPageComponentMobile = ({
     const phone = form.phone.value;
     const mobile = form.phone.value;
     const location = userLocation;
-    const company = form.company?.value.toUpperCase();
+    // const company = form.company?.value.toUpperCase();
+    const company = userCompany;
     const role = form.role.value;
     const deliveryAddress = "new user";
     const billAddress = "new user";
@@ -175,40 +176,48 @@ const RegisterPageComponentMobile = ({
       if (!email.match(mailformat)) {
         alert("Invalid email format")
       } else {
-        setShow(true)
+        setShow(false)
         const emailHost = email.split("@")[1]
         const tempCompany = emailHost.split(".")[0]
         switch (emailHost.toLowerCase()) {
           case 'slrltd.com':
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
+            setUserLocation(userSites[0].sites[0])
             //handleSelectedSites("SILVERLAKE RESOURCES")
             break;
           case 'silverlakeresources.com.au':
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
+            setUserLocation(userSites[0].sites[0])
             break;
           case 'ctlservices.com.au':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
+            setUserLocation(userSites[1].sites[0])
             break;
           case 'ctlaus.com':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
+            setUserLocation(userSites[1].sites[0])
             break;
           case 'focusminerals.com.au':
             setUserCompany("FOCUS MINERALS OPERATIONS")
             setSelectedSites(userSites[2])
+            setUserLocation(userSites[2].sites[0])
             break;
           case 'evolutionmining.com':
             setUserCompany("EVOLUTION MINING (MUNGARI)")
             setSelectedSites(userSites[3])
+            setUserLocation(userSites[3].sites[0])
             break;
           default:
-            setUserCompany(tempCompany)
-            setUserLocation(tempCompany)
+            // setUserCompany(tempCompany)
+            // setUserLocation(tempCompany)
+            setUserCompany("No Company")
+            setUserLocation("No Site")
             setShow(false)
-            setShowLocation(true)
+            setShowLocation(false)
             break;
         }
       }
@@ -239,118 +248,119 @@ const RegisterPageComponentMobile = ({
 
   return (
     <Container>
-        <Alert
-                      show={
-                        registerUserResponseState &&
-                        registerUserResponseState.success === "User created"
-                      }
-                      variant="primary"
-                      className={styles.alert_registration}
-                    >
-                      <div className={styles.alert_text}>
-                        Your registration was successful, and we're now verifying your account. 
-                        <br />
-                        To enjoy full access, please check out the desktop version of our website.
-                      </div>
-                    </Alert>                
+      <Alert
+        show={
+          registerUserResponseState &&
+          registerUserResponseState.success === "User created"
+        }
+        variant="primary"
+        className={styles.alert_registration}
+      >
+        <div className={styles.alert_text}>
+          Your registration was successful, and we're now verifying your account.
+          <br />
+          To enjoy full access, please check out the desktop version of our website.
+        </div>
+      </Alert>
 
-                    {registerUserResponseState && registerUserResponseState.loading === true &&
-                      <Spinner animation="border" role="status">
-                      <span className="visually-hidden">Loading...</span>
-                      </Spinner>
-                    }
-                    {registerUserResponseState.success === "" && <Row className="justify-content-md-center">
-                <Col md={6}>
+      {registerUserResponseState && registerUserResponseState.loading === true &&
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      }
+      {registerUserResponseState.success === "" && <Row className="justify-content-md-center">
+        <Col md={6}>
 
-                  <Form
-                    noValidate
-                    validated={validated}
-                    onSubmit={handleSubmit}
-                    autoComplete="off"
-                  >
-                    <Row className="">
-                      <Form.Group as={Col} md="4" controlId="validationCustom01" className={styles.form_row}>
-                      <Form.Label className={styles.form_label}>Firstname</Form.Label>
-                        <Form.Control
-                          required
-                          type="text"
-                          name="name"
-                          placeholder="John"
-                          size="sm"
-                          className="mb-2"
-                        />
-                        <Form.Control.Feedback type="invalid" className="mb-3">
-                          Please enter first name.{" "}
-                        </Form.Control.Feedback>
-                        {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
-                      </Form.Group>
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+            autoComplete="off"
+          >
+            <Row className="">
+              <Form.Group as={Col} md="4" controlId="validationCustom01" className={styles.form_row}>
+                <Form.Label className={styles.form_label}>Firstname</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  name="name"
+                  placeholder="First Name"
+                  size="sm"
+                  className="mb-2"
+                />
+                <Form.Control.Feedback type="invalid" className="mb-3">
+                  Please enter first name.{" "}
+                </Form.Control.Feedback>
+                {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
+              </Form.Group>
 
-                      <Form.Group as={Col} md="4" controlId="formBasicLastName" className={styles.form_row}>
-                      <Form.Label className={styles.form_label}>Lastname</Form.Label>
-                        <Form.Control
-                          required
-                          type="text"
-                          name="lastName"
-                          placeholder="Doe"
-                          size="sm"
-                          className="mb-2"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please enter last name.{" "}
-                        </Form.Control.Feedback>
-                      </Form.Group>
+              <Form.Group as={Col} md="4" controlId="formBasicLastName" className={styles.form_row}>
+                <Form.Label className={styles.form_label}>Lastname</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  size="sm"
+                  className="mb-2"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter last name.{" "}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-                      <Form.Group as={Col} md="4" controlId="formBasicEmail" className={styles.form_row}>
-                      <Form.Label className={styles.form_label}>Email</Form.Label>
-                        <InputGroup hasValidation>
-                          {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
-                          <Form.Control
-                            type="email"
-                            name="email"
-                            placeholder="example@gmail.com"
-                            aria-describedby="inputGroupPrepend"
-                            onBlur={handleEmail}
-                            required
-                            size="sm"
-                            className="mb-2"
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Please enter a valid email.{" "}
-                          </Form.Control.Feedback>
-                        </InputGroup>
-                      </Form.Group>
-                    </Row>
+              <Form.Group as={Col} md="4" controlId="formBasicEmail" className={styles.form_row}>
+                <Form.Label className={styles.form_label}>Email</Form.Label>
+                <InputGroup hasValidation>
+                  {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    placeholder="example@gmail.com"
+                    aria-describedby="inputGroupPrepend"
+                    onBlur={handleEmail}
+                    required
+                    size="sm"
+                    className="mb-2"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please enter a valid email.{" "}
+                  </Form.Control.Feedback>
+                </InputGroup>
+              </Form.Group>
+            </Row>
 
-                    <Row>
-                      <Form.Group as={Col} md="4" controlId="formBasicPhone" className={styles.form_row}>
-                      <Form.Label className={styles.form_label}>Phone number</Form.Label>
-                        <Form.Control
-                          required
-                          type="tel"
-                          name="phone"
-                          pattern="[0-9]*"
-                          placeholder="Phone Number"
-                          size="sm"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please enter phone number.{" "}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group as={Col} md="4" controlId="formBasicRole" className={styles.form_row}>
-                      <Form.Label className={styles.form_label}>Role</Form.Label>
-                        <Form.Control
-                          required
-                          type="text"
-                          name="role"
-                          placeholder="Role"
-                          size="sm"
-                          className="mb-2"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please mention your role.{" "}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group as={Col} md="4" controlId="formBasicMobile">
+            <Row>
+              <Form.Group as={Col} md="4" controlId="formBasicPhone" className={styles.form_row}>
+                <Form.Label className={styles.form_label}>Phone number</Form.Label>
+                <Form.Control
+                  required
+                  type="tel"
+                  name="phone"
+                  pattern="[0-9]*"
+                  placeholder="Phone Number"
+                  size="sm"
+                  className="mb-2"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter phone number.{" "}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group as={Col} md="4" controlId="formBasicRole" className={styles.form_row}>
+                <Form.Label className={styles.form_label}>Job Title</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  name="role"
+                  placeholder="Job Title"
+                  size="sm"
+                  className="mb-2"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please mention your Job Title.{" "}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group as={Col} md="4" controlId="formBasicMobile">
                 <Form.Control
                   required
                   type="tel"
@@ -377,8 +387,8 @@ const RegisterPageComponentMobile = ({
                   Please provide a valid postcode.
                 </Form.Control.Feedback>
               </Form.Group>
-                    </Row>
-                    {show ? (
+            </Row>
+            {show ? (
               <>
                 <Row className="mb-2" >
                   <Form.Group as={Col} md="6" controlId="formBasicCompany" className={styles.form_row}>
@@ -391,6 +401,7 @@ const RegisterPageComponentMobile = ({
                         aria-describedby="inputGroupPrepend"
                         required
                         size="sm"
+                        disabled
                       />
                       <Form.Control.Feedback type="invalid">
                         Please mention company name.{" "}
@@ -457,7 +468,7 @@ const RegisterPageComponentMobile = ({
                         aria-describedby="inputGroupPrepend"
                         required
                         size="sm"
-                        />
+                      />
 
                       <Form.Control.Feedback type="invalid">
                         Please enter site location.{" "}
@@ -468,7 +479,7 @@ const RegisterPageComponentMobile = ({
               </>
             ) : ("")}
 
-<Row className="mb-3" style={{ display: "none" }}>
+            <Row className="mb-3" style={{ display: "none" }}>
               <Form.Group as={Col} md="4" controlId="formBasicBillAddress">
                 <Form.Control
                   type="text"
@@ -507,56 +518,56 @@ const RegisterPageComponentMobile = ({
               </Form.Group>
             </Row>
 
-                    <Row>
-                      <Form.Group className={styles.form_row} controlId="formBasicPassword">
-                              <Form.Label className={styles.form_label}>Password</Form.Label>
-                                <Form.Control
-                                  name="password"
-                                  required
-                                  type={showPassword ? "text" : "password"}
-                                  placeholder="Password"
-                                  minLength={6}
-                                  onChange={(e) => setPassword(e.target.value)}
-                                  size="sm"
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  Please enter a valid password
-                                </Form.Control.Feedback>
-                                <Form.Text className={`${styles.form_undertext} text-muted`}>
-                                  Password should have at least 6 characters
-                                </Form.Text>
-                            </Form.Group>
-                    </Row>
-                    
-                    <Row>
-                    <Form.Group className={styles.form_row} controlId="formBasicPasswordRepeat">
-                    <Form.Label className={styles.form_label}>Confirm Password</Form.Label>
-                      <Form.Control
-                        name="confirmPassword"
-                        required
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Confirm Password"
-                        minLength={6}
-                        onChange={handleConfirmPassword}
-                        isInvalid={!passwordsMatch}
-                        size="sm"
-                      />
+            <Row>
+              <Form.Group className={styles.form_row} controlId="formBasicPassword">
+                <Form.Label className={styles.form_label}>Password</Form.Label>
+                <Form.Control
+                  name="password"
+                  required
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  minLength={6}
+                  onChange={(e) => setPassword(e.target.value)}
+                  size="sm"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid password
+                </Form.Control.Feedback>
+                <Form.Text className={`${styles.form_undertext} text-muted`}>
+                  Password should have at least 6 characters
+                </Form.Text>
+              </Form.Group>
+            </Row>
 
-                      <Form.Control.Feedback type="invalid">
-                        Both passwords should match
-                      </Form.Control.Feedback>
-                    </Form.Group>
+            <Row>
+              <Form.Group className={styles.form_row} controlId="formBasicPasswordRepeat">
+                <Form.Label className={styles.form_label}>Confirm Password</Form.Label>
+                <Form.Control
+                  name="confirmPassword"
+                  required
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  minLength={6}
+                  onChange={handleConfirmPassword}
+                  isInvalid={!passwordsMatch}
+                  size="sm"
+                />
 
-                    <Form.Group className={styles.form_check}>
-                      <Form.Check
-                        type="checkbox"
-                        label="Show Password"
-                        onChange={(e) => setShowPassword(e.target.checked)}
-                      />
-                    </Form.Group>
-                    </Row>
+                <Form.Control.Feedback type="invalid">
+                  Both passwords should match
+                </Form.Control.Feedback>
+              </Form.Group>
 
-                    {/* <Form.Group className="mb-3">
+              <Form.Group className={styles.form_check}>
+                <Form.Check
+                  type="checkbox"
+                  label="Show Password"
+                  onChange={(e) => setShowPassword(e.target.checked)}
+                />
+              </Form.Group>
+            </Row>
+
+            {/* <Form.Group className="mb-3">
                       <Form.Check
                         required
                         label="Agree to terms and conditions"
@@ -574,33 +585,33 @@ const RegisterPageComponentMobile = ({
                       </Col>
                     </Row> */}
 
-                    <br />
-                    <Button type="submit" className="mb-1">
-                      {registerUserResponseState &&
-                        registerUserResponseState.loading === true ? (
-                        <Spinner
-                          as="span"
-                          animation="border"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        ""
-                      )}
-                      Submit
-                    </Button>
-                    {/* 在user controller里面handle了user exists 以及 user created */}
-                    <Alert
-                      show={
-                        registerUserResponseState &&
-                        registerUserResponseState.error === "user exists"
-                      }
-                      variant="danger"
-                    >
-                      User with that email already exists!
-                    </Alert>
-                    {/* <Alert
+            <br />
+            <Button type="submit" className="mb-1">
+              {registerUserResponseState &&
+                registerUserResponseState.loading === true ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (
+                ""
+              )}
+              Submit
+            </Button>
+            {/* 在user controller里面handle了user exists 以及 user created */}
+            <Alert
+              show={
+                registerUserResponseState &&
+                registerUserResponseState.error === "user exists"
+              }
+              variant="danger"
+            >
+              User with that email already exists!
+            </Alert>
+            {/* <Alert
                       show={
                         registerUserResponseState &&
                         registerUserResponseState.success === "User created"
@@ -612,10 +623,10 @@ const RegisterPageComponentMobile = ({
                       address. Please make sure to check your junk/spam folder as well.
                       Be aware that it might take a few minutes for the email to arrive.
                     </Alert> */}
-                  </Form>
-                </Col>
-              </Row>
-              }
+          </Form>
+        </Col>
+      </Row>
+      }
 
     </Container >
   );
