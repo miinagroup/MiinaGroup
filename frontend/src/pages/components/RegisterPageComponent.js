@@ -244,10 +244,12 @@ const RegisterPageComponent = ({
             setSelectedSites(userSites[3])
             break;
           default:
-            setUserCompany(tempCompany)
-            setUserLocation(tempCompany)
+            // setUserCompany(tempCompany)
+            // setUserLocation(tempCompany+"site-1")
+            setUserCompany("No Company")
+            setUserLocation("No Site")
             setShow(false)
-            setShowLocation(true)
+            setShowLocation(false)
             break;
         }
       }
@@ -350,10 +352,10 @@ const RegisterPageComponent = ({
                   required
                   type="text"
                   name="role"
-                  placeholder="Role"
+                  placeholder="Job Title"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Please mention your role.{" "}
+                  Please mention your Job Title.{" "}
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group as={Col} md="4" controlId="formBasicMobile">
@@ -396,6 +398,7 @@ const RegisterPageComponent = ({
                         value={userCompany}
                         aria-describedby="inputGroupPrepend"
                         required
+                        disabled
                       />
                       <Form.Control.Feedback type="invalid">
                         Please mention company name.{" "}
@@ -457,6 +460,7 @@ const RegisterPageComponent = ({
                         type="text"
                         name="location"
                         placeholder="Site"
+                        value={userLocation}
                         aria-describedby="inputGroupPrepend"
                         required
                       />
