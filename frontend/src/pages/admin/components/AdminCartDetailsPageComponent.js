@@ -73,6 +73,7 @@ const AdminCartDetailsPageComponent = ({
   const [userInformation, setUserInformation] = useState([]);
   const [quickBooksCustomerId, setQuickBooksCustomerId] = useState();
   const [dueDays, setDueDays] = useState();
+  const [userNameList, setUserNamesList] = useState([])
 
   const navigate = useNavigate();
 
@@ -190,6 +191,7 @@ const AdminCartDetailsPageComponent = ({
     if (e.target.value !== '-Select Company-') {
       setAdminSelectedCompany(e.target.value);
       userList.length = 0;
+      userNameList.length = 0;
       deliverySiteList.length = 0;
       userIdList.length = 0;
       userEmailList.length = 0;
@@ -197,6 +199,7 @@ const AdminCartDetailsPageComponent = ({
         if (user.company === e.target.value) {
           userList.push({ userName: user.name + " " + user.lastName + " ( " + user.email + " ) ", userId: user._id, userFname: user.name, userEmail: user.email });
           deliverySiteList.push(user.location.toUpperCase());
+          userNameList.push({ userName: user.name + " " + user.lastName + " ( " + user.email + " ) ", userId: user._id, userFname: user.name, userEmail: user.email });
         }
       });
       userList.sort((a, b) => a.userName.localeCompare(b.userName))
@@ -481,18 +484,35 @@ const AdminCartDetailsPageComponent = ({
                       aria-label="Default select example"
                       onChange={changeUserName}
                       className="p-0 ps-2"
+                      value= {userList?.name}
                     >
-                      {userList &&
-                        userList
+                      <option value= {userList.name}>Select a name</option>
+                      {userNameList &&
+                        userNameList
                           .sort((a, b) => a.userName.localeCompare(b.userName))
                           .map((user, idx) => {
                             return user !== "" ? (
-                              <option key={idx} value={user.userName}>
+                              <option key={idx} 
+                            value={user.userName}
+                              >
                                 {" "}
                                 {user.userName}
                               </option>
                             ) : ("");
                           })}
+                      {/* {userList &&
+                        userList
+                          .sort((a, b) => a.userName.localeCompare(b.userName))
+                          .map((user, idx) => {
+                            return user !== "" ? (
+                              <option key={idx} 
+                            value={user.userName}
+                              >
+                                {" "}
+                                {user.userName}
+                              </option>
+                            ) : ("");
+                          })} */}
                     </Form.Select>
                   </Col>
                   <Col md={3}>
