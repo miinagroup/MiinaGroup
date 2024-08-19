@@ -73,7 +73,8 @@ const RegisterPageComponentMobile = ({
     const phone = form.phone.value;
     const mobile = form.phone.value;
     const location = userLocation;
-    const company = form.company?.value.toUpperCase();
+    // const company = form.company?.value.toUpperCase();
+    const company = userCompany;
     const role = form.role.value;
     const deliveryAddress = "new user";
     const billAddress = "new user";
@@ -175,34 +176,40 @@ const RegisterPageComponentMobile = ({
       if (!email.match(mailformat)) {
         alert("Invalid email format")
       } else {
-        setShow(true)
+        setShow(false)
         const emailHost = email.split("@")[1]
         const tempCompany = emailHost.split(".")[0]
         switch (emailHost.toLowerCase()) {
           case 'slrltd.com':
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
+            setUserLocation(userSites[0].sites[0])
             //handleSelectedSites("SILVERLAKE RESOURCES")
             break;
           case 'silverlakeresources.com.au':
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
+            setUserLocation(userSites[0].sites[0])
             break;
           case 'ctlservices.com.au':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
+            setUserLocation(userSites[1].sites[0])
             break;
           case 'ctlaus.com':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
+            setUserLocation(userSites[1].sites[0])
             break;
           case 'focusminerals.com.au':
             setUserCompany("FOCUS MINERALS OPERATIONS")
             setSelectedSites(userSites[2])
+            setUserLocation(userSites[2].sites[0])
             break;
           case 'evolutionmining.com':
             setUserCompany("EVOLUTION MINING (MUNGARI)")
             setSelectedSites(userSites[3])
+            setUserLocation(userSites[3].sites[0])
             break;
           default:
             // setUserCompany(tempCompany)
@@ -277,7 +284,7 @@ const RegisterPageComponentMobile = ({
                   required
                   type="text"
                   name="name"
-                  placeholder="John"
+                  placeholder="First Name"
                   size="sm"
                   className="mb-2"
                 />
@@ -293,7 +300,7 @@ const RegisterPageComponentMobile = ({
                   required
                   type="text"
                   name="lastName"
-                  placeholder="Doe"
+                  placeholder="Last Name"
                   size="sm"
                   className="mb-2"
                 />
