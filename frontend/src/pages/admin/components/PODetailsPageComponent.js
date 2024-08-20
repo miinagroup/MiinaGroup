@@ -32,7 +32,7 @@ const PODetailsPageComponent = ({ getOrder, sendInv, updateBackOrder }) => {
   useEffect(() => {
     getOrder(id)
       .then((data) => {
-        console.log("getOrder", data);
+        //console.log("getOrder", data);
 
         setOrder(data.purchaseOrder);
         setBackOrderStatus(data.purchaseOrder.backOrderStatus);
@@ -131,10 +131,12 @@ const PODetailsPageComponent = ({ getOrder, sendInv, updateBackOrder }) => {
       ).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
+        useGrouping: false
       });
       let purchaseprice = product.purchaseprice.toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
+        useGrouping: false
       });
       return {
         ...item,
@@ -195,7 +197,7 @@ const PODetailsPageComponent = ({ getOrder, sendInv, updateBackOrder }) => {
 
   const [sendingPO, setSendingPO] = useState(false);
 
-  console.log(invData);
+  //console.log(invData);
 
   const sendInvoiceEmail = async (invData) => {
     setSendingPO(true);

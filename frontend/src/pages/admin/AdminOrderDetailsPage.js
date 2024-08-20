@@ -14,13 +14,14 @@ const fetchProduct = async (productId) => {
   return data;
 };
 
-const updateOrderClientCurrentSku = async(id, matchingClientSku, ctlsku, itemId) => {
-  const { data } =  await axios.put(
+const updateOrderClientCurrentSku = async (id, matchingClientSku, ctlsku, itemId) => {
+  const { data } = await axios.put(
     `/api/orders/admin/updateClientSku/${id}`,
-    { "clientSku": matchingClientSku,
+    {
+      "clientSku": matchingClientSku,
       "ctlsku": ctlsku,
-      "cartItemId": itemId 
-     }
+      "cartItemId": itemId
+    }
   );
 
   return data;

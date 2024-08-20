@@ -89,6 +89,14 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    approvedPONumber: {
+      type: String,
+      required: false,
+    },
+    approvedDate: {
+      type: Date,
+      required: false,
+    },
     invoiceNumber: {
       type: String,
       required: false,

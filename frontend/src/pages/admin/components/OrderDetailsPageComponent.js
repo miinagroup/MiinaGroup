@@ -111,7 +111,7 @@ const OrderDetailsPageComponent = ({
   useEffect(() => {
     clientsSkuList && order && clientsSkuList.map(sku => {
       const noSpacesDeliverySite = order.deliverySite.toLowerCase().replace(/\s+/g, '');
-      if(sku.sku.toLowerCase().includes(noSpacesDeliverySite)) {
+      if (sku.sku.toLowerCase().includes(noSpacesDeliverySite)) {
         setCurrentClientSkuName(sku.sku)
       }
     })
@@ -173,9 +173,9 @@ const OrderDetailsPageComponent = ({
 
       const newCartItems = await Promise.all(data.map(async (item) => {
 
-      const differentDeiverySite = item.cartProducts[0].currentClientSku?.name.toLowerCase().includes(site.replace(/\s+/g, '').toLowerCase());
-      const noCurrentClientSku = item.cartProducts[0].currentClientSku;
-      const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku?.number === "";
+        const differentDeiverySite = item.cartProducts[0].currentClientSku?.name.toLowerCase().includes(site.replace(/\s+/g, '').toLowerCase());
+        const noCurrentClientSku = item.cartProducts[0].currentClientSku;
+        const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku?.number === "";
 
         if (!noCurrentClientSku || currentClientSkuNumberEmpty || !differentDeiverySite) {
           const res = await fetchProduct(item.productId);
@@ -183,7 +183,7 @@ const OrderDetailsPageComponent = ({
           const matchingClientSku = stockItem.clientsSku?.find(sku =>
             sku.name?.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(site.toLowerCase())
           );
-  
+
           if (matchingClientSku) {
             await updateOrderClientCurrentSku(id, matchingClientSku, item.cartProducts[0].ctlsku, item._id);
             return {
@@ -219,16 +219,15 @@ const OrderDetailsPageComponent = ({
       }));
 
       setCartItems(newCartItems)
-  
+
     } catch (error) {
       console.error("Error updating client SKU:", error);
     }
   };
-  
 
   useEffect(() => {
-    if (userInfo.email) {
-      getdeliveryBooks(userInfo.email)
+    if (userInfo?.email) {
+      getdeliveryBooks(userInfo?.email)
         .then((deliveryBooks) => setDeliveryBooks(deliveryBooks))
         .catch((err) =>
           console.log(
@@ -779,6 +778,7 @@ const OrderDetailsPageComponent = ({
     setRefreshOrder(!refreshOrder);
   };
 
+
   return (
     <Container fluid style={{ width: "80%" }}>
       <Row className="mt-4">
@@ -788,8 +788,8 @@ const OrderDetailsPageComponent = ({
           <Row>
             <Col md={6} className="mb-0">
               {/* <h3>SHIPPING</h3> */}
-              <b>Name</b>: {userInfo.name} {userInfo.lastName}{" "}
-              <b className="ms-3">Phone</b>: {userInfo.phone} <br />
+              <b>Name</b>: {userInfo?.name} {userInfo?.lastName}{" "}
+              <b className="ms-3">Phone</b>: {userInfo?.phone} <br />
               <b>Company</b>: {orderData.userCompany}
               <ListGroup.Item className="p-1 ps-0 w-20">
                 <Form.Label className="fw-bold">
@@ -974,7 +974,7 @@ const OrderDetailsPageComponent = ({
               </thead>
               {cartItems && cartItems.map((item, idx) => {
 
-                return ( <CartItemForOrderComponent
+                return (<CartItemForOrderComponent
                   key={idx}
                   index={idx}
                   item={item}
@@ -993,8 +993,8 @@ const OrderDetailsPageComponent = ({
                   selectedDeliverySite={setSelectedDeliverySite}
                   editingIndex={editingIndex}
                   setEditingIndex={setEditingIndex}
-                /> )
-})}
+                />)
+              })}
             </table>
           </ListGroup>
         </Col>
