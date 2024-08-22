@@ -1512,7 +1512,8 @@ const searchProducts = async (req, res, next) => {
       }
     }
 
-    // General serach by supplier, name, description depending on how many words in search.
+    // General search by supplier, name, description depending on how many words in search.
+    // Now search by tgs doesn't work as field tag is not completed for a Product. It is for future. 
     if (!skuSearch && query.length === 1) {
       const regexQueries = query.map(term => new RegExp(term, 'i'));
       const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
@@ -1521,7 +1522,8 @@ const searchProducts = async (req, res, next) => {
         $or: [
           { name: regexQueries },
           { supplier: supplierFilters },
-          { description: regexQueries }
+          { description: regexQueries },
+          { tags: regexQueries }
         ]
       }
 
@@ -1538,7 +1540,8 @@ const searchProducts = async (req, res, next) => {
         $or: [
           { name: regex },
           { description: regex },
-          { supplier: regex }
+          { supplier: regex },
+          { tags: regex }
         ]
       }));
 

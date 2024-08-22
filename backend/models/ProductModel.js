@@ -101,6 +101,7 @@ const productSchema = mongoose.Schema(
     },
     images: [imageSchema],
     pdfs: [pdfSchema],
+    tags: { type: String, required: false },
     displayPrice: {
       type: Number,
       required: true,
