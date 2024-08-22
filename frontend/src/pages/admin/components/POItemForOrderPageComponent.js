@@ -32,23 +32,21 @@ const POItemForOrderPageComponent = ({
     receivingQty
   ) => {
     const updatedItems = cartItems.map((item) =>
-    item.poCartProducts[0]._id === productId
-    ? {
-      ...item,
-      poCartProducts: item.poCartProducts.map((product) => ({
-        ...product,
-        receivedQty,
-        receivingQty,
-        backOrderQty,
-      })),
-    }
-    : item
-  );
-  
+      item.poCartProducts[0]._id === productId
+        ? {
+          ...item,
+          poCartProducts: item.poCartProducts.map((product) => ({
+            ...product,
+            receivedQty,
+            receivingQty,
+            backOrderQty,
+          })),
+        }
+        : item
+    );
+
     setCartItems(updatedItems);
   };
-
-  console.log("cartItems", cartItems);
 
   const [updatingPO, setUpdatingPO] = useState(false);
   const [receivePO, setReceivePO] = useState(false);

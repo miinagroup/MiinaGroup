@@ -42,11 +42,12 @@ const ManageUniformUsersPageComponent = ({
       .then((categories) => { setUniformCategories(categories) })
     getUniformCartByCompany(userInfo.company)
       .then((userUniforms) => { setUserUniforms(userUniforms) })
+    setTotalItems(userUniforms.length)
     setUserCompany(userInfo.company)
   }, [show, addToCartReduxAction]);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log("cartItems", cartItems);
+
   useEffect(() => {
     var sortOrder = ['SHIRTS', 'JACKETS', 'PANTS', 'OVERALLS', 'BOOTS'];
     uniformCategories?.sort(
@@ -108,8 +109,6 @@ const ManageUniformUsersPageComponent = ({
     setShow(true);
   };
 
-
-  console.log("userUniforms", userUniforms);
   return (
     <>
       <Row className="m-5">

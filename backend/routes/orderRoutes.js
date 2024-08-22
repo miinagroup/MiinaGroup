@@ -29,7 +29,8 @@ const {
   deleteOrder,
   orderSalesToProduct,
   getSupplier,
-  adminUpdateOrderClientSku
+  adminUpdateOrderClientSku,
+  updateApprovedPO,
 } = require("../controllers/orderController");
 
 // user routes
@@ -41,6 +42,7 @@ router.post("/", createOrder);
 router.put("/paid/:id", updateOrderToPaid);
 router.get("/invoiceNumber", getOrdersInvNo);
 router.put("/updateOrderNote/:id", updateOrderNote);
+router.put("/updateApprovedPO/:id", updateApprovedPO);
 router.put("/updateSecondOwner/:id", updateSecondOwner);
 
 // admin routes

@@ -33,8 +33,8 @@ export const mainCategory = [
     link: "ELECTRICAL",
   },
   {
-    label: "PROCESSING",
-    link: "PROCESSING",
+    label: "MINING",
+    link: "MINING",
   },
   {
     label: "QUOTE",
@@ -72,7 +72,7 @@ export const mainCategoryForVisitor = [
     link: "ELECTRICAL",
   },
   {
-    label: "PROCESSING",
-    link: "PROCESSING",
+    label: "MINING",
+    link: "MINING",
   },
 ];

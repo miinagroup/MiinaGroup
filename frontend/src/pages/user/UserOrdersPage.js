@@ -10,10 +10,17 @@ const getOrdersByCompany = async (userCompany) => {
   return data;
 };
 
+const updateApprovedPOnumber = async (orderId, poNumber, date) => {
+  const { data } = await axios.put("/api/orders/updateApprovedPO/" + orderId, { poNumber, date })
+  return data;
+}
+
 const UserOrdersPage = () => {
   return <UserOrdersPageComponent
     getOrders={getOrders}
-    getOrdersByCompany={getOrdersByCompany} />;
+    getOrdersByCompany={getOrdersByCompany}
+    updateApprovedPOnumber={updateApprovedPOnumber}
+  />;
 };
 
 export default UserOrdersPage;

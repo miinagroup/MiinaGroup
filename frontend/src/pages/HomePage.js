@@ -5,6 +5,7 @@ import CountDownComponent from "../components/CountDownComponent";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment-timezone";
+import { Container } from "react-bootstrap";
 
 import "./general.css";
 import StockPrice from "../components/StockPrice";
@@ -48,12 +49,11 @@ const HomePage = () => {
         );
     }
   }, [perthTime]);
-
-  console.log("Test comment")
-
+  console.log("bottomBlocks", bottomBlocks);
 
   return (
     <>
+
       {/* ************   Carousel  ***************  */}
       <ProductCarouselComponent banners={banners} />
 
@@ -61,7 +61,7 @@ const HomePage = () => {
       <ProductsPromotionComponent blocks={blocks} />
 
       {/* ************   bottom 3 blocks  ***************  */}
-      <CTLPromotionComponent blocks={bottomBlocks} />
+      {/* <CTLPromotionComponent blocks={bottomBlocks} /> */}
 
       <AcknowledgementOfCountryComponent />
     </>

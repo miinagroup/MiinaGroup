@@ -62,9 +62,9 @@ const CreateProductPageComponent = ({
 
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [ clientsSkus, setClientsSku] = useState([]);
+  const [clientsSkus, setClientsSku] = useState([]);
   const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
-  const [skuClientNumebr, setSkuClientNumber ] = useState({});
+  const [skuClientNumebr, setSkuClientNumber] = useState({});
   const [rowCount, setRowCount] = useState(1);
 
   useEffect(() => {
@@ -132,7 +132,7 @@ const CreateProductPageComponent = ({
 
   const handlePriceChange = (index, value) => {
     const newDynamicPrices = { ...dynamicPrices };
-    console.log(newDynamicPrices[index], index, value);
+    //console.log(newDynamicPrices[index], index, value);
     newDynamicPrices[index] = {
       ...newDynamicPrices[index],
       calculatedPrice: parseFloat(value),
@@ -179,7 +179,7 @@ const CreateProductPageComponent = ({
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
       const clientsSku = clientsSkus[i];
-  
+
       stock.push({
         count,
         price: price,
@@ -216,6 +216,7 @@ const CreateProductPageComponent = ({
         setIsCreating("to many files");
         return;
       }
+      console.log("formInputs", formInputs);
       createProductApiRequest(formInputs)
         .then((data) => {
           if (images) {
@@ -257,6 +258,7 @@ const CreateProductPageComponent = ({
           if (data.message === "product created") navigate("/admin/products");
         })
         .catch((er) => {
+          console.log("error", er);
           setCreateProductResponseState({
             error: er.response.data.message
               ? er.response.data.message
@@ -272,6 +274,7 @@ const CreateProductPageComponent = ({
     setImages(images);
   }; */
   const uploadHandlerImage = (e) => {
+    console.log(e.target.files);
     setImages(e.target.files);
   };
 
@@ -359,15 +362,15 @@ const CreateProductPageComponent = ({
   };
 
   const handleSelect = (e, index) => {
-    setSelectedClientSkuName({...selectedClientSkuName, [index]: e.target.value});
+    setSelectedClientSkuName({ ...selectedClientSkuName, [index]: e.target.value });
   }
 
-    const handleInputChange = (e, index) => {
-    setSkuClientNumber({...skuClientNumebr, [index]: e.target.value});
+  const handleInputChange = (e, index) => {
+    setSkuClientNumber({ ...skuClientNumebr, [index]: e.target.value });
   };
 
 
-  const addNewClientSku = (e,index) => {
+  const addNewClientSku = (e, index) => {
     const isSkuName = clientsSkus[index]?.some(el => el.name === selectedClientSkuName[index]);
     if (selectedClientSkuName[index] && skuClientNumebr[index]) {
       if (isSkuName) {
@@ -381,8 +384,8 @@ const CreateProductPageComponent = ({
         updatedClientsSkus[index] = [{ name: selectedClientSkuName[index], number: skuClientNumebr[index] }];
       }
       setClientsSku(updatedClientsSkus);
-      setSelectedClientSkuName({...selectedClientSkuName, [index]: ""});
-      setSkuClientNumber({...skuClientNumebr, [index]: ""});
+      setSelectedClientSkuName({ ...selectedClientSkuName, [index]: "" });
+      setSkuClientNumber({ ...skuClientNumebr, [index]: "" });
     } else {
       alert('Please select a SKU and enter a number.');
     }
@@ -624,44 +627,44 @@ const CreateProductPageComponent = ({
 
                     <Form.Group>
                       <Form.Label>Client Sku</Form.Label>
-                      <div style={{display: "flex", gap: "20px", marginBottom: "20px"}}>
+                      <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
                         <Form.Select value={selectedClientSkuName[index]} onChange={(e) => handleSelect(e, index)}>
-                                  <option value={selectedClientSkuName[index] === "" && ""}>Select SKU name</option>
-                                  { clientsSkuList && clientsSkuList.map(item => {
-                                      return <option value={item.sku}>{item.sku}</option>
-                                    })
-                                  }
-                      </Form.Select>
+                          <option value={selectedClientSkuName[index] === "" && ""}>Select SKU name</option>
+                          {clientsSkuList && clientsSkuList.map(item => {
+                            return <option value={item.sku}>{item.sku}</option>
+                          })
+                          }
+                        </Form.Select>
 
 
-                      <Form.Control
-                              type="text"
-                              value={skuClientNumebr[index] || ""}
-                              onChange={(e) => handleInputChange(e, index)}
-                      />
+                        <Form.Control
+                          type="text"
+                          value={skuClientNumebr[index] || ""}
+                          onChange={(e) => handleInputChange(e, index)}
+                        />
                       </div>
-                      
-                      <Button onClick={(e) => addNewClientSku(e,index)}>Save</Button>
+
+                      <Button onClick={(e) => addNewClientSku(e, index)}>Save</Button>
 
                       <Table>
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Client SKU</th>
-                          <th>Number</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {clientsSkus[index] && clientsSkus[index].map((skus, i) => {
-                          return <tr>
-                            <td>{i + 1}</td>
-                            <td>{skus.name}</td>
-                            <td>{skus.number}</td>
-                            <td><i onClick={() => removeClientSku(index, i)} className="bi bi-x-circle close"></i></td>
-                          </tr> 
-                        })}
-                      </tbody>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Client SKU</th>
+                            <th>Number</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {clientsSkus[index] && clientsSkus[index].map((skus, i) => {
+                            return <tr>
+                              <td>{i + 1}</td>
+                              <td>{skus.name}</td>
+                              <td>{skus.number}</td>
+                              <td><i onClick={() => removeClientSku(index, i)} className="bi bi-x-circle close"></i></td>
+                            </tr>
+                          })}
+                        </tbody>
                       </Table>
                     </Form.Group>
 

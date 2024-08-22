@@ -215,7 +215,7 @@ const ProductDetailsPageComponent = ({
       // }
 
       clientsSkuList && clientsSkuList.map(skuName => {
-        if (skuName.sku.toLowerCase().includes(userData.location.replace(/\s+/g, '').toLowerCase())) {
+        if (skuName.sku.toLowerCase().includes(userData.location?.replace(/\s+/g, '').toLowerCase())) {
           setClientSkuName(skuName.sku);
         }
       })

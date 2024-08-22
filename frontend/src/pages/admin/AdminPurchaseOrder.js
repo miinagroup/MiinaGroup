@@ -18,6 +18,11 @@ const AdminPurchaseOrder = () => {
     return data;
   };
 
+  const updatePOStatus = async (order) => {
+    const { data } = await axios.put(`/api/purchaseOrders/updateStatus`, { order });
+    return data;
+  };
+
   const deletePurchaseOrder = async (orderId, itemId) => {
     const { data } = await axios.delete("/api/purchaseOrders/delete/" + orderId);
     if (data) {
@@ -31,6 +36,7 @@ const AdminPurchaseOrder = () => {
       getOrders={getOrders}
       updatePO={updatePO}
       deletePurchaseOrder={deletePurchaseOrder}
+      updatePOStatus={updatePOStatus}
     />
   );
 };

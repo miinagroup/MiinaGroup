@@ -20,12 +20,15 @@ const CartItemForUserPreviewComponent = ({ item }) => {
   };
 
   useEffect(() => {
-    const fetchSLRSKU = async () => {
-      const fetchedSLRSKU = await getSLRSKUByCTLSKU(ctlsku);
-      setClientSKU(fetchedSLRSKU);
-    };
+    if (!item.cartProducts[0].attrs.includes("UNIFORM")) {
+      const fetchSLRSKU = async () => {
+        const fetchedSLRSKU = await getSLRSKUByCTLSKU(ctlsku);
+        setClientSKU(fetchedSLRSKU);
+      };
 
-    fetchSLRSKU();
+      fetchSLRSKU();
+    }
+
   }, [ctlsku]);
 
   return (

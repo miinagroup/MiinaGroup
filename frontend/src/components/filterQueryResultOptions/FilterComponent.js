@@ -53,8 +53,8 @@ const FilterComponent = () => {
       link: "ELECTRICAL",
     },
     {
-      label: "PROCESSING",
-      link: "PROCESSING",
+      label: "MINING",
+      link: "MINING",
     },
   ];
   const [subCategory, setSubCategory] = useState({});
@@ -101,7 +101,7 @@ const FilterComponent = () => {
     <div className="accordion_container">
       {mainCategory.map((main, idx) => {
         return (
-          <div className="accordion" key={main+idx}>
+          <div className="accordion" key={main + idx}>
             <div className="accordion-header">
               <a
                 className="btn"

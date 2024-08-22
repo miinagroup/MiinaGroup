@@ -6,25 +6,25 @@ const UserOrderItemForOrderPageComponent = (id) => {
 
   const [cartItems, setCartItems] = useState([]);
   const [backOrderStatus, setBackOrderStatus] = useState(false);
-    
+
   useEffect(() => {
     const getOrder = async (id) => {
-        try {
-            const {data} = await axios.get("/api/orders/user/" + id.id);
-            setCartItems(data.cartItems);
-            setBackOrderStatus(data.backOrder)
-        } catch (e) {
-            console.log(e);
-        }
+      try {
+        const { data } = await axios.get("/api/orders/user/" + id.id);
+        setCartItems(data.cartItems);
+        setBackOrderStatus(data.backOrder)
+      } catch (e) {
+        console.log(e);
+      }
     };
     getOrder(id);
   }, [id]);
 
   // console.log(cartItems);
-  
+
 
   return (
-    <table style={{ width: "95%", marginLeft:"3%", marginTop:"2%", marginBottom:"2%"  }}>
+    <table style={{ width: "95%", marginLeft: "3%", marginTop: "2%", marginBottom: "2%" }}>
       <thead>
         <tr>
           <th style={{ width: "10%" }}></th>
@@ -38,8 +38,8 @@ const UserOrderItemForOrderPageComponent = (id) => {
         </tr>
       </thead>
       {cartItems.map((item, idx) => (
-          <CartItemForUserPreviewComponent key={idx} item={item} backOrderStatus={backOrderStatus}/>
-        ))}
+        < CartItemForUserPreviewComponent key={idx} item={item} backOrderStatus={backOrderStatus} />
+      ))}
     </table>
   );
 };
