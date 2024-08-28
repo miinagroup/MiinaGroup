@@ -232,7 +232,7 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     orders.map((order) => {
       const month = new Date(order.createdAt).getMonth();
       const year = new Date(order.createdAt).getFullYear();
-      console.log(thisYear, year, thisMonth, month);
+      // console.log(thisYear, year, thisMonth, month);
       if (month === thisMonth && year === thisYear) {
         totalValue = totalValue + order.orderTotal.cartSubtotal
       }

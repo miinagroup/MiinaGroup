@@ -582,13 +582,13 @@
 .priceRange {
   background-color: rgb(203, 232, 245);
   width: 300px;
-  height: 120px;
+  height: 150px;
   float: right;
   border-radius: 1rem;
 }
 .priceRange_item {
   width: 100%;
-  margin-left: 35px;
+  margin-left: 15px;
   margin-top: 5px;
 }
 
