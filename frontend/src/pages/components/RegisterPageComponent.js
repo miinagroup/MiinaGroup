@@ -52,6 +52,7 @@ const RegisterPageComponent = ({
     { company: "CTL AUSTRALIA", sites: ['PERTH', 'EMBLETON', 'CANNINGTON', 'China', 'India'] },
     { company: "FOCUS MINERALS OPERATIONS", sites: ['THREE MILE HILL COOLGARDIE', 'COOLGARDIE GOLD OPERATIONS'] },
     { company: "EVOLUTION MINING (MUNGARI)", sites: ['MUNGARI'] },
+    { company: "RED 5 LIMITED", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'] }
   ])
   const [selectedSites, setSelectedSites] = useState({})
 
@@ -88,7 +89,7 @@ const RegisterPageComponent = ({
 
     // }
     /* 下面是一些form里面的判定 validation的判定 */
-    console.log(company, location);
+    //console.log(company, location);
     if ((location === "") && (company !== "")) {
       alert("Please Select Your Site")
     } else if (
@@ -250,6 +251,12 @@ const RegisterPageComponent = ({
             setSelectedSites(userSites[3])
             setUserLocation(userSites[3].sites[0])
             break;
+          case 'red5limited.com.au':
+            setUserCompany("RED 5 LIMITED")
+            setSelectedSites(userSites[4])
+            setUserLocation(userSites[4].sites[0])
+            //handleSelectedSites("SILVERLAKE RESOURCES")
+            break;
           default:
             // setUserCompany(tempCompany)
             // setUserLocation(tempCompany+"site-1")
@@ -349,6 +356,8 @@ const RegisterPageComponent = ({
                   name="phone"
                   pattern="[0-9]*"
                   placeholder="Phone Number"
+                  style={{ display: "none" }}
+                  value="12345678"
                 />
                 <Form.Control.Feedback type="invalid">
                   Please enter phone number.{" "}
@@ -360,6 +369,8 @@ const RegisterPageComponent = ({
                   type="text"
                   name="role"
                   placeholder="Job Title"
+                  style={{ display: "none" }}
+                  value="Employee"
                 />
                 <Form.Control.Feedback type="invalid">
                   Please mention your Job Title.{" "}

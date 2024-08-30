@@ -52,6 +52,7 @@ const RegisterPageComponentMobile = ({
     { company: "CTL AUSTRALIA", sites: ['PERTH', 'EMBLETON', 'CANNINGTON', 'China', 'India'] },
     { company: "FOCUS MINERALS OPERATIONS", sites: ['THREE MILE HILL COOLGARDIE', 'COOLGARDIE GOLD OPERATIONS'] },
     { company: "EVOLUTION MINING (MUNGARI)", sites: ['MUNGARI'] },
+    { company: "RED 5 LIMITED", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'] }
   ])
   const [selectedSites, setSelectedSites] = useState({})
 
@@ -211,6 +212,12 @@ const RegisterPageComponentMobile = ({
             setSelectedSites(userSites[3])
             setUserLocation(userSites[3].sites[0])
             break;
+          case 'red5limited.com.au':
+            setUserCompany("RED 5 LIMITED")
+            setSelectedSites(userSites[4])
+            setUserLocation(userSites[4].sites[0])
+            //handleSelectedSites("SILVERLAKE RESOURCES")
+            break;
           default:
             // setUserCompany(tempCompany)
             // setUserLocation(tempCompany)
@@ -330,7 +337,7 @@ const RegisterPageComponentMobile = ({
               </Form.Group>
             </Row>
 
-            <Row>
+            <Row style={{ display: "none" }}>
               <Form.Group as={Col} md="4" controlId="formBasicPhone" className={styles.form_row}>
                 <Form.Label className={styles.form_label}>Phone number</Form.Label>
                 <Form.Control
@@ -341,6 +348,8 @@ const RegisterPageComponentMobile = ({
                   placeholder="Phone Number"
                   size="sm"
                   className="mb-2"
+                  style={{ display: "none" }}
+                  value="12345678"
                 />
                 <Form.Control.Feedback type="invalid">
                   Please enter phone number.{" "}
@@ -355,6 +364,8 @@ const RegisterPageComponentMobile = ({
                   placeholder="Job Title"
                   size="sm"
                   className="mb-2"
+                  style={{ display: "none" }}
+                  value="Employee"
                 />
                 <Form.Control.Feedback type="invalid">
                   Please mention your Job Title.{" "}
