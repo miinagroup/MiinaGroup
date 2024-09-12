@@ -16,10 +16,11 @@ const ProductsPageComponent = ({
   deleteProduct,
   productReplenishment,
   productStockTake,
+  getOrders,
 }) => {
   const [products, setProducts] = useState([]);
   const [productDeleted, setProductDeleted] = useState(false);
-
+  const [orders, setOrders] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -147,24 +148,64 @@ const ProductsPageComponent = ({
     return () => abctrl.abort();
   }, [productDeleted, itemsPerPage]);
 
+  useEffect(() => {
+    getOrders()
+      .then((res) => setOrders(res))
+      .catch((er) => {
+        if (er.code === "ERR_CANCELED") {
+        } else if (er.response) {
+          console.log(
+            er.response.data.message
+              ? er.response.data.message
+              : er.response.data
+          );
+        } else {
+          console.log(er);
+        }
+      })
+  }, [productDeleted])
+
   const [productsCount, setProductsCount] = useState([])
   useEffect(() => {
     if (products) {
       productsCount.length = 0
       let productsWithoutPrice = []
       let productsWithPrice = []
+      let productsWithoutImage = []
       products?.map((product) => {
         if (product.displayPrice === 0 || product.displayPrice === null) {
           productsWithoutPrice.push(product)
         } else {
           productsWithPrice.push(product)
         }
+        if (product.images) {
+          product.images.map((image) => {
+            if (image.path.includes("Image_Coming_Soon.jpg")) {
+              productsWithoutImage.push(product)
+            }
+          })
+        }
       })
+      console.log(productsWithoutImage);
+
+      let productsWithoutImageInOrders = []
+      productsWithoutImage?.map((product) => {
+        orders?.map((order) => {
+          order.cartItems?.map((cartItem) => {
+            if (cartItem.productId === product._id)
+              productsWithoutImageInOrders.push(product)
+          })
+        })
+      })
+      console.log("productsWithoutImageInOrders", productsWithoutImageInOrders);
+
       setProductsCount([...productsCount,
       {
         totalProductsCount: products.length,
         productsWithPriceCount: productsWithPrice.length,
-        productsWithoutPriceCount: productsWithoutPrice.length
+        productsWithoutPriceCount: productsWithoutPrice.length,
+        productsWithoutImage: productsWithoutImage.length,
+        productsWithoutImageInOrders: productsWithoutImageInOrders.length
       }])
     }
   }, [products])
@@ -217,6 +258,9 @@ const ProductsPageComponent = ({
           <div className="priceRange_item">Total Products : <label style={{ fontWeight: "bold" }}> {productsCount[0]?.totalProductsCount}</label> </div>
           <div className="priceRange_item">Products With Pricing : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithPriceCount}</label></div>
           <div className="priceRange_item">Products Without Pricing : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutPriceCount}</label></div>
+          <div className="priceRange_item">Products Without Images : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImage}</label></div>
+          <div className="priceRange_item">Products Without Images in Orders : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImageInOrders}</label></div>
+
         </div>
         <h1>
           Product List{" "}

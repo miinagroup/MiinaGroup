@@ -83,6 +83,8 @@ const registerUser = async (req, res, next) => {
       // verify email address if end with slrltd.com
       if (
         (email.endsWith("@slrltd.com") ||
+          email.endsWith("@silverlakeresources.com.au") ||
+          email.endsWith("@red5limited.com.au") ||
           email.endsWith("@ctlservices.com.au") ||
           email.endsWith("@ctlaus.com") ||
           email.endsWith("@focusminerals.com.au") ||
@@ -96,6 +98,8 @@ const registerUser = async (req, res, next) => {
           category: "verifyEmail",
         }).save();
         const url = `${process.env.BASE_URL}user/${user.id}/verify/${token.token}`;
+        console.log(url);
+
         await sendVerificationEmail(user.email, "Verify Email", url);
       }
 

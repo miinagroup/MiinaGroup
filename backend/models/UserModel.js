@@ -20,9 +20,11 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
+      required: false,
     },
     mobile: {
       type: String,
+      required: false,
     },
     location: {
       type: String,
@@ -34,6 +36,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
+      required: false,
     },
     address: {
       type: String,
