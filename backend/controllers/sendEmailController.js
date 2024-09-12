@@ -23,6 +23,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const testTransporter = nodemailer.createTransport({
+  host: "mail.problematic.com.au",
+  port: 465,
+  secure: true, 
+  auth: {
+      user: process.env.PMEMAIL,
+      pass: process.env.PMEMAILPASSWORD,
+  },
+});
+
 const ctlSales = nodemailer.createTransport({
   host: "smtp.office365.com",
   port: 587,
@@ -922,6 +932,56 @@ const sendPOPDF = async (req, res, next) => {
   }
 };
 
+const sendRequest = async (req, res, next) => {
+  try {
+    if(req.body.categoryTypeSelectId === "quote") {
+       let file = null;
+        if (req.files && req.files.file) {
+          file = req.files.file[0];
+        }
+
+    let message = {
+      from: req.body.email,
+      to: process.env.PMEMAIL,
+      subject: `Quote New Products: ${req.body.productName}`,
+      text: `
+      This is: ${req.body.name},
+      Please find the product for us: ${req.body.productName},
+      Product Brand / Product code / SKU: ${req.body.brand}
+      Product Description: ${req.body.description}`,
+    };
+
+    if (file) {
+      message.attachments = [
+        {
+          filename: file.name,
+          content:file.data,
+        },
+      ];
+    }
+
+    await testTransporter.sendMail(message);
+
+    } else {
+      let message = {
+        from: req.body.email,
+        to: process.env.PMEMAIL,
+        subject: "General request",
+        text: `
+      This is: ${req.body.name}
+      Please see the request below: ${req.body.textarea}`,
+      };
+  
+      await testTransporter.sendMail(message);
+    }
+
+    res.status(200).json({ message: "Email sent successfully" });
+
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   quoteProduct,
   quotePrice,
@@ -933,4 +993,5 @@ module.exports = {
   sendQuotePDF,
   newUserNoticeToJosh,
   sendPOPDF,
+  sendRequest
 };

@@ -1,0 +1,48 @@
+.textBlock {
+    width: 100%;
+    max-width: 240px;
+}
+
+.titleTextBlock {
+    font-weight: 400;
+    font-size: 40px;
+}
+
+.textBlock hr {
+    border: 1px solid black;
+    opacity: 1;
+}
+
+.subTitleTextBlock {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.descriptionTextBlock {
+    font-weight: 300;
+    font-size: 17px;
+}
+
+@media (max-width: 1024px) {
+
+    .textBlock {
+        max-width: 100px;
+    }
+
+    .titleTextBlock {
+        font-size: 30px;
+    }
+
+    hr {
+         margin: 0;
+    }
+
+    .subTitleTextBlock {
+        font-size: 14px;
+    }
+
+    
+.descriptionTextBlock {
+    font-size: 12px;
+}
+}

@@ -4,6 +4,48 @@ const Product = require("../models/ProductModel");
 const cron = require("node-cron");
 const moment = require("moment-timezone");
 
+const mainCategory = [
+  {
+    label: "PPE",
+    link: "PPE",
+  },
+  {
+    label: "SITE SAFETY",
+    link: "SITE-SAFETY",
+  },
+  {
+    label: "POWER/AIR",
+    link: "POWER-AIR",
+  },
+  {
+    label: "HAND TOOLS",
+    link: "HAND-TOOLS",
+  },
+  {
+    label: "INDUSTRIAL",
+    link: "INDUSTRIAL",
+  },
+  // {
+  //   label: "FABRICATION",
+  //   link: "FABRICATION",
+  // },
+  {
+    label: "MECHANICAL",
+    link: "MECHANICAL",
+  },
+  {
+    label: "ELECTRICAL",
+    link: "ELECTRICAL",
+  },
+  {
+    label: "MINING",
+    link: "MINING",
+  },
+  {
+    label: "QUOTE",
+    link: "QUOTE",
+  },
+];
 
 const getCategories = async (req, res, next) => {
   try {
@@ -14,9 +56,42 @@ const getCategories = async (req, res, next) => {
   }
 };
 
+const getSubcategoriesT2 = async (req, res, next ) => {
+  try {
+    let subCategories = {};
+
+    const categories = await Category.find({});
+
+    const mainLinks = mainCategory.map((category) => category.link);
+
+    categories?.forEach((category) => {
+      if (!category.display) {
+        return;
+      }
+
+      const parts = category.name.split("/");
+
+      if (mainLinks.includes(parts[0])) {
+        if (parts.length >= 2) {
+          if (!subCategories[parts[0]]) {
+            subCategories[parts[0]] = [];
+          }
+          if (!subCategories[parts[0]].includes(parts[1])) {
+            subCategories[parts[0]].push(parts[1]);
+          }
+        }
+      }
+    });
+    res.json(subCategories);
+  } catch (error) {
+    
+  }
+}
+
 const getT1Categories = async (req, res, next) => {
   try {
     const categories = await Category.find({}).sort({ name: "asc" }).orFail();
+    console.log(categories)
     res.json(categories);
   } catch (error) {
     next(error);
@@ -347,4 +422,5 @@ module.exports = {
   saveAttr,
   categoriesForProductList,
   updateCategoryDisplay,
+  getSubcategoriesT2
 };

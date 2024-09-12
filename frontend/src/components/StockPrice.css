@@ -21,7 +21,7 @@
   display: flex;
   justify-content: end;
   white-space: nowrap;
-  animation: stocksMarquee 200s linear infinite;
+  animation: stocksMarquee 300s linear infinite;
 }
 
 

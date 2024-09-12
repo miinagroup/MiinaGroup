@@ -10,8 +10,11 @@ const {
   quoteCompletedNotice,
   sendQuotePDF,
   sendPOPDF,
+  sendRequest
 } = require("../controllers/sendEmailController");
 const { verifyIsLoggedIn } = require("../middleware/verifyAuthToken");
+
+router.post("/sendRequest", sendRequest);
 
 router.use(verifyIsLoggedIn);
 

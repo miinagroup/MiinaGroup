@@ -1,0 +1,498 @@
+.headerNewWrapper {
+    padding: 15px 50px;
+}
+
+.headerNew {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url("../../../../../public/images/headerBackground_5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: #073474;
+}
+
+.headerNewLogo {
+    width: 100%;
+    max-width: 420px;
+}
+
+.logoContainer {
+    width: 300px;
+    display: flex;
+    align-items: center;
+}
+
+.hexagonlogo {
+    width: 80px;
+    height: auto;
+}
+
+.hexagontext {
+    width: 300px;
+    height: auto;
+    margin-left: 10px;
+}
+
+.headerNewMenu {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.navMenu {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    gap: 25px;
+    justify-content: flex-end;
+}
+
+.navMenu button {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #073474;
+    padding: 0px;
+}
+
+.navMenu button:hover {
+    text-decoration: underline;
+}
+
+.headerNewBtns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.searchFieldNew {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 560px;
+}
+
+.inputFeild {
+    padding: 10px 15px;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid #073474;
+    color: #073474;
+}
+
+input {
+    caret-color: #073474;
+}
+
+::placeholder {
+    color: #073474;
+    opacity: 0.5;
+}
+
+.inputFeild:focus {
+    border-color: #86b7fe;
+    outline: 0;
+}
+
+.headerNewBtnsQuoteLogin {
+    display: flex;
+    align-items: center;
+}
+
+.iconNew {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    border: none;
+    background-color: transparent;
+    color: #073474;
+}
+
+.iconNew button {
+    padding: 0px;
+}
+
+.inputFeild:focus .iconNew {
+    color: #86b7fe;
+}
+
+.btnQuote {
+    font-size: 14px;
+    width: 100%;
+    max-width: 120px;
+    color: red;
+    font-weight: bold;
+    background-color: transparent;
+    border: 2px solid red;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.logRegNew {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-width: 150px;
+    background-color: transparent;
+    border: none;
+    color: #073474;
+}
+
+.user_cart {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.newHeaderLogInIcon {
+    padding: 0;
+}
+
+.mobile {
+    display: none;
+}
+
+@media (max-width: 1824px) {
+
+    .headerNewWrapper {
+        padding: 15px 25px;
+    }
+
+    .searchFieldNew {
+        max-width: 350px;
+    }
+
+    .navMenu {
+        max-width: 400px;
+    }
+  }
+
+  @media (max-width: 1515px) {
+
+    .headerNewWrapper {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+
+    .navMenu {
+        max-width: 300px;
+        gap: 10px
+    }
+
+    .headerNewBtns {
+        justify-content: center;
+    }
+
+    ::placeholder {
+        font-size: 12px;
+    }
+  }
+
+  @media (max-width: 1300px) {
+
+    .headerNewMenu {
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        position: relative;
+        gap: 10px;
+    }
+
+    .navMenu {
+        max-width: 290px;
+        gap: 0px;
+        justify-content: space-between;
+  }
+
+  .headerNewBtns {
+    position: relative;
+    justify-content: flex-end;
+  }
+
+  .searchFieldNew {
+    position: absolute;
+    top: 10px;
+    left: 35px;
+  }
+
+  .logRegNew {
+    padding: 0px;
+  }
+
+  .searchFieldNew {
+    left: 0;
+}
+}
+
+@media (max-width: 1025px) {
+    .searchFieldNew {
+        left: -70px;
+        max-width: 275px;
+    }
+
+    .hexagonlogo {
+        width: 60px
+    }
+
+    .hexagontext {
+        width: 250px;
+    }
+
+    ::placeholder {
+        font-size: 12px;
+    }
+
+    .btnQuote {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .user_cart {
+        gap: 5px
+    }
+
+    .headerNewBtnsLoggedIn {
+        gap: 0px
+    }
+
+}
+
+@media (max-width: 900px) {
+    .hexagonlogo {
+        width: 50px;
+    }
+
+    .hexagontext {
+        width: 200px;
+    }
+
+    .headerNewBtns {
+        gap: 15px;
+        max-width: 250px;
+    }
+
+    .headerNewLoggedIn .headerNewBtns {
+        gap: 10px;
+        max-width: 200px;
+    }
+
+    .searchFieldNew {
+        left: -255px;
+        top: 0px;
+    }
+
+    .headerNewLoggedIn .headerNewMenu {
+        flex-direction: row;
+    }
+
+    .headerNewBtnsLoggedIn {
+        flex-direction: column;
+    }
+
+    .headerNewLoggedIn .headerNewLogo {
+        flex: 1;
+        max-width: 420px;
+    }
+
+    .headerNewLoggedIn .navMenu {
+        max-width: 300px;
+    }
+
+    .headerNewLoggedIn .searchFieldNew {
+        width: 265px;
+        left: -270px;
+    }
+
+    .user_cart {
+        gap: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .headerNew {
+        font-size: 12px;
+    }
+
+    .hexagonlogo {
+        width: 40px;
+    }
+
+    .hexagontext {
+        width: 165px;
+    }
+
+    .headerNewBtns {
+        gap: 15px;
+        max-width: 240px;
+    }
+
+    .searchFieldNew {
+        left: -257px;
+        top: 0px;
+    }
+ 
+    .btnQuote {
+        font-size: 12px;
+        padding: 0px 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .headerNewLoggedIn .headerNewMenu {
+        flex-direction: row;
+    }
+
+    .headerNewLoggedIn .headerNewMenu {
+        flex-direction: row;
+    }
+
+    .headerNewBtnsLoggedIn {
+        flex-direction: column;
+    }
+
+    .headerNewLoggedIn .headerNewLogo {
+        flex: 1;
+        max-width: 420px;
+    }
+
+    .headerNewLoggedIn .navMenu {
+        max-width: 300px;
+    }
+
+    .headerNewLoggedIn .searchFieldNew {
+        width: 265px;
+        left: -270px;
+    }
+
+    .user_cart {
+        gap: 5px;
+    }
+
+    .headerNewLoggedIn .headerNewBtns {
+        gap: 10px;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+    
+    .headerNewWrapper {
+        padding: 5px 15px;
+        font-size: 12px;
+    }
+
+    .headerNew {
+         gap: 10px;
+         margin-bottom: 10px;
+   
+    }
+
+    .headerNewLogo {
+        position: relative;
+        justify-content: flex-start;
+    }
+
+    .logoContainer {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .hexagonlogo {
+        width: 35px;
+    }
+
+    .hexagontext {
+        width: 145px;
+    }
+
+    .headerNewBtns {
+        justify-content: space-between;
+    }
+
+    .searchFieldNew {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .headerNewLoggedIn .searchFieldNew {
+        position: relative;
+        width: 210px;
+        left: 0px;
+    }
+
+    .btnQuote {
+        font-size: 10px;
+        max-width: 80px;
+        padding: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+        display: none;
+    }
+
+    .logRegNew {
+        justify-content: space-between;
+        max-width: 115px;
+    }
+
+    .miningCart img {
+        width: 25px !important;
+    }
+
+    .Avtbox {
+        width: 25px !important;
+        font-size: 16px !important;
+        height: auto !important;
+    }
+
+    .miningCart svg {
+        font-size: 18px !important;
+    }
+
+    .headerNewLoggedIn .headerNewBtns {
+        flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+    }
+
+    .headerNewBtns {
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+
+    .inputFeild {
+        padding: 5px 10px;
+    }
+
+    .iconNew {
+        right: 0px;
+        top: 3px;
+    }
+
+    .iconNew i {
+        font-size: 16px !important;
+    }
+}

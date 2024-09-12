@@ -1,0 +1,27 @@
+.stockNegativePrice {
+    padding: 5px 10px;
+    background: rgba(223, 5, 1, 0.1);
+    border-radius: 5px;
+}
+
+.stockPositivePrice {
+    padding: 5px 10px;
+    background: rgba(24, 129, 15, 0.1);
+    border-radius: 5px;
+}
+
+.wrapper {
+    position: relative;
+    white-space: nowrap;
+    padding: 0;
+    will-change: transform;
+    display:flex;
+    gap: 10px;
+    margin-right: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .wrapper {
+      font-size: 14px;
+    }
+  }

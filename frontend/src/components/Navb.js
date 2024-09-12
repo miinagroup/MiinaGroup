@@ -6,8 +6,8 @@ import "./page.css";
 import { mainCategory } from "./NavbMainCategories";
 import axios from "axios";
 
-const SubCategory = ({ mainLink, sub, childCategory, userInfo }) => (
-  <>
+const SubCategory = ({ mainLink, sub, childCategory, userInfo }) => { 
+return   <>
     <li className="subCat">
       {userInfo && Object.keys(userInfo).length > 0 ? (
         <a
@@ -27,12 +27,12 @@ const SubCategory = ({ mainLink, sub, childCategory, userInfo }) => (
       </li>
     ))} */}
   </>
-);
+};
 
 const Navb = () => {
   const categories = useSelector((state) => state.getCategories.categories);
+  const subcategories = useSelector((state) => state.getCategories.subcategories);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -98,6 +98,10 @@ const Navb = () => {
         }
       }
     });
+
+    console.log(subCategories);
+    console.log(childCategories);
+    
 
     let subCategories1 = {};
     let subCategories2 = {};

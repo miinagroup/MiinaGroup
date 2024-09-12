@@ -14,7 +14,20 @@ export const getCategories = () => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
+}
 
+export const getSubcategories = () => async (dispatch) => {
+    try {
+        const { data } = await axios.get("/api/categories/subcategories");
+        dispatch({
+            type: actionTypes.GET_SUBCATEGORIES_REQUEST,
+            payload: data,
+        })
+        localStorage.removeItem("subcategories")
+        localStorage.setItem("subcategories", JSON.stringify(data));
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export const getT1Categories = () => async (dispatch) => {

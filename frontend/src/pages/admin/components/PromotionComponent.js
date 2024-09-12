@@ -28,15 +28,26 @@ const PromotionComponent = ({ fetchPromotions }) => {
 
   console.log(promotions);
 
+  // const correctOrder = [
+  //   "video-1",
+  //   "upper-1",
+  //   "upper-2",
+  //   "video-2",
+  //   "bottom-1",
+  //   "bottom-2",
+  //   "bottom-3",
+  //   "bottom-4",
+  // ];
+
   const correctOrder = [
     "video-1",
     "upper-1",
     "upper-2",
-    "video-2",
+    "upper-3",
     "bottom-1",
     "bottom-2",
     "bottom-3",
-    "bottom-4",
+    "video-2"
   ];
 
   const sortDetails = (details) => {

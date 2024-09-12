@@ -28,6 +28,9 @@ const cartItemsInLocalStorage = localStorage.getItem("cart")
 const categoriesInLocalStorage = localStorage.getItem("categories")
   ? JSON.parse(localStorage.getItem("categories"))
   : [];
+  const subcategoriesInLocalStorage = localStorage.getItem("subcategories")
+  ? JSON.parse(localStorage.getItem("subcategories"))
+  : [];
 const userInfoInLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : sessionStorage.getItem("userInfo")
@@ -94,7 +97,12 @@ const INITIAL_STATE = {
   minerals: mineralsInLocalStorage,
   stocks: stocksInLocalStorage,
   weathers: weathersInLocalStorage,
-  getCategories: categoriesInLocalStorage,
+  getCategories: {
+    categories: categoriesInLocalStorage,
+    subcategories: subcategoriesInLocalStorage,
+  },
+  // getCategories: categoriesInLocalStorage,
+  // getSubcategories: subcategoriesInLocalStorage,
   products: productsInLocalStorage
 };
 

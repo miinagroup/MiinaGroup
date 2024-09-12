@@ -31,7 +31,7 @@ import {
   getStockPrices,
   getWeathers,
 } from "../redux/actions/mineralActions";
-import { getCategories } from "../redux/actions/categoryActions";
+import { getCategories, getSubcategories } from "../redux/actions/categoryActions";
 import QuoteComponentHeader from "./SendEmail/QuoteComponentHeader";
 import CartDropDown from "../pages/user/components/CartDropDown";
 import ForecastChart from "./ForecastChart";
@@ -101,6 +101,7 @@ const HeaderComponent = () => {
   useEffect(() => {
     reduxDispatch(getMineralPrices());
     reduxDispatch(getCategories());
+    reduxDispatch(getSubcategories());
     reduxDispatch(getStockPrices());
     reduxDispatch(fetchCartItemsLogin());
     reduxDispatch(getWeathers(userInfo?.location?.toUpperCase()));

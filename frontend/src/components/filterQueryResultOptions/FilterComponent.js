@@ -2,9 +2,10 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import qs from "qs";
 import "./Filter.css";
+import { getCategories } from "../../redux/actions/categoryActions";
 
 const FilterComponent = () => {
   const ColoredLine = (/* { color } */) => (
@@ -17,6 +18,11 @@ const FilterComponent = () => {
       }}
     />
   );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+dispatch(getCategories())
+  }, [])
 
   // const { categories } = useSelector((state) => state.getCategories);
   const categories = useSelector((state) => state.getCategories.categories);
@@ -57,6 +63,7 @@ const FilterComponent = () => {
       link: "MINING",
     },
   ];
+
   const [subCategory, setSubCategory] = useState({});
 
   useEffect(() => {

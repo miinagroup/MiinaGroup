@@ -87,6 +87,7 @@ import Navb from "./components/Navb";
 import FooterComponent from "./components/FooterComponent";
 import PDFPreviewForVisitor from "./pages/user/components/HomePageForVisitors/PDFPreviewForVisitor.js";
 import HomePageForVisitor from "./pages/HomePageForVisitor.js";
+import HomePageForVisitorNew from "./pages/HomePageForVisitorNew.js";
 import CreditApplication from "./pages/user/components/FooterComponents.js/CreditApplication.js";
 import SupplieCodeOfConduct from "./pages/user/components/FooterComponents.js/SupplieCodeOfConduct.js";
 import AdminEditNews from "./pages/admin/AdminEditNews.js";
@@ -137,6 +138,7 @@ function App() {
             path="/user/:id/resetPassword/:token"
             element={<ResetPassword />}
           />
+          
           <Route element={<ProtectedRoutesComponent role="visitor" />}>
             <Route path="/unfortunately" element={<Unfortunately />} />
             <Route path="/FaqPage" element={<FaqPage />} />
@@ -148,7 +150,9 @@ function App() {
               element={<CreditApplication />}
             />
             <Route path="/scodeofc" element={<SupplieCodeOfConduct />} />
-            <Route path="/" element={<HomePageForVisitor />} />
+            {/* <Route path="/" element={<HomePageForVisitor />} /> */}
+            <Route path="/" element={<HomePageForVisitorNew />} />
+            <Route path="/product-list" element={<ProductListPage />} />
           </Route>
 
           {/* Mobile version for a visitor */}
@@ -156,7 +160,8 @@ function App() {
 
           {/* publicly available routes: */}
           <Route element={<ProtectedRoutesComponent role="user" />}>
-            <Route path="/home" element={<HomePage />} />
+            {/* <Route path="/home" element={<HomePage />} /> */}
+            <Route path="/" element={<HomePageForVisitorNew />} />
             <Route path="/product-list" element={<ProductListPage />} />
             <Route
               path="/product-details/:id"

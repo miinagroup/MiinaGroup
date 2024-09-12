@@ -1,0 +1,152 @@
+.newFooter {
+        background-image: url("../../../../../public/images/headerBackground_5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    padding: 20px 40px 20px 40px;
+    margin: 0 auto;
+
+    position: absolute;
+    height: 206px;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.footerWrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 70px;
+}
+
+.newFooterHelpCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 140px;
+    margin-bottom: 10px;
+}
+
+.footerTitle {
+    font-weight: bold;
+    padding-bottom: 5px;
+    width: 100%;
+    max-width: 140px;
+}
+
+.footerBtns {
+        display: flex;
+        width: 100%;
+        max-width: 150px;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        position: relative;
+}
+
+.footerBtns svg {
+    width: 30px;
+    height: 30px;
+    color: #073474;
+    cursor: pointer;
+  }
+
+.copyrightText {
+    font-weight: bold;
+    color: #073474;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.newListFooter {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.newListFooter div {
+    list-style: none;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transform: all 0.3s ease-in-out;
+}
+
+.newListFooter a:hover {
+    text-decoration: underline;
+}
+
+.newListFooter a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo_container {
+    width: auto;
+    width: 100%;
+    max-width: 140px;
+    margin-top: 10px;
+}
+
+.logo_container img {
+    width: 25%;
+    height: 25%;
+}
+
+@media (max-width: 1024px) {
+    .copyright {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .logo_container {
+        margin-right: 0px;
+    }
+}
+
+@media (max-width: 480px) {
+    .newFooter {
+        font-size: 12px;
+    padding: 0px;
+    padding: 0px 30px 10px 30px;
+    }
+
+    .footerWrapper {
+        flex-direction: column;
+    gap: 20px;
+    padding: 0px;
+    }
+
+    .footerBtns {
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    .copyright {
+        flex-direction: column;
+    padding: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    }
+
+    .copyrightText {
+        font-size: 10px;
+    }
+
+    .footerBtns svg {
+        width: 20px;
+        height: 20px;
+
+    }
+
+    .newFooterHelpCenter {
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom:  0px;
+    }
+}
