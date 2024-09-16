@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/actions/cartActions";
 import "../pages/general.css";
 import QuotePriceComponent from "./SendEmail/QuotePriceComponent";
+import LoginRegisterPage from "../pages/LoginRegisterPage";
 
 const ProductForListComponent = ({
   productId,
@@ -46,6 +47,15 @@ const ProductForListComponent = ({
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+    const handleClose = () => {
+      setShowLoginModal(false);
+    };
+    const handleShow = (event) => {
+      event.preventDefault()
+      setShowLoginModal(true);
+      };
 
   // useEffect(() => {
   //   ReactGA.pageview(window.location)
@@ -324,6 +334,7 @@ const ProductForListComponent = ({
                     </span>
                   )}
                 </h6>}
+                {isUserInfo && <div className="btnLogin btnLoginText"><p>For price availability please</p><button onClick={handleShow} className="btn_blue">LogIn</button></div>}
               </div>
             </a>
             {
@@ -428,6 +439,9 @@ const ProductForListComponent = ({
             reduxDispatch={dispatch}
           />
         </Modal.Body>
+      </Modal>
+      <Modal show={showLoginModal} onHide={handleClose} className="login_preview_items">
+        <LoginRegisterPage />
       </Modal>
     </>
   );

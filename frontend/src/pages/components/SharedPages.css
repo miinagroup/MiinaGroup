@@ -57,6 +57,7 @@
   width: 200%;
   margin-left: -50%;
 }
+
 .btn_blue{
   background-color: #073474;
 }
@@ -70,6 +71,29 @@
     cursor: text;
     pointer-events: none;
     opacity: 0.60;
+}
+
+.btnLogin {
+   font-weight: 500;
+   color: red;
+}
+
+.btnLoginText p {
+  margin-bottom: 5px;
+}
+
+.btnLoginText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btnLogin button {
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 70px;
 }
 
 

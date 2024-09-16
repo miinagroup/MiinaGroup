@@ -30,6 +30,7 @@ import QuotePriceComponent from "../../components/SendEmail/QuotePriceComponent"
 import EditProductShortInforComponent from "../admin/components/EditProductShortInforComponent";
 import { useTrackEvents } from "../trackEvents/useTrackEvents";
 import ReturnProfitCalculator from "../ReturnProfitCalculator";
+import LoginRegisterPage from "../LoginRegisterPage";
 
 import "./SharedPages.css";
 
@@ -66,6 +67,16 @@ const ProductDetailsPageComponent = ({
   const [clientSkuName, setClientSkuName] = useState('');
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
+
+  
+  const [showLoginModal, setShowLoginModal] = useState(false);
+    const handleCloseLoginModal = () => {
+      setShowLoginModal(false);
+    };
+    const handleShowLoginModal = (event) => {
+      event.preventDefault()
+      setShowLoginModal(true);
+      };
 
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
@@ -928,6 +939,7 @@ const ProductDetailsPageComponent = ({
                             </>
                           )}
                         </h6>}
+                        {isUserInfo && <div className="btnLogin">For price availability please <button onClick={handleShowLoginModal} className="btn_blue">LogIn</button></div>}
                         <br />
                       </Col>
                     </Row>
@@ -1449,6 +1461,9 @@ const ProductDetailsPageComponent = ({
           productChanged={productChanged}
           refreshAfterEdit={refreshAfterEdit}
         />
+      </Modal>
+      <Modal show={showLoginModal} onHide={handleCloseLoginModal} className="login_preview_items">
+        <LoginRegisterPage />
       </Modal>
     </Container>
   );
