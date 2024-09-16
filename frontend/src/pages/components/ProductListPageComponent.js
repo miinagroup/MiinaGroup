@@ -27,6 +27,7 @@ const ProductListPage = ({
   fourCat = "",
   fiveCat = "",
   brandName = "",
+  userInfo
 }) => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
@@ -156,8 +157,9 @@ const ProductListPage = ({
               childCat,
               fourCat,
               fiveCat,
-              brandName
-            );
+              brandName,
+              userInfo
+            );         
             setProducts(products.products);
             setPaginationLinksNumber(products.paginationLinksNumber);
             setPageNum(products.pageNum);
@@ -174,7 +176,8 @@ const ProductListPage = ({
             childCat,
             fourCat,
             fiveCat,
-            brandName
+            brandName,
+            userInfo
           );
           setProductCategories([]);
           setProducts(products.products);

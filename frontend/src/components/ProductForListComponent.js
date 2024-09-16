@@ -45,6 +45,7 @@ const ProductForListComponent = ({
 
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
 
   // useEffect(() => {
   //   ReactGA.pageview(window.location)
@@ -309,7 +310,7 @@ const ProductForListComponent = ({
             <a href={`/product-details/${productId}`} className="w-100">
               <div className="card-body">
                 <h6 className="card-title mb-3 text-uppercase">{name}</h6>
-                <h6 className="card-price mb-0 mt-3 d-flex justify-content-center">
+                {!isUserInfo && <h6 className="card-price mb-0 mt-3 d-flex justify-content-center">
                   {price === 0 ? (
                     <span
                       // className="fw-bold"
@@ -319,10 +320,10 @@ const ProductForListComponent = ({
                     </span>
                   ) : (
                     <span className="" id={name.replace(/\s/g, "") + "_PRICE"}>
-                      Price: ${formattedPrice}
+                     Price: ${formattedPrice}
                     </span>
                   )}
-                </h6>
+                </h6>}
               </div>
             </a>
             {
@@ -340,7 +341,7 @@ const ProductForListComponent = ({
               ) : ("")
             }
 
-            {price === 0 ? (
+{!isUserInfo && <>{price === 0 ? (
               <QuotePriceComponent
                 quotePriceData={quotePriceData}
                 createQuote={createQuote}
@@ -399,14 +400,13 @@ const ProductForListComponent = ({
                           >
                             {buttonText}
                           </Button>
-
                         </>
                       )}
                     </div>
                   </div>
                 </div>
               </>
-            )}
+            )}</>}
           </div>
         </div>
       </div>

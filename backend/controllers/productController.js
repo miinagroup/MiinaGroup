@@ -6,6 +6,8 @@ const cron = require("node-cron");
 const moment = require("moment-timezone");
 const _ = require('lodash');
 
+const excludedSuppliers = ["PARAMOUNT-SAFETY", "SHEFFIELD"];
+
 const getCombinations = (array, length) => {
   let result = [];
   const f = (active, rest, length) => {
@@ -23,9 +25,96 @@ const getCombinations = (array, length) => {
   return result;
 };
 
+const getProductsVisitor = async (req, res, next) => {
+  try {
+    let query = {};
+    let queryCondition = false;
+    let categoryQueryCondition = {};
+    const categoryName = req.params.categoryName || "";
+    if (categoryName) {
+      queryCondition = true;
+      let a = categoryName.replace(/,/g, "/");
+      var regEx = null;
+      var subCategoryName = req.query.subCategoryName;
+      var childCategoryName = req.query.childCategoryName;
+      var fourCategoryName = req.query.fourCategoryName;
+      var fiveCategoryName = req.query.fiveCategoryName;
+      if (fiveCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "/" +
+          fiveCategoryName +
+          "(?:/|$)"
+        );
+      } else if (fourCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "(?:/|$)"
+        );
+      } else if (childCategoryName) {
+        regEx = new RegExp(
+          "^" + a + "/" + subCategoryName + "/" + childCategoryName + "(?:/|$)"
+        );
+      } else if (subCategoryName) {
+        regEx = new RegExp("^" + a + "/" + subCategoryName + "(?:/|$)");
+      } else {
+        regEx = new RegExp("^" + a);
+      }
+      categoryQueryCondition = { category: regEx };
+    }
+    const pageNum = Number(req.query.pageNum) || 1;
+    let sort = {};
+    const sortOption = req.params.sortOrder || "";
+    if (sortOption) {
+      let sortOpt = sortOption.split("_");
+      sort = { [sortOpt[0]]: Number(sortOpt[1]) };
+    }
+
+    if (queryCondition) {
+      query = {
+        $and: [
+          categoryQueryCondition,
+          { supplier: { $nin: excludedSuppliers } }
+        ],
+      };
+    }
+
+    let totalProducts = await Product.countDocuments(query);
+    let products = await Product.find(query)
+      // .select(select)
+      .skip(recordsPerPage * (pageNum - 1))
+      // .sort(sortCriteria)
+      .limit(recordsPerPage);
+
+      // products = products.filter((product) => product.category !== "QUOTE");
+
+      res.json({
+        products,
+        pageNum,
+        paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
+      });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
 const getProducts = async (req, res, next) => {
   try {
-    // console.log(req.user.siteSku);
     const userSiteSku = req.user.siteSku;
 
     let query = {};
@@ -340,6 +429,22 @@ const getProducts = async (req, res, next) => {
       }
     }
 
+    let suppliersCondition ={};
+
+    if (req.user.email.endsWith("@slrltd.com") ||
+    req.user.email.endsWith("@silverlakeresources.com.au") ||
+    req.user.email.endsWith("@red5limited.com.au") ||
+    req.user.email.endsWith("@ctlservices.com.au") ||
+    req.user.email.endsWith("@ctlaus.com") ||
+    req.user.email.endsWith("@focusminerals.com.au") ||
+    req.user.email.endsWith("@evolutionmining.com")) {
+      queryCondition = true;
+      suppliersCondition ={};
+    } else {
+      queryCondition = true;
+      suppliersCondition = { supplier: { $nin: excludedSuppliers } };
+    }
+
     if (queryCondition) {
       query = {
         $and: [
@@ -348,6 +453,7 @@ const getProducts = async (req, res, next) => {
           categoryQueryCondition,
           brandQueryCondition,
           searchQueryCondition,
+          suppliersCondition,
           ...attrsQueryCondition,
         ],
       };
@@ -389,7 +495,6 @@ const getProducts = async (req, res, next) => {
     /*     console.log("totalProducts", totalProducts);
         console.log("recordsPerPage", recordsPerPage);
         console.log(Math.ceil(totalProducts / recordsPerPage)); */
-
     res.json({
       products,
       pageNum,
@@ -1518,13 +1623,197 @@ const searchProducts = async (req, res, next) => {
       const regexQueries = query.map(term => new RegExp(term, 'i'));
       const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
 
+      let searchCondition = {}
+
+      if (req.user.email.endsWith("@slrltd.com") ||
+          req.user.email.endsWith("@silverlakeresources.com.au") ||
+          req.user.email.endsWith("@red5limited.com.au") ||
+          req.user.email.endsWith("@ctlservices.com.au") ||
+          req.user.email.endsWith("@ctlaus.com") ||
+          req.user.email.endsWith("@focusminerals.com.au") ||
+          req.user.email.endsWith("@evolutionmining.com")) {
+            
+            searchCondition = {
+              $or: [
+                { name: regexQueries },
+                { supplier: supplierFilters },
+                { description: regexQueries },
+                { tags: regexQueries }
+              ]
+            }
+    } else {
       searchCondition = {
         $or: [
           { name: regexQueries },
           { supplier: supplierFilters },
           { description: regexQueries },
           { tags: regexQueries }
-        ]
+        ],
+        $and: [{ supplier: { $nin: excludedSuppliers } }]
+      } 
+    }
+
+      const foundProducts = await Product.find(searchCondition);
+      const sortedProductsArray = sortByName(foundProducts);
+      const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
+
+      totalProducts = await Product.countDocuments(searchCondition);
+      products = productsPerPage;
+
+    } else if (!skuSearch && query.length >= 2) {
+      const regexQueries = query.map(term => new RegExp(term, 'i'));
+      let searchCondition = {}
+
+      if (req.user.email.endsWith("@slrltd.com") ||
+          req.user.email.endsWith("@silverlakeresources.com.au") ||
+          req.user.email.endsWith("@red5limited.com.au") ||
+          req.user.email.endsWith("@ctlservices.com.au") ||
+          req.user.email.endsWith("@ctlaus.com") ||
+          req.user.email.endsWith("@focusminerals.com.au") ||
+          req.user.email.endsWith("@evolutionmining.com")) {
+
+            searchCondition = regexQueries.map(regex => ({
+              $or: [
+                { name: regex },
+                { description: regex },
+                { supplier: regex },
+                { tags: regex }
+              ]
+            }));
+    } else {
+      searchCondition = regexQueries.map(regex => ({
+        $or: [
+          { name: regex },
+          { description: regex },
+          { supplier: regex },
+          { tags: regex }
+        ],
+        $and: [{ supplier: { $nin: excludedSuppliers } }]
+      }));      
+    }
+      
+      const foundProducts = await Product.find({ $and: searchCondition });
+      const sortedProductsArray = sortByName(foundProducts);
+      const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
+
+      totalProducts = await Product.countDocuments({ $and: searchCondition });
+      products = productsPerPage;
+
+    } else {
+      console.log("query", query)
+    }
+
+    const filetredProducst = _.uniqBy(products, 'id');
+
+    const productsNew = filetredProducst.filter((product) => product.category !== "QUOTE");
+
+    return res.json({
+      products: productsNew,
+      pageNum,
+      paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
+    });
+
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}
+
+const searchProductsForVisitor = async (req, res, next) => {
+  try {
+    let skuSearch = true;
+    const { searchQuery } = req.params;
+    const query = searchQuery.split(" ");
+    const pageNum = Number(req.query.pageNum) || 1;
+    const skip = (pageNum - 1) * recordsPerPage;
+    let totalProducts = 0;
+    let products = [];
+
+    function sortByName(array) {
+      let withQueryWordsInName = [];
+      let withoutQueryWordsInName = [];
+
+      query.map(word => {
+        array.map(product => {
+          let nameWords = product.name.toLowerCase().split(/\s+/);
+          if (nameWords.includes(word.toLowerCase())) {
+            if (!withQueryWordsInName.some(item => item.name === product.name)) {
+              return withQueryWordsInName.push(product);
+            }
+          } else {
+            return withoutQueryWordsInName.push(product);
+          }
+        });
+      });
+
+      const sortedWithQueryWordsInName = sortByNameArray(withQueryWordsInName);
+
+      return [...new Set([...sortedWithQueryWordsInName, ...withoutQueryWordsInName])]
+    }
+
+    function sortByNameArray(array) {
+      let lowerCaseQuery = query.map(word => word.toLowerCase());
+      let productsWithCounts = array.map(product => {
+        let nameWords = product.name.toLowerCase().split(/\s+/);
+        let count = lowerCaseQuery.reduce((acc, word) => {
+          if (nameWords.includes(word)) {
+            acc++;
+          }
+          return acc;
+        }, 0);
+        return { product: product, count: count };
+      });
+
+      productsWithCounts.sort((a, b) => b.count - a.count);
+      let sortedProducts = productsWithCounts.map(obj => obj.product);
+
+      return sortedProducts;
+    }
+
+    function getProductsbyPage(pageNumber, array) {
+      const startIndex = (pageNumber - 1) * recordsPerPage;
+      return array.slice(startIndex, startIndex + recordsPerPage);
+    }
+
+    // Search starts from SKU serach. And if the first word in query return 0, this search stops.
+    for (const word of query) {
+      const regex = new RegExp(`${word}`, "i");
+
+      searchCondition = {
+        $or: [
+          { "stock.slrsku": regex },
+          { "stock.ctlsku": regex },
+          { "stock.suppliersku": regex }
+        ],
+        $and: [{ supplier: { $nin: excludedSuppliers } }]
+      }
+
+      const productMatch = await Product.find(searchCondition).skip(skip).limit(recordsPerPage);
+      const totalProductsMatch = await Product.countDocuments(searchCondition);
+
+      if (productMatch.length === 0) {
+        skuSearch = false;
+        break;
+      } else {
+        products = products.concat(productMatch);
+        totalProducts = totalProducts += totalProductsMatch
+      }
+    }
+
+    // General search by supplier, name, description depending on how many words in search.
+    // Now search by tags doesn't work as field tag is not completed for a Product. It is for future. 
+    if (!skuSearch && query.length === 1) {
+      const regexQueries = query.map(term => new RegExp(term, 'i'));
+      const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
+
+      searchCondition = {
+        $or: [
+          { name: regexQueries },
+          { supplier: supplierFilters },
+          { description: regexQueries },
+          { tags: regexQueries }
+        ],
+        $and: [{ supplier: { $nin: excludedSuppliers } }]
       }
 
       const foundProducts = await Product.find(searchCondition);
@@ -1542,7 +1831,8 @@ const searchProducts = async (req, res, next) => {
           { description: regex },
           { supplier: regex },
           { tags: regex }
-        ]
+        ],
+        $and: [{ supplier: { $nin: excludedSuppliers } }]
       }));
 
       const foundProducts = await Product.find({ $and: searchCondition });
@@ -1557,9 +1847,10 @@ const searchProducts = async (req, res, next) => {
     }
 
     const filetredProducst = _.uniqBy(products, 'id');
+    const productsNew = filetredProducst.filter((product) => product.category !== "QUOTE");
 
     return res.json({
-      products: filetredProducst,
+      products: productsNew,
       pageNum,
       paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
     });
@@ -1592,5 +1883,7 @@ module.exports = {
   productsCheck,
   adminReplenishment,
   adminStockTake,
-  searchProducts
+  searchProducts,
+  getProductsVisitor,
+  searchProductsForVisitor
 };

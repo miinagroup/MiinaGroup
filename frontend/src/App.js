@@ -19,8 +19,6 @@ import ManageUniformUsersPage from "./pages/user/ManageUniformUsersPage";
 
 
 /* import LoginRegisterPage from "./pages/LoginRegisterPage"; */
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
 import LoginRegisterPage from "./pages/LoginRegisterPage";
 import SplashPage from "./pages/SplashPage";
 import FaqPage from "./pages/FaqPage";
@@ -82,11 +80,7 @@ import AdminUniformCartDetailsPage from "./pages/admin/AdminUniformCartDetailsPa
 import AdminEditUniformCartPage from "./pages/admin/AdminEditUniformCartPage.js";
 
 //components
-import HeaderComponent from "./components/HeaderComponent";
-import Navb from "./components/Navb";
-import FooterComponent from "./components/FooterComponent";
 import PDFPreviewForVisitor from "./pages/user/components/HomePageForVisitors/PDFPreviewForVisitor.js";
-import HomePageForVisitor from "./pages/HomePageForVisitor.js";
 import HomePageForVisitorNew from "./pages/HomePageForVisitorNew.js";
 import CreditApplication from "./pages/user/components/FooterComponents.js/CreditApplication.js";
 import SupplieCodeOfConduct from "./pages/user/components/FooterComponents.js/SupplieCodeOfConduct.js";
@@ -107,22 +101,6 @@ import AdminPurchaseOrdersComponentCopy from "./pages/admin/components/AdminPurc
 import HomePageForVisitorMobile from "./pages/mobile/HomePageForVisitorMobile.js";
 
 function App() {
-
-  // const navigate = useNavigate()
-  //   useEffect(() => {
-     
-  //     const handleResize = () => {
-  //       if (window.innerWidth < 600) {
-  //       navigate("/m.home");
-  //     } 
-  //     }
-  //     handleResize();
-  //     window.addEventListener('resize', handleResize);
-  //     return () => {
-  //       window.removeEventListener('resize', handleResize)
-  //     }
-  //   }, [])
-
   return (
     <>
       <Router>
@@ -134,10 +112,7 @@ function App() {
           <Route path="/loginRegister" element={<LoginRegisterPage />} />
           <Route path="/pdfpreview" element={<PDFPreviewForVisitor />} />
           <Route path="/user/:id/verify/:token" element={<EmailVerify />} />
-          <Route
-            path="/user/:id/resetPassword/:token"
-            element={<ResetPassword />}
-          />
+          <Route path="/user/:id/resetPassword/:token" element={<ResetPassword />} />
           
           <Route element={<ProtectedRoutesComponent role="visitor" />}>
             <Route path="/unfortunately" element={<Unfortunately />} />
@@ -145,14 +120,11 @@ function App() {
             <Route path="/TermsConditions" element={<TermsConditions />} />
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/goodsreturnform" element={<GoodsReturnForm />} />
-            <Route
-              path="/applycreaditaccount"
-              element={<CreditApplication />}
-            />
+            <Route path="/applycreaditaccount" element={<CreditApplication />}/>
             <Route path="/scodeofc" element={<SupplieCodeOfConduct />} />
-            {/* <Route path="/" element={<HomePageForVisitor />} /> */}
             <Route path="/" element={<HomePageForVisitorNew />} />
             <Route path="/product-list" element={<ProductListPage />} />
+            <Route path="/product-details/:id" element={<ProductDetailsPage />}/>
           </Route>
 
           {/* Mobile version for a visitor */}
@@ -163,26 +135,16 @@ function App() {
             {/* <Route path="/home" element={<HomePage />} /> */}
             <Route path="/" element={<HomePageForVisitorNew />} />
             <Route path="/product-list" element={<ProductListPage />} />
-            <Route
-              path="/product-details/:id"
-              element={<ProductDetailsPage />}
-            />
-            <Route
-              path="/uniform-details/:id"
-              element={<UniformDetailsPage />}
-            />
+            <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+            <Route path="/uniform-details/:id" element={<UniformDetailsPage />} />
             <Route path="/news-list" element={<NewsListPage />} />
             <Route path="/news-details/:id" element={<NewsDetailsPage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route
-              path="/return-calculator"
-              element={<ReturnProfitCalculator />}
-            />
+            <Route path="/return-calculator" element={<ReturnProfitCalculator />} />
             <Route path="/uniform-list" element={<UniformListPage />} />
             <Route path="/manage-uniformBrands" element={<ManageUniformBrandsPage />} />
             <Route path="/manage-uniforms" element={<ManageUniformsPage />} />
             <Route path="/manage-uniform-users" element={<ManageUniformUsersPage />} />
-
             <Route path="*" element="Page not exists 404" />
           </Route>
 
@@ -193,20 +155,11 @@ function App() {
             <Route path="/user/my-orders" element={<UserOrdersPage />} />
             <Route path="/user/my-uniforms" element={<UserUniformsPage />} />
             <Route path="/user/my-quotes" element={<UserQuotesPage />} />
-            <Route
-              path="/user/cart-details"
-              element={<UserCartDetailsPage />}
-            />
-            <Route
-              path="/user/order-details/:id"
-              element={<UserOrderDetailsPage />}
-            />
+            <Route path="/user/cart-details" element={<UserCartDetailsPage />} />
+            <Route path="/user/order-details/:id" element={<UserOrderDetailsPage />} />
             <Route path="/user/analytics" element={<MarketingAnalytics />} />
             <Route path="/user/postsTrack" element={<MarketingPostsTrack />} />
-            <Route
-              path="/user/userInteractions"
-              element={<MarketingUserInteractions />}
-            />
+            <Route path="/user/userInteractions" element={<MarketingUserInteractions />} />
           </Route>
 
           {/* admin protected routes: */}

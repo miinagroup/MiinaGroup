@@ -64,6 +64,8 @@ const ProductDetailsPageComponent = ({
   const [stockCode, setstockCode] = useState('');
   const [supplierCode, setsupplierCode] = useState('');
   const [clientSkuName, setClientSkuName] = useState('');
+  const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
+  const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
 
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
@@ -810,7 +812,7 @@ const ProductDetailsPageComponent = ({
                     <Row hidden={selectedProduct === "Please-Select"}>
                       <Col>
                         <h6>Product Code: {stockCode}</h6>
-                        <h6 hidden={userData?.isAdmin === true}>
+                        {!isUserInfo && <h6 hidden={userData?.isAdmin === true}>
                           Client Code:{" "}
                           {userData?.isSitePerson === true ? (
                             <>
@@ -864,9 +866,9 @@ const ProductDetailsPageComponent = ({
                               )}
                             </>
                           ) : (!clientSKU ? "N/A" : clientSKU)}
-                        </h6>
+                        </h6>}
 
-                        <h6>
+                        {!isUserInfo && <h6>
                           {userData.isAdmin === true ||
                             userData.isMarketing === true ? (
                             <>
@@ -925,12 +927,12 @@ const ProductDetailsPageComponent = ({
                               </span>
                             </>
                           )}
-                        </h6>
+                        </h6>}
                         <br />
                       </Col>
                     </Row>
 
-                    <Row>
+                    {!isUserInfo && <Row>
                       {userData.isAdmin === true ? (
                         <>
                           {product.displayPrice === 0 ? null : (
@@ -1031,7 +1033,7 @@ const ProductDetailsPageComponent = ({
                           </Col>
                         </>
                       )}
-                    </Row>
+                    </Row>}
                   </ListGroup.Item>
                 </ListGroup>
               </Row>

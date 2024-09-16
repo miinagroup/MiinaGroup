@@ -45,9 +45,9 @@ const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSect
     <div className={styles.headerNewMenu}>
         <div className={`${styles.navMenu} ${styles.desktop}`}>
             {location.pathname === "/" && <button onClick={goToAboutSection}>About</button>}
-            <button onClick={() => setIsOpenModal(true)}>Categories</button>
+            <div className={location.pathname === "/" ? "" : styles.headerBtn}><button onClick={() => setIsOpenModal(true)}>Categories</button></div>
             {location.pathname === "/" && <button onClick={goToPromotionSection}>Promotion</button>}
-            <button onClick={goToContactSection}>Request</button>
+            {location.pathname === "/" && <button onClick={goToContactSection}>Request</button>}
         </div>
         <div className={styles.headerNewBtns}>
         <div className={`${styles.searchFieldNew} ${styles.desktop}`}>

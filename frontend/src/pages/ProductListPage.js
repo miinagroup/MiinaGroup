@@ -12,16 +12,22 @@ const getProducts = async (
   childCategoryName = "",
   fourCategoryName = "",
   fiveCategoryName = "",
-  brandName = ""
+  brandName = "", 
+  userInfo
 ) => {
   const search = searchQuery ? `search/${searchQuery}/` : "";
   const category = categoryName ? `category/${categoryName}/` : "";
   const brand = brandName ? `brand/${brandName}/` : "";
   const sort = sortOrder ? `sort/${sortOrder}/` : "";
   const url = `/api/products/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
-  // console.log(url);
+  const urlVisitor = `/api/products/visitor/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
+  
   try {
-    var { data } = await axios.get(url);
+    if(Object.keys(userInfo).length === 0) {
+      var { data } = await axios.get(urlVisitor);
+    } else {
+      var { data } = await axios.get(url);
+    }
     // console.log('Data received:', data);
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -85,6 +91,7 @@ const ProductListPage = () => {
       brandName={brandName}
       getProductCategories={getProductCategories}
       createQuote={createQuote}
+      userInfo={userInfo}
     />
   );
 };

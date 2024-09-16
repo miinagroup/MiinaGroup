@@ -22,7 +22,9 @@ const {
   productsCheck,
   adminReplenishment,
   adminStockTake,
-  searchProducts
+  searchProducts,
+  getProductsVisitor,
+  searchProductsForVisitor
 } = require("../controllers/productController");
 const {
   getClientSkuNamesList
@@ -32,6 +34,10 @@ const {
   verifyIsLoggedIn,
   verifyIsAdmin,
 } = require("../middleware/verifyAuthToken");
+
+router.get("/visitor/search/:searchQuery", searchProductsForVisitor);
+router.get("/visitor/category/:categoryName", getProductsVisitor);
+router.get("/get-one/:id", getProductById);
 
 router.use(verifyIsLoggedIn);
 // router.get("/category/:categoryName/search/:searchQuery", getProducts);

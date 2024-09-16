@@ -163,6 +163,21 @@ input {
     display: none;
 }
 
+.headerBtn button {
+    border: 1px solid #073474;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: #1d69d3;
+    color: white;
+    transition: 0.3s ease-in-out;
+    text-transform: uppercase;
+}
+
+.headerBtn:hover button {
+    background: white;
+    color: #073474;
+}
+
 @media (max-width: 1824px) {
 
     .headerNewWrapper {

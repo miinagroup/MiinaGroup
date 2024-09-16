@@ -47,8 +47,24 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
     const cartSubtotal = useSelector((state) => state.cart.cartSubtotal);
     const [showModal, setShowModal] = useState(false);
     const mineralPrice = useSelector((state) => state.minerals.minerals);
+    const [isShownQuoteBtn, setIsShownQuoteBtn] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+      const email = userInfo.email;
+      if(email.endsWith("@slrltd.com") ||
+          email.endsWith("@silverlakeresources.com.au") ||
+          email.endsWith("@red5limited.com.au") ||
+          email.endsWith("@ctlservices.com.au") ||
+          email.endsWith("@ctlaus.com") ||
+          email.endsWith("@focusminerals.com.au") ||
+          email.endsWith("@evolutionmining.com")){
+            setIsShownQuoteBtn(true)
+        } else {
+          setIsShownQuoteBtn(false)
+        }
+  }, [userInfo])
   
     const submitHandler = (e) => {
       if (e.keyCode && e.keyCode !== 13) return;
@@ -253,10 +269,9 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
     <div className={styles.headerNewMenu}>
     <div className={`${styles.navMenu} ${styles.desktop}`}>
         {location.pathname === "/" &&  <button onClick={goToAboutSection}>About</button>}
-
-        <button onClick={() => setIsOpenModal(true)}>Categories</button>
+        <div className={location.pathname === "/" ? "" : styles.headerBtn}><button onClick={() => setIsOpenModal(true)}>Categories</button></div>
         {location.pathname === "/" && <button onClick={goToPromotionSection}>Promotion</button>}
-        <button onClick={goToContactSection}>Request</button>
+        {location.pathname === "/" && <button onClick={goToContactSection}>Request</button>}
         </div>
     {/* </div> */}
     <div className={`${styles.headerNewBtns} ${styles.headerNewBtnsLoggedIn}`}>
@@ -268,7 +283,7 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
               onChange={(e) => setSearchQuery(e.target.value)}/>
           <button className={styles.iconNew} onClick={submitHandler}><i class="bi bi-search fs-4"></i></button>
       </div>
-      {/* <button className={styles.btnQuote} onClick={toggleModal} >GET A QUOTE</button> */}
+      {isShownQuoteBtn && <button className={styles.btnQuote} onClick={toggleModal} >GET A QUOTE</button>}
     
       <Modal
               show={showModal}

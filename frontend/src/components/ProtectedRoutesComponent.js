@@ -86,7 +86,8 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     "/privacypolicy",
     "/goodsreturnform",
     "/",
-    "/product-list"
+    "/product-list",
+    "/product-details"
   ];
 
   const isOnOpenRoute = openRoutes.includes(window.location.pathname);
@@ -134,10 +135,10 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       </div>
     );
   } 
-  // else if (isOnOpenRoute === false && userLoggedin === false) {
-  //   // return <SplashPage />;
-  //   return <Navigate to="/" replace />;
-  // } 
+  //else if (isOnOpenRoute === false && userLoggedin === false) {
+    // return <SplashPage />;
+    //return <Navigate to="/" replace />;
+  //} 
   else if (isAuth === undefined || !isAuth) {
     return (
       <>
