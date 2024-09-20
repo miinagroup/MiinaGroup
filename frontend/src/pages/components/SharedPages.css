@@ -96,6 +96,51 @@
   max-width: 70px;
 }
 
+.thumbnailClass{
+  width: 100px;
+  height: 110px;
+}
+
+.thumbnailClass img{
+  object-fit: fill;
+  width: 35% !important;
+}
+
+.product-details-page-description {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 250px;
+  align-items: center;
+}
+
+.product-details-page-description .col {
+  flex: none;
+}
+
+.stock-item {
+  animation: blinking 2s linear infinite;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+@keyframes blinking {
+  0% {
+    opacity: 0
+  }
+  50% {
+    opacity: 1
+  }
+  100% {
+    opacity: 0
+  }
+}
 
 @media (min-width: 992px) {
   .login_mobile {
@@ -107,6 +152,84 @@
   .login_desktop {
     display: none;
   }
+}
 
+@media (max-width: 1024px) {
+  .addTocartBtn {
+    margin-left: 35px;
+  }
+}
+
+
+@media(max-width: 480px) {
+  .preview-product-row {
+    font-size: 10px;
+  }
+
+  .producr-detail-page-spec-item {
+    font-size: 12px;
+    line-height: 18px !important;
+  }
+
+
+  .product-detail-page {
+    /* padding: 0px; */
+    margin: 0px !important;
+    /* width: 100%;
+    max-width: 300px; */
+  }
+
+  .product-detail-page-row {
+    /* padding: 0px;
+    margin: 0px; */
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*.product-detail-page-row div:first-child {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .product-detail-page-row div:nth-child(2) {
+    padding: 0px;
+    margin: 0px;
+  } */
+
+  .product-detail-page-list-group {
+    padding: 0px;
+  }
+
+.product-detail-page-info-row {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.product-detail-page-title {
+  font-size: 14px;
+}
+
+.product-detail-page-spec-descrp {
+  margin-top: 0px !important;
+}
+
+.product-detail-page-spec-descrp div {
+  padding: 0px;
+  font-size: 12px !important;
+}
+
+/* .product-detail-page-info-image img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+} */
+
+.uniform-product-page {
+  padding: 0px 0px !important;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto !important;
+}
 
 }

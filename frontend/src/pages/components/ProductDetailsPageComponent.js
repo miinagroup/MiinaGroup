@@ -304,6 +304,8 @@ const ProductDetailsPageComponent = ({
               url: imagePath,
               title: image.title,
               caption: image.name,
+              originalHeight: "400px",
+              thumbnailClass: "thumbnailClass"
             });
           } catch (error) {
             console.error("Image failed to load:", error);
@@ -667,9 +669,9 @@ const ProductDetailsPageComponent = ({
 
 
   return (
-    <Container className="content-container ms-3" fluid>
+    <Container className="content-container product-detail-page" fluid>
       <BreadcrumbComponent />
-      <Row>
+      <Row className="product-detail-page-row">
         <Col xxl={2} xl={3} lg={3} md={3}>
           <ListGroup variant="flush">
             <ListGroup.Item>
@@ -678,23 +680,23 @@ const ProductDetailsPageComponent = ({
           </ListGroup>
         </Col>
         <Col xxl={10} xl={9} lg={9} md={9} className="mb-3">
-          <Row className="mt-4 ">
+          <Row className="mt-4 product-detail-page-info-row">
             {/* ************   Filter, has removed, now just take 1 space  ***************  */}
 
             {/* ************   Product Pictures Display Carousel  ***************  */}
-            <Col lg={4} className="m-1">
+            <Col lg={4} className="m-1 product-detail-page-info-image">
               <ImageGallery items={images} />
             </Col>
 
             {/* ************   Product Details  ***************  */}
-            <Col lg={6}>
+            <Col lg={6} className="product-detail-page-info">
               <span className="categoryHD">
                 {product.category?.replaceAll("/", " / ")}
               </span>
               <Row>
-                <ListGroup variant="flush">
+                <ListGroup variant="flush" className="product-detail-page-list-group">
                   <ListGroup.Item>
-                    <h2 className="text-uppercase">{product.name}</h2>
+                    <h2 className="text-uppercase product-detail-page-title">{product.name}</h2>
                     {userData.isAdmin === true ? (
                       <>
                         <button
@@ -820,7 +822,7 @@ const ProductDetailsPageComponent = ({
                       )} */}
                     </div>
                     <br />
-                    <Row hidden={selectedProduct === "Please-Select"}>
+                    <Row hidden={selectedProduct === "Please-Select"} className="product-details-page-description">
                       <Col>
                         <h6>Product Code: {stockCode}</h6>
                         {!isUserInfo && <h6 hidden={userData?.isAdmin === true}>
@@ -942,8 +944,16 @@ const ProductDetailsPageComponent = ({
                         {isUserInfo && <div className="btnLogin">For price availability please <button onClick={handleShowLoginModal} className="btn_blue">LogIn</button></div>}
                         <br />
                       </Col>
+                      {product.availability?.length > 0 ? (
+                      <>
+                        <div float="left" className="stock-items-container">
+                        <h6 className={product.availability[0].local !== 0 ? "green" : "red"}>Local Stock: <span className="stock-item">{product.availability[0].local}</span></h6>
+                        <h6 className={product.availability[0].national !== 0 ? "green" : "red"}>National Stock: <span className="stock-item">{product.availability[0].national}</span></h6>
+                        </div>
+                      </>
+                      ) : ("")}
                     </Row>
-
+                    
                     {!isUserInfo && <Row>
                       {userData.isAdmin === true ? (
                         <>
@@ -970,7 +980,7 @@ const ProductDetailsPageComponent = ({
                           <Col lg={4}>
                             <Button
                               onClick={() => addToCartHandler(selectedStock)}
-                              className="CTL_btn btn-ripple                    "
+                              className="CTL_btn btn-ripple addTocartBtn"
                               disabled={
                                 selectedProduct === "Please-Select" ||
                                 buttonText !== "Add to cart"
@@ -1021,7 +1031,7 @@ const ProductDetailsPageComponent = ({
                           >
                             <Button
                               onClick={() => addToCartHandler(selectedStock)}
-                              className="CTL_btn btn-ripple                    "
+                              className="CTL_btn btn-ripple addTocartBtn"
                               disabled={
                                 selectedProduct === "Please-Select" ||
                                 buttonText !== "Add to cart" ||
@@ -1052,7 +1062,7 @@ const ProductDetailsPageComponent = ({
 
               {/* ************   Product details with download pdf  ***************  */}
               <Row>
-                <Col className="mt-4">
+                <Col className="mt-4 product-detail-page-spec-descrp">
                   <Container
                     className="border border-light border-2"
                     fluid
@@ -1139,6 +1149,7 @@ const ProductDetailsPageComponent = ({
                                         } else {
                                           return (
                                             <div
+                                              className="producr-detail-page-spec-item"
                                               key={"table2" + index}
                                               style={{
                                                 textIndent: "-10px",
@@ -1282,6 +1293,8 @@ const ProductDetailsPageComponent = ({
                                                 } else {
                                                   return (
                                                     <div
+                                                    className="producr-detail-page-spec-item"
+
                                                       key={
                                                         "table2" + tableIndex
                                                       }
@@ -1313,6 +1326,7 @@ const ProductDetailsPageComponent = ({
                                             (tableItem, tableIndex) => {
                                               return (
                                                 <div
+                                                  className="producr-detail-page-spec-item"
                                                   key={"table3" + tableIndex}
                                                   style={{
                                                     textIndent: "-10px",
