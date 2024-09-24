@@ -3,10 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 
 import LoginRegisterPage from "../../../LoginRegisterPage";
+import HamburgerMenu from "../../../mobile/components/HeaderComponent/HamburgerMenu";
+
 
 import styles from "./NewHeaderComponent.module.css";
 
-const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSection, goToContactSection}) => {
+const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSection, goToContactSection, showSidebar, toggleShowSidebar, onClickBtn}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -72,7 +74,8 @@ const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSect
     </div>
       </div>
 
-    <div className={`${styles.searchFieldNew} ${styles.mobile}`}>
+    <div className={`${styles.searchFieldNew} ${styles.mobile} ${styles.searchFieldNewWrapper}`}>
+    <div className={styles.searchFieldNewInputBlock}>
           <input 
               placeholder="What are you looking for today?" 
               className={styles.inputFeild} 
@@ -80,9 +83,21 @@ const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSect
               onChange={(e) => setSearchQuery(e.target.value)}/>
           <button className={styles.iconNew} onClick={submitHandler}><i class="bi bi-search fs-4"></i></button>
     </div>
+    {location.pathname === "/" ? <HamburgerMenu toggleShowSidebar={toggleShowSidebar} showSidebar={showSidebar} /> : <div className={styles.headerBtn}><button onClick={() => setIsOpenModal(true)}>Categories</button></div>}
+
+    </div>
     <Modal show={show} onHide={handleClose} className="login_preview_items">
         <LoginRegisterPage />
       </Modal>
+      {showSidebar && <div className={styles.sidebarMobileMenu}>
+        <div className={styles.sidebarMobileMenuWrapper}>
+        <button onClick={goToAboutSection}>About</button>
+        <button onClick={onClickBtn}>Categories</button>
+        <button onClick={goToPromotionSection}>Promotion</button>
+        <button onClick={goToContactSection}>Request</button>
+        </div>
+        </div>
+      }
 
 </div>
 }

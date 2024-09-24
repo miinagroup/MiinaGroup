@@ -451,7 +451,7 @@ const CompletedQuotesTable = ({
 
   return (
     <>
-      <table className="table table-striped">
+      <table className="table table-striped desktop">
         <TableHeader
           headers={completedHeaders}
           onSorting={(field, order) => setSorting({ field, order })}
@@ -569,9 +569,9 @@ const CompletedQuotesTable = ({
         </tbody>
       </table>
       {loadingQuotes === true ? (
-        <div className="fs-3 ms-2">Loading Quotes...</div>
+        <div className="fs-3 ms-2 noQuotesFoundText">Loading Quotes...</div>
       ) : (
-        quotes.length === 0 && <div className="fs-3 ms-2">No Quotes Found</div>
+        quotes.length === 0 && <div className="fs-3 ms-2 noQuotesFoundText">No Quotes Found</div>
       )}
 
       {/* <Button

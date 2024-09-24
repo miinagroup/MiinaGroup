@@ -8,6 +8,8 @@ import {
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
 
+import styles from "./UserProfilePageComponent.module.css";
+
 const UserProfilePageComponent = ({
   updateUserApiRequest,
   fetchUser,
@@ -136,7 +138,7 @@ const UserProfilePageComponent = ({
   };
   
   return (
-    <Container>
+    <Container className={styles.userProfilePageComponent}>
       <Row className="justify-content-md-center">
         <Col md={6} className="w-75">
           <h1>Change your profile</h1>

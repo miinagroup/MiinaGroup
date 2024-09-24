@@ -80,3 +80,21 @@ margin-bottom: 0;
     pointer-events: none;
     opacity: 0.99;
 }
+
+@media (max-width: 480px) {
+    .breadCB {
+        font-size: 12px;
+    }
+
+    .accordion_container .accordion .accordion-body a {
+        font-size: 12px !important;
+    }
+
+    .accordion_container .accordion .accordion-body {
+        padding: 15px 15px;
+    }
+
+    .accordion_container .accordion .accordion-header a {
+        font-size: 14px;
+    }
+}

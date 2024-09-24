@@ -20,6 +20,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "react-medium-image-zoom/dist/styles.css";
 import FilterComponent from "./filterQueryResultOptions/FilterComponent";
 import BreadcrumbComponent from "./filterQueryResultOptions/BreadcrumbComponent";
@@ -44,8 +45,8 @@ const ProductForListPreviewComponent = ({
 
   const [userNameEmail, setUserNameEmail] = useState();
   const [productName, setProductName] = useState();
-  // const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-
+  const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
+  const [ isLogedIn, serIsLogedIn ] = useState(Object.keys(userInfo).length > 0) 
 
   useEffect(() => {
     if (product && product.stock && product.stock.length === 1) {
@@ -163,7 +164,7 @@ const ProductForListPreviewComponent = ({
   }
 
   return (
-    <Container className="ms-3 " fluid>
+    <Container className="ms-3 preview-product-container" fluid>
       <AddedToCartMessageComponent
         showCartMessage={showCartMessage}
         setShowCartMessage={setShowCartMessage}
@@ -224,7 +225,7 @@ const ProductForListPreviewComponent = ({
                   </select>
 
                   {stockCount !== null && (
-                    <h6 className="mt-2">
+                    <h6 className="mt-2 product-preview-status">
                       Status:{" "}
                       {stockCount > 19 ? (
                         <i className="bi bi-circle-fill fw-bold text-success">
@@ -242,15 +243,15 @@ const ProductForListPreviewComponent = ({
                 </div>
 
                 <Row hidden={selectedProduct === "choose-product"}>
-                  <Col>
-                    <h6>Product Code: {stockCode}</h6>
-                    <h6>
+                  <Col className="product-preview-status">
+                    <h6 className="product-preview-status">Product Code: {stockCode}</h6>
+                    <h6 className="product-preview-status">
                       {price === 0 ? (
                         <span className="fw-bold PriceContact">
                           Contact us for a quote
                         </span>
                       ) : (
-                        <span className="fw-bold">
+                       isLogedIn && <span className="fw-bold">
                           Price: ${formattedPrice}
                         </span>
                       )}
@@ -299,9 +300,9 @@ const ProductForListPreviewComponent = ({
                   )}
                 </Row> */}
                 {/* ************   Product details  ***************  */}
-                <Row>
-                  <Col className="mt-2">
-                    <Container className="border border-light border-5">
+                <Row className="preview-product-row">
+                  <Col className="mt-2 preview-product-row-col">
+                    <Container className="border border-light border-5 preview-product-row-container">
                       <div className="m-2">
                         {/* <span className="fw-bold m-1">DESCRIPTION:</span> */}
                         <div

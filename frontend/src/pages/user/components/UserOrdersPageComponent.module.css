@@ -1,0 +1,90 @@
+.userOrdersMobileWrapper {
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+.userOrdersMobileWrapper h5 {
+    padding-left: 20px;
+}
+
+.userOrdersMobileTabs {
+    font-size: 12px;
+    padding-left: 20px;
+}
+
+.userOrdersMobile {
+    padding: 15px 20px;
+}
+
+.userOrdersMobileData {
+ font-size: 13px;
+ font-weight: bold;
+ letter-spacing: 1px;
+ padding-bottom: 5px;
+}
+
+.userOrdersMobileInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userOrdersMobileStatus {
+    font-size: 12px;
+    letter-spacing: -0.2px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.userOrdersMobileStatusShipped {
+    display: flex;
+    align-items: center;
+    color:  darkgreen;
+    gap: 5px;
+}
+
+.userOrdersMobileStatusNonShipped {
+    display: flex;
+    align-items: center;
+    color:  red;
+    gap: 5px;
+}
+
+.userOrdersMobileStatusViewDetails {
+    font-size: 12px;
+    align-self: end;
+}
+
+.userOrdersMobileSearch {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.userOrdersMobileSearch input {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin:  0 auto;
+}
+
+.userOrdersMobilePagination {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.userOrdersMobilePagination ul {
+    justify-content: center;
+}
+
+.userOrdersMobilePoStatus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.userOrdersMobileMenu {
+    width: 90%;
+    margin: 0 auto;
+}
+

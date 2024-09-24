@@ -8,6 +8,8 @@ import {
   Col,
 } from "react-bootstrap";
 
+import styles from "../user/components/UserProfilePageComponent.module.css";
+
 const updateUserApiRequest = async (
   name,
   lastName,
@@ -58,7 +60,7 @@ const UserProfilePage = () => {
 
 
   return (
-    <Row className="m-5">
+    <Row className={`m-5 ${styles.userProfilePageComponentWrapper}`}>
       <Col md={2}>
         <UserLinksComponent />
       </Col>

@@ -1,0 +1,61 @@
+
+@media(max-width: 480px) {
+    .userProfilePageComponentWrapper {
+        margin: 15px 15px !important;
+    }
+
+    .userProfilePageComponent {
+        padding: 0px;
+        width: 100% !important;
+    }
+
+    .userProfilePageComponent h1 {
+        font-size: 18px;
+    }
+
+    .userProfilePageComponent input, .userProfilePageComponent div {
+        width: 100% !important;
+    }
+
+    .userProfilePageComponent div {
+        padding: 0px;
+        margin:  0 auto;
+    }
+
+    .userUniformsPageComponentTable {
+        font-size: 12px;
+    }
+
+    .userUniformsPageComponentWrapper {
+        padding: 0px 0px !important;
+        margin: 0px 0px !important;
+    }
+
+    
+    .userUniformsPageComponentWrapper h1 {
+        font-size: 18px;
+    }
+
+    .userUniformsPageComponentTable tr {
+        white-space: wrap !important;
+    }
+
+    .userUniformsPageComponentTable th, .userQuotesPageWrapper tr td, .userQuotesPageWrapper tr th {
+            padding: 5px 5px !important;      
+    }
+
+    .userQuotesPageWrapper tbody {
+        font-size: 11px !important;
+    }
+
+    .userQuotesPageWrapper {
+        margin: 0px 0px !important;
+        font-size: 12px;
+    }
+
+    .userQuotesPageWrapper h1 {
+        font-size: 18px;
+    }
+
+
+}

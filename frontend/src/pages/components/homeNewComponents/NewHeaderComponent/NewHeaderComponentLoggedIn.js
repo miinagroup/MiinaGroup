@@ -30,13 +30,12 @@ import {
 
   import ForecastChart from "../../../../components/ForecastChart";
   import FetchAuthFromServer from "../../../../components/FetchAuthFromServer";
-  import NewMineralsComponent from "../NewMineralsComponent/NewMineralsComponent";
-
+  import HamburgerMenu from "../../../mobile/components/HeaderComponent/HamburgerMenu";
 
 import styles from "./NewHeaderComponent.module.css";
 import "../../../../components/page.css";
 
-const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromotionSection, goToContactSection}) => {
+const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromotionSection, goToContactSection, showSidebar, toggleShowSidebar, onClickBtn}) => {
     const dispatch = useDispatch();
 
     const { userInfo } = useSelector((state) => state.userRegisterLogin);
@@ -267,12 +266,17 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
     </div>
     {/* <div> */}
     <div className={styles.headerNewMenu}>
-    <div className={`${styles.navMenu} ${styles.desktop}`}>
+    <div className={`${styles.navMenu} ${styles.desktop} ${styles.tablet}`}>
         {location.pathname === "/" &&  <button onClick={goToAboutSection}>About</button>}
         <div className={location.pathname === "/" ? "" : styles.headerBtn}><button onClick={() => setIsOpenModal(true)}>Categories</button></div>
         {location.pathname === "/" && <button onClick={goToPromotionSection}>Promotion</button>}
         {location.pathname === "/" && <button onClick={goToContactSection}>Request</button>}
-        </div>
+    </div>
+    <div className={`${styles.navMenu} ${styles.tabletBtn}`}>
+      <div className={styles.headerBtn}><button onClick={() => setIsOpenModal(true)}>Categories</button></div>
+    </div>
+    
+
     {/* </div> */}
     <div className={`${styles.headerNewBtns} ${styles.headerNewBtnsLoggedIn}`}>
       <div className={`${styles.searchFieldNew} ${styles.desktop}`}>
@@ -349,8 +353,8 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
               {/* *********** User Icon *********** */}
               {userInfo.isAdmin ? (
                 <>
-                  <div>
-                    <div className="Avtbox_admin">
+                  <div className="users_initial_dropdown">
+                    <div className={`Avtbox_admin ${styles.Avtbox}`}>
                       <a href="/admin/orders" className="Avtbox_users_initial">
                         {`${userInfo.name?.charAt(
                           0
@@ -503,7 +507,7 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
               </div>
 
               {/* *********** Cart and Dropdown *********** */}
-              <div>
+              <div className="cart_dropdown">
                 <div className={`miningCart ${styles.miningCart}`}>
                   <a
                     className="hd_c"
@@ -549,15 +553,30 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
             </Nav>
             </div>
             </div>
+
 </div>
-<div className={`${styles.searchFieldNew} ${styles.mobile}`}>
-          <input 
+<div className={`${styles.searchFieldNew} ${styles.mobile} ${styles.searchFieldNewWrapper}`}>
+  <div className={styles.searchFieldNewInputBlock}>
+  <input 
               placeholder="What are you looking for today?" 
               className={styles.inputFeild} 
               onKeyUp={submitHandler}
               onChange={(e) => setSearchQuery(e.target.value)}/>
           <button className={styles.iconNew} onClick={submitHandler}><i class="bi bi-search fs-4"></i></button>
+  </div>
+          {location.pathname === "/" ? <HamburgerMenu toggleShowSidebar={toggleShowSidebar} showSidebar={showSidebar} /> : <div className={styles.headerBtn}><button onClick={() => setIsOpenModal(true)}>Categories</button></div>}
       </div>
+
+      
+      {showSidebar && <div className={styles.sidebarMobileMenu}>
+        <div className={styles.sidebarMobileMenuWrapper}>
+        <button onClick={goToAboutSection}>About</button>
+        <button onClick={onClickBtn}>Categories</button>
+        <button onClick={goToPromotionSection}>Promotion</button>
+        <button onClick={goToContactSection}>Request</button>
+        </div>
+        </div>
+      }
 </div>
 }
 

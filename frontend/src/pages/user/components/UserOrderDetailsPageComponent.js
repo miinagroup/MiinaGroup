@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import { pdf } from "@react-pdf/renderer";
 
 import "./invoicePDF.css";
+import styles from "./UserOrderDetailsPageComponent.module.css";
 
 // import { useReactToPrint } from "react-to-print";
 import InvoicePrint from "../../../components/Pdfs/InvoicePrint";
@@ -167,6 +168,8 @@ const UserOrderDetailsPageComponent = ({
   };
 
   const [finished, setFinished] = useState(false);
+  const [orderCreated, setOrderCreated ] = useState(true);
+
 
   const onAnimationEnd = () => {
     setFinished(true);
@@ -370,7 +373,8 @@ const UserOrderDetailsPageComponent = ({
   };
 
   return (
-    <Container>
+    <>
+        <Container className="desktop">
       <Row className="mt-4">
         <h1>ORDER DETAILS</h1>
         <Col md={9}>
@@ -807,7 +811,457 @@ const UserOrderDetailsPageComponent = ({
           </div>
         </Col>
       </Row>
-    </Container >
+    </Container>
+
+    <div className="mobile">
+    <h5 className={styles.UserOrderDetailsPageTitle}>ORDER DETAILS</h5>
+    <div>
+      <div>
+      {cartItems.map((item, idx) => {
+          const itemPrice = item.cartProducts[0].price.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+        return <>
+        <div className={styles.orderDetailPageMobileProductItem}>
+
+          <div className={styles.orderDetailPageMobileProductWrapper}>
+          <div className={styles.orderDetailPageMobileProduct}>
+          <img
+              crossOrigin="anonymous"
+              src={item.image ? item.image ?? null : null}
+              className={styles.orderDetailPageMobileImage}
+              alt="s"
+            />
+            {/* <div>PRODUCTS</div> */}
+            <a href={`/uniform-details/${item.productId}`} className={styles.orderDetailPageMobileProductName} >
+              <strong className="text-uppercase" style={{ color: "#1E4881" }}>
+                {item.name}
+              </strong>
+            </a>
+          </div>
+
+          <div className={styles.orderDetailPageMobileDataProduct}>
+
+          {
+            (item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
+              <>
+                  <p className="m-0">
+                    Item:{" "}
+                    <span className="fw-bold">{item.cartProducts[0].attrs.split("/")[1]}</span>
+                  </p>
+                  <p className="m-0">
+                    Variant:{" "}
+                    <span className="fw-bold">{item.cartProducts[0].color + " (" + item.cartProducts[0].size + ")"}</span>
+                  </p>
+              </>
+            ) : (
+              <>
+                <p className="m-0">
+                      Item:{" "}
+                      <span className="fw-bold">{item.cartProducts[0].attrs}</span>
+                    </p>
+                    <p className="m-0">
+                      Unit Price: $
+                      <span className="fw-bold">
+                        {itemPrice}
+                      </span>
+                    </p>
+              </>
+            )
+          }
+          </div>
+          </div>
+          <div className={styles.orderDetailPageMobileProductItemQuantity}>
+            <div>
+              <div>ORDER Qty</div>
+              <Form.Control
+                  type="number"
+                  className="form-control"
+                  value={item.cartProducts[0].quantity}
+                  disabled={orderCreated}
+                />
+            </div>
+          <div>
+            <div>SUPPLIED Qty</div>
+              <Form.Control
+                className="form-control"
+                value={item.cartProducts[0].suppliedQty}
+                disabled={orderCreated}
+              />
+          </div>
+              <div>
+                <div>BACK ORDER</div>
+                <Form.Control
+                  type="number"
+                  className="form-control"
+                  value={item.cartProducts[0].backOrder}
+                  disabled={orderCreated}
+                />
+            </div>
+          </div>
+        </div>
+        <hr/>
+        </>
+      })}
+      </div>
+    </div>
+    <ListGroup className={styles.UserOrderDetailsPageComponentSummary}>
+            <ListGroup.Item>
+              <h5>ORDER SUMMARY</h5>
+            </ListGroup.Item>
+            {
+              (orderNote === "Uniform") ? ("") : (
+                <>
+                  <ListGroup.Item className="p-1 ps-2">
+                    Item Price:{" "}
+                    <span className="fw-bold float-end"> $ {taxAmount ? orderNetAmount : nonGSTPrice}</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="p-1 ps-2">
+                    Total GST <span className="fw-bold float-end">$ {taxAmount ? TAX : GST}</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="p-1 ps-2">
+                    Invoice Amount:{" "}
+                    <span className="fw-bold text-danger float-end">
+                      $ {incGSTPrice}
+                    </span>
+                  </ListGroup.Item>
+                </>
+              )
+            }
+
+            <ListGroup.Item className="p-1 ps-2">
+              PO Number: <span className="fw-bold">{purchaseNumber}</span>
+            </ListGroup.Item>
+
+            <ListGroup.Item className="p-1 ps-2">
+              <Row>
+                {
+                  (orderNote === "Uniform") ? ("") :
+                    (
+                      <>
+                        <Col>
+                          <div>
+                            <Button
+                              onClick={handleReorderClick}
+                              className={styles.reorderBtn}
+                              variant="success"
+                            >
+                              Re-Order
+                            </Button>
+                            <Modal
+                              show={showConfirmation}
+                              onHide={closeModal}
+                              className="Re_Order_Modal"
+                            >
+                              <Modal.Header className="p-0 m-2 mb-0" closeButton>
+                                <span className="fw-bold p-0 m-0">Confirmation</span>
+                              </Modal.Header>
+                              <Modal.Body className="p-2 pt-0">
+                                Some items already in your cart! Do you want to empty
+                                your cart before re-ordering?
+                              </Modal.Body>
+                              <Modal.Footer className="p-0 d-flex justify-content-between">
+                                <Button
+                                  variant="success"
+                                  onClick={() => handleConfirmationClose(true)}
+                                  className="ms-5 p-0 pe-1 ps-1 button-shadow"
+                                >
+                                  Empty Cart
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => handleConfirmationClose(false)}
+                                  className={styles.reorderBtn}
+                                >
+                                  Keep Cart Items
+                                </Button>
+                              </Modal.Footer>
+                            </Modal>
+                          </div>
+                        </Col>
+                      </>
+                    )
+                }
+                <Col>
+                  <Button
+                    className={styles.reorderBtn}
+                    variant="light"
+                  >
+                    <a href="/user/my-orders" style={{ color: "#073474" }}>
+                      My Orders{" "}
+                    </a>
+                  </Button>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+    </ListGroup>
+
+          <ListGroup className={styles.UserOrderDetailsPageComponentSummary}>
+            <ListGroup.Item className="p-1 ps-2">
+              <b>Order Note:</b> {orderNote ? null : "N/A"}
+              {
+                (orderNote === "Uniform") ? ("") : (
+                  <i
+                    onClick={handleShow}
+                    className="bi bi-pencil-square"
+                    style={{ cursor: "pointer" }}
+                  ></i>
+                )
+              }
+            </ListGroup.Item>
+            {orderNote ? (
+              <ListGroup.Item className="p-1 ps-2">{orderNote}</ListGroup.Item>
+            ) : null}
+          </ListGroup>
+
+          {/* edit order note modal */}
+          <Modal show={show} onHide={handleClose} className="edite_order_name">
+            <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
+              <Modal.Title>Enter Order Note:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="p-2 m-0">
+              <Form.Control
+                onChange={enterOrderName}
+                type="string"
+                name="MangerEmail"
+                defaultValue={orderNote}
+                required
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+              />
+            </Modal.Body>
+            <Modal.Footer className="p-0 m-0">
+              <Button
+                variant="secondary"
+                onClick={handleClose}
+                className="p-1 pt-0 pb-0 m-1"
+              >
+                Close
+              </Button>
+              <Button
+                variant="success"
+                onClick={saveOrderName}
+                className="p-1 pt-0 pb-0 m-1"
+              >
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {/* ******* shipping information ******* */}
+          <ListGroup className={styles.UserOrderDetailsPageComponentSummary}>
+            <ListGroup.Item>
+              <h5>SHIPPING INFORMATION</h5>
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <b>Name</b>: {orderData?.userName?.split('(')[0]}
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <b>Site</b>: {orderData?.deliverySite}
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <b>Phone</b>: {orderData?.user?.phone}
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <Alert
+                className="m-0 lh-1 h-50 p-1 ps-2"
+                variant={isDelivered ? "success" : "danger"}
+              >
+                {isDelivered ? (
+                  <>Shipped at {shippedAT.split("at")[0]}</>
+                ) : (
+                  <>Not Sent Yet</>
+                )}
+              </Alert>
+            </ListGroup.Item>
+            {isDelivered ? (
+              <>
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <PDFDownloadLink
+                      document={
+                        <DeliveryNotePrint
+                          cartItems={cartItems}
+                          invoiceNumber={invoiceNumber}
+                          userInfo={userInfo}
+                          //userAddress={userAddress}
+                          purchaseNumber={purchaseNumber}
+                          cartSubtotal={cartSubtotal}
+                          invoiceDate={createdAt}
+                          selectedDeliverySite={selectedDeliverySite}
+                          companyAccount={companyAccount}
+                        />
+                      }
+                      fileName={"PN" + invoiceNumber}
+                      >
+                        <u style={{ whiteSpace: "nowrap" }}>
+                          Download Delivery Note
+                        </u>
+                    </PDFDownloadLink>
+                  </div>
+                  <div style={{ position: "relative", zIndex: 1 }}>
+                    <div
+                      ref={paypalContainer}
+                      id="paypal-container-element"
+                    ></div>
+                  </div>
+                </ListGroup.Item>
+                <ListGroup.Item className="p-1 ps-2">
+                  {trackLink && trackLink.includes("false") ? (
+                    <p className="mb-0">
+                      Please Contact{" "}
+                      <a
+                        href="mailto:sales@ctlaus.com"
+                        class="action remind fw-bold"
+                        style={{ color: "#1E4881" }}
+                      >
+                        {" "}
+                        Sales{" "}
+                      </a>
+                      to Track Shipping
+                    </p>
+                  ) : (
+                    <a
+                      href={trackLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: "#1e4881" }}
+                    >
+                      <i className="bi bi-truck"></i> Track Shipping
+                    </a>
+                  )}
+                </ListGroup.Item>
+              </>
+            ) : (
+              ""
+            )}
+            {userInfo.isInvoiceViwer === true ? (
+              <>
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <PDFDownloadLink
+                      document={
+                        <InvoicePrint
+                          cartItems={cartItems}
+                          invoiceNumber={invoiceNumber}
+                          userInfo={userInfo}
+                          purchaseNumber={purchaseNumber}
+                          cartSubtotal={cartSubtotal}
+                          invoiceDate={createdAt}
+                          selectedDeliverySite={selectedDeliverySite}
+                          companyAccount={companyAccount}
+                          taxAmount={taxAmount}
+                        />
+                      }
+                      fileName={"INV" + invoiceNumber}
+                    >
+                      {({ loading }) =>
+                        loading ? (
+                          <Button className="p-0 m-0 pe-2 ps-2 ctl_blue_button">
+                            Loading Invoice...
+                          </Button>
+                        ) : (
+                          <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button">
+                            Download Invoice
+                          </Button>
+                        )
+                      }
+                    </PDFDownloadLink>
+                  </div>
+                </ListGroup.Item>
+              </>
+            ) : (
+              ""
+            )}
+          </ListGroup>
+
+          {/* Assign ownership */}
+          <div style={{ height: "200px" }}>
+            {
+              (userInfo.isSitePerson || userInfo.isSiteManager) ? (
+                <ListGroup className={styles.UserOrderDetailsPageComponentSummary}>
+                  <ListGroup.Item className="p-1 ps-2">
+                    <Form.Check
+                      type="switch"
+                      id="custom-switch"
+                      label="Assign Ownership"
+                      data-toggle="collapse"
+                      data-target="#ownership_div"
+                      aria-expanded="false"
+                      aria-controls="ownership_div"
+                      //disabled={userInfo.email !== userAddress.storeEmail}
+                      disabled={(order?.secondOwnerId !== " " && order?.secondOwnerId !== userInfo?._id)}
+
+                    />
+
+                    {
+                      order?.secondOwnerId !== " " ? (
+                        <span id="show_message">
+                          <b>This Order Assignee is :</b><br />
+                          <label style={{}}>{secondOwner?.name + " " + secondOwner?.lastName + " -"}</label>
+                          <label style={{ fontSize: "95%" }}>{" " + secondOwner?.location}</label>
+                        </span>
+                      ) : ("")
+                    }
+
+                  </ListGroup.Item>
+                  <ListGroupItem className="p-0" disabled={isSwitchOn} style={{}}>
+                    <div
+                      id="ownership_div"
+                      class="collapse"
+                    >
+
+                      <div class="m-2">
+                        {
+                          (order?.secondOwnerId !== " " && order?.secondOwnerId === userInfo?._id) ? (
+                            <span>
+                              <b>Re-Assign this Order?</b>
+                            </span>
+
+                          ) : ("")
+                        }
+                        <Form.Select
+                          required
+                          name="userNames"
+                          aria-label="Default select example"
+                          onChange={selectSecondOwner}
+                          className="mt-1 p-0 ps-1"
+
+                        >
+                          {usersList &&
+                            usersList
+                              .map((user, idx) => {
+                                return user !== "" ? (
+                                  <option key={idx} value={user._id}>
+                                    {" "}
+                                    {user.name + " " + user.lastName + " ( " + user.location + " )"}
+                                  </option>
+                                ) : ("");
+                              })}
+                        </Form.Select>
+                        <Row className="pt-2">
+                          <Col md={7}>
+                            <Button
+                              variant="success"
+                              onClick={saveOwnership}
+                              className="button-shadow p-0 pe-3 ps-3 m-0"
+                            >
+                              {buttonText}
+                            </Button>
+                          </Col>
+                        </Row>
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                </ListGroup>
+
+              ) : ("")
+            }
+          </div>
+    </div>
+    </>
+
+
   );
 };
 

@@ -9,6 +9,8 @@ import UserOrderItemForOrderPageComponent from "./UserOrderItemForOrderPageCompo
 import { TbColorPicker } from "react-icons/tb";
 //import Order from "../../../../../backend/models/OrderModel";
 
+import styles from "./UserProfilePageComponent.module.css";
+
 const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUniformCategories, getAllUniformCart, getAllUniformRole, updateUniformCart }) => {
   const [uniformCart, setUniformCart] = useState([]);
   const [uniformCategories, setUniformCategories] = useState([])
@@ -29,11 +31,11 @@ const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUn
 
   const headers = [
     { name: "No#", field: "index", sortable: false },
-    { name: "Date", field: "createdAt", sortable: true },
+    // { name: "Date", field: "createdAt", sortable: true },
     { name: "Item", field: "Item", sortable: true },
-    { name: "Total Allowance(Qty)", field: "total_allowance", sortable: true },
-    { name: "Total Ordered(Qty)", field: "total_ordered", sortable: true },
-    { name: "Total Remaining(Qty)", field: "total_remaining", sortable: true },
+    { name: "Total Allowance (Qty)", field: "total_allowance", sortable: true },
+    { name: "Total Ordered (Qty)", field: "total_ordered", sortable: true },
+    { name: "Total Remaining (Qty)", field: "total_remaining", sortable: true },
     { name: "", field: "goto", sortable: false },
   ];
 
@@ -100,7 +102,7 @@ const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUn
 
   return (
     <>
-      <Row className="m-5">
+      <Row className={`m-5 ${styles.userUniformsPageComponentWrapper}`}>
         <Col md={2}>
           <UserLinksComponent />
         </Col>
@@ -138,7 +140,7 @@ const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUn
               />
             </div>
           </div>
-          <table className="table table-striped">
+          <table className={`table table-striped ${styles.userUniformsPageComponentTable}`}>
             <TableHeader
               headers={headers}
               onSorting={(field, order) => setSorting({ field, order })}
@@ -147,12 +149,12 @@ const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUn
               {uniformFilter?.map((uniform, idx) => (
                 <tr key={idx}>
                   <td style={getUniformStyle(uniform)}>{idx + 1} </td>
-                  <td
+                  {/* <td
                     onClick={() => handleShow(uniformCart?._id)}
                     style={getUniformStyle(uniform)}
                   >
                     {uniform?.purchaseDate?.substring(0, 10)}
-                  </td>
+                  </td> */}
                   <td
                     onClick={() => handleShow(uniformCart?._id)}
                     style={getUniformStyle(uniform)}

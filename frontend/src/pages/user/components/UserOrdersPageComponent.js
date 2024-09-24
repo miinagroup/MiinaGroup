@@ -6,6 +6,7 @@ import UserLinksComponent from "../../../components/user/UserLinksComponent";
 import { TableHeader, Pagination, Search } from "../../../components/DataTable";
 import UserOrderItemForOrderPageComponent from "./UserOrderItemForOrderPageComponent";
 //import Order from "../../../../../backend/models/OrderModel";
+import styles from "./UserOrdersPageComponent.module.css"
 
 const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApprovedPOnumber }) => {
   const [orders, setOrders] = useState([]);
@@ -222,7 +223,6 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
       });
     }
 
-    //console.log(computedOrders);
     var uniformArray = []
     computedOrders?.map((order) => {
       if (order.orderNote?.includes("Uniform")) {
@@ -314,7 +314,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
 
   return (
     <>
-      <Row className="m-5">
+      <Row className="m-5 desktop">
         <Col md={2}>
           <UserLinksComponent />
         </Col>
@@ -638,6 +638,143 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
       <Modal show={show} onHide={handleClose} className="order_preview_items">
         <UserOrderItemForOrderPageComponent id={selectedOrderId} />
       </Modal>
+
+      <div className={`${styles.userOrdersMobileWrapper} mobile`}>
+      <Col md={2} className={styles.userOrdersMobileMenu}>
+          <UserLinksComponent />
+        </Col>
+        <h5>MY ORDERS</h5>
+        <Tabs defaultActiveKey="PRODUCTS"
+            transition={false}
+            id="noanim-tab-example"
+            className={styles.userOrdersMobileTabs}
+        >
+          <Tab eventKey="PRODUCTS" title="PRODUCT ORDERS">
+                <div className={styles.userOrdersMobileSearch}>
+                <Search
+                    onSearch={(value) => {
+                      setUniformSearch(value);
+                      setCurrentPage(1);
+                    }}
+                  />
+                </div>
+          {productData && productData?.map((order, idx) => {
+            return (
+              <>
+              <div className={styles.userOrdersMobile}>
+                <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
+                <div className={styles.userOrdersMobileInfo}>
+                  <div>
+                   <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
+                    <div className={styles.userOrdersMobileStatus}>
+                    {order.isDelivered ? (
+                                <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
+                              ) : (
+                                <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
+                              )}
+                    </div> 
+                  </div>
+                  <Link
+                      to={`/user/order-details/${order._id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.userOrdersMobileStatusViewDetails}
+                  >
+                  VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
+                  </Link>
+                </div>
+              </div>
+              <hr />
+              </>
+            )
+          })}
+          <div className={styles.userOrdersMobilePagination}>
+                  <Pagination
+                    total={totalProducts}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    currentPage={currentPage}
+                    onPageChange={(page) => setCurrentPage(page)}
+                  />
+          </div>
+          </Tab>
+          <Tab eventKey="UNIFORMS" title="UNIFORMS">
+          <div className={styles.userOrdersMobileSearch}>
+                  <Search
+                    onSearch={(value) => {
+                      setProductSearch(value);
+                      setCurrentPage(1);
+                    }}
+                  />
+                </div>
+
+                {uniformData && uniformData?.map((order, idx) => {
+            return (
+              <>
+              <div className={styles.userOrdersMobile}>
+                <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
+                <div className={styles.userOrdersMobileInfo}>
+                  <div>
+                   <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
+    
+                    <div className={styles.userOrdersMobileStatus}>
+                    {order.isDelivered ? (
+                                <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
+                              ) : (
+                                <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
+                              )}
+                    </div> 
+                  </div>
+                  <div className={styles.userOrdersMobilePoStatus}>
+                  {
+                          order.approvedDate ? (
+                            <>
+                              <div
+                                onClick={() => handleShow(order._id)}
+                                style={getOrderStyle(order)}
+                                className={styles.userOrdersMobileStatus}
+                              >
+                                {order.approvedDate?.substring(0, 10)}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div
+                                onClick={() => handleShow(order._id)}
+                                style={getOrderStyle(order)}
+                                className={styles.userOrdersMobileStatus}
+                              >
+                                Waiting for Approval
+                              </div>
+                            </>
+                          )
+                        }
+                   <Link
+                      to={`/user/order-details/${order._id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.userOrdersMobileStatusViewDetails}
+                  >
+                  VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
+                  </Link> 
+                  </div>
+                  
+                </div>
+              </div>
+              <hr />
+              <div className={styles.userOrdersMobilePagination}>
+              <Pagination
+                    total={totalUniforms}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    currentPage={currentPage}
+                    onPageChange={(page) => setCurrentPage(page)}
+                  />
+                  </div>
+              </>
+            )
+          })}
+          </Tab>
+        </Tabs>
+      </div>
     </>
   );
 };

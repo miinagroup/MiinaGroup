@@ -1,0 +1,67 @@
+.UserOrderDetailsPageTitle {
+padding-left: 20px;
+padding-top: 10px;
+}
+
+.orderDetailPageMobileProductItem {
+    padding: 10px 20px;
+    font-size: 12px;
+}
+
+.orderDetailPageMobileProductWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.orderDetailPageMobileProduct {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.orderDetailPageMobileProductName {
+    font-size: 12px;
+    width: 100%;
+    max-width: 150px;
+}
+
+.orderDetailPageMobileImage {
+    width: 100%;
+    max-width: 50px;
+    height: auto;
+}
+
+.orderDetailPageMobileDataProduct {
+    font-size: 12px;
+}
+
+.orderDetailPageMobileProductItemQuantity {
+    display: flex;
+    gap: 10px;
+}
+
+.orderDetailPageMobileProductItemQuantity input {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.UserOrderDetailsPageComponentSummary {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.UserOrderDetailsPageComponentSummary h5 {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.reorderBtn {
+    font-size: 12px;
+    padding: 5px 10px;
+}

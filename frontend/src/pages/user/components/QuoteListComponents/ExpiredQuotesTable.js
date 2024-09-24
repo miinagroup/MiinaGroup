@@ -102,7 +102,7 @@ const ExpiredQuotesTable = ({
               <td style={{ color: "#1e4881", fontWeight: "bold" }}>Expired</td>
               <td>
                 <button
-                  className="btn-sm btn-light w-100"
+                  className="btn-sm btn-light w-100 desktop"
                   style={{
                     width: "48%",
                     border: "1px solid #1e4881",
@@ -112,6 +112,18 @@ const ExpiredQuotesTable = ({
                   onClick={() => handleReRequest(quoteItem._id)}
                 >
                   Re-request
+                </button>
+                <button
+                  className="btn-sm btn-light w-100 mobile"
+                  style={{
+                    width: "48%",
+                    border: "1px solid #1e4881",
+                    borderRadius: "5px",
+                    color: "#1e4881",
+                  }}
+                  onClick={() => handleReRequest(quoteItem._id)}
+                >
+                  Repeat
                 </button>
               </td>
               <td>
@@ -128,7 +140,7 @@ const ExpiredQuotesTable = ({
           ))}
         </tbody>
       </table>
-      {quotes.length === 0 && <div className="fs-3 m-2">No Quotes Found</div>}
+      {quotes.length === 0 && <div className="fs-3 m-2 noQuotesFoundText">No Quotes Found</div>}
       <Pagination
         total={totalItems}
         itemsPerPage={ITEMS_PER_PAGE}

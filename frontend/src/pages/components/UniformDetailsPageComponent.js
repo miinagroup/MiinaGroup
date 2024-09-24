@@ -424,7 +424,7 @@ const UniformDetailsPageComponent = ({
 
 
     return (
-        <Container className="content-container ms-3" fluid>
+        <Container className="content-container ms-3 uniform-product-page" fluid>
             <BreadcrumbComponent />
             <Row>
                 <Col xxl={2} xl={3} lg={3} md={3}>

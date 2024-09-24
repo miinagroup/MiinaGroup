@@ -118,8 +118,8 @@
   flex: none;
 }
 
-.stock-item {
-  animation: blinking 2s linear infinite;
+.stock-item i {
+  animation: blinking 2s ease-in-out infinite;
 }
 
 .green {
@@ -132,13 +132,13 @@
 
 @keyframes blinking {
   0% {
-    opacity: 0
+    opacity: 0.5
   }
   50% {
     opacity: 1
   }
   100% {
-    opacity: 0
+    opacity: 0.5
   }
 }
 

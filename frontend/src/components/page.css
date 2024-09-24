@@ -66,8 +66,8 @@
 .users_initial_dropdown {
   float: left;
   overflow: hidden;
-  padding-left: 2rem;
-  padding-right: 0.7rem;
+  /* padding-left: 2rem;
+  padding-right: 0.7rem; */
   align-self: center;
 }
 
@@ -80,7 +80,7 @@
   position: absolute;
   background-color: #f9f9f9;
   width: 120px;
-  right: 1;
+  /* right: 1; */
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 99;
   text-align: left;
@@ -177,7 +177,7 @@
   float: left;
   /* overflow: hidden; */
   /* padding-left: 1rem; */
-  margin-right: 3rem;
+  /* margin-right: 3rem; */
   align-self: center;
 }
 

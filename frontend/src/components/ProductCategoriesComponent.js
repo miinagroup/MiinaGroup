@@ -53,9 +53,9 @@ const ProductCategoriesComponent = ({
   const displayCategory = category.replace(/-/g, ' ').replace(/_/g, " & ");
 
   return (
-    <Col>
+    <Col className="bigbox_product_categories_col">
       <Container className="bigbox_product_categories">
-        <LinkContainer style={onHover} to={`/product-list?${baseCategory}`}>
+        <LinkContainer style={onHover} to={`/product-list?${baseCategory}`} className="bigbox_product_categories_item">
           <div className="box_product_categories">
             <div className="box1_product_categories">
               <div className="box2_product_categories">

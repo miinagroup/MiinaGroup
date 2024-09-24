@@ -16,6 +16,7 @@ import NewMineralsComponent from './components/homeNewComponents/NewMineralsComp
 import NewStockComponent from "./components/homeNewComponents/NewStockComponent/NewStockComponent.js";
 import NewMainComponent from './components/homeNewComponents/NewMainComponent/NewMainComponent.js';
 import NewRequestFormComponent from "./components/NewRequestComponent/newRequestFormComponent.js";
+import AcknowledgementOfCountryComponent from "./components/AcknowledgementOfCountryComponent.js"; 
 
 import styles from "./homeStyles.module.css";
 
@@ -94,6 +95,9 @@ return (<>
     <AboutNewComponent />
     <div className={styles.image_cont} id="content"></div>
     <NewRequestFormComponent />
+    <hr />
+          <AcknowledgementOfCountryComponent />
+          <hr />
   </>)
 }
 

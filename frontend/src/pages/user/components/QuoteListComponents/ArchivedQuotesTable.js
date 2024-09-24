@@ -120,7 +120,7 @@ const ArchivedQuotesTable = ({
         </tbody>
       </table>
       {quotes.length === 0 && (
-        <div className="fs-3 m-2">No Quotes Found</div>
+        <div className="fs-3 m-2 noQuotesFoundText">No Quotes Found</div>
       )}
       <Pagination
         total={totalItems}

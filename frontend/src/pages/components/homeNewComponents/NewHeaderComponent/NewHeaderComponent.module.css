@@ -178,6 +178,11 @@ input {
     color: #073474;
 }
 
+.tabletBtn {
+     display: none;
+}
+
+
 @media (max-width: 1824px) {
 
     .headerNewWrapper {
@@ -250,17 +255,62 @@ input {
 }
 
 @media (max-width: 1025px) {
-    .searchFieldNew {
-        left: -70px;
-        max-width: 275px;
+    /* .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+     */
+
+     .tablet {
+         display: none;
+     }
+
+     .tabletBtn {
+        display: block;
+     }
+
+    .headerNewLogo {
+        width: 100%;
+        max-width: 290px;
     }
 
     .hexagonlogo {
-        width: 60px
+        width: 45px
     }
 
     .hexagontext {
-        width: 250px;
+        width: 200px;
+    }
+
+    .headerNewMenu {
+        flex-direction: row;
+        align-items: flex-end;
+        position: relative;
+        gap: 15px;
+        width: 100%;
+        max-width: 825px;
+    }
+
+    .navMenu {
+        max-width: 120px;
+        gap: 0px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .searchFieldNew {
+        position : relative;
+        max-width: 250px;
+        top: 0;
+        left: 0;
+
+    }
+
+    .headerNewBtns {
+        justify-content: space-between
     }
 
     ::placeholder {
@@ -273,7 +323,7 @@ input {
     }
 
     .user_cart {
-        gap: 5px
+        gap: 10px
     }
 
     .headerNewBtnsLoggedIn {
@@ -283,121 +333,92 @@ input {
 }
 
 @media (max-width: 900px) {
+
+    .headerNewLogo {
+        width: 100%;
+        max-width: 200px;
+    }
+    
     .hexagonlogo {
-        width: 50px;
+        width: 35px
     }
 
     .hexagontext {
-        width: 200px;
+        width: 150px;
     }
 
     .headerNewBtns {
-        gap: 15px;
-        max-width: 250px;
-    }
-
-    .headerNewLoggedIn .headerNewBtns {
-        gap: 10px;
-        max-width: 200px;
+        max-width: 500px;
     }
 
     .searchFieldNew {
-        left: -255px;
-        top: 0px;
+        max-width: 200px;
     }
 
-    .headerNewLoggedIn .headerNewMenu {
-        flex-direction: row;
-    }
-
-    .headerNewBtnsLoggedIn {
-        flex-direction: column;
-    }
-
-    .headerNewLoggedIn .headerNewLogo {
-        flex: 1;
-        max-width: 420px;
-    }
-
-    .headerNewLoggedIn .navMenu {
-        max-width: 300px;
-    }
-
-    .headerNewLoggedIn .searchFieldNew {
-        width: 265px;
-        left: -270px;
+    .headerNewMenu {
+        align-items: center;
     }
 
     .user_cart {
-        gap: 5px;
+        gap: 0px;
     }
+
+    .navMenu {
+        max-width: 100px;
+        justify-content: center;
+    }
+
+    .headerBtn button {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .btnQuote {
+        font-size: 12px;
+        max-width: 105px;
+    }
+
 }
 
 @media (max-width: 768px) {
 
-    .headerNew {
-        font-size: 12px;
+    .headerNewMenu {
+        gap: 0px;
     }
 
-    .hexagonlogo {
-        width: 40px;
-    }
-
-    .hexagontext {
-        width: 165px;
-    }
-
-    .headerNewBtns {
-        gap: 15px;
-        max-width: 240px;
-    }
-
-    .searchFieldNew {
-        left: -257px;
-        top: 0px;
-    }
- 
     .btnQuote {
         font-size: 12px;
-        padding: 0px 0px;
-        margin-right: 0px;
-        margin-left: 0px;
+        max-width: 95px;
+        padding: 5px 0px;
     }
 
-    .headerNewLoggedIn .headerNewMenu {
-        flex-direction: row;
+    .miningCart img {
+        width: 30px !important;
     }
 
-    .headerNewLoggedIn .headerNewMenu {
-        flex-direction: row;
+    .Avtbox {
+        width: 30px !important;
+        font-size: 18px !important;
+        height: auto !important;
     }
 
-    .headerNewBtnsLoggedIn {
-        flex-direction: column;
+    .miningCart svg {
+        font-size: 25px !important;
     }
 
-    .headerNewLoggedIn .headerNewLogo {
-        flex: 1;
-        max-width: 420px;
+    .inputFeild {
+        padding: 5px 10px;
     }
 
-    .headerNewLoggedIn .navMenu {
-        max-width: 300px;
+    .iconNew {
+        right: 0px;
+        top: 5px;
     }
 
-    .headerNewLoggedIn .searchFieldNew {
-        width: 265px;
-        left: -270px;
+    .iconNew i {
+font-size: 10px !important;
     }
-
-    .user_cart {
-        gap: 5px;
-    }
-
-    .headerNewLoggedIn .headerNewBtns {
-        gap: 10px;
-        max-width: 200px;
-    }
+ 
 }
 
 @media (max-width: 480px) {
@@ -409,9 +430,13 @@ input {
         display: block;
     }
 
+    .tabletBtn {
+        display: none;
+    }
+
     
     .headerNewWrapper {
-        padding: 5px 15px;
+        padding: 15px 15px 5px 15px;
         font-size: 12px;
     }
 
@@ -450,6 +475,16 @@ input {
         transform: none;
         width: 100%;
         max-width: 350px;
+        /* display: flex; */
+        /* gap: 10px; */
+        /* margin: 0 auto; */
+    }
+
+    .searchFieldNewWrapper {
+        display: flex;
+        gap: 10px;
+        margin: 0 auto;
+        justify-content: space-between;
     }
 
     .headerNewLoggedIn .searchFieldNew {
@@ -464,7 +499,6 @@ input {
         padding: 0px;
         margin-right: 0px;
         margin-left: 0px;
-        display: none;
     }
 
     .logRegNew {
@@ -487,9 +521,9 @@ input {
     }
 
     .headerNewLoggedIn .headerNewBtns {
-        flex-direction: column-reverse;
-    justify-content: flex-end;
-    align-items: flex-end;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
     }
 
     .headerNewBtns {
@@ -503,11 +537,41 @@ input {
     }
 
     .iconNew {
-        right: 0px;
+        right: 5px;
         top: 3px;
     }
 
     .iconNew i {
         font-size: 16px !important;
+    }
+
+    .searchFieldNewInputBlock {
+        position: relative;
+    width: 100%;
+    }
+
+    .sidebarMobileMenu {
+        z-index: 1000;
+        position: absolute;
+        width: 35%;
+        height: 135px;
+        top: 0;
+        left: 0;
+        transform: translate(165%, 85%);
+        background: linear-gradient(180deg, #59b7e4 0%, #1e4881 100%);
+        border-radius: 25px;
+        padding: 10px 20px;
+    }
+
+    .sidebarMobileMenuWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .sidebarMobileMenuWrapper button {
+        border: none;
+        background-color: transparent;
+        color: white;
     }
 }

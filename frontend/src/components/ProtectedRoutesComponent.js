@@ -34,6 +34,12 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   const [userLoggedin, setUerLoggedin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [ isOpenModalCatalogue, setIsOpenModalCatalogue ] = useState(false);
+  
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  const toggleShowSidebar = () => {
+    setShowSidebar(!showSidebar)
+  }
 
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
 
@@ -45,14 +51,22 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   }, []);
 
   const goToAboutSection = () => {
+    setShowSidebar(false);
     document.getElementById("about").scrollIntoView({behavior: 'smooth'})
   };
   const goToPromotionSection = () => {
+    setShowSidebar(false);
     document.getElementById("promotion").scrollIntoView({behavior: 'smooth'})
   };
   const goToContactSection = () => {
+    setShowSidebar(false);
     document.getElementById("request").scrollIntoView({behavior: 'smooth'})
   };
+
+  const onClickBtn = () => {
+    setShowSidebar(false);
+    setIsOpenModalCatalogue(true); 
+  }
 
   const [isVisible, setIsVisible] = useState(true);
 
@@ -145,17 +159,15 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       <div 
       style={{paddingBottom: "226px"}}
       >
-        <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} /> 
+        <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} /> 
         {location.pathname !== "/" && <NewMineralsComponent />}
         <Outlet />
-        <hr />
-    <AcknowledgementOfCountryComponent />
-    <hr />
       </div>
+      <hr />
         <NewFooter />
         <ScrollButton />
         {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}
-        {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => setIsOpenModalCatalogue(true)} isVisible={isVisible} />}
+        {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => onClickBtn()} isVisible={isVisible} />}
       </>
     );
   } else {
@@ -165,17 +177,16 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     return (
       <>
       <div style={{paddingBottom: "226px"}}>
-        <NewHeaderComponentLoggedIn setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} /> 
+        <NewHeaderComponentLoggedIn setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} /> 
         {location.pathname !== "/" && <NewMineralsComponent />}
           <Outlet />
-          <hr />
-          <AcknowledgementOfCountryComponent />
-          <hr />
       </div>
+      <hr />
+
       <NewFooter />
       <ScrollButton />
       {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}
-      {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => setIsOpenModalCatalogue(true)}  isVisible={isVisible} />}
+      {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => {setIsOpenModalCatalogue(true); setShowSidebar(false)}}  isVisible={isVisible} />}
       </>
     );
     }

@@ -8,6 +8,8 @@ import ProcessingQuotesTable from "./QuoteListComponents/ProcessingQuotesTable";
 import ArchivedQuotesTable from "./QuoteListComponents/ArchivedQuotesTable";
 import { useNavigate } from 'react-router-dom';
 
+import styles from "./UserProfilePageComponent.module.css";
+
 const UserQuotesPageComponent = ({
   getQuotes,
   userQuoteAction,
@@ -115,7 +117,7 @@ const UserQuotesPageComponent = ({
 
   return (
     <>
-      <Row className="m-5">
+      <Row className={`m-5 ${styles.userQuotesPageWrapper}`}>
         <Col md={2}>
           <UserLinksComponent />
         </Col>

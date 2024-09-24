@@ -42,7 +42,7 @@ const CartItemComponent = ({
   //console.log(item);
   return (
     <>
-      <ListGroup.Item className="mt-1">
+      <ListGroup.Item className="mt-1 cart-item">
         <Row>
           <Col md={1}>
             <div className="">
@@ -100,7 +100,7 @@ const CartItemComponent = ({
             )}
             {/*  */}
           </Col>
-          <Col md={2}>
+          <Col md={2} className="form-control-container">
             <Form.Control
               type="number"
               min={item.saleunit}
@@ -113,7 +113,7 @@ const CartItemComponent = ({
             />
           </Col>
           {/* delete button trash */}
-          <Col md={1}>
+          <Col md={1} className="remove-from-cart">
             {
               (item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
                 <RemoveFromCartComponent
