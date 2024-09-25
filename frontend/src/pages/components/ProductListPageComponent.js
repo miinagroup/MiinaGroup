@@ -330,7 +330,7 @@ const ProductListPage = ({
 
           <Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={5}>
             {loading ? (
-              <img src="./loading-gif.gif"></img>
+              <img className="loading-spinner" src="./loading-gif.gif"></img>
             ) : productCategories.length > 1 ? (
               filteredCategories.map((category) => (
                 <ProductCategoriesComponent

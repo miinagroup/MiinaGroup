@@ -144,9 +144,16 @@ input {
     align-items: center;
     width: 100%;
     max-width: 150px;
-    background-color: transparent;
-    border: none;
-    color: #073474;
+}
+
+.logRegNew button {
+     border: none;
+     background-color: transparent;
+     color: #073474;
+}
+
+.logRegNew button {
+    padding: 0px;
 }
 
 .user_cart {
@@ -436,7 +443,7 @@ font-size: 10px !important;
 
     
     .headerNewWrapper {
-        padding: 15px 15px 5px 15px;
+        padding: 15px 15px 15px 15px;
         font-size: 12px;
     }
 

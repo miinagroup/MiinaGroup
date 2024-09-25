@@ -34,6 +34,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   const [userLoggedin, setUerLoggedin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [ isOpenModalCatalogue, setIsOpenModalCatalogue ] = useState(false);
+  const [stopAnimation, setStopAnimation] = useState(false);
   
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -64,6 +65,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   };
 
   const onClickBtn = () => {
+    setStopAnimation(true)
     setShowSidebar(false);
     setIsOpenModalCatalogue(true); 
   }
@@ -142,6 +144,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     return (
       <div>
         <img
+        className="loading-spinner"
           src="/loading-gif.gif"
           alt="Loading"
           style={{ display: "block", margin: "auto", width: "200px", marginTop:"10%" }}
@@ -159,11 +162,10 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       <div 
       style={{paddingBottom: "226px"}}
       >
-        <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} /> 
+        <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} stopAnimation={stopAnimation} setStopAnimation={setStopAnimation} /> 
         {location.pathname !== "/" && <NewMineralsComponent />}
         <Outlet />
       </div>
-      <hr />
         <NewFooter />
         <ScrollButton />
         {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}
@@ -181,8 +183,6 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
         {location.pathname !== "/" && <NewMineralsComponent />}
           <Outlet />
       </div>
-      <hr />
-
       <NewFooter />
       <ScrollButton />
       {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}

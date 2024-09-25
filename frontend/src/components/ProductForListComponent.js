@@ -47,14 +47,16 @@ const ProductForListComponent = ({
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
+  const [modalType, setModalType] = useState("LoginForm")
 
   const [showLoginModal, setShowLoginModal] = useState(false);
     const handleClose = () => {
       setShowLoginModal(false);
     };
-    const handleShow = (event) => {
-      event.preventDefault()
+    const handleShow = (e, type) => {
+      e.preventDefault();
       setShowLoginModal(true);
+      setModalType(type);
       };
 
   // useEffect(() => {
@@ -334,7 +336,14 @@ const ProductForListComponent = ({
                     </span>
                   )}
                 </h6>}
-                {isUserInfo && <div className="btnLogin btnLoginText"><p>For price availability please</p><button onClick={handleShow} className="btn_blue">LogIn</button></div>}
+                {isUserInfo && <div className="btnLogin btnLoginText">
+                  <div className="btnsLoginRegistration">
+                  <button onClick={(e) => handleShow(e, "LoginForm")} className="btn_blue">LogIn</button>
+                  <div>or</div>
+                  <button className="btn_blue" onClick={(e) => handleShow(e, "RegisterForm")}>Register</button>
+                  </div>
+                  <div>to see the price</div>
+                  </div>}
               </div>
             </a>
             {
@@ -441,7 +450,7 @@ const ProductForListComponent = ({
         </Modal.Body>
       </Modal>
       <Modal show={showLoginModal} onHide={handleClose} className="login_preview_items">
-        <LoginRegisterPage />
+        <LoginRegisterPage modalType={modalType} />
       </Modal>
     </>
   );

@@ -64,6 +64,7 @@
 .btn_blue:hover{
   background-color: #3a74c5;
 }
+
 .categoryHD{
     margin-top: 0%;
     margin-left: 0.5%;
@@ -74,18 +75,13 @@
 }
 
 .btnLogin {
-   font-weight: 500;
-   color: red;
+  text-align: center;
 }
 
-.btnLoginText p {
-  margin-bottom: 5px;
-}
-
-.btnLoginText {
+.btnsLoginRegistration {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .btnLogin button {
@@ -94,6 +90,11 @@
   border-radius: 5px;
   width: 100%;
   max-width: 70px;
+}
+
+.btnLoginProductPage {
+  display: flex;
+  gap: 5px;
 }
 
 .thumbnailClass{
@@ -110,7 +111,7 @@
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
-  max-width: 250px;
+  max-width: 320px;
   align-items: center;
 }
 
@@ -235,6 +236,10 @@
 .product-details-page-description {
   
   flex-direction: column;
+}
+
+.loading-spinner {
+  width: 15% !important;
 }
 
 }

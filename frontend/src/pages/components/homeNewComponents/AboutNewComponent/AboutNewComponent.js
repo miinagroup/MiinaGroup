@@ -77,7 +77,9 @@ const AboutNewComponent = ({setIsOpenModal}) => {
               ></img>
             </div>
               <p className={styles.aboutNewText}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                CTL Australia has secured a preferred supplier agreement with a few large Western Australian mining companies, we are servicing all their sites, underground, open pit and processing plants throughout Western Australia. We are providing an online mining portal which has gone live for our existing clients and we would really appreciate the opportunity to stock and supply your products and accessories to our mining clients and for the companies to view online.
+                <br /> <br />
+                We are based in Perth and have been providing our clients with premium products in a swift time frame at some of the best prices in the industry, to ensure a streamlined ordering process from our end direct to the client we need to align ourselves with a company that can provide the same service and to secure a competitive sales and terms of trade agreement.
               </p>
         </div>
         <div className={styles.aboutNewRight} id="aboutSection">

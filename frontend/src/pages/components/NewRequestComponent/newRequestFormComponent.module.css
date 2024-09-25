@@ -121,6 +121,7 @@ input[type=file]::file-selector-button:hover {
     flex-direction: column;
     width: 100%;
     max-width: 700px;
+    color: black;
 }
 
 .categories_list {
@@ -135,6 +136,7 @@ input[type=file]::file-selector-button:hover {
     font-size: 20px;
     text-transform: uppercase;
     font-weight: 500;
+    color: black;
   }
 
   .acc_body {
@@ -160,6 +162,7 @@ input[type=file]::file-selector-button:hover {
   .acc_btn svg {
     width: 20px;
     height: 20px;
+    color: black;
   }
 
   .svg_rotate {
@@ -176,7 +179,7 @@ input[type=file]::file-selector-button:hover {
     cursor: pointer;
     padding: 20px 0px 0px 0px;
     width: 100%;
-    max-width: 500px;
+    max-width: 560px;
   }
 
   @media (max-width: 1024px) {
@@ -228,6 +231,11 @@ input[type=file]::file-selector-button:hover {
   @media (max-width: 480px) {
     .newRequestForm {
         flex-direction: column-reverse;
+        gap: 0px;
+    }
+
+    .frequentlyAskedQuestions {
+        margin-bottom: 25px;
     }
 
     .newRequestFormWrapper h2, .frequentlyAskedQuestions h2 {
@@ -241,6 +249,7 @@ input[type=file]::file-selector-button:hover {
 
     .acc_btn_name {
         font-size: 12px;
+        text-align: start;
     }
 
     .acc_btn svg {

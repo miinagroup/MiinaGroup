@@ -180,7 +180,7 @@ const AdminLinksComponent = () => {
     return (
       <Navbar className="user_side_navBar" style={{ backgroundColor: "white" }}>
         <Nav className="flex-column user_side_nav">
-          <img src="/loading-gif.gif" alt="Loading" style={{ width: "150px", marginTop: "25%" }} />
+          <img src="/loading-gif.gif" alt="Loading" style={{ width: "150px", marginTop: "25%" }} className="loading-spinner" />
         </Nav>
       </Navbar>
     );
