@@ -126,8 +126,8 @@
   color: green;
 }
 
-.red {
-  color: red;
+.orange {
+  color: orange;
 }
 
 @keyframes blinking {
@@ -230,6 +230,11 @@
   width: 100%;
   max-width: 350px;
   margin: 0 auto !important;
+}
+
+.product-details-page-description {
+  
+  flex-direction: column;
 }
 
 }

@@ -947,8 +947,8 @@ const ProductDetailsPageComponent = ({
                       {product.availability?.length > 0 ? (
                       <>
                         <div float="left" className="stock-items-container">
-                        <h6 className={product.availability[0].local !== 0 ? "green" : "red"}>Local Stock: <span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].local}</span></h6>
-                        <h6 className={product.availability[0].national !== 0 ? "green" : "red"}>National Stock: <span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></h6>
+                        <h6 className={product.availability[0].local !== 0 ? "green" : "orange"}>Local Stock: {product.availability[0].local === 0 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
+                        <h6 className={product.availability[0].national !== 0 ? "green" : "orange"}>National Stock: {product.availability[0].national === 0 ? "Low stock" :  <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
                         </div>
                       </>
                       ) : ("")}
