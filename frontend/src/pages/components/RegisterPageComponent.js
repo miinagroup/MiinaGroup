@@ -294,10 +294,10 @@ const RegisterPageComponent = ({
 
   return (
     <Container>
-      <Row className="mt-5 justify-content-md-center">
+      <Row className="mt-4 justify-content-md-center">
+      <div className="min-500-order"><i class="bi bi-exclamation-circle"></i> Our minimum order value is 500 AUD, excluding GST</div>
         <Col md={6} className="w-100">
           {/* <h2>Register</h2> */}
-
           <Form
             noValidate
             validated={validated}

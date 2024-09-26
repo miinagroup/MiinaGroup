@@ -19,6 +19,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
   const [isDeveloper, setIsDeveloper] = useState(false);
   const [accounts, setAccounts] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [isVIP, setIsVIP] = useState(false);
+  const [isCreditVerified, setIsCreditVerified] = useState(false);
   const [updateUserResponseState, setUpdateUserResponseState] = useState({
     message: "",
     error: "",
@@ -50,6 +52,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
     const isMarketing = form.isMarketing.checked;
     const isDeveloper = form.isDeveloper.checked;
     const isSuperAdmin = form.isSuperAdmin.checked;
+    const isVIP = form.isVIP.checked;
+    const isCreditVerified = form.isCreditVerified.checked;
     const accounts = form.accounts.checked;
 
     // Set ipAddress to "" if "remove" is entered
@@ -77,6 +81,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
         isMarketing,
         isDeveloper,
         isSuperAdmin,
+        isVIP,
+        isCreditVerified,
         accounts
       )
         .then((data) => {
@@ -111,6 +117,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
         setIsMarketing(data.isMarketing);
         setIsDeveloper(data.isDeveloper);
         setIsSuperAdmin(data.isSuperAdmin);
+        setIsVIP(data.isVIP);
+        setIsCreditVerified(data.isCreditVerified);
       })
       .catch((er) =>
         console.log(
@@ -259,6 +267,26 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
                     label="Site Person"
                     checked={isSitePerson}
                     onChange={(e) => setIsSitePerson(e.target.checked)}
+                  />
+                </Col>
+              </Row>
+              <Row>
+              <Col md={2}>
+                  <Form.Check
+                    name="isVIP"
+                    type="checkbox"
+                    label="isVIP"
+                    checked={isVIP}
+                    onChange={(e) => setIsVIP(e.target.checked)}
+                  />
+                </Col>
+                <Col md={2}>
+                  <Form.Check
+                    name="isCreditVerified"
+                    type="checkbox"
+                    label="isCreditVerified"
+                    checked={isCreditVerified}
+                    onChange={(e) => setIsCreditVerified(e.target.checked)}
                   />
                 </Col>
               </Row>

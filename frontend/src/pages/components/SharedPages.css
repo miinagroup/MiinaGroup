@@ -143,6 +143,24 @@
   }
 }
 
+.min-500-order {
+  text-align: center;
+  border: 1px solid rgba(13, 110, 253, 0.2);
+  color: #0d6efd;
+  margin-bottom: 25px;
+  padding: 5px 10px;
+  width: 100%;
+  max-width: 500px;
+  background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4));
+  border-radius: 5px;
+}
+
+.min-500-order i {
+  color: #0d6efd;
+  font-weight: bold;
+  font-size: 17px;
+}
+
 @media (min-width: 992px) {
   .login_mobile {
     display: none;
@@ -240,6 +258,14 @@
 
 .loading-spinner {
   width: 15% !important;
+}
+
+.min-500-order {
+   padding: 7px 2px;
+}
+
+.min-500-order, .min-500-order i { 
+  font-size: 12px;
 }
 
 }

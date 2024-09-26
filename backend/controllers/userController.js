@@ -704,7 +704,7 @@ const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id)
       .select(
-        "name lastName email phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isDeveloper isSuperAdmin wantWeather"
+        "name lastName email phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isDeveloper isSuperAdmin wantWeather isVIP isCreditVerified"
       )
       .orFail();
     return res.send(user);
@@ -757,6 +757,8 @@ const updateUser = async (req, res, next) => {
     user.isMarketing = req.body.isMarketing;
     user.isDeveloper = req.body.isDeveloper;
     user.isSuperAdmin = req.body.isSuperAdmin;
+    user.isVIP = req.body.isVIP;
+    user.isCreditVerified = req.body.isCreditVerified;
     user.accounts = req.body.accounts;
     console.log(req.body.isDeveloper);
     await user.save();
