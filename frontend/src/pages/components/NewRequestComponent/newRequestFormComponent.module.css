@@ -137,6 +137,7 @@ input[type=file]::file-selector-button:hover {
     text-transform: uppercase;
     font-weight: 500;
     color: black;
+    text-align: start;
   }
 
   .acc_body {

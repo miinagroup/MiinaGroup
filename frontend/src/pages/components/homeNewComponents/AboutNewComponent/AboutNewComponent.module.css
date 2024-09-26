@@ -19,7 +19,7 @@
 .aboutNewLogo {
     width: 100%;
     max-width: 307px;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     margin-top: 50px;
 }
 
@@ -79,7 +79,18 @@
     opacity: 0;
 }
 
-@media (min-width: 1200px) and (max-width: 1440px) {
+@media (max-width: 1440px) {
+
+    .aboutNew {
+        padding-bottom: 0px;
+    }
+    .aboutNewSecondImg {
+        width: 100%;
+        max-width: 335px;
+    }
+}
+
+@media (max-width: 1200px) {
     .aboutNewSecondImg {
         width: 100%;
         max-width: 300px;

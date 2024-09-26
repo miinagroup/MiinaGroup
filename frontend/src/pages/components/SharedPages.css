@@ -161,6 +161,12 @@
   font-size: 17px;
 }
 
+@media (max-width: 1440px) {
+  .btnLogin button {
+    font-size: 14px;
+  }
+}
+
 @media (min-width: 992px) {
   .login_mobile {
     display: none;

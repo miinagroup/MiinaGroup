@@ -45,7 +45,8 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       const tlImages = gsap.timeline({
         scrollTrigger: {
           trigger: ".aboutNew",
-          start: "top 70%",
+          // start: "top 70%",
+          start: "top bottom",
           end: "+=50%",
           scrub: 1,
         },
