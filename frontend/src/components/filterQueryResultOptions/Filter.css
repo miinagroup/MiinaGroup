@@ -81,6 +81,12 @@ margin-bottom: 0;
     opacity: 0.99;
 }
 
+@media (max-width: 1440px) {
+.subCatFilter a {
+    font-size: 14px;
+}
+}
+
 @media (max-width: 480px) {
     .breadCB {
         font-size: 12px;
