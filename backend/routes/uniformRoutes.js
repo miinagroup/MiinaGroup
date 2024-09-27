@@ -3,7 +3,7 @@ const router = express.Router();
 const { verifyIsLoggedIn, verifyIsAdmin, } = require('../middleware/verifyAuthToken');
 
 const {
-    getUniforms, getAllUniforms, getUniformById, adminCreateUniform, adminRemoveUniform, adminUpdateUniform, adminDeleteUniformImage, adminDeleteUniformPdf, adminUploadImg, adminUploadPdf
+    getUniforms, getAllUniforms, getUniformsByCategory, getUniformById, adminCreateUniform, adminRemoveUniform, adminUpdateUniform, adminDeleteUniformImage, adminDeleteUniformPdf, adminUploadImg, adminUploadPdf
 } = require('../controllers/uniformController');
 
 router.use(verifyIsLoggedIn);
@@ -12,6 +12,7 @@ router.get("/category/:categoryName", getUniforms);
 router.get("/search/:searchQuery", getUniforms);
 router.get("/brand/:brandName", getUniforms);
 router.get("/", getAllUniforms);
+router.get("/categoryName/:categoryName", getUniformsByCategory);
 router.get("/get-one/:uniformId", getUniformById)
 
 // admin routes:

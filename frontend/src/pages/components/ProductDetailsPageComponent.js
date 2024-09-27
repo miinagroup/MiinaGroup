@@ -66,21 +66,18 @@ const ProductDetailsPageComponent = ({
   const [supplierCode, setsupplierCode] = useState('');
   const [clientSkuName, setClientSkuName] = useState('');
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-  const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
-
-  
-  const [showLoginModal, setShowLoginModal] = useState(false);
-    const handleCloseLoginModal = () => {
-      setShowLoginModal(false);
-    };
-    const handleShowLoginModal = (event) => {
-      event.preventDefault()
-      setShowLoginModal(true);
-      };
-
+  const [isUserInfo, setIsUserInfo] = useState(Object.keys(userInfo).length === 0);
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+  const handleShowLoginModal = (event) => {
+    event.preventDefault()
+    setShowLoginModal(true);
+  };
   //categories
   const dispatch = useDispatch();
 
@@ -273,6 +270,7 @@ const ProductDetailsPageComponent = ({
         )
       );
   }, [edit, id]);
+  //console.log(product);
 
   // 如果直接用toLocaleString() 报错的话，可能是value undefined了，那就format一下price， 然后再加上 toLocaleString
   const price = stockPrice;
@@ -366,6 +364,8 @@ const ProductDetailsPageComponent = ({
       );
     }
   }
+  //console.log("pdfs", pdfs);
+
 
   // quote price using -
   useEffect(() => {
@@ -945,16 +945,17 @@ const ProductDetailsPageComponent = ({
                         <br />
                       </Col>
                       {product.availability?.length > 0 ? (
-                      <>
-                        <div float="left" className="stock-items-container">
-                        <h6 className={product.availability[0].local !== 0 ? "green" : "orange"}>Local Stock: {product.availability[0].local === 0 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
-                        <h6 className={product.availability[0].national !== 0 ? "green" : "orange"}>National Stock: {product.availability[0].national === 0 ? "Low stock" :  <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
-                        </div>
-                      </>
+                        <>
+                          <div float="left" className="stock-items-container">
+                            <h6 className={product.availability[0].local > 10 ? "green" : "orange"}>WA Stock: {product.availability[0].local < 10 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
+                            <h6 className={product.availability[0].national > 10 ? "green" : "orange"}>National Stock: {product.availability[0].national < 10 ? "Low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
+                          </div>
+                        </>
                       ) : ("")}
+
                     </Row>
-                    
-                    {!isUserInfo && <Row>
+
+                    <Row>
                       {userData.isAdmin === true ? (
                         <>
                           {product.displayPrice === 0 ? null : (
@@ -1055,7 +1056,7 @@ const ProductDetailsPageComponent = ({
                           </Col>
                         </>
                       )}
-                    </Row>}
+                    </Row>
                   </ListGroup.Item>
                 </ListGroup>
               </Row>
@@ -1293,8 +1294,6 @@ const ProductDetailsPageComponent = ({
                                                 } else {
                                                   return (
                                                     <div
-                                                    className="producr-detail-page-spec-item"
-
                                                       key={
                                                         "table2" + tableIndex
                                                       }

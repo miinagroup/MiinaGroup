@@ -91,6 +91,13 @@ const ManageUniformBrandsPageComponent = ({
               })
             }
           })
+          sizes = sizes.filter(function (element) {
+            return element !== undefined;
+          });
+          colors = colors.filter(function (element) {
+            return element !== undefined;
+          });
+
           sizes.sort((a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b))
           prices.sort((a, b) => (a > b) ? 1 : -1);
           //console.log(sizes.join(",'"));
@@ -140,6 +147,8 @@ const ManageUniformBrandsPageComponent = ({
         userSite: userInfo.location
       }
     }
+    console.log(userInfo);
+
     getSelectedSuppliersByCompanyName(userInfo.company)
       .then((data) => {
         if (data.length === 0) {

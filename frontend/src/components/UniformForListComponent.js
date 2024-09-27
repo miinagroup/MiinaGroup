@@ -158,7 +158,7 @@ const UniformForListComponent = ({
 
         setColors(colorsArray.filter(function (element) { return element !== undefined }))
     }, [images])
-    console.log(colors);
+
     return (
         <>
             <div>

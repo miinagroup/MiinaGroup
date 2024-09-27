@@ -13,6 +13,7 @@ const {
   adminUpdateImages,
   adminUpdateCategory,
   adminCreateProduct,
+  adminCreateHobsonProduct,
   adminUpdateProduct,
   adminUpload,
   adminUploadPdf,
@@ -59,7 +60,7 @@ router.get("/getClientsSkuList", getClientSkuNamesList);
 router.use(verifyIsAdmin);
 router.get("/admin", adminGetProducts);
 router.get("/admin/getCTLSKU", adminGetCTLSKU);
-router.get("/admin/getSupplierSKU:supplier", adminGetSupplierSku);
+router.get("/admin/getSupplierSKU/:supplier", adminGetSupplierSku);
 router.delete("/admin/:id", adminDeleteProduct);
 router.delete("/admin/image/:imagePath/:productId", adminDeleteProductImage);
 router.delete("/admin/pdf/:pdfPath/:productId", adminDeleteProductPdf);
@@ -73,6 +74,7 @@ router.put("/admin/stocktake", adminStockTake);
 router.post("/admin/upload", adminUpload);
 router.post("/admin/uploadpdf", adminUploadPdf);
 router.post("/admin", adminCreateProduct);
+router.post("/admin/hobson", adminCreateHobsonProduct);
 router.get("/admin/checkStockCount", checkStockCount);
 router.get("/admin/productsCheck", productsCheck);
 

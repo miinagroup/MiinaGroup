@@ -101,10 +101,27 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
       // borderStyle: "solid",
       // borderWidth: 1,
     },
+    tableBorderBottomSpecial1: {
+      position: "absolute",
+      bottom: "0",
+      width: "54%",
+      height: "10%",
+      marginLeft: "5%",
+      overflow: "hidden",
+      display: "table",
+      // borderStyle: "solid",
+      // borderWidth: 1,
+    },
     tableCellBillBoxSpecial: {
       paddingLeft: 5,
       fontSize: 10,
       textAlign: "center",
+    },
+    tableCellBillBoxSpecial1: {
+      paddingLeft: 5,
+      fontSize: 11,
+      textAlign: "center",
+      color: "red"
     },
     tableRow: {
       margin: "auto",
@@ -735,6 +752,11 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
               {/* </View> */}
             </>
           )}
+          <View style={styles.tableBorderBottomSpecial1}>
+            <Text style={styles.tableCellBillBoxSpecial1}>
+              PLEASE EMAIL INVOICE TO ACCOUNTS@CTLAUS.COM. NO INVOICE WITH GOODS
+            </Text>
+          </View>
         </Page>
 
         {/* ******* Product List (other pages) ******* */}
@@ -914,6 +936,11 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
                     </View>
                   </>
                 )}
+                <View style={styles.tableBorderBottomSpecial1}>
+                  <Text style={styles.tableCellBillBoxSpecial1}>
+                    PLEASE EMAIL INVOICE TO ACCOUNTS@CTLAUS.COM. NO INVOICE WITH GOODS
+                  </Text>
+                </View>
               </Page>
             )}
           </React.Fragment>

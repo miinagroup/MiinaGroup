@@ -45,11 +45,6 @@ const ProductCategoriesComponent = ({
     }
   }
 
-  // console.log(category, categoryName, subCat, childCat, fourCat);
-  // console.log("====CHILD====");
-  // console.log(baseCategory);
-  // console.log("====CHILD====");
-
   const displayCategory = category.replace(/-/g, ' ').replace(/_/g, " & ");
 
   return (

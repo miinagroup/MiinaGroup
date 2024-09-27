@@ -100,13 +100,13 @@ const getProductsVisitor = async (req, res, next) => {
       // .sort(sortCriteria)
       .limit(recordsPerPage);
 
-      // products = products.filter((product) => product.category !== "QUOTE");
+    // products = products.filter((product) => product.category !== "QUOTE");
 
-      res.json({
-        products,
-        pageNum,
-        paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
-      });
+    res.json({
+      products,
+      pageNum,
+      paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
+    });
 
   } catch (error) {
     next(error);
@@ -429,17 +429,17 @@ const getProducts = async (req, res, next) => {
       }
     }
 
-    let suppliersCondition ={};
+    let suppliersCondition = {};
 
     if (req.user.email.endsWith("@slrltd.com") ||
-    req.user.email.endsWith("@silverlakeresources.com.au") ||
-    req.user.email.endsWith("@red5limited.com.au") ||
-    req.user.email.endsWith("@ctlservices.com.au") ||
-    req.user.email.endsWith("@ctlaus.com") ||
-    req.user.email.endsWith("@focusminerals.com.au") ||
-    req.user.email.endsWith("@evolutionmining.com")) {
+      req.user.email.endsWith("@silverlakeresources.com.au") ||
+      req.user.email.endsWith("@red5limited.com.au") ||
+      req.user.email.endsWith("@ctlservices.com.au") ||
+      req.user.email.endsWith("@ctlaus.com") ||
+      req.user.email.endsWith("@focusminerals.com.au") ||
+      req.user.email.endsWith("@evolutionmining.com")) {
       queryCondition = true;
-      suppliersCondition ={};
+      suppliersCondition = {};
     } else {
       queryCondition = true;
       suppliersCondition = { supplier: { $nin: excludedSuppliers } };
@@ -517,7 +517,7 @@ const getProductById = async (req, res, next) => {
 const adminGetProducts = async (req, res, next) => {
   try {
     const products = await Product.find({})
-      .sort({ ctlsku: 1 })
+      // .sort({ ctlsku: 1 })
       .select(
         "name category displayPrice supplier stock.price stock.purchaseprice stock.ctlsku stock.count stock.suppliersku stock.slrsku stock.attrs stock.uom stock.barcode images pdfs"
       );
@@ -530,7 +530,7 @@ const adminGetProducts = async (req, res, next) => {
 const adminGetCTLSKU = async (req, res, next) => {
   try {
     const products = await Product.find({})
-      .sort({ ctlsku: 1 })
+      // .sort({ ctlsku: 1 })
       .select("stock.ctlsku");
     return res.json(products);
   } catch (err) {
@@ -540,14 +540,63 @@ const adminGetCTLSKU = async (req, res, next) => {
 
 const adminGetSupplierSku = async (req, res, next) => {
   try {
+    console.log("CHECK");
     const products = await Product.find({ supplier: req.params.supplier })
-      .sort({ suppliersku: 1 })
-      .select("name stock.suppliersku stock.price stock.attrs");
+      // .sort({ suppliersku: 1 })
+      .select("stock.suppliersku");
     return res.json(products);
   } catch (err) {
     next(err);
   }
 };
+
+// const updateHobsonStock=async()=>{
+//   const productResponse = await axios.get("/api/products/admin/getSupplierSKU" + "HOBSON");
+//   const hobsonProductCodes = productResponse.data;
+//   let productSupplierSkuArray = []
+//   let tempAvailabilityArray = []
+//   hobsonProductCodes?.map((productCode) => {
+//     productSupplierSkuArray.push(productCode?.stock[0]?.suppliersku)
+//   })
+
+//   const chunkSize = 500;
+//   for (let i = 0, j = 1; i < productSupplierSkuArray.length; i += chunkSize, j++) {
+//     const chunk = productSupplierSkuArray.slice(i, i + chunkSize);
+
+//     const url = 'https://hdi.hobson.com.au/v3/stock/availability/logged-in';
+//     const data = JSON.stringify({
+//       "app_token": `${appToken}`,
+//       "store_code": `${storeCode}`,
+//       "data": { "part_numbers": [...chunk] }
+//     });
+
+//     const response = await fetch(url, {
+//       method: 'POST',
+//       headers: {
+//         'api-key': `${apiKey}`,
+//         'Content-Type': 'application/json',
+//       },
+//       body: data,
+//     });
+//     const fullProductAvailability = await response.json();
+//     const batchResults = fullProductAvailability.data
+//     tempAvailabilityArray.push(...batchResults)
+// }
+//   console.log('Complete Products Availability', tempAvailabilityArray);
+//   // const availabilityList = tempAvailabilityArray.find((element) => {
+//   //   return element.part_number === result.part_number
+//   // })
+
+//   // let localAvailability = 0
+//   // let nationalAvailability = 0
+//   // availabilityList.logged_in_user_availability?.map((site) => {
+//   //   if (site.warehouse === "Perth") {
+//   //     localAvailability = site.available
+//   //   } else {
+//   //     nationalAvailability = nationalAvailability + site.available
+//   //   }
+//   // })
+// }
 
 const adminDeleteProduct = async (req, res, next) => {
   try {
@@ -645,6 +694,121 @@ const adminCreateProduct = async (req, res, next) => {
         product.attrs.push(item);
       });
     }
+    await product.save();
+
+    res.json({
+      message: "product created",
+      productId: product._id,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const adminCreateHobsonProduct = async (req, res, next) => {
+  try {
+    const product = new Product();
+    const {
+      name,
+      description,
+      saleunit,
+      max,
+      displayPrice,
+      supplier,
+      category,
+      stock,
+      availability,
+      images,
+      pdfs,
+      sortOrder,
+      standards,
+      createdBy,
+      editedBy,
+    } = req.body;
+
+    product.name = name.toUpperCase();
+    product.description = description;
+    product.saleunit = saleunit;
+    product.max = max;
+    product.displayPrice = displayPrice;
+    product.supplier = supplier;
+    product.category = category;
+    product.sortOrder = sortOrder;
+    product.standards = standards;
+    product.createdBy = createdBy;
+    product.editedBy = editedBy;
+    if (stock.length > 0) {
+      product.stock = [];
+      stock.map((item) => {
+        const {
+          attrs,
+          uom,
+          count,
+          purchaseprice,
+          price,
+          barcode,
+          ctlsku,
+          suppliersku,
+          clientsSku,
+          sales
+        } = item;
+        product.stock.push({
+          attrs: attrs || "",
+          uom: uom.toUpperCase() || "",
+          count: count || 0,
+          price: price || 0,
+          purchaseprice: purchaseprice || 0,
+          barcode: barcode || "",
+          ctlsku: ctlsku || "",
+          suppliersku: suppliersku || "",
+          clientsSku: clientsSku || [],
+          sales: sales || 0
+        });
+      });
+    } else {
+      product.stock = [];
+    }
+
+    if (availability.length > 0) {
+      product.availability = [];
+      availability.map((item) => {
+        const {
+          local,
+          national
+        } = item;
+        product.availability.push({
+          local: local || 0,
+          national: national || 0
+        });
+      });
+    } else {
+      product.availability = [];
+    }
+
+    if (images.length > 0) {
+      product.images = [];
+      images.map((item) => {
+        const { path } = item;
+        product.images.push({
+          path: path || ""
+        })
+      })
+    } else {
+      product.images = [];
+    }
+
+    if (pdfs.length > 0) {
+      product.pdfs = [];
+      pdfs.map((item) => {
+        const { path } = item;
+        product.pdfs.push({
+          path: path || ""
+        })
+      })
+    } else {
+      product.pdfs = [];
+    }
+
     await product.save();
 
     res.json({
@@ -982,6 +1146,29 @@ const adminUpdateCategory = async (req, res, next) => {
     next(err);
   }
 };
+
+// const adminUpdateHobsonAvailability = async (req, res, next) => {
+//   try {
+//     const product = await Product.findOneAndUpdate(
+//       { stock.suppliersku: req.params.supplierSku },
+//       { $set: { availability.local: req.body.local },{ availability.national: req.body.national } },
+//       // { new: true }
+//     );
+
+// if (!product) {
+//   return res.status(404).json({ error: "Product not found" });
+// }
+
+// return res.status(200).json(product);
+//   } catch (err) {
+//   next(err);
+// }
+// };
+
+// cron.schedule("* * 24 * * *", adminUpdateHobsonAvailability, {
+//   scheduled: true,
+//   timezone: "UTC",
+// });
 
 const adminUpload = async (req, res, next) => {
   if (req.query.bunny === "true") {
@@ -1626,32 +1813,32 @@ const searchProducts = async (req, res, next) => {
       let searchCondition = {}
 
       if (req.user.email.endsWith("@slrltd.com") ||
-          req.user.email.endsWith("@silverlakeresources.com.au") ||
-          req.user.email.endsWith("@red5limited.com.au") ||
-          req.user.email.endsWith("@ctlservices.com.au") ||
-          req.user.email.endsWith("@ctlaus.com") ||
-          req.user.email.endsWith("@focusminerals.com.au") ||
-          req.user.email.endsWith("@evolutionmining.com")) {
-            
-            searchCondition = {
-              $or: [
-                { name: regexQueries },
-                { supplier: supplierFilters },
-                { description: regexQueries },
-                { tags: regexQueries }
-              ]
-            }
-    } else {
-      searchCondition = {
-        $or: [
-          { name: regexQueries },
-          { supplier: supplierFilters },
-          { description: regexQueries },
-          { tags: regexQueries }
-        ],
-        $and: [{ supplier: { $nin: excludedSuppliers } }]
-      } 
-    }
+        req.user.email.endsWith("@silverlakeresources.com.au") ||
+        req.user.email.endsWith("@red5limited.com.au") ||
+        req.user.email.endsWith("@ctlservices.com.au") ||
+        req.user.email.endsWith("@ctlaus.com") ||
+        req.user.email.endsWith("@focusminerals.com.au") ||
+        req.user.email.endsWith("@evolutionmining.com")) {
+
+        searchCondition = {
+          $or: [
+            { name: regexQueries },
+            { supplier: supplierFilters },
+            { description: regexQueries },
+            { tags: regexQueries }
+          ]
+        }
+      } else {
+        searchCondition = {
+          $or: [
+            { name: regexQueries },
+            { supplier: supplierFilters },
+            { description: regexQueries },
+            { tags: regexQueries }
+          ],
+          $and: [{ supplier: { $nin: excludedSuppliers } }]
+        }
+      }
 
       const foundProducts = await Product.find(searchCondition);
       const sortedProductsArray = sortByName(foundProducts);
@@ -1665,33 +1852,33 @@ const searchProducts = async (req, res, next) => {
       let searchCondition = {}
 
       if (req.user.email.endsWith("@slrltd.com") ||
-          req.user.email.endsWith("@silverlakeresources.com.au") ||
-          req.user.email.endsWith("@red5limited.com.au") ||
-          req.user.email.endsWith("@ctlservices.com.au") ||
-          req.user.email.endsWith("@ctlaus.com") ||
-          req.user.email.endsWith("@focusminerals.com.au") ||
-          req.user.email.endsWith("@evolutionmining.com")) {
+        req.user.email.endsWith("@silverlakeresources.com.au") ||
+        req.user.email.endsWith("@red5limited.com.au") ||
+        req.user.email.endsWith("@ctlservices.com.au") ||
+        req.user.email.endsWith("@ctlaus.com") ||
+        req.user.email.endsWith("@focusminerals.com.au") ||
+        req.user.email.endsWith("@evolutionmining.com")) {
 
-            searchCondition = regexQueries.map(regex => ({
-              $or: [
-                { name: regex },
-                { description: regex },
-                { supplier: regex },
-                { tags: regex }
-              ]
-            }));
-    } else {
-      searchCondition = regexQueries.map(regex => ({
-        $or: [
-          { name: regex },
-          { description: regex },
-          { supplier: regex },
-          { tags: regex }
-        ],
-        $and: [{ supplier: { $nin: excludedSuppliers } }]
-      }));      
-    }
-      
+        searchCondition = regexQueries.map(regex => ({
+          $or: [
+            { name: regex },
+            { description: regex },
+            { supplier: regex },
+            { tags: regex }
+          ]
+        }));
+      } else {
+        searchCondition = regexQueries.map(regex => ({
+          $or: [
+            { name: regex },
+            { description: regex },
+            { supplier: regex },
+            { tags: regex }
+          ],
+          $and: [{ supplier: { $nin: excludedSuppliers } }]
+        }));
+      }
+
       const foundProducts = await Product.find({ $and: searchCondition });
       const sortedProductsArray = sortByName(foundProducts);
       const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
@@ -1870,6 +2057,7 @@ module.exports = {
   adminGetSupplierSku,
   adminDeleteProduct,
   adminCreateProduct,
+  adminCreateHobsonProduct,
   adminUpdateProduct,
   adminUpdateSKU,
   adminUpdateImages,

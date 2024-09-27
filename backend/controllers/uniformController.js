@@ -432,6 +432,18 @@ const getAllUniforms = async (req, res, next) => {
     }
 };
 
+const getUniformsByCategory = async (req, res, next) => {
+    const categoryName = "UNIFORM/" + req.params.categoryName
+    try {
+        let uniforms = await Uniform.find({ category: categoryName })
+        res.json({
+            uniforms
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getUniformById = async (req, res, next) => {
     try {
         const uniforms = await Uniform.findById(req.params.uniformId).orFail();
@@ -692,5 +704,5 @@ const adminUploadPdf = async (req, res, next) => {
 
 
 module.exports = {
-    getUniforms, getAllUniforms, adminCreateUniform, adminRemoveUniform, getUniformById, adminUpdateUniform, adminDeleteUniformImage, adminDeleteUniformPdf, adminUploadImg, adminUploadPdf
+    getUniforms, getAllUniforms, getUniformsByCategory, adminCreateUniform, adminRemoveUniform, getUniformById, adminUpdateUniform, adminDeleteUniformImage, adminDeleteUniformPdf, adminUploadImg, adminUploadPdf
 };
