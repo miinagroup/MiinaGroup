@@ -7,6 +7,9 @@ const moment = require("moment-timezone");
 const _ = require('lodash');
 
 const excludedSuppliers = ["PARAMOUNT-SAFETY", "SHEFFIELD"];
+const appToken = "9Ark2TryUeCOQObeKkxnVoB4IwPznpoE"
+const storeCode = "EMBLETON"
+const apiKey = "6d234218-9973-4e57-9b29-d93d1c98e436"
 
 const getCombinations = (array, length) => {
   let result = [];
@@ -550,59 +553,20 @@ const adminGetSupplierSku = async (req, res, next) => {
   }
 };
 
-// const updateHobsonStock=async()=>{
-//   const productResponse = await axios.get("/api/products/admin/getSupplierSKU" + "HOBSON");
-//   const hobsonProductCodes = productResponse.data;
-//   let productSupplierSkuArray = []
-//   let tempAvailabilityArray = []
-//   hobsonProductCodes?.map((productCode) => {
-//     productSupplierSkuArray.push(productCode?.stock[0]?.suppliersku)
-//   })
-
-//   const chunkSize = 500;
-//   for (let i = 0, j = 1; i < productSupplierSkuArray.length; i += chunkSize, j++) {
-//     const chunk = productSupplierSkuArray.slice(i, i + chunkSize);
-
-//     const url = 'https://hdi.hobson.com.au/v3/stock/availability/logged-in';
-//     const data = JSON.stringify({
-//       "app_token": `${appToken}`,
-//       "store_code": `${storeCode}`,
-//       "data": { "part_numbers": [...chunk] }
-//     });
-
-//     const response = await fetch(url, {
-//       method: 'POST',
-//       headers: {
-//         'api-key': `${apiKey}`,
-//         'Content-Type': 'application/json',
-//       },
-//       body: data,
-//     });
-//     const fullProductAvailability = await response.json();
-//     const batchResults = fullProductAvailability.data
-//     tempAvailabilityArray.push(...batchResults)
-// }
-//   console.log('Complete Products Availability', tempAvailabilityArray);
-//   // const availabilityList = tempAvailabilityArray.find((element) => {
-//   //   return element.part_number === result.part_number
-//   // })
-
-//   // let localAvailability = 0
-//   // let nationalAvailability = 0
-//   // availabilityList.logged_in_user_availability?.map((site) => {
-//   //   if (site.warehouse === "Perth") {
-//   //     localAvailability = site.available
-//   //   } else {
-//   //     nationalAvailability = nationalAvailability + site.available
-//   //   }
-//   // })
-// }
+const adminGetHobsonCTLSku = async (req, res, next) => {
+  try {
+    const products = await Product.find({ supplier: req.params.supplier })
+      // .sort({ suppliersku: 1 })
+      .select("stock.ctlsku");
+    return res.json(products);
+  } catch (err) {
+    next(err);
+  }
+};
 
 const adminDeleteProduct = async (req, res, next) => {
   try {
     const { isSuperAdmin, email } = req.user;
-    // console.log(isSuperAdmin, email);
-
     const product = await Product.findById(req.params.id).orFail();
 
     if (!isSuperAdmin) {
@@ -624,7 +588,6 @@ const adminDeleteProduct = async (req, res, next) => {
   }
 };
 
-
 const adminCreateProduct = async (req, res, next) => {
   try {
     const product = new Product();
@@ -633,7 +596,6 @@ const adminCreateProduct = async (req, res, next) => {
       description,
       saleunit,
       max,
-      //purchaseprice,
       displayPrice,
       supplier,
       category,
@@ -704,6 +666,204 @@ const adminCreateProduct = async (req, res, next) => {
     next(err);
   }
 };
+
+const adminUpdateHobsonProduct = async (req, res, next) => {
+  try {
+    const tempAvailabilityArray = req.body.tempAvailabilityArray
+    if (!tempAvailabilityArray || tempAvailabilityArray.length === 0) {
+      return res.status(400).json({ message: "No data available to process." });
+    }
+    // Initialize bulk operation
+    var bulk = Product.collection.initializeUnorderedBulkOp();
+    let local = 0
+    let national = 0
+    tempAvailabilityArray?.forEach((availabilityArray) => {
+      availabilityArray.logged_in_user_availability?.forEach((site) => {
+        if (site.warehouse === "Perth") {
+          local = site.available
+        } else {
+          national = national + site.available
+        }
+      });
+      // Add the update operation to the bulk operation
+      bulk.find({ "stock.suppliersku": availabilityArray.part_number }).updateOne(
+        {
+          $set: { "availability.$.local": local, "availability.$.national": national }
+        }
+      );
+    });
+
+    // Execute bulk operation only if there are pending operations
+    if (bulk.s && bulk.s.currentBatch) {
+      bulk.execute((err, result) => {
+        if (err) {
+          console.error("Bulk operation error:", err);
+          return res.status(500).json({ message: "Bulk operation failed.", error: err });
+        } else {
+          console.log("Bulk operation success:", result);
+          return res.status(200).json({ message: "Bulk operation succeeded.", result: result });
+        }
+      });
+    } else {
+      console.log("No operations to execute in bulk.");
+      return res.status(400).json({ message: "No bulk operations to execute." });
+    }
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+const scheduledHobsonStockUpdate = async (req, res, next) => {
+  try {
+    await Product.collection.createIndex({ "stock.suppliersku": 1 });
+    const supplier = "HOBSON ENGINEERING"
+    const hobsonProductCodes = await Product.find({ supplier: supplier }).select("stock.suppliersku");
+    let productSupplierSkuArray = []
+    let tempAvailabilityArray = []
+    hobsonProductCodes?.map((productCode) => {
+      productSupplierSkuArray.push(productCode?.stock[0]?.suppliersku)
+    })
+
+    const chunkSize = 500;
+    for (let i = 0, j = 1; i < productSupplierSkuArray.length; i += chunkSize, j++) {
+      const chunk = productSupplierSkuArray.slice(i, i + chunkSize);
+
+      const url = 'https://hdi.hobson.com.au/v3/stock/availability/logged-in';
+      const data = JSON.stringify({
+        "app_token": `${appToken}`,
+        "store_code": `${storeCode}`,
+        "data": { "part_numbers": [...chunk] }
+      });
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'api-key': `${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+      const fullProductAvailability = await response.json();
+      const batchResults = fullProductAvailability.data
+      tempAvailabilityArray.push(...batchResults)
+    }
+    var bulk = Product.collection.initializeUnorderedBulkOp();
+    tempAvailabilityArray?.map((availabilityArray) => {
+      let local = 0
+      let national = 0
+      availabilityArray.logged_in_user_availability?.map((site) => {
+        if (site.warehouse === "Perth") {
+          local = site.available
+        } else {
+          national = national + site.available
+        }
+      })
+
+      bulk.find({ "stock.suppliersku": availabilityArray.part_number }).updateOne(
+        {
+          $set: { "availability.$.local": local, "availability.$.national": national }
+        }
+      )
+    })
+    // Execute bulk operation only if there are pending operations
+    if (bulk.s && bulk.s.currentBatch) {
+      bulk.execute((err, result) => {
+        if (err) {
+          console.error("Bulk operation error:", err);
+        } else {
+          console.log("Bulk operation success:", result);
+        }
+      });
+    } else {
+      console.log("No operations to execute in bulk.");
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+//Auto Update Hobson Stock Every Day 12am
+cron.schedule("0 16 * * *", scheduledHobsonStockUpdate, {
+  scheduled: true,
+  timezone: "UTC",
+});
+
+const scheduledHobsonPriceUpdate = async (res, req, next) => {
+  try {
+    await Product.collection.createIndex({ "stock.suppliersku": 1 });
+    const supplier = "HOBSON ENGINEERING"
+    const hobsonProductCodes = await Product.find({ supplier: supplier }).select("stock.suppliersku");
+    let productSupplierSkuArray = []
+    let tempPriceArray = []
+    hobsonProductCodes?.map((productCode) => {
+      productSupplierSkuArray.push(productCode?.stock[0]?.suppliersku)
+    })
+    const chunkSize = 500;
+    for (let i = 0, j = 1; i < productSupplierSkuArray.length; i += chunkSize, j++) {
+      const chunk = productSupplierSkuArray.slice(i, i + chunkSize);
+
+      const url = 'https://hdi.hobson.com.au/v3/stock/price';
+      const data = JSON.stringify({
+        "app_token": `${appToken}`,
+        "store_code": `${storeCode}`,
+        "data": { "part_numbers": [...chunk] }
+      });
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'api-key': `${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+      const fullProductsPriceList = await response.json();
+      const batchResults = fullProductsPriceList.data
+      tempPriceArray.push(...batchResults)
+    }
+    var bulk = Product.collection.initializeUnorderedBulkOp();
+    let local = 0
+    let national = 0
+    tempPriceArray?.map((priceArray) => {
+      priceArray.logged_in_user_availability?.map((site) => {
+        if (site.warehouse === "Perth") {
+          local = site.available
+        } else {
+          national = national + site.available
+        }
+      })
+
+      bulk.find({ "stock.suppliersku": priceArray.part_number }).updateOne(
+        {
+          $set: { "availability.$.local": local, "availability.$.national": national }
+        }
+      )
+    })
+    // Execute bulk operation only if there are pending operations
+    if (bulk.s && bulk.s.currentBatch) {
+      bulk.execute((err, result) => {
+        console.log("bulk executed");
+        if (err) {
+          console.error("Bulk operation error:", err);
+        } else {
+          console.log("Bulk operation success:", result);
+        }
+      });
+    } else {
+      console.log("No operations to execute in bulk.");
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+//Auto Update Hobson Pricing Every Monday 12am
+cron.schedule("0 16 * * 0", scheduledHobsonPriceUpdate, {
+  scheduled: true,
+  timezone: "UTC",
+});
+
 
 const adminCreateHobsonProduct = async (req, res, next) => {
   try {
@@ -831,7 +991,6 @@ const schedulePriceReset = async (productId, expireDate) => {
   );
 
   const expireDateTimeUTC = expireDateTimePerth.clone().tz("UTC");
-
   const cronExpression = `${expireDateTimeUTC.seconds()} ${expireDateTimeUTC.minutes()} ${expireDateTimeUTC.hours()} ${expireDateTimeUTC.date()} ${expireDateTimeUTC.month() + 1
     } *`;
 
@@ -2054,10 +2213,12 @@ module.exports = {
   getProductByCTLSKU,
   adminGetProducts,
   adminGetCTLSKU,
+  adminGetHobsonCTLSku,
   adminGetSupplierSku,
   adminDeleteProduct,
   adminCreateProduct,
   adminCreateHobsonProduct,
+  adminUpdateHobsonProduct,
   adminUpdateProduct,
   adminUpdateSKU,
   adminUpdateImages,

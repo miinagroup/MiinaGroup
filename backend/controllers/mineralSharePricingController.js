@@ -191,10 +191,10 @@ const autoUpdateMineralPrices = async () => {
   }
 };
 
-cron.schedule("0 */2 * * *", autoUpdateMineralPrices, {
-  scheduled: true,
-  timezone: "Australia/Perth",
-});
+// cron.schedule("0 */2 * * *", autoUpdateMineralPrices, {
+//   scheduled: true,
+//   timezone: "Australia/Perth",
+// });
 // cron.schedule("*/40 * * * *", autoUpdateMineralPrices, {
 //   scheduled: true,
 //   timezone: "UTC",
@@ -313,7 +313,7 @@ module.exports = {
   adminUpdateStocksPrice,
 };
 
-/* 
+/*
 api.openweathermap.org/data/2.5/forecast/daily?lat={维度}&lon={经度}&cnt={天}&appid=2661e8453a0019c38576fec6d7649d24
 */
 
