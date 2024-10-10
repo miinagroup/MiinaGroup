@@ -17,7 +17,8 @@ const registerUserApiRequest = async (
   deliveryAddress,
   billAddress,
   state,
-  postCode
+  postCode,
+  abn
 ) => {
   const { data } = await axios.post("/api/users/register", {
     name,
@@ -33,6 +34,7 @@ const registerUserApiRequest = async (
     billAddress,
     state,
     postCode,
+    abn
   });
   /* 传信息去redux ？？？？*/
   sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));

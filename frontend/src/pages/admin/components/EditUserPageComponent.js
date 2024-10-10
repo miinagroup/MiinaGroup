@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import GoBackButton from "./GoBackButton";
 import FetchAuthFromServer from "../../../components/FetchAuthFromServer";
+import MaskedInput from 'react-text-mask';
 
 const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
   const [validated, setValidated] = useState(false);
@@ -20,12 +21,19 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
   const [accounts, setAccounts] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [isVIP, setIsVIP] = useState(false);
+  const [abn, setAbn] = useState();
   const [isCreditVerified, setIsCreditVerified] = useState(false);
   const [updateUserResponseState, setUpdateUserResponseState] = useState({
     message: "",
     error: "",
   }); // handling errors and messages
+  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/];
 
+  const handleAbn = (e) => {
+    const newValue = e.target.value;
+    setAbn(newValue);
+  };
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -55,6 +63,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
     const isVIP = form.isVIP.checked;
     const isCreditVerified = form.isCreditVerified.checked;
     const accounts = form.accounts.checked;
+    const abn = form.abn.value;
 
     // Set ipAddress to "" if "remove" is entered
     if (ipAddress === "remove") {
@@ -83,7 +92,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
         isSuperAdmin,
         isVIP,
         isCreditVerified,
-        accounts
+        accounts,
+        abn
       )
         .then((data) => {
           if (data === "user updated") {
@@ -106,7 +116,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
     fetchUser(id)
       .then((data) => {
         setUser(data);
-        // console.log("useruseruseruser", data);
+        console.log("useruseruseruser", data);
         setIsAdminState(data.isAdmin);
         setVerified(data.verified);
         setIsPD(data.isPD);
@@ -119,6 +129,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
         setIsSuperAdmin(data.isSuperAdmin);
         setIsVIP(data.isVIP);
         setIsCreditVerified(data.isCreditVerified);
+        setAbn(data.abn)
       })
       .catch((er) =>
         console.log(
@@ -169,6 +180,32 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
                 defaultValue={user.email}
                 disabled
               />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicAbn">
+              <Form.Label>ABN</Form.Label>
+              {/* <Form.Control
+                name="abn"
+                required
+                type="text"
+                defaultValue={abn}
+              /> */}
+              <MaskedInput
+                mask={abnMask}
+                placeholder="ABN"
+                guide={false}
+                value={abn}
+                onChange={handleAbn}
+                render={(ref, props) => <Form.Control
+                  required
+                  minLength={14}
+                  maxLength={14}
+                  type="text"
+                  name="abn"
+                  ref={ref}
+                  {...props}
+                />} 
+               />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="formBasicPhone">

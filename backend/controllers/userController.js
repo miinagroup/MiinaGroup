@@ -37,6 +37,7 @@ const registerUser = async (req, res, next) => {
       state,
       postCode,
       mobileRegistration,
+      abn
     } = req.body;
     if (
       !(
@@ -52,7 +53,8 @@ const registerUser = async (req, res, next) => {
         deliveryAddress &&
         billAddress &&
         state &&
-        postCode
+        postCode &&
+        abn
       )
     ) {
       return res.status(400).send("All inputs are required");
@@ -78,6 +80,7 @@ const registerUser = async (req, res, next) => {
         billAddress,
         state,
         postCode,
+        abn
       });
 
       // verify email address if end with slrltd.com
@@ -98,7 +101,6 @@ const registerUser = async (req, res, next) => {
           category: "verifyEmail",
         }).save();
         const url = `${process.env.BASE_URL}user/${user.id}/verify/${token.token}`;
-        console.log(url);
 
         await sendVerificationEmail(user.email, "Verify Email", url);
       }
@@ -106,6 +108,7 @@ const registerUser = async (req, res, next) => {
       await newUserNoticeToJosh({
         email: user.email,
         name: user.name,
+        abn: user.abn,
         lastName: user.lastName,
         company: user.company,
         location: user.location,
@@ -130,6 +133,7 @@ const registerUser = async (req, res, next) => {
           state: user.state,
           postCode: user.postCode,
           mobileLogin: true,
+          abn: user.abn
         },
       });
       /*       if (mobileRegistration) {
@@ -581,6 +585,7 @@ const updateUserProfile = async (req, res, next) => {
       postCode,
       siteSku,
       siteVerified,
+      abn
     } = req.body;
 
     // console.log(req.body);
@@ -600,6 +605,7 @@ const updateUserProfile = async (req, res, next) => {
     user.postCode = postCode || user.postCode;
     user.siteSku = siteSku || user.siteSku;
     user.siteVerified = siteVerified || user.siteVerified;
+    user.abn = abn || user.abn;
 
     await user.save();
 
@@ -616,6 +622,7 @@ const updateUserProfile = async (req, res, next) => {
         siteSku: user.siteSku,
         siteVerified: user.siteVerified,
         location: user.location,
+        abn: user.abn
       },
     });
   } catch (err) {
@@ -704,7 +711,7 @@ const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id)
       .select(
-        "name lastName email phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isDeveloper isSuperAdmin wantWeather isVIP isCreditVerified"
+        "name lastName email phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isDeveloper isSuperAdmin wantWeather isVIP isCreditVerified abn"
       )
       .orFail();
     return res.send(user);
@@ -741,6 +748,7 @@ const updateUser = async (req, res, next) => {
     user.mobile = req.body.mobile || user.mobile;
     user.location = req.body.location || user.location;
     user.company = req.body.company || user.company;
+    user.abn = req.body.abn || user.abn;
 
     if (req.body.ipAddress === "") {
       user.ipAddress = "";
@@ -760,7 +768,7 @@ const updateUser = async (req, res, next) => {
     user.isVIP = req.body.isVIP;
     user.isCreditVerified = req.body.isCreditVerified;
     user.accounts = req.body.accounts;
-    console.log(req.body.isDeveloper);
+    user.abn = req.body.abn;
     await user.save();
 
     res.send("user updated");

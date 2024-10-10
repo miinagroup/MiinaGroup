@@ -27,7 +27,8 @@ const updateUserApiRequest = async (
   isSuperAdmin,
   isVIP,
   isCreditVerified,
-  accounts
+  accounts,
+  abn
 ) => {
   const { data } = await axios.put(`/api/users/${userId}`, {
     name,
@@ -49,7 +50,8 @@ const updateUserApiRequest = async (
     isSuperAdmin,
     isVIP,
     isCreditVerified,
-    accounts
+    accounts,
+    abn
   });
   return data;
 };

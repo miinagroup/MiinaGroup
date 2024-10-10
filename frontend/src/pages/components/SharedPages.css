@@ -80,7 +80,8 @@
 
 .btnsLoginRegistration {
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  gap: 5px;
   width: 100%;
 }
 

@@ -43,6 +43,7 @@
 
 @media (max-width: 480px) {
     .homeNew {
-        max-height: 50vh;
+        /* max-height: 50vh; */
+        height: calc(100vh - 90px);
     }
 }

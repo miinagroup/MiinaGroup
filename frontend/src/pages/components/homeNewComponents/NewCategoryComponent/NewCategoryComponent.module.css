@@ -136,7 +136,7 @@ a .category_grid__title {
     position: absolute;
     top: -185px;
     left: 0;
-    overflow: hidden;
+    /* overflow: hidden; */
     display: flex;
     flex-direction: column;
     column-gap: 20px;

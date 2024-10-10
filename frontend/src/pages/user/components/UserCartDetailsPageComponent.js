@@ -84,6 +84,10 @@ const UserCartDetailsPageComponent = ({
   const [createdUserId, setCreatedUserId] = useState()
   const [createdUserName, setCreatedUserName] = useState()
   const [user, setUser] = useState();
+  const [shippingAddress, setShippingAddress] = useState();
+  const [validated, setValidated] = useState(true);
+
+  // console.log("shippingAddress", shippingAddress)
 
   //Tracking user Interactions
   useTrackEvents();
@@ -217,6 +221,7 @@ const UserCartDetailsPageComponent = ({
         setStoreId(userInfo._id);
         setUserId(userInfo._id);
         setClientSiteSku(userInfo.siteSku);
+        setShippingAddress(data.deliveryAddress)
       })
       .catch((er) =>
         console.log(
@@ -285,6 +290,7 @@ const UserCartDetailsPageComponent = ({
       orderNote: uniformUserName ? uniformUserName + "'s " + orderNote + " Order" : orderNote,
       invoiceNumber: largestInvoice + 1,
       deliverySite: selectedDeliverySite,
+      deliveryAddress: shippingAddress,
       userName: userName,
       userCompany: userCompany,
       quickBooksCustomerId: quickBooksCustomerId,
@@ -293,6 +299,10 @@ const UserCartDetailsPageComponent = ({
       createdUserId: createdUserId ? createdUserId : "",
       createdUserName: createdUserName ? createdUserName : "",
     };
+
+    if (!shippingAddress) {
+      setValidated(false);
+    }
 
     createOrder(orderData)
       .then(async (data) => {
@@ -351,6 +361,11 @@ const UserCartDetailsPageComponent = ({
   const enterManagerEmail = (e) => {
     setManagerEmail(e.target.value + `@${userEmail}`);
   };
+
+  const enterShippingAddress = (e) => {
+    setValidated(true);
+    setShippingAddress(e.target.value)
+  }
 
   const removeFromCartHandler = (productId, qty, price, attrs, uniformUserId) => {
     reduxDispatch(removeFromCart(productId, qty, price));
@@ -602,7 +617,8 @@ const UserCartDetailsPageComponent = ({
                     </span>
                   </ListGroup.Item>
 
-                  {user?.isCreditVerified && <><ListGroup.Item
+                  <Form noValidate validated={validated}>
+                  <><ListGroup.Item
                     controlid="validationSLRPurchaseNum"
                     className="p-1 ps-2"
                   >
@@ -638,7 +654,29 @@ const UserCartDetailsPageComponent = ({
                     <Form.Control.Feedback type="invalid">
                       Please Enter Your Note.{" "}
                     </Form.Control.Feedback>
-                  </ListGroup.Item></>}
+                  </ListGroup.Item>
+
+                  <ListGroup.Item
+                    controlid="validationShippingAddress"
+                    className="p-1 ps-2"
+                  >
+                    <Form.Label className="fw-bold">Shipping Address:</Form.Label>
+                    <Form.Control
+                    as="textarea"
+                      className="p-0 ps-1"
+                      type="string"
+                      name="shippingAddress"
+                      placeholder="Shipping Address"
+                      onChange={enterShippingAddress}
+                      required
+                      value={shippingAddress}
+                      style={{ fontSize: '12px', height: "70px"}}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please Enter Shipping Address.{" "}
+                    </Form.Control.Feedback>
+                  </ListGroup.Item>
+                  </></Form>
 
                   <>
                     {userInfo.isSiteManager && deliverySites?.length > 0 ? (
@@ -694,24 +732,14 @@ const UserCartDetailsPageComponent = ({
                   </>
                   <ListGroup.Item className="p-1 ps-2">
                     <div className="d-grid gap-2">
-                    {user?.isCreditVerified && <button
+                    <button
                         size="sm"
                         onClick={orderHandler}
                         disabled={purchaseNumber?.length < 1}
                         className="btn btn-success p-0 ps-1 pe-1 download_cart_btn"
                       >
                         Confirm Order
-                      </button>}
-                      {!user?.isCreditVerified && <button
-                        size="sm"
-                        // onClick={orderHandler}
-                        // disabled={purchaseNumber?.length < 1}
-                        className="btn btn-success p-0 ps-1 pe-1 download_cart_btn"
-                        disabled={user?.isVIP || (cartSubtotal - taxAmount) >= 500 ? false : true}
-                      >
-                        Buy Now
-                      </button>}
-                      {user?.isVIP || !user?.isCreditVerified && <p>The minimum order value is 500 AUD, excluding GST.</p>}
+                      </button>
                     </div>
                   </ListGroup.Item>
                 </ListGroup>
@@ -733,7 +761,6 @@ const UserCartDetailsPageComponent = ({
                   </ListGroup.Item>
                 </ListGroup>
               </>
-
             )}
 
             <br />

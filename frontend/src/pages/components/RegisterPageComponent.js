@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import MaskedInput from 'react-text-mask';
 import {
   Alert,
   Container,
@@ -55,6 +56,8 @@ const RegisterPageComponent = ({
     { company: "RED 5 LIMITED", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'] }
   ])
   const [selectedSites, setSelectedSites] = useState({})
+  const [abn, setAbn] = useState("")
+  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
 
   const handleConfirmPassword = (e) => {
     const { value } = e.target;
@@ -82,6 +85,7 @@ const RegisterPageComponent = ({
     //TODO if need deliveryAddress again, change the value from location to deliveryAddress.
     const state = form.state.value;
     const postCode = form.postCode.value;
+    const abn = form.abn.value;
     // if (email.endsWith("@slrltd.com") || email.endsWith("@slrltd.com.au") || email.endsWith("@silverlakeresources.com.au")) {
     //   if (location.toUpperCase() === "RANDALLS" || location.toUpperCase() === "RANDALLS MILLS") { setStoreEmail("randallssupply@silverlakeresources.com.au") }
     //   if (location.toUpperCase() === "DAISY MILANO" || location.toUpperCase() === "DAISY") { setStoreEmail("daisymilano@silverlakeresources.com.au") }
@@ -107,7 +111,8 @@ const RegisterPageComponent = ({
       billAddress &&
       state &&
       postCode &&
-      form.password.value === form.confirmPassword.value
+      form.password.value === form.confirmPassword.value &&
+      abn
     ) {
       /* 点击submit了之后，判定validity，如果form里面的东西都是true了，那loading true。后面会用这个state操作spinner */
       setRegisterUserResponseState({ loading: true });
@@ -124,7 +129,8 @@ const RegisterPageComponent = ({
         deliveryAddress,
         billAddress,
         state,
-        postCode
+        postCode,
+        abn
       )
         .then((data) => {
           /* 如果data success了，那就set spinner false */
@@ -164,6 +170,7 @@ const RegisterPageComponent = ({
             form.billAddress.value = "";
             form.state.value = "";
             form.postCode.value = "";
+            form.abn.value = "";
             setValidated(false);
             setEmailSent(true);
             setTimeout(() => {
@@ -269,6 +276,11 @@ const RegisterPageComponent = ({
       }
     }
   };
+  const handleAbn = (e) => {
+    const newValue = e.target.value;
+    setAbn(newValue);
+  };
+
 
   // const handleSelectedSites = (company) => {
   //   var siteList = []
@@ -295,7 +307,6 @@ const RegisterPageComponent = ({
   return (
     <Container>
       <Row className="mt-4 justify-content-md-center">
-      <div className="min-500-order"><i class="bi bi-exclamation-circle"></i> Our minimum order value is 500 AUD, excluding GST</div>
         <Col md={6} className="w-100">
           {/* <h2>Register</h2> */}
           <Form
@@ -305,7 +316,7 @@ const RegisterPageComponent = ({
             autoComplete="off"
           >
             <Row className="mb-3">
-              <Form.Group as={Col} md="4" controlId="validationCustom01">
+              <Form.Group as={Col} md="6" controlId="validationCustom01">
                 <Form.Control
                   required
                   type="text"
@@ -318,7 +329,7 @@ const RegisterPageComponent = ({
                 {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
               </Form.Group>
 
-              <Form.Group as={Col} md="4" controlId="formBasicLastName">
+              <Form.Group as={Col} md="6" controlId="formBasicLastName">
                 <Form.Control
                   required
                   type="text"
@@ -329,8 +340,9 @@ const RegisterPageComponent = ({
                   Please enter last name.{" "}
                 </Form.Control.Feedback>
               </Form.Group>
-
-              <Form.Group as={Col} md="4" controlId="formBasicEmail">
+            </Row>
+            <Row>
+            <Form.Group as={Col} md="6" controlId="formBasicEmail">
                 <InputGroup hasValidation>
                   {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
                   <Form.Control
@@ -346,6 +358,29 @@ const RegisterPageComponent = ({
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
+            <Form.Group as={Col} md="6" controlId="formBasicAbn">
+              <MaskedInput
+                mask={abnMask}
+                placeholder="ABN"
+                guide={false}
+                value={abn}
+                onChange={handleAbn}
+                id="abn"
+                render={(ref, props) => <Form.Control
+                  required
+                  minLength={14}
+                  maxLength={14}
+                  type="text"
+                  name="abn"
+                  pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
+                  ref={ref}
+                  {...props}
+                />} 
+               />
+              <Form.Control.Feedback type="invalid">
+                Please enter ABN.
+              </Form.Control.Feedback>
+            </Form.Group>
             </Row>
 
             <Row className="mb-3">

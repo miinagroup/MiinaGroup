@@ -134,7 +134,6 @@ const ProductForListComponent = ({
 
   const addToCartHandler = async (selectedItem) => {
     setButtonText("Adding...");
-    console.log("selectedItem", selectedItem)
     try {
       await reduxDispatch(addToCart(productId, qty, selectedItem));
       setButtonText("Added!");
@@ -342,7 +341,6 @@ const ProductForListComponent = ({
                   <div>or</div>
                   <button className="btn_blue" onClick={(e) => handleShow(e, "RegisterForm")}>Register</button>
                   </div>
-                  <div>to see the price</div>
                   </div>}
               </div>
             </a>

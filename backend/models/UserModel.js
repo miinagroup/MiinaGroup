@@ -15,6 +15,11 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    abn: {
+      type: String,
+      required: false,
+      unique: true,
+    },
     ipAddress: {
       type: String,
     },

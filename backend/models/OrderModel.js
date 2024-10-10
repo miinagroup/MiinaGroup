@@ -129,6 +129,10 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    deliveryAddress: {
+      type: String,
+      required: false,
+    },
     transactionResult: {
       status: { type: String },
       createTime: { type: String },

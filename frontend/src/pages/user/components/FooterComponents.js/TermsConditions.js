@@ -195,33 +195,9 @@ const TermsConditions = () => {
             <h5 className="terms">ENTIRE AGREEMENT</h5>
             <p>The Terms of Use constitutes the sole and entire agreement between you and the Company with respect to the Website and supersede all prior and contemporaneous understandings, agreements, representations and warranties, both written and oral, with respect to the Website.</p>
 
-            <h5 className="terms">MINIMUM ORDER QUANTITY (MOQ)</h5>
-            <p>The minimum order value is 500 AUD, excluding GST.</p>
-
             <h5 className="terms">YOUR COMMENTS AND CONCERNS</h5>
             <p>All other feedback, comments, requests for technical support and other communications relating to the Website should be directed to: <a href="mailto:admin@ctlaus.com">admin@ctlaus.com</a></p>
             <p>Thank you for visiting the Website.</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
     )
 }

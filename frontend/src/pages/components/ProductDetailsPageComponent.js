@@ -947,7 +947,6 @@ const ProductDetailsPageComponent = ({
                           <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
                           <div>or</div>
                           <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button>
-                          <span>to see the price</span>
                           </div>
                   </div>}
 

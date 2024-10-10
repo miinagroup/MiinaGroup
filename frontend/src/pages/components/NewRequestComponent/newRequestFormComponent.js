@@ -33,10 +33,6 @@ const frequentlyAskedQuestions = [
     {
         question: "What is your return policy?",
         answer: "Our return policy depends on the nature of the product and the circumstances of the return. Generally, we accept returns of equipment within a specified period if it is defective or not as described."
-    },
-    {
-        question: "What is your Minimum Order Quantity?",
-        answer: "The minimum order value is 500 AUD, excluding GST."
     }
 ]
 

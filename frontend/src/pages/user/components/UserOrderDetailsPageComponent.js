@@ -611,6 +611,9 @@ const UserOrderDetailsPageComponent = ({
               <b>Site</b>: {orderData?.deliverySite}
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
+              <b>Shipping address</b>: {orderData?.deliveryAddress}
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
               <b>Phone</b>: {orderData?.user?.phone}
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
@@ -1058,6 +1061,9 @@ const UserOrderDetailsPageComponent = ({
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
               <b>Site</b>: {orderData?.deliverySite}
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <b>Shipping address</b>: {orderData?.deliverySite}
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
               <b>Phone</b>: {orderData?.user?.phone}
