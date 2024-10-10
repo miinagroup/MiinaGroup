@@ -14,6 +14,7 @@ const {
   adminCreateOrder,
   updateOrderToPaid,
   markAsBackOrder,
+  markAsPaid,
   updateOrderToDelivered,
   markInvAsSent,
   updateOrderNote,
@@ -61,6 +62,7 @@ router.delete("/delete/:orderId", deleteOrder);
 router.put("/deliverySite/:id", updateDeliverySite);
 router.put("/updateAdminNote/:id", updateAdminNote);
 router.put("/markAsBackOrder/:id", markAsBackOrder);
+router.put("/markAsPaid/:id", markAsPaid);
 router.put("/orderSalesToProduct", orderSalesToProduct);
 router.put("/admin/updateClientSku/:id", adminUpdateOrderClientSku);
 

@@ -19,6 +19,7 @@ import { useReactToPrint } from "react-to-print";
 import DeliveryNotePrint from "../../../components/Pdfs/DeliveryNotePrint";
 import PickingPackingPrint from "../../../components/Pdfs/PickingPackingPrint";
 import InvoicePrint from "../../../components/Pdfs/InvoicePrint";
+import ProformaInvoicePrint from "../../../components/Pdfs/ProformaInvoicePrint";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { pdf } from "@react-pdf/renderer";
 import SendInvoice from "../../../components/SendEmail/SendInvoice";
@@ -33,6 +34,7 @@ const OrderDetailsPageComponent = ({
   markAsDelivered,
   markAsPaid,
   sendInv,
+  sendProformaInv,
   updateBackOrder,
   updateInvoiceNumber,
   removeOrderItem,
@@ -64,14 +66,17 @@ const OrderDetailsPageComponent = ({
 
   const [isDelivered, setIsDelivered] = useState(false);
   const [invoiceSent, setInvoiceSent] = useState(false);
+  const [proformaInvoiceSent, setProformaInvoiceSent] = useState(false);
   const [cartSubtotal, setCartSubtotal] = useState(0);
   const [taxAmount, setTaxAmount] = useState();
   const [deliveredButtonDisabled, setdeliveredButtonDisabled] = useState(false);
   const [paidButtonDisabled, setpaidButtonDisabled] = useState(false);
   const [sentInvButtonDisabled, setSentInvButtonDisabled] = useState(false);
+  const [sentProformaInvButtonDisabled, setSentProformaInvButtonDisabled] = useState(false);
   const [orderDeliveredButton, setorderDeliveredButton] =
     useState("Mark as sent");
   const [invSentButton, setInvSentButton] = useState("Send Invoice");
+  const [proformaInvSentButton, setProformaInvSentButton] = useState("Send P.Invoice");
   const [orderPaidButton, setorderPaidButton] = useState("Mark as Paid");
   const [cartItems, setCartItems] = useState([]);
   const [orderData, setOrderData] = useState([]);
@@ -87,7 +92,8 @@ const OrderDetailsPageComponent = ({
   const [buttonText, setButtonText] = useState("Create");
   const reOrderItemsCheck = useSelector((state) => state.cart.cartItems);
   const [editingIndex, setEditingIndex] = useState(null);
-
+  const [showProformaInvoice, setShowProformaInvoice] = useState(false)
+  const [btnMarkAsPaid, setBtnMarkAsPaid] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -149,6 +155,14 @@ const OrderDetailsPageComponent = ({
         if (order.invSent) {
           setInvSentButton("Re-send Inv");
           setSentInvButtonDisabled(true);
+        }
+        if (order.proformaInvSent) {
+          setProformaInvSentButton("Re-send Proforma Inv");
+          setSentProformaInvButtonDisabled(true);
+        }
+        if (order.isPaid) {
+          setBtnMarkAsPaid(true)
+          document.getElementById("isPaid").checked = true;
         }
         if (order.balance === 0) {
           setorderPaidButton("Order is Paid");
@@ -358,6 +372,7 @@ const OrderDetailsPageComponent = ({
         selectedDeliverySite={selectedDeliverySite}
         companyAccount={companyAccount}
         taxAmount={taxAmount}
+        isPaid={btnMarkAsPaid}
       />
     ).toBlob();
 
@@ -417,6 +432,7 @@ const OrderDetailsPageComponent = ({
           selectedDeliverySite={selectedDeliverySite}
           companyAccount={companyAccount}
           taxAmount={taxAmount}
+          isPaid={btnMarkAsPaid}
         />
       ).toBlob();
 
@@ -514,6 +530,120 @@ const OrderDetailsPageComponent = ({
         );
     } else {
       setInvSentButton("Something Went Wrong! Contact Tech Team!!!");
+    }
+  };
+
+
+  // email proforma invoice to client's account team
+  const [base64ProformaData, setBase64ProformaData] = useState([]);
+
+  const generateProformaPdf = async () => {
+    try {
+      const blob = await pdf(
+        <ProformaInvoicePrint
+          cartItems={cartItems}
+          invoiceNumber={invoiceNumber}
+          userInfo={userInfo}
+          purchaseNumber={purchaseNumber}
+          cartSubtotal={cartSubtotal}
+          dueDays={dueDays}
+          invoiceDate={createdAt}
+          selectedDeliverySite={selectedDeliverySite}
+          companyAccount={companyAccount}
+          taxAmount={taxAmount}
+        />
+      ).toBlob();
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        setBase64ProformaData({
+          base64data,
+        });
+      };
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error("Failed to generate PDF:", error);
+    }
+  };
+
+  const [proformaInvData, setProformaInvData] = useState();
+  //const invBillingAddress = selectedDeliverySite?.billingAddress;
+
+  useEffect(() => {
+    generateProformaPdf();
+  }, [
+    orderData,
+    id,
+    edit,
+    removed,
+    editLocation,
+    deliveryBooks,
+    selectedDeliverySite,
+    invBillingAddress,
+  ]);
+
+  useEffect(() => {
+    setProformaInvData({
+      sentProformaInvButtonDisabled,
+      billingEmail: deliveryBooks[0]?.billingEmail,
+      invoiceNumber: invoiceNumber,
+      base64data: base64ProformaData.base64data,
+      cartSubtotal,
+      purchaseNumber,
+    });
+  }, [base64ProformaData]);
+
+  const [sendingProformaInv, setSendingProformaInv] = useState(false);
+
+  const sendProformaInvoiceEmail = async (proformaInvData) => {
+    setSendingProformaInv(true);
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    const formDataToSend = new FormData();
+    formDataToSend.append("billingEmail", `${deliveryBooks[0]?.billingEmail}`);
+    formDataToSend.append("purchaseNumber", `${proformaInvData.purchaseNumber}`);
+    formDataToSend.append("totalPrice", `${proformaInvData.cartSubtotal}`);
+    formDataToSend.append("invoiceNumber", `${proformaInvData.invoiceNumber}`);
+    formDataToSend.append("base64data", `${proformaInvData.base64data}`);
+    formDataToSend.append("orderID", `${id}`);
+
+    try {
+      const res = await axios.post(
+        "/api/sendemail/emailProformaInv",
+        formDataToSend,
+        config
+      );
+      setSendingProformaInv(false);
+      setRefreshOrder(!refreshOrder);
+      return true;
+    } catch (err) {
+      console.error(err);
+      setSendingProformaInv(false);
+      return false;
+    }
+  };
+
+  const handleSentProformaInv = async () => {
+    if (await sendProformaInvoiceEmail(proformaInvData)) {
+      sendProformaInv(id)
+        .then((res) => {
+          if (res) {
+            setProformaInvoiceSent(true);
+          }
+        })
+        .catch((er) =>
+          console.log(
+            er.response.data.message
+              ? er.response.data.message
+              : er.response.data
+          )
+        );
+    } else {
+      setProformaInvSentButton("Something Went Wrong! Contact Tech Team!!!");
     }
   };
 
@@ -695,7 +825,7 @@ const OrderDetailsPageComponent = ({
           if (response.status === 200) {
             window.location.href = `/admin/order-details/${data._id}`;
           }
-          console.log(response);
+          //console.log(response);
         }
       })
       .catch((err) => console.log(err));
@@ -778,6 +908,22 @@ const OrderDetailsPageComponent = ({
     setRefreshOrder(!refreshOrder);
   };
 
+  const handleShowProformaInvoice = () => {
+    setShowProformaInvoice(!showProformaInvoice)
+  }
+
+  const handleMarkPaid = async () => {
+    setBtnMarkAsPaid(true)
+    try {
+      const response = await axios.put(
+        "/api/orders/markAsPaid/" + order._id,
+        { isPaid: true }
+      );
+    } catch (err) {
+      console.error("Error updating client SKU:", err);
+    }
+    setRefreshOrder(!refreshOrder);
+  }
 
   return (
     <Container fluid style={{ width: "80%" }}>
@@ -999,6 +1145,11 @@ const OrderDetailsPageComponent = ({
           </ListGroup>
         </Col>
         <Col md={3}>
+          <label>
+            <u>
+              <a href="/admin/orders">Go to All Orders </a>
+            </u>
+          </label>
           <ListGroup>
             <ListGroup.Item className="p-1 ps-2">
               <h3>ORDER SUMMARY</h3>
@@ -1125,73 +1276,6 @@ const OrderDetailsPageComponent = ({
                 </Button>
               </div>
             </ListGroup.Item>
-
-            {/* <ListGroup.Item className="p-1 ps-2">
-              <div className="d-grid gap-2">
-                <PDFDownloadLink
-                  document={
-                    <DeliveryNotePrint
-                      cartItems={cartItems}
-                      invoiceNumber={invoiceNumber}
-                      userInfo={userInfo}
-                      purchaseNumber={purchaseNumber}
-                      cartSubtotal={cartSubtotal}
-                      invoiceDate={createdAt}
-                      selectedDeliverySite={selectedDeliverySite}
-                      companyAccount={companyAccount}
-                      deliveredAt={deliveredAt}
-                    />
-                  }
-                  fileName={"DN" + invoiceNumber}
-                >
-                  {({ loading }) =>
-                    loading ? (
-                      <Button className="p-0 m-0 pe-2 ps-2">
-                        Loading Delivery Note...
-                      </Button>
-                    ) : (
-                      <Button className="p-0 m-0 pe-2 ps-2">
-                        Print Delivery Note
-                      </Button>
-                    )
-                  }
-                </PDFDownloadLink>
-              </div>  
-            </ListGroup.Item> */}
-
-            {/*  <ListGroup.Item className="p-1 ps-2">
-              <div className="d-grid gap-2">
-                <PDFDownloadLink
-                  document={
-                    <PickingPackingPrint
-                      cartItems={cartItems}
-                      invoiceNumber={invoiceNumber}
-                      userInfo={userInfo}
-                      purchaseNumber={purchaseNumber}
-                      cartSubtotal={cartSubtotal}
-                      invoiceDate={createdAt}
-                      selectedDeliverySite={selectedDeliverySite}
-                      companyAccount={companyAccount}
-                      deliveredAt={deliveredAt}
-                    />
-                  }
-                  fileName={"PL" + invoiceNumber}
-                >
-                  {({ loading }) =>
-                    loading ? (
-                      <Button className="p-0 m-0 pe-2 ps-2">
-                        Loading Picking List...
-                      </Button>
-                    ) : (
-                      <Button className="p-0 m-0 pe-2 ps-2">
-                        Print Picking List
-                      </Button>
-                    )
-                  }
-                </PDFDownloadLink>
-              </div>
-            </ListGroup.Item> */}
-
             <ListGroup.Item
               className="p-1 ps-2"
               hidden={backOrderStatus === false}
@@ -1217,12 +1301,20 @@ const OrderDetailsPageComponent = ({
               </div>
             </ListGroup.Item>
           </ListGroup>
-
           <br />
 
           <ListGroup hidden={userData?.accounts !== true}>
             <ListGroup.Item className="p-1 ps-2">
               <h5 className="m-0">Accounts Use Only:</h5>
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <Form.Check
+                type="switch"
+                id="isPaid"
+                label="Mark As Paid"
+                onChange={handleMarkPaid}
+                disabled={btnMarkAsPaid}
+              />
             </ListGroup.Item>
             <PDFPopupButton
               documentComponent={
@@ -1237,39 +1329,12 @@ const OrderDetailsPageComponent = ({
                   selectedDeliverySite={selectedDeliverySite}
                   companyAccount={companyAccount}
                   taxAmount={taxAmount}
+                  isPaid={btnMarkAsPaid}
                 />
               }
               fileName={invoiceNumber}
               loadingText="Print Invoice"
             />
-            {/*             <ListGroup.Item className="p-1 ps-2">
-              <div className="d-grid gap-2">
-                <Button
-                  className="p-0 m-0 w-50"
-                  onClick={() =>
-                    markAsPaid(id)
-                      .then((res) => {
-                        if (res) {
-                          setIsPaid(true);
-                        }
-                      })
-                      .catch((er) =>
-                        console.log(
-                          er.response.data.message
-                            ? er.response.data.message
-                            : er.response.data
-                        )
-                      )
-                  }
-                  disabled={paidButtonDisabled}
-                  variant={paidButtonDisabled ? "secondary" : "success"}
-                  type="button"
-                >
-                  {orderPaidButton}
-                </Button>
-              </div>
-            </ListGroup.Item> */}
-
             <ListGroup.Item className="p-1 ps-2">
               <div className="d-grid gap-2">
                 <Button
@@ -1287,66 +1352,65 @@ const OrderDetailsPageComponent = ({
                   <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
                   {/* {`(${order?.invHasSent})`} */}
                 </Button>
-
-                {/* <SendInvoice invData={invData} />
-                <Button
-                  className="p-0 m-0 w-50"
-                  onClick={() =>
-                    sendInv(id)
-                      .then((res) => {
-                        if (res) {
-                          setInvoiceSent(true);
-                        }
-                      })
-                      .catch((er) =>
-                        console.log(
-                          er.response.data.message
-                            ? er.response.data.message
-                            : er.response.data
-                        )
-                      )
-                  }
-                  disabled={sentInvButtonDisabled}
-                  variant="success"
-                  type="button"
-                >
-                  {invSentButton}
-                </Button> */}
               </div>
             </ListGroup.Item>
-
-            {/*             <ListGroup.Item className="p-1 ps-2">
-              <div className="d-grid gap-2">
-                <PDFDownloadLink
-                  document={
-                    <InvoicePrint
+          </ListGroup>
+          <br />
+          <div style={{ height: "100px" }}>
+            <ListGroup>
+              <ListGroup.Item>
+                <h5 className="m-0">Proforma Invoice</h5>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Form.Check
+                  type="switch"
+                  id="proforma-switch"
+                  label="Show Proforma Invoice"
+                  onChange={handleShowProformaInvoice}
+                />
+              </ListGroup.Item>
+              <div hidden={showProformaInvoice === false}>
+                <PDFPopupButton
+                  documentComponent={
+                    <ProformaInvoicePrint
                       cartItems={cartItems}
                       invoiceNumber={invoiceNumber}
                       userInfo={userInfo}
                       purchaseNumber={purchaseNumber}
                       cartSubtotal={cartSubtotal}
+                      dueDays={dueDays}
                       invoiceDate={createdAt}
                       selectedDeliverySite={selectedDeliverySite}
                       companyAccount={companyAccount}
+                      taxAmount={taxAmount}
                     />
                   }
                   fileName={invoiceNumber}
-                >
-                  {({ loading }) =>
-                    loading ? (
-                      <Button className="p-0 m-0 pe-2 ps-2">
-                        Loading Invoice...
-                      </Button>
-                    ) : (
-                      <Button className="p-0 m-0 pe-2 ps-2 w-50 ">
-                        Download Invoice
-                      </Button>
-                    )
-                  }
-                </PDFDownloadLink>
+                  loadingText="Print P.Invoice"
+                />
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <Button
+                      className="p-0 m-0 w-50"
+                      onClick={
+                        sentProformaInvButtonDisabled
+                          ? () => sendProformaInvoiceEmail(invData)
+                          : handleSentProformaInv
+                      }
+                      variant={sentProformaInvButtonDisabled ? "secondary" : "success"}
+                      type="button"
+                      disabled={sendingInv}
+                    >
+                      {sendingInv ? "Sending..." : proformaInvSentButton}{" "}
+                      <span hidden={!order?.proformaInvHasSent}>({order?.proformaInvHasSent})</span>{" "}
+                      {/* {`(${order?.invHasSent})`} */}
+                    </Button>
+                  </div>
+                </ListGroup.Item>
               </div>
-            </ListGroup.Item> */}
-          </ListGroup>
+            </ListGroup>
+          </div>
+          <br />
 
           {/* edit Track Link modal */}
           <Modal
@@ -1450,14 +1514,9 @@ const OrderDetailsPageComponent = ({
               </Button>
             </Modal.Footer>
           </Modal>
-          <label>
-            <u>
-              <a href="/admin/orders">Go to All Orders </a>
-            </u>
-          </label>
         </Col>
       </Row>
-    </Container>
+    </Container >
   );
 };
 

@@ -59,6 +59,13 @@ const sendInv = async (id) => {
   }
 };
 
+const sendProformaInv = async (id) => {
+  const { data } = await axios.put("/api/orders/emailProformaInv/" + id);
+  if (data) {
+    return data;
+  }
+};
+
 /* const updateBackOrder = async (orderId, itemId, suppliedQty) => {
     const { data } = await axios.put("/api/orders/updateBackOrder/" + orderId, itemId, suppliedQty);
     if (data) {
@@ -132,6 +139,7 @@ const AdminOrderDetailsPage = () => {
       markAsDelivered={markAsDelivered}
       markAsPaid={markAsPaid}
       sendInv={sendInv}
+      sendProformaInv={sendProformaInv}
       updateBackOrder={updateBackOrder}
       updateInvoiceNumber={updateInvoiceNumber}
       removeOrderItem={removeOrderItem}
