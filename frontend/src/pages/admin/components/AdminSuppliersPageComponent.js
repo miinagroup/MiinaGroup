@@ -3,10 +3,38 @@ import { LinkContainer } from "react-router-bootstrap";
 import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
 import { useState, useEffect } from "react";
 import SupplierDetailPageComponent from "./SupplierDetailPageComponent";
+import { TableHeader, Pagination, Search } from "../../../components/DataTable";
 
 const AdminSuppliersPageComponent = ({ fetchSuppliers, deleteSupplier }) => {
   const [suppliers, setSuppliers] = useState([]);
+  const [filteredSuppliers, setFilteredSuppliers] = useState([]);
+  const [fineSlicedSuppliers, setFineSlicedSuppliers] = useState([]);
   const [supplierDeleted, setSupplierDeleted] = useState(false);
+  const [search, setSearch] = useState("");
+  const [selectedSupplierId, setSelectedSupplierId] = useState(null);
+  const [show, setShow] = useState(false);
+  const [sorting, setSorting] = useState({ field: "createdAt", order: "desc" });
+  //const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 40;
+
+  const headers = [
+    { name: "No#", field: "index", sortable: false },
+    { name: "Company Name", field: "supplierName", sortable: true },
+    { name: "Sales Email", field: "supplierSalesEmail", sortable: true },
+    { name: "Sales Account", field: "supplierSalesPhone", sortable: true },
+    { name: "Location", field: "supplierAddress", sortable: true },
+    { name: "Edit/Delete", field: "", sortable: false }
+  ];
+
+  const columnWidths = [
+    "3%",
+    "20%",
+    "20%",
+    "15%",
+    "35%",
+    "5%",
+  ];
 
   const deleteHandler = async (supplierId) => {
     if (window.confirm("Are You Sure")) {
@@ -37,8 +65,6 @@ const AdminSuppliersPageComponent = ({ fetchSuppliers, deleteSupplier }) => {
     return () => abctrl.abort();
   }, [supplierDeleted]);
 
-  const [show, setShow] = useState(false);
-
   const handleClose = () => {
     setShow(false);
   };
@@ -47,7 +73,45 @@ const AdminSuppliersPageComponent = ({ fetchSuppliers, deleteSupplier }) => {
     setShow(true);
   };
 
-  const [selectedSupplierId, setSelectedSupplierId] = useState(null);
+  useEffect(() => {
+    let filterSuppliers = suppliers.filter((supplier) =>
+      supplier.supplierName?.toUpperCase().includes(search.toUpperCase())
+    );
+    setFilteredSuppliers(filterSuppliers)
+  }, [search, suppliers])
+
+  const getNestedProperty = (obj, path) => {
+    return path.split(".").reduce((acc, part) => acc && acc[part], obj);
+  };
+
+  useEffect(() => {
+    if (sorting.field) {
+      const reversed = sorting.order === "asc" ? 1 : -1;
+      let filterSuppliers = fineSlicedSuppliers.sort((a, b) => {
+        const fieldA = getNestedProperty(a, sorting.field);
+        const fieldB = getNestedProperty(b, sorting.field);
+
+        if (typeof fieldA === "number" && typeof fieldB === "number") {
+          return reversed * (fieldA - fieldB);
+        } else if (typeof fieldA === "string" && typeof fieldB === "string") {
+          return reversed * fieldA.localeCompare(fieldB);
+        } else {
+          // If field types are different, compare their string representations
+          return reversed * String(fieldA).localeCompare(String(fieldB));
+        }
+      });
+      setFineSlicedSuppliers(filterSuppliers)
+    }
+  }, [sorting])
+
+  const totalItems = filteredSuppliers.length
+  useEffect(() => {
+    let slicedSuppliers = filteredSuppliers.slice(
+      (currentPage - 1) * ITEMS_PER_PAGE,
+      (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE
+    )
+    setFineSlicedSuppliers(slicedSuppliers)
+  }, [currentPage, filteredSuppliers])
 
   return (
     <>
@@ -68,20 +132,30 @@ const AdminSuppliersPageComponent = ({ fetchSuppliers, deleteSupplier }) => {
               </Button>
             </LinkContainer>
           </h1>
-
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th width="15%">Company Name</th>
-                <th width="15%">Sales Email</th>
-                <th width="25%">Sales Account</th>
-                <th width="35%">Location</th>
-                <th width="10%">Edit/Delete</th>
-              </tr>
-            </thead>
+          <div className="row">
+            <div className="col-md-5">
+              <Pagination
+                total={totalItems}
+                itemsPerPage={ITEMS_PER_PAGE}
+                currentPage={currentPage}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </div>
+            <div className="col-md-5"></div>
+            <Search
+              onSearch={(value) => {
+                setSearch(value);
+              }}
+            />
+          </div>
+          <table className="table table-striped table-sm">
+            <TableHeader
+              headers={headers}
+              onSorting={(field, order) => setSorting({ field, order })}
+              widths={columnWidths}
+            />
             <tbody>
-              {suppliers.map((supplier, idx) => (
+              {fineSlicedSuppliers.map((supplier, idx) => (
                 <tr key={idx}>
                   <td>{idx + 1}</td>
                   <td>{supplier.supplierName}</td>
@@ -115,7 +189,7 @@ const AdminSuppliersPageComponent = ({ fetchSuppliers, deleteSupplier }) => {
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </table>
         </Col>
       </Row>
 
