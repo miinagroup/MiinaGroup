@@ -666,11 +666,15 @@ const ProductDetailsPageComponent = ({
       });
   };
 
-
+  const [catList, setCatList] = useState([])
+  useEffect(() => {
+    if (product.category !== "" || product.category !== undefined) {
+      setCatList(product?.category?.split("/"))
+    }
+  }, [product])
 
   return (
     <Container className="content-container product-detail-page" fluid>
-      <BreadcrumbComponent />
       <Row className="product-detail-page-row">
         <Col xxl={2} xl={3} lg={3} md={3}>
           <ListGroup variant="flush">
@@ -690,9 +694,42 @@ const ProductDetailsPageComponent = ({
 
             {/* ************   Product Details  ***************  */}
             <Col lg={6} className="product-detail-page-info">
-              <span className="categoryHD">
-                {product.category?.replaceAll("/", " / ")}
-              </span>
+              {
+                catList ? (
+                  <>
+                    < span className="categoryHD">
+                      {catList[0] ? (
+                        <a href={`/product-list?categoryName=${catList[0]}`}>{catList[0]}</a>
+                      ) : ("")}
+                      {catList[1] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}`}>{catList[1]}</a>
+                        </>
+                      ) : ("")}
+                      {catList[2] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}`}>{catList[2]}</a>
+                        </>
+                      ) : ("")}
+                      {catList[3] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}`}>{catList[3]}</a>
+                        </>
+                      ) : ("")}
+                      {catList[4] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}`}>{catList[4]}</a>
+                        </>
+                      ) : ("")}
+                    </span>
+                  </>
+                ) : ("")
+              }
+
               <Row>
                 <ListGroup variant="flush" className="product-detail-page-list-group">
                   <ListGroup.Item>
@@ -1459,10 +1496,10 @@ const ProductDetailsPageComponent = ({
             </Col>
           </Row>
         </Col>
-      </Row>
+      </Row >
 
       {/* edit product */}
-      <Modal
+      < Modal
         show={show}
         onHide={handleClose}
         className="edite_product_short_infor"
@@ -1474,11 +1511,11 @@ const ProductDetailsPageComponent = ({
           productChanged={productChanged}
           refreshAfterEdit={refreshAfterEdit}
         />
-      </Modal>
+      </Modal >
       <Modal show={showLoginModal} onHide={handleCloseLoginModal} className="login_preview_items">
         <LoginRegisterPage />
       </Modal>
-    </Container>
+    </Container >
   );
 };
 
