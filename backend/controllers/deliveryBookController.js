@@ -174,6 +174,66 @@ const adminDeleteDeliveryBook = async (req, res, next) => {
   }
 };
 
+const addNewSiteToDeliveryBook = async (req, res, next) => {
+  try {
+    const { location, billingAddress, deliveryAddress, abn, id } = req.body;
+
+    const deliveryBook = await DeliveryBook.findById(id);
+    if (!deliveryBook) {
+      return res.status(404).json({ message: 'Delivery Book not found' });
+    }
+
+    const existingSite = deliveryBook.sites.find(site => site.name.toLowerCase() === location.toLowerCase());
+    if (existingSite) {
+      return res.status(400).json({ message: 'A site with this name already exists.' });
+    }
+
+    const newSite = {
+      name: location,
+      billingAddress,
+      deliveryAddress,
+      siteSku: `${location.toLowerCase().replace(/\s+/g, '')}Sku`
+    };
+
+    deliveryBook.sites.push(newSite);
+
+    await deliveryBook.save();
+
+    res.status(200).json({ message: 'Site added successfully', deliveryBook });
+    
+  } catch (error) {
+    next(error);
+  }
+}
+
+const updateSiteToDeliveryBook = async (req, res, next) => { 
+  try {
+    const { location, billingAddress, deliveryAddress, id, idSite } = req.body;
+
+    const deliveryBook = await DeliveryBook.findById(id);
+    if (!deliveryBook) {
+      return res.status(404).json({ message: 'Delivery Book not found' });
+    }
+
+    const siteIndex = deliveryBook.sites.findIndex(site => site._id.toString() === idSite);
+    if (siteIndex === -1) {
+      return res.status(404).json({ message: 'Site not found' });
+    }
+
+    deliveryBook.sites[siteIndex].name = location;
+    deliveryBook.sites[siteIndex].billingAddress = billingAddress;
+    deliveryBook.sites[siteIndex].deliveryAddress = deliveryAddress;
+
+    await deliveryBook.save();
+
+    res.status(200).json({ message: 'Site updated successfully', site: deliveryBook.sites[siteIndex] });
+    
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 module.exports = {
   adminCreateDeliveryBook,
   adminDeleteDeliveryBook,
@@ -182,4 +242,6 @@ module.exports = {
   getAllDeliveryBook,
   getDeliveryBookById,
   getAdminDeliveryBook,
+  addNewSiteToDeliveryBook,
+  updateSiteToDeliveryBook
 };

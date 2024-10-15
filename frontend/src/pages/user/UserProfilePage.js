@@ -22,7 +22,8 @@ const updateUserApiRequest = async (
   deliveryAddress,
   state,
   postCode,
-  siteSku
+  siteSku,
+  abn
 ) => {
   const { data } = await axios.put("/api/users/profile", {
     name,
@@ -36,7 +37,8 @@ const updateUserApiRequest = async (
     deliveryAddress,
     state,
     postCode,
-    siteSku
+    siteSku,
+    abn
   });
   return data;
 };

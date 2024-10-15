@@ -95,9 +95,7 @@ return (<>
     <AboutNewComponent />
     <div className={styles.image_cont} id="content"></div>
     <NewRequestFormComponent />
-    <hr />
-          <AcknowledgementOfCountryComponent />
-          <hr />
+    <AcknowledgementOfCountryComponent />
   </>)
 }
 

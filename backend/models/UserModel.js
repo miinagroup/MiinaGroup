@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    abn: {
+      type: String,
+      required: false
+    },
     ipAddress: {
       type: String,
     },
@@ -112,6 +116,16 @@ const userSchema = mongoose.Schema(
     isUniformManager: {
       type: Boolean,
       required: false,
+      default: false,
+    },
+    isVIP: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    isCreditVerified: {
+      type: Boolean,
+      required: true,
       default: false,
     },
     accounts: {

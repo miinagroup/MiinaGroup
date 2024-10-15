@@ -61,6 +61,8 @@ const NewFooter = () => {
         <div className={styles.newListFooter}>
             <span><a id="contact_sales" href="mailto:sales@ctlaus.com">sales@ctlaus.com</a></span>
             <span><a id="contact_accounts" href="mailto:accounts@ctlaus.com">accounts@ctlaus.com</a></span>
+            <span><a id="contact_marketing" href="mailto:marketing@ctlaus.com">marketing@ctlaus.com</a></span>
+            <span><a id="contact_techteam" href="mailto:techteam@ctlaus.com">techteam@ctlaus.com</a></span>
         </div>
         <div className={styles.footerBtns}>
                 <OverlayTrigger trigger="click" placement="top" overlay={popoverGoogle} rootClose={true}>

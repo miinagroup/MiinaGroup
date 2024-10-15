@@ -25,6 +25,10 @@ const deliveryBookSchema = new mongoose.Schema({
       // latLon: { type: String, required: false },
     },
   ],
+  abn: {
+    type: String,
+    required: false,
+  },
   editeHistroys: [
     {
       operator: {

@@ -71,6 +71,7 @@ a {
 
 /* *************    Login/Register     ***************** */
  .LoginRegPage {
+  z-index: 1000;
   margin-top: -3.5%;
   margin-bottom: 1.2%;
 }

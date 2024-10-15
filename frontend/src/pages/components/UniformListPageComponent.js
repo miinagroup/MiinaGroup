@@ -266,7 +266,7 @@ const UniformListPageComponent = ({
 
                     <Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={6}>
                         {loading ? (
-                            <img src="/loading-gif.gif"></img>
+                            <img src="/loading-gif.gif" className="loading-spinner"></img>
                         ) : uniformCategories?.length > 1 ? (
                             filteredCategories?.map((category) => (
                                 <UniformCategoriesComponent

@@ -66,7 +66,18 @@ const ProductDetailsPageComponent = ({
   const [supplierCode, setsupplierCode] = useState('');
   const [clientSkuName, setClientSkuName] = useState('');
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-  const [isUserInfo, setIsUserInfo] = useState(Object.keys(userInfo).length === 0);
+  const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
+  const [modalType, setModalType] = useState("LoginForm")
+  
+  const [showLoginModal, setShowLoginModal] = useState(false);
+    const handleCloseLoginModal = () => {
+      setShowLoginModal(false);
+    };
+    const handleShowLoginModal = (event, type) => {
+      event.preventDefault();
+      setModalType(type);
+      setShowLoginModal(true);
+      };
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -978,7 +989,14 @@ const ProductDetailsPageComponent = ({
                             </>
                           )}
                         </h6>}
-                        {isUserInfo && <div className="btnLogin">For price availability please <button onClick={handleShowLoginModal} className="btn_blue">LogIn</button></div>}
+                        {isUserInfo && <div className="btnLogin btnLoginText btnLoginProductPage">
+                          <div className="btnsLoginRegistration">
+                          <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
+                          <div>or</div>
+                          <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button>
+                          </div>
+                  </div>}
+
                         <br />
                       </Col>
                       {product.availability?.length > 0 ? (
@@ -1513,7 +1531,7 @@ const ProductDetailsPageComponent = ({
         />
       </Modal >
       <Modal show={showLoginModal} onHide={handleCloseLoginModal} className="login_preview_items">
-        <LoginRegisterPage />
+        <LoginRegisterPage modalType={modalType} />
       </Modal>
     </Container >
   );

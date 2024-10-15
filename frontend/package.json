@@ -70,6 +70,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "react-simple-star-rating": "^5.1.6",
+    "react-text-mask": "^5.5.0",
     "react-to-print": "^2.14.11",
     "recharts": "^2.7.2",
     "redux": "^4.2.1",

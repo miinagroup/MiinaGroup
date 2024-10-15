@@ -102,7 +102,7 @@ useGSAP(() => {
       trigger: "#blocks",
       start: "top 80%",
       toggleActions: "play none none none",
-      end: "bottom 30%",
+      end: "bottom 35%",
       scrub: true,
       once: true,
     },

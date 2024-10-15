@@ -60,7 +60,8 @@ const registerUserApiRequest = async (
   deliveryAddress,
   billAddress,
   state,
-  postCode
+  postCode,
+  abn
 ) => {
   const { data } = await axios.post("/api/users/register", {
     name,
@@ -76,6 +77,7 @@ const registerUserApiRequest = async (
     billAddress,
     state,
     postCode,
+    abn
   });
   /* 传信息去redux ？？？？*/
   sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
@@ -94,8 +96,8 @@ const getAlldeliveryBooks = async (email) => {
   return data;
 };
 
-const LoginRegisterPage = () => {
-  const [selectedTab, setSelectedTab] = useState("LoginForm");
+const LoginRegisterPage = ({ modalType}) => {
+  const [selectedTab, setSelectedTab] = useState(modalType);
 
   useEffect(() => {
     const url = window.location.href;

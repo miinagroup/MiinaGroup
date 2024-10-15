@@ -19,20 +19,20 @@ const typeEnquiry = [
 
 const frequentlyAskedQuestions = [
     {
-        question: "What is Lorem Ipsum?",
-        answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        question: "How can I contact customer service?",
+        answer: "We understand that the mining industry never stops, and neither should your supplier. Our team is available 24/7, from Monday to Sunday, to support your needs anytime, day or night. You can reach our customer service team by phone, email, or through the contact form on our website."
     },
     {
-        question: "What is Lorem Ipsum?",
-        answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        question: "What safety standards do your products meet?",
+        answer: "All of our products meet or exceed industry safety standards. We ensure that our equipment is compliant with relevant regulations and guidelines to ensure the safety of operators and workers."
     },
     {
-        question: "What is Lorem Ipsum?",
-        answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        question: "Do you offer international shipping?",
+        answer: "Yes, we can arrange international shipping for our products. Shipping costs and logistics will be discussed and agreed upon at the time of the order."
     },
     {
-        question: "What is Lorem Ipsum?",
-        answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        question: "What is your return policy?",
+        answer: "Our return policy depends on the nature of the product and the circumstances of the return. Generally, we accept returns of equipment within a specified period if it is defective or not as described."
     }
 ]
 

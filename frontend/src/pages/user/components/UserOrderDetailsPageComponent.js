@@ -30,6 +30,14 @@ import { useTrackEvents } from "../../trackEvents/useTrackEvents";
 //import User from "../../../../../backend/models/UserModel";
 //import Order from "../../../../../backend/models/OrderModel";
 
+function titleCase(str) {
+  var splitStr = str.toLowerCase().split(' ');
+  for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+  }
+  return splitStr.join(' '); 
+}
+
 const UserOrderDetailsPageComponent = ({
   userInfo,
   getUser,
@@ -611,6 +619,20 @@ const UserOrderDetailsPageComponent = ({
               <b>Site</b>: {orderData?.deliverySite}
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
+              <Form.Label className="fw-bold" style={{color: "black"}}>Shipping address:</Form.Label>
+                    <Form.Control
+                    as="textarea"
+                      className="p-0 ps-1"
+                      type="string"
+                      name="shippingAddress"
+                      placeholder="Shipping Address"
+                      required
+                      value={orderData.deliveryAddress && titleCase(orderData?.deliveryAddress).split(',').map(sentence => sentence.trim()).join('\n')}
+                      style={{ fontSize: '12px', height: "100px"}}
+                      disabled
+                    />
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
               <b>Phone</b>: {orderData?.user?.phone}
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
@@ -1058,6 +1080,9 @@ const UserOrderDetailsPageComponent = ({
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
               <b>Site</b>: {orderData?.deliverySite}
+            </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <b>Shipping address</b>: {orderData?.deliverySite}
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
               <b>Phone</b>: {orderData?.user?.phone}

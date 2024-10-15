@@ -62,6 +62,7 @@ const createOrder = async (req, res, next) => {
       dueDays,
       createdUserId,
       createdUserName,
+      deliveryAddress
     } = req.body;
 
     if (
@@ -77,7 +78,8 @@ const createOrder = async (req, res, next) => {
       !quickBooksCustomerId ||
       !dueDays ||
       !createdUserId ||
-      !createdUserName
+      !createdUserName ||
+      !deliveryAddress
     ) {
       return res.status(400).send("All inputs are required");
     }
@@ -98,8 +100,8 @@ const createOrder = async (req, res, next) => {
       dueDays: dueDays,
       createdUserId: createdUserId,
       createdUserName: createdUserName,
+      deliveryAddress: deliveryAddress
     });
-    console.log("order", order);
     const createdOrder = await order.save();
 
     await Promise.all(cartItems.map(async (item) => {

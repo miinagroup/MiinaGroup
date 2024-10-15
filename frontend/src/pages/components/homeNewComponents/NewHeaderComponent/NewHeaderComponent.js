@@ -8,14 +8,19 @@ import HamburgerMenu from "../../../mobile/components/HeaderComponent/HamburgerM
 
 import styles from "./NewHeaderComponent.module.css";
 
-const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSection, goToContactSection, showSidebar, toggleShowSidebar, onClickBtn}) => {
+const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSection, goToContactSection, showSidebar, toggleShowSidebar, onClickBtn, stopAnimation, setStopAnimation}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [show, setShow] = useState(false);
+    const [modalType, setModalType] = useState("LoginForm");
+
     const handleClose = () => {
+      setStopAnimation(false);
       setShow(false);
     };
-    const handleShow = () => {
+    const handleShow = (type) => {
+      setStopAnimation(true);
         setShow(true);
+        setModalType(type)
       };
     const navigate = useNavigate();
     const location = useLocation();
@@ -35,7 +40,7 @@ const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSect
               <img
                   src="/images/CTL-hex.png"
                   alt="CTL Australia Mining Supplier"
-                  className={`rotate linear infinite ${styles.hexagonlogo}`}
+                  className={` ${stopAnimation ? "rotate paused" : "rotate start linear infinite"} ${styles.hexagonlogo}`}
               ></img>
               <img
                   src="/images/CTL_HEADING_3.png"
@@ -62,12 +67,12 @@ const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSect
           </div>
           {/* <div className={styles.headerNewBtnsQuoteLogin}> */}
           {/* <button className={styles.btnQuote} onClick={() => handleShow()}>GET A QUOTE</button> */}
-          <button onClick={() => handleShow()} className={styles.logRegNew}>
+          <span  className={styles.logRegNew}>
               <i class="bi bi-person-circle fs-4"></i>
-              <span>LogIn</span>
+              <button onClick={() => handleShow("LoginForm")}>LogIn</button>
               <span>/</span>
-              <span>Register</span>
-          </button>
+              <button onClick={() => handleShow("RegisterForm")}>Register</button>
+          </span>
           {/* </div> */}
           
         </div>
@@ -87,7 +92,7 @@ const NewHeaderComponent = ({setIsOpenModal, goToAboutSection, goToPromotionSect
 
     </div>
     <Modal show={show} onHide={handleClose} className="login_preview_items">
-        <LoginRegisterPage />
+        <LoginRegisterPage  modalType={modalType} />
       </Modal>
       {showSidebar && <div className={styles.sidebarMobileMenu}>
         <div className={styles.sidebarMobileMenuWrapper}>

@@ -7,7 +7,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
-
+import MaskedInput from 'react-text-mask';
 import styles from "./UserProfilePageComponent.module.css";
 
 const UserProfilePageComponent = ({
@@ -29,12 +29,16 @@ const UserProfilePageComponent = ({
   const userInfo = userInfoFromRedux;
   const [deliveryBooks, setDeliveryBooks] = useState();
   const [selectedSite, setSelectedSite] = useState(null);
-
+  const [abnNum, setAbnNum] = useState("");
+  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/];
 
 
   useEffect(() => {
     fetchUser(userInfo._id)
-      .then((data) => setUser(data))
+      .then((data) =>{ 
+        setUser(data);
+        setAbnNum(data.abn);      
+      })
       .catch((er) => console.log(er));
   }, [userInfo._id]);
 
@@ -68,6 +72,7 @@ const UserProfilePageComponent = ({
     const postCode = form.postCode.value;
     const siteSku = form.siteSku;
     const location = form.location;
+    const abn = form.abn.value;
 
     if (event.currentTarget.checkValidity() === true) {
       updateUserApiRequest(
@@ -82,7 +87,8 @@ const UserProfilePageComponent = ({
         deliveryAddress,
         state,
         postCode,
-        siteSku
+        siteSku,
+        abn
       )
         .then((data) => {
           setUpdateUserResponseState({ success: data.success, error: "" });
@@ -119,8 +125,8 @@ const UserProfilePageComponent = ({
         })
         .catch((er) =>
           setUpdateUserResponseState({
-            error: er.response.data.message
-              ? er.response.data.message
+            error: er.response.data?.message
+              ? er.response.data?.message
               : er.response.data,
           })
         );
@@ -136,6 +142,11 @@ const UserProfilePageComponent = ({
     );
     setSelectedSite(site);
   };
+
+  const handleAbn = (e) => {
+    const newValue = e.target.value;
+    setAbnNum(newValue);
+  };
   
   return (
     <Container className={styles.userProfilePageComponent}>
@@ -145,7 +156,7 @@ const UserProfilePageComponent = ({
 
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Row className="mb-3">
-              <Form.Group as={Col} md="6" controlId="validationCustom01">
+              <Form.Group className="mb-3" as={Col} md="6" controlId="validationCustom01">
                 <Form.Label>Your name</Form.Label>
                 <Form.Control
                   required
@@ -158,7 +169,7 @@ const UserProfilePageComponent = ({
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group as={Col} md="6" controlId="formBasicLastName">
+              <Form.Group className="mb-3" as={Col} md="6" controlId="formBasicLastName">
                 <Form.Label>Your last name</Form.Label>
                 <Form.Control
                   required
@@ -171,7 +182,7 @@ const UserProfilePageComponent = ({
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-3" as={Col}  md="6" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="text"
@@ -180,6 +191,37 @@ const UserProfilePageComponent = ({
                   value={user.email}
                 />
               </Form.Group>
+
+              <Form.Group className="mb-3" as={Col} md="6" controlId="formBasicAbn">
+                <Form.Label>ABN</Form.Label>
+                {/* <Form.Control
+                required
+                  type="text"
+                  name="abn"
+                  defaultValue={user.abn}
+                  // value={user.abn}
+                /> */}
+                <MaskedInput
+                mask={abnMask}
+                placeholder="ABN"
+                guide={false}
+                value={abnNum}
+                onChange={handleAbn}
+                // id="abn"
+                render={(ref, props) => <Form.Control
+                  required
+                  minLength={14}
+                  maxLength={14}
+                  type="text"
+                  name="abn"
+                  // pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
+                  ref={ref}
+                  {...props}
+                />} 
+               />
+              </Form.Group>
+
+              
             </Row>
 
             <Row className="mb-3">

@@ -124,6 +124,7 @@ const QuotesPageComponent = ({
     return (
       <div>
         <img
+        className="loading-spinner"
           src="/loading-gif.gif"
           alt="Loading"
           style={{ display: "block", margin: "auto", width: "200px", marginTop: "10%" }}

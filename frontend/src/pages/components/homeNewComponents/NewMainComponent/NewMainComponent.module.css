@@ -25,6 +25,16 @@
     opacity:0.5;
 }
 
+.videoMain {
+    width: 100%;
+    height: 100%;
+}
+
+.videoMain video {
+    object-fit: cover;
+    opacity: 0.5;
+}
+
 @media (max-width: 1024px) {
     .homeNew {
         height: calc(60vh - 90px);
@@ -33,6 +43,7 @@
 
 @media (max-width: 480px) {
     .homeNew {
-        max-height: 50vh;
+        /* max-height: 50vh; */
+        height: calc(100vh - 90px);
     }
 }

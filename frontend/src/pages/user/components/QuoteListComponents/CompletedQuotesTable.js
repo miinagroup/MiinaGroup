@@ -618,6 +618,7 @@ const CompletedQuotesTable = ({
               src="/loading-gif.gif"
               alt="Loading"
               style={{ display: "block", margin: "auto", width: "200px" }}
+              className="loading-spinner"
             />
           ) : (
             <QuoteProductPreviewComponent product={product} />

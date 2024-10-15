@@ -198,27 +198,6 @@ const TermsConditions = () => {
             <h5 className="terms">YOUR COMMENTS AND CONCERNS</h5>
             <p>All other feedback, comments, requests for technical support and other communications relating to the Website should be directed to: <a href="mailto:admin@ctlaus.com">admin@ctlaus.com</a></p>
             <p>Thank you for visiting the Website.</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
     )
 }
