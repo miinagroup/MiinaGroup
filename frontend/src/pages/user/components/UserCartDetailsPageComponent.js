@@ -88,6 +88,7 @@ const UserCartDetailsPageComponent = ({
   const [shippingAddress, setShippingAddress] = useState();
   const [validated, setValidated] = useState(true);
   // const [ chosenDeliverySite, setChosenDeliverySite ] = useState();
+  const [ totaQuantity, setTotalQuantity ] = useState(0)
 
   const [ isOpenNewAddressModal, setIsOpenNewAddressModal ] = useState(false);
   const [ isOpenChangeAddressModal, setIsOpenChangeAddressModal ] = useState(false);
@@ -132,7 +133,11 @@ const UserCartDetailsPageComponent = ({
     deliveryAddress: ''
   });
 
+  const [isLocationValid, setIsLocationValid] = useState(true);
+
   const splitAddress = (address) => address ? address.split(',').map(part => part.trim()) : ['', '', '', '', ''];
+
+  
 
   useEffect(() => {
     const [address, city, state, zip, country] = splitAddress(chosenDeliverySite.billingAddress);
@@ -174,16 +179,20 @@ const UserCartDetailsPageComponent = ({
   // var trackData = localStorage.getItem("trackData")
   // console.log("trackData", trackData);
   useEffect(() => {
+    let total = 0;
     if (cartItems) {
       cartItems.map((item) => {
         if (item.uniformUserId) {
           setUniformUserId(item.uniformUserId)
           setUniformUserName(item.uniformUserName)
         }
+
+        total += item.cartProducts[0].quantity
       })
     }
     setCreatedUserId(userInfo._id)
     setCreatedUserName(userInfo.name + " " + userInfo.lastName + "(" + userInfo.email + ")")
+    setTotalQuantity(total)
   }, [cartItems])
 
   const navigate = useNavigate();
@@ -569,6 +578,7 @@ const UserCartDetailsPageComponent = ({
 
 
   const handleLocation = (event) => { 
+    setIsLocationValid(true);
     setLocation(event.target.value);
   }
 
@@ -654,28 +664,51 @@ const UserCartDetailsPageComponent = ({
       id: deliveryBooks[0]._id
     }
 
-    const res = await axios.post("/api/deliveryBooks/addNewSite", {
-      location,
-      billingAddress,
-      deliveryAddress,
-      abn: user.abn,
-      id: deliveryBooks[0]._id
-    });
-
-    deliveryBooks[0].sites.push(newAddressSite);
-    
-    setIsOpenNewAddressModal(false);
+    try {
+      const res = await axios.post("/api/deliveryBooks/addNewSite", {
+        location,
+        billingAddress,
+        deliveryAddress,
+        abn: user.abn,
+        id: deliveryBooks[0]._id
+      });
+  
+      if (res.status === 200) {
+        setChosenDeliverySite((prevSite) => ({
+          ...prevSite,
+          name: location,
+          deliveryAddress,
+          billingAddress
+        }));
+        
+        deliveryBooks[0].sites.push(newAddressSite);
+        setIsOpenNewAddressModal(false);
+      } else if (res.status === 400) {
+        setIsLocationValid(false);
+      }
+    } catch (error) {
+      setIsLocationValid(false);
+      console.error("Error adding new address:", error);
+    }
     
   }
 
+
   const updateAddress = async (event) => {
-      event.preventDefault();
+    event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget.elements;
     const location = form.location.value;
     const billingAddress = `${form.addressLine.value}, ${form.city.value}, ${form.stateProvinceRegion.value}, ${form.ZIPostalCode.value}, ${form.country.value}`;
     const deliveryAddress = `${form.deliveryAddressLine.value}, ${form.deliveryCity.value}, ${form.deliveryStateProvinceRegion.value}, ${form.deliveryZIPostalCode.value}, ${form.deliveryCountry.value}`;
     
+    const locationExists = deliveryBooks[0].sites.some(site => site.name === location && site._id !== chosenDeliverySite._id);
+
+    if (locationExists && chosenDeliverySite.name !== location) {
+      setIsLocationValid(false);
+      return;
+    }
+
     const updatedAddress = {
       location,
       billingAddress,
@@ -685,9 +718,41 @@ const UserCartDetailsPageComponent = ({
       idSite: chosenDeliverySite._id
     };
 
-      setIsOpenChangeAddressModal(false)
+    try {
       const res = await axios.post("/api/deliveryBooks/updateSite", updatedAddress);
+  
+      if (res.status === 200) {
+        setChosenDeliverySite((prevSite) => ({
+          ...prevSite,
+          name: location,
+          deliveryAddress,
+          billingAddress
+        }));
 
+        setDeliveryBooks((prevBooks) => 
+          prevBooks.map((book) => {
+            if (book._id === deliveryBooks[0]._id) {
+              return {
+                ...book,
+                sites: book.sites.map((site) => 
+                  site._id === chosenDeliverySite._id 
+                    ? { ...site, name: location, billingAddress, deliveryAddress }
+                    : site
+                )
+              };
+            }
+            return book;
+          })
+        );
+
+        setIsOpenChangeAddressModal(false)
+      } else if (res.status === 400) {
+        setIsLocationValid(false);
+      }
+    } catch (error) {
+      setIsLocationValid(false);
+      console.error("Error adding new address:", error);
+    }
   };
   
 
@@ -712,6 +777,7 @@ const UserCartDetailsPageComponent = ({
           ZIPostalCode: '',
           country: ''
         });
+        setIsLocationValid(true);
         }}>
         <Modal.Title>Add New Address</Modal.Title>
       </Modal.Header>
@@ -720,7 +786,8 @@ const UserCartDetailsPageComponent = ({
       <Form onSubmit={addNewAddress}>
       <Form.Group className="mb-3" controlId="formBasicLocation">
         <Form.Label>Location</Form.Label>
-        <Form.Control required type="text" name="location" placeholder="Location" onChange={handleLocation} />
+        <Form.Control required type="text" name="location" placeholder="Location" onChange={handleLocation}  isInvalid={!isLocationValid}  />
+        <Form.Control.Feedback type="invalid">A site with this name already exists.</Form.Control.Feedback>
       </Form.Group>
 
       <Form.Label>Billing address</Form.Label>
@@ -843,6 +910,7 @@ const UserCartDetailsPageComponent = ({
             ZIPostalCode: '',
             country: ''
           });
+          setIsLocationValid(true);
           }}
         
         >
@@ -860,8 +928,11 @@ const UserCartDetailsPageComponent = ({
 
   function ModalChangeAddress() {
     return (
-    <Modal show={isOpenChangeAddressModal} onHide={handleClose} size="lg">
-      <Modal.Header closeButton  onClick={() => setIsOpenChangeAddressModal(false)}>
+    <Modal show={isOpenChangeAddressModal} size="lg">
+      <Modal.Header closeButton onClick={() => {
+        setIsOpenChangeAddressModal(false)
+        setIsLocationValid(true);
+        }}>
         <Modal.Title>Change Address</Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -875,7 +946,9 @@ const UserCartDetailsPageComponent = ({
               placeholder="Location"
               onChange={handleLocation}
               defaultValue={chosenDeliverySite.name}
+              isInvalid={!isLocationValid}
             />
+             <Form.Control.Feedback type="invalid">A site with this name already exists.</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Label>Billing Address</Form.Label>
@@ -964,7 +1037,7 @@ const UserCartDetailsPageComponent = ({
                     name="deliveryAddressLine"
                     placeholder="Address Line"
                     onChange={handleDeliveryAddress}
-                    value={deliveryAddress.addressLine}
+                    defaultValue={deliveryAddress.addressLine}
                   />
                 </Form.Group>
               </Col>
@@ -980,7 +1053,7 @@ const UserCartDetailsPageComponent = ({
                     name="deliveryCity"
                     placeholder="City"
                     onChange={handleDeliveryAddress}
-                    value={deliveryAddress.city}
+                    defaultValue={deliveryAddress.city}
                   />
                 </Form.Group>
               </Col>
@@ -993,7 +1066,7 @@ const UserCartDetailsPageComponent = ({
                     name="deliveryStateProvinceRegion"
                     placeholder="State/Province/Region"
                     onChange={handleDeliveryAddress}
-                    value={deliveryAddress.stateProvinceRegion}
+                    defaultValue={deliveryAddress.stateProvinceRegion}
                   />
                 </Form.Group>
               </Col>
@@ -1008,7 +1081,7 @@ const UserCartDetailsPageComponent = ({
                     name="deliveryZIPostalCode"
                     placeholder="ZIP/Postal Code"
                     onChange={handleDeliveryAddress}
-                    value={deliveryAddress.ZIPostalCode}
+                    defaultValue={deliveryAddress.ZIPostalCode}
                   />
                 </Form.Group>
               </Col>
@@ -1021,7 +1094,7 @@ const UserCartDetailsPageComponent = ({
                     name="deliveryCountry"
                     placeholder="Country"
                     onChange={handleDeliveryAddress}
-                    value={deliveryAddress.country}
+                    defaultValue={deliveryAddress.country}
                   />
                 </Form.Group>
               </Col>
@@ -1029,7 +1102,10 @@ const UserCartDetailsPageComponent = ({
           </Form.Group>
 
           <div style={{ display: "flex", gap: "15px", justifyContent: "flex-end" }}>
-            <Button variant="secondary" onClick={() => setIsOpenChangeAddressModal(false)}>
+            <Button variant="secondary" onClick={() => {
+              setIsOpenChangeAddressModal(false)
+              setIsLocationValid(true);
+              }}>
               Close
             </Button>
             <Button variant="primary" type="submit">
@@ -1152,7 +1228,7 @@ const UserCartDetailsPageComponent = ({
                     <p className="p-0 m-0">
                       Total:{" "}
                       <span className="float-end">
-                        <span className="fw-bold ">{cartItems.length}</span>{" "}
+                        <span className="fw-bold ">{totaQuantity}</span>{" "}
                         {cartItems.length === 1 ? "Product" : "Products"}
                       </span>
                     </p>
@@ -1215,7 +1291,7 @@ const UserCartDetailsPageComponent = ({
                     <h4 className="m-0">Address</h4>
                     <div style={{ display: 'flex', alignItems: "center", gap: "10px"}}>
                        <Button onClick={() => setIsOpenNewAddressModal(true)} className="p-1" style={{ width: '110px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        Add new address
+                       Add New Address
                       </Button>
                       <Button onClick={() => setIsOpenChangeAddressModal(true)} className="p-1" style={{ width: '110px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                       Change Address
@@ -1224,8 +1300,8 @@ const UserCartDetailsPageComponent = ({
                    
                   </ListGroup.Item>
 
-                  { ModalAddAddress()}
-                  { ModalChangeAddress()}
+                  {ModalAddAddress()}
+                  {ModalChangeAddress()}
 
                   <ListGroup.Item
                     controlid="validationLocation"
@@ -1252,8 +1328,8 @@ const UserCartDetailsPageComponent = ({
                       name="billingAddress"
                       placeholder="Billing Address"
                       required
-                      value={chosenDeliverySite.billingAddress}
-                      style={{ fontSize: '12px', height: "70px"}}
+                      value={chosenDeliverySite.billingAddress.split(',').map(sentence => sentence.trim()).join('\n')}
+                      style={{ fontSize: '12px', height: "100px"}}
                       disabled
                     />
                     <Form.Control.Feedback type="invalid">
@@ -1273,8 +1349,8 @@ const UserCartDetailsPageComponent = ({
                       name="shippingAddress"
                       placeholder="Shipping Address"
                       required
-                      value={chosenDeliverySite.deliveryAddress}
-                      style={{ fontSize: '12px', height: "70px"}}
+                      value={chosenDeliverySite.deliveryAddress.split(',').map(sentence => sentence.trim()).join('\n')}
+                      style={{ fontSize: '12px', height: "100px"}}
                       disabled
                     />
                     <Form.Control.Feedback type="invalid">

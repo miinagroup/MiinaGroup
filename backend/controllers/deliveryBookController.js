@@ -182,6 +182,11 @@ const addNewSiteToDeliveryBook = async (req, res, next) => {
       return res.status(404).json({ message: 'Delivery Book not found' });
     }
 
+    const existingSite = deliveryBook.sites.find(site => site.name.toLowerCase() === location.toLowerCase());
+    if (existingSite) {
+      return res.status(400).json({ message: 'A site with this name already exists.' });
+    }
+
     const newSite = {
       name: location,
       billingAddress,
@@ -195,7 +200,7 @@ const addNewSiteToDeliveryBook = async (req, res, next) => {
 
     res.status(200).json({ message: 'Site added successfully', deliveryBook });
     
-;  } catch (error) {
+  } catch (error) {
     next(error);
   }
 }

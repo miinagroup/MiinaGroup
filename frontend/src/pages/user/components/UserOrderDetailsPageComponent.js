@@ -611,7 +611,18 @@ const UserOrderDetailsPageComponent = ({
               <b>Site</b>: {orderData?.deliverySite}
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
-              <b>Shipping address</b>: {orderData?.deliveryAddress}
+              <Form.Label className="fw-bold" style={{color: "black"}}>Shipping address:</Form.Label>
+                    <Form.Control
+                    as="textarea"
+                      className="p-0 ps-1"
+                      type="string"
+                      name="shippingAddress"
+                      placeholder="Shipping Address"
+                      required
+                      value={orderData.deliveryAddress && orderData?.deliveryAddress.split(',').map(sentence => sentence.trim()).join('\n')}
+                      style={{ fontSize: '12px', height: "100px"}}
+                      disabled
+                    />
             </ListGroup.Item>
             <ListGroup.Item className="p-1 ps-2">
               <b>Phone</b>: {orderData?.user?.phone}
