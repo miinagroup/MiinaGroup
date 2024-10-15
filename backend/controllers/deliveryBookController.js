@@ -59,13 +59,14 @@ const getDeliveryBookById = async (req, res, next) => {
 const adminCreateDeliveryBook = async (req, res, next) => {
   try {
     const deliveryBook = new DeliveryBook();
-    const { companyName, emailHost, billingEmail, companyAccount, quickBooksCustomerId, sites } =
+    const { companyName, emailHost, billingEmail, companyAccount, dueDays, quickBooksCutomerId, sites } =
       req.body;
     deliveryBook.companyName = companyName;
     deliveryBook.emailHost = emailHost;
     deliveryBook.billingEmail = billingEmail;
     deliveryBook.companyAccount = companyAccount;
-    deliveryBook.quickBooksCustomerId = quickBooksCustomerId;
+    deliveryBook.dueDays = dueDays;
+    deliveryBook.quickBooksCustomerId = quickBooksCutomerId;
     if (sites.length > 0) {
       deliveryBook.sites = [];
       sites.map((item) => {
@@ -75,7 +76,7 @@ const adminCreateDeliveryBook = async (req, res, next) => {
           billingAddress: billingAddress || "",
           deliveryAddress: deliveryAddress || "",
           storeEmail: storeEmail || "",
-
+          siteSku: name || "",
         });
       });
     } else {

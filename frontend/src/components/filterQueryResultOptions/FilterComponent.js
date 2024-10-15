@@ -21,7 +21,7 @@ const FilterComponent = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-dispatch(getCategories())
+    dispatch(getCategories())
   }, [])
 
   // const { categories } = useSelector((state) => state.getCategories);

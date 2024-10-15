@@ -22,7 +22,8 @@ const getUniforms = async (
     const search = searchQuery ? `search/${searchQuery}/` : "";
     const category = categoryName ? `category/${categoryName}/` : "";
     const brand = brandName ? `brand/${brandName}/` : "";
-    const url = `/api/uniforms/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
+    //const url = `/api/uniforms/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
+    const url = `/api/uniforms/categoryName/${subCategoryName}`;
     try {
         var { data } = await axios.get(url);
     } catch (error) {

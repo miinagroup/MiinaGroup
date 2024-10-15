@@ -552,7 +552,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: auto;
+  width: 100%;
   height: 100%;
   object-fit: contain;
   transform: translate(-50%, -50%);
@@ -618,7 +618,6 @@
 }
 
 @media (max-width: 1025px) {
-
   .preview-product-container {
     margin-left: 0px !important;
     padding-left: 0px !important;
@@ -653,68 +652,70 @@
   .btnLoginText p {
     font-size: 10px;
     text-align: center;
-}
+  }
 
-.btnLogin button {
-  max-width: 55px;
-  font-size: 10px;
-}
+  .btnLogin button {
+    max-width: 55px;
+    font-size: 10px;
+  }
 
-.preview_product_modal .modal-content {
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  left: 0;
-  max-width: 300px;
-}
+  .preview_product_modal .modal-content {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    left: 0;
+    max-width: 300px;
+  }
 
-.modal-title {
-  font-size: 12px;
-}
+  .modal-title {
+    font-size: 12px;
+  }
 
-.preview-product-container {
-  margin-left: 0px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
-}
+  .preview-product-container {
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
 
-.Preview_Button {
-  width: 55%;
-  font-size: 12px;
-}
+  .Preview_Button {
+    width: 55%;
+    font-size: 12px;
+  }
 
-.image-container {
-  padding-bottom: 80%;
-}
+  .image-container {
+    padding-bottom: 80%;
+  }
 
-.square-image {
-  width: 100%;
-  height: 100%;
-}
+  .square-image {
+    width: 100%;
+    height: 100%;
+  }
 
-.product-preview-status {
-  font-size: 12px;
-}
+  .product-preview-status {
+    font-size: 12px;
+  }
 
-.preview-product-row-col {
-  padding: 0px;
-}
+  .preview-product-row-col {
+    padding: 0px;
+  }
 
-.preview-product-row-container {
-  padding: 0px;
-}
+  .preview-product-row-container {
+    padding: 0px;
+  }
 
-.box1_product_categories, .box2_product_categories, .box3_product_categories {
-  width: calc(4* 30px);
-  height: calc(5* 30px);
-}
+  .box1_product_categories,
+  .box2_product_categories,
+  .box3_product_categories {
+    width: calc(4 * 30px);
+    height: calc(5 * 30px);
+  }
 
-.hexagon_product_categories {
-  font-size: 14px;
-}
+  .hexagon_product_categories {
+    font-size: 14px;
+  }
 
-.bigbox_product_categories_col {
-  width: 100%;
-  max-width: 150px !important;
-}
+  .bigbox_product_categories_col {
+    width: 100%;
+    max-width: 150px !important;
+  }
 }

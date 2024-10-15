@@ -67,26 +67,19 @@ const productSchema = mongoose.Schema(
           required: false,
         },
         slrsku: { type: String, required: false },
-        clientsSku: { type: [clientSkuSchema], required: false}
+        clientsSku: { type: [clientSkuSchema], required: false }
       },
     ],
-
-    // material: {
-    //   type: String,
-    //   required: true,
-    // },
-    // length: {
-    //   type: String,
-    //   required: true,
-    // },
-    // width: {
-    //   type: String,
-    //   required: true,
-    // },
-    // thickness: {
-    //   type: String,
-    //   required: true,
-    // },
+    availability: [{
+      local: {
+        type: Number,
+        required: false,
+      },
+      national: {
+        type: Number,
+        required: false,
+      },
+    }],
     supplier: {
       type: String,
       required: true,
@@ -98,6 +91,10 @@ const productSchema = mongoose.Schema(
     category: {
       type: String,
       required: true,
+    },
+    categoryLinks: {
+      type: String,
+      required: false,
     },
     images: [imageSchema],
     pdfs: [pdfSchema],

@@ -22,6 +22,9 @@ const uniformSelectedSuppliersSchema = mongoose.Schema(
 
             }
         ]
+    },
+    {
+        timestamps: true,
     }
 );
 

@@ -3,6 +3,19 @@ import AdminLinksComponent from "../../components/admin/AdminLinksComponent";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../../pages/general.css"
+import { Parser } from '@json2csv/plainjs';
+import { saveAs } from 'file-saver';
+import { FileSaver } from 'file-saver'
+import { BSON, EJSON, ObjectId } from 'bson';
+//import { MongoClient } from "mongodb";
+// import { hobsonAvailability } from "../../../../backend/seeder/seeder/hobsonAvailability"
+// import { hobsonCategories } from "../../../../backend/seeder/seeder/hobsonCategories"
+// import { hobsonCodes } from "../../../../backend/seeder/seeder/hobsonCodes"
+// import { hobsonPricing } from "../../../../backend/seeder/seeder/hobsonPricing"
+// import { hobsonProducts } from "../../../../backend/seeder/seeder/hobsonProducts"
+
+
+
 const AdminCheckPage = () => {
   const [missingCount, setMissingCount] = useState([]);
   const [emptyProduct, setEmptyProduct] = useState([]);
@@ -26,7 +39,11 @@ const AdminCheckPage = () => {
   const [btnFetchPc, setBtnFetchPc] = useState("Fetch Product Codes")
   const [btnFetchPd, setBtnFetchPd] = useState("Fetch Product Details")
   const [btnFetchPp, setBtnFetchPp] = useState("Fetch Product Prices")
+  const [btnProcessProducts, setBtnProcessProducts] = useState("Process Products")
+  const [btnNewHobsonProducts, setBtnNewHobsonProducts] = useState("New Hobson Products")
   const [btnFetchCat, setBtnFetchCat] = useState("Fetch Categories")
+  const [btnFetchAvailable, setBtnFetchAvailable] = useState("Fetch Availability")
+
   const [displayResults, setDisplayResults] = useState("")
 
   const [appToken, setAppToken] = useState("9Ark2TryUeCOQObeKkxnVoB4IwPznpoE")
@@ -39,346 +56,14 @@ const AdminCheckPage = () => {
   const [hobsonProductsDetails, setHobsonProductsDetails] = useState([])
   const [hobsonProductsPrices, setHobsonProductsPrices] = useState([])
 
-
-  /*******Existing Products******/
-  const handleExistingProducts = async () => {
-    setBtnFetchEx("Processing...")
-    const productResponse = await axios.get("/api/products/admin/getSupplierSKU" + "HOBSON");
-    const productList = productResponse.data;
-    let productListArray = []
-    productList?.map((product) => {
-      productListArray.push(product?.stock[0]?.suppliersku)
-    })
-
-    const url = 'https://hdi.hobson.com.au/v3/stock/price';
-    const data = JSON.stringify({
-      "app_token": `${appToken}`,
-      "store_code": `${storeCode}`,
-      "data": { "part_numbers": [...productListArray] }
-    });
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'api-key': `${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: data,
-    });
-
-    const hobsonResponse = await response.json();
-    const hobsonList = hobsonResponse.data
-    setTimeout(() => { setBtnFetchEx("Processed") }, 1000);
-
-    let finalProductsArray = []
-    hobsonList?.map((hObj) => {
-      productList?.map((pObj) => {
-        // if ((hObj.hobson_part === pObj.stock[0].suppliersku) && (pObj.stock[0].attrs.includes(hObj.std_portal_pr[0].quantity_break))) {
-        if (hObj.hobson_part === pObj.stock[0].suppliersku) {
-          finalProductsArray.push({
-            "name": pObj.name,
-            "productCode": pObj.stock[0].suppliersku,
-            "CTL_price": pObj.stock[0].price,
-            "CTL_quantity": pObj.stock[0].attrs,
-            "Hobson_price": hObj.std_portal_pr[0].price,
-            "Hobson_quantity": hObj.std_portal_pr[0].quantity_break,
-          })
-        }
-      })
-    })
-    setProductsData(finalProductsArray)
-    console.log("Hobson List", hobsonList);
-
-    setTimeout(() => { setBtnFetchEx("Fetch Existing Data") }, 1000);
-    setDisplayResults("Fetched Live Hobson Products That Exists In Our System. Items Count : " + hobsonList.length)
-  }
-
-  /********Fetch Full Range Categories********/
-  const fetchAllCategories = async () => {
-    setBtnFetchCat("Processing...")
-    const url = 'https://hdi.hobson.com.au/v3/stock/filter';
-    const data = JSON.stringify({
-      "app_token": `${appToken}`,
-      "store_code": `${storeCode}`,
-      "data": { "matched_parts_only": false }
-    });
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'api-key': `${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: data,
-    });
-
-    const fullCategories = await response.json();
-
-    //setHobsonCategories(fullCategories.data)
-    setTimeout(() => { setBtnFetchCat("Processed") }, 1000);
-    console.log('Complete Categories', fullCategories);
-    setTimeout(() => { setBtnFetchCat("Fetch Categories") }, 1000);
-    setDisplayResults("Fetched Live Hobson Categories :" + fullCategories.data.length)
-
-    let fetchedCategories = []
-    let fetchedMembers = []
-    if (fullCategories.data) {
-      fullCategories.data.map((category) => {
-        fetchedCategories.push({
-          name: category.code,
-          description: category.description,
-          image: category.icon_large || category.icon,
-          display: true,
-          members: category.members
-        })
-        if (category.members.length > 0) {
-          category.members?.map((member) => {
-            fetchedMembers.push({ name: member, father: category.description })
-          })
-        }
-      })
-    }
-    let completeCategoryList = []
-    fetchedCategories?.map((category) => {
-      if (category.members.length === 0) {
-        completeCategoryList.push({
-          name: category.description.trimEnd().replace(' & ', '-').replace(/&/g, '-').replace(/ /g, '_').toUpperCase(),
-          description: category.description,
-          image: category.image,
-          display: true,
-          members: []
-        })
-      }
-    })
-    fetchedMembers?.map((member) => {
-      fetchedCategories?.map((category) => {
-        if (member.name === category.name) {
-          completeCategoryList.push({
-            name: member.father.trimEnd().replace(' & ', '-').replace(/&/g, '-').replace(/ /g, '_').toUpperCase() + "/" + category.description.trimEnd().replace(' & ', '-').replace(/&/g, '-').replace(/ /g, '_').toUpperCase(),
-            description: member.father + "/" + category.description,
-            image: category.image,
-            display: true,
-            members: []
-          })
-        }
-      })
-    })
-    console.log("completeCategoryList", completeCategoryList);
-  }
-
-  /********Fetch Full Range Of Hobson Products Codes********/
-  const fetchAllProductsNumber = async () => {
-    setBtnFetchPc("Processing...")
-    const url = 'https://hdi.hobson.com.au/v3/stock/number';
-    const data = JSON.stringify({
-      "app_token": `${appToken}`,
-      "store_code": `${storeCode}`,
-      "data": { "matched_parts_only": false }
-    });
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'api-key': `${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: data,
-    });
-
-    const fullProductsCodes = await response.json();
-    setHobsonProductCodes(fullProductsCodes.data)
-    setTimeout(() => { setBtnFetchPc("Processed") }, 1000);
-    console.log('Complete Products Codes', fullProductsCodes);
-    setTimeout(() => { setBtnFetchPc("Fetch Product Codes") }, 1000);
-    setDisplayResults("Fetched Live Hobson Products Codes :" + fullProductsCodes.data.length)
-  }
-
-  /************Fetch all Products Details ******************/
-  const fetchAllProductsDetails = async () => {
-    setBtnFetchPd("Processing...")
-    //hobsonProductsDetails.length = 0
-    let displayString = "";
-    let productsCodeArray = []
-    let productsDetailsArray = []
-    hobsonProductCodes?.map((productCode) => {
-      productsCodeArray.push(productCode.part_number)
-    })
-    // console.log("productsCodeArray", productsCodeArray);
-    const chunkSize = 500;
-    for (let i = 0, j = 1; i < productsCodeArray.length; i += chunkSize, j++) {
-      const chunk = productsCodeArray.slice(i, i + chunkSize);
-
-      const url = 'https://hdi.hobson.com.au/v3/stock/detail';
-      const data = JSON.stringify({
-        "app_token": `${appToken}`,
-        "store_code": `${storeCode}`,
-        "data": { "part_numbers": [...chunk] }
-      });
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'api-key': `${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: data,
-      });
-
-      const fullProductsDetails = await response.json();
-      const batchResults = fullProductsDetails.data
-      productsDetailsArray.push(...batchResults)
-      displayString = displayString + "\nLive Hobson Products Details - Batch:" + j + " Count : " + fullProductsDetails.data.length
-      setDisplayResults(displayString + "\n...")
-      console.log(productsDetailsArray);
-
-    }
-    setHobsonProductsDetails(productsDetailsArray)
-    setTimeout(() => { setBtnFetchPd("Processed") }, 1000);
-    setTimeout(() => { setBtnFetchPd("Fetch Product Details") }, 1000);
-    displayString = displayString + "\nCompleted :" + productsDetailsArray.length
-    setDisplayResults(displayString)
-    console.log("hobsonProductsDetails", productsDetailsArray);
-  }
-
-  /**************Fetch all Products Pricing*********/
-  const fetchAllProductsPrices = async () => {
-    setBtnFetchPp("Processing...")
-    //hobsonProductsDetails.length = 0
-    let displayString = "";
-    let productsCodeArray = []
-    let productsPricesArray = []
-    hobsonProductCodes?.map((productCode) => {
-      productsCodeArray.push(productCode.part_number)
-    })
-    // console.log("productsCodeArray", productsCodeArray);
-    const chunkSize = 500;
-    for (let i = 0, j = 1; i < productsCodeArray.length; i += chunkSize, j++) {
-      const chunk = productsCodeArray.slice(i, i + chunkSize);
-
-      const url = 'https://hdi.hobson.com.au/v3/stock/price';
-      const data = JSON.stringify({
-        "app_token": `${appToken}`,
-        "store_code": `${storeCode}`,
-        "data": { "part_numbers": [...chunk] }
-      });
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'api-key': `${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: data,
-      });
-
-      const fullProductsPrices = await response.json();
-      const batchResults = fullProductsPrices.data
-      productsPricesArray.push(...batchResults)
-      displayString = displayString + "\nLive Hobson Products Prices - Batch:" + j + " Count : " + fullProductsPrices.data.length
-      setDisplayResults(displayString + "\n...")
-      console.log(productsPricesArray);
-
-    }
-    setHobsonProductsPrices(productsPricesArray)
-    setTimeout(() => { setBtnFetchPp("Processed") }, 1000);
-    setTimeout(() => { setBtnFetchPp("Fetch Product Prices") }, 1000);
-    displayString = displayString + "\nCompleted :" + productsPricesArray.length
-    setDisplayResults(displayString)
-    console.log("hobsonProductsPrices", productsPricesArray);
-  }
-
-  // useEffect(() => {
-  //   let ctlSku = 200100
-  //   hobsonProductsDetails?.map((product) => {
-
-  //     let purchaseprice;
-  //     let price;
-  //     let categoryChoosen;
-
-  //     const stock = [];
-  //     for (let i = 0; i < 1; i++) {
-  //       const count = 1
-
-  //       hobsonProductsPrices?.map((productPrice) => {
-  //         if (product.part_number === productPrice.part_number) {
-  //           purchaseprice = productPrice.price
-  //           price = productPrice.price
-  //         }
-  //       })
-
-  //       hobsonCategories?.map((category) => {
-
-  //       })
-
-  //       const attrs = product.size
-  //       const uom = product.pack_quantity
-  //       const barcode = ""
-  //       const ctlsku = "CTL" + ctlSku
-  //       const slrsku = ""
-  //       const suppliersku = product.part_number
-  //       const slrRandallsSku = ""
-  //       const slrDaisyMilanoSku = ""
-  //       const slrMaxwellsSku = ""
-  //       const fmlCGOSku = ""
-  //       const fmlTMHCSku = ""
-  //       const evnMungariSku = ""
-
-  //       stock.push({
-  //         count,
-  //         price: price,
-  //         purchaseprice,
-  //         attrs,
-  //         uom,
-  //         barcode,
-  //         ctlsku,
-  //         slrsku,
-  //         suppliersku,
-  //         slrRandallsSku,
-  //         slrDaisyMilanoSku,
-  //         slrMaxwellsSku,
-  //         fmlCGOSku,
-  //         fmlTMHCSku,
-  //         evnMungariSku,
-  //       });
-  //     }
-
-  //     const formInputs = {
-  //       name: product.description,
-  //       description: product.description + product.extra_description,
-  //       saleunit: 1,
-  //       max: 1,
-  //       displayPrice: price,
-  //       supplier: "HOBSON",
-  //       category: categoryChoosen,
-  //       attributesTable: [],
-  //       sortOrder: 0,
-  //       createdBy: "Praveen Padincharayi",
-  //       editedBy: "",
-  //       stock: stock,
-  //     };
-  //   })
-  // })
+  const [completeCategoryList, setCompleteCategoryList] = useState([])
+  const [completePriceList, setCompletePriceList] = useState([])
+  const [completeProductAvailability, setCompleteProductAvailability] = useState([])
+  const [completeFilteredCategories, setCompleteFilteredCategories] = useState([])
 
 
   /*************Handle Image Path Change********* */
   const handleImagePathChange = async () => {
-    // try {
-    //   const id = "654de27a6cdf2bdc71035b41"
-    //   const images = [
-    //     {
-    //       path: 'https://ctladmin.b-cdn.net/image/70445_1.JPG',
-    //       _id: '655c171bfc060dc8f105ad48'
-    //     }
-    //   ]
-    //   const iresponse = axios.put(
-    //     `/api/products/admin/updateImages/${id}`,
-    //     { images: images }
-    //   );
-    //   console.log(iresponse);
-    // } catch (err) {
-    //   console.error("Error fetching data", err);
-    // }
-
 
     try {
       const response = await axios.get("/api/products/admin");
@@ -387,29 +72,24 @@ const AdminCheckPage = () => {
       console.log(allProducts);
       allProducts?.map((product) => {
 
-        if (product.pdfs) {
-          // product.pdfs.map((image) => {
-          //   if (image.path === null || image.path === "" || image.path === undefined) {
-          //     console.log(product);
-          //   }
-          // })
+        if (product.images) {
           flag = 0
-          product.pdfs.map((pdf) => {
-            if (pdf.path?.includes("https://ctladmin.b-cdn.net/pdf/ITM/")) {
-              let pathSplit = pdf.path.split("/")
-              const pdfName = pathSplit[pathSplit.length - 1]
-              pdf.path = "https://ctladmin.b-cdn.net/pdf/" + pdfName
+          product.images.map((image) => {
+            if (image.path?.includes("https://res.cloudinary.com/dxvwresim/image/")) {
+              let pathSplit = image.path.split("/")
+              const imageName = pathSplit[pathSplit.length - 1]
+              image.path = "https://ctladmin.b-cdn.net/image/" + imageName
               flag++
             }
           })
           if (flag !== 0) {
-            const pdfs = product.pdfs
+            const images = product.images
             const id = product._id
-            console.log(id, pdfs);
+            console.log(id, images);
             try {
               const iresponse = axios.put(
-                `/api/products/admin/updatepdfs/${id}`,
-                { pdfs: pdfs }
+                `/api/products/admin/updateImages/${id}`,
+                { images: images }
               );
               console.log(iresponse);
             } catch (err) {
@@ -564,6 +244,806 @@ const AdminCheckPage = () => {
     }
     setIsChecking(false);
   };
+
+  /********** Hobson New Products Fetching********* */
+  const updateNewProducts = async () => {
+    setBtnNewHobsonProducts("Processing...")
+    const supplier = "HOBSON ENGINEERING"
+    const ctlSkus = await axios.get(`/api/products/admin/getHobsonCTLSKU/${supplier}`)
+    const completeHobsonCTLSkus = []
+    ctlSkus.data?.map((sku) => {
+      completeHobsonCTLSkus.push(Number(sku.stock[0].ctlsku.split("L")[1]))
+    })
+    let ctlSku = Math.max(...completeHobsonCTLSkus)
+    ctlSku += 1
+    const productResponse = await axios.get(`/api/products/admin/getSupplierSKU/${supplier}`);
+    const hobsonProductCodes = productResponse.data;
+    let productSupplierSkuArray = []
+    let tempAvailabilityArray = []
+    hobsonProductCodes?.map((productCode) => {
+      productSupplierSkuArray.push(productCode?.stock[0]?.suppliersku)
+    })
+
+    setDisplayResults(displayResults + "\n CTL Products List Generated..")
+    const url = 'https://hdi.hobson.com.au/v3/stock/number';
+    const data1 = JSON.stringify({
+      "app_token": `${appToken}`,
+      "store_code": `${storeCode}`,
+      "data": { "matched_parts_only": false }
+    });
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'api-key': `${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: data1,
+    });
+
+    const fullProductsCodes = await response.json();
+    setDisplayResults(displayResults + "\n Hobson Products List Generated..")
+    let productSupplierSkuArray1 = []
+    fullProductsCodes?.data?.map((productCode) => {
+      productSupplierSkuArray1.push(productCode.part_number)
+    })
+
+    const filteredItems = [...new Set(productSupplierSkuArray1)].filter(item => !productSupplierSkuArray.includes(item));
+    setDisplayResults(displayResults + "\n New Hobson Products Code Filtered..")
+    var hobsonAvailabilityArray = []
+    const chunkSize = 500;
+    for (let i = 0, j = 1; i < filteredItems.length; i += chunkSize, j++) {
+      const chunk = filteredItems.slice(i, i + chunkSize);
+
+      const url = 'https://hdi.hobson.com.au/v3/stock/availability/logged-in';
+      const data = JSON.stringify({
+        "app_token": `${appToken}`,
+        "store_code": `${storeCode}`,
+        "data": { "part_numbers": [...chunk] }
+      });
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'api-key': `${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+      const fullProductAvailability = await response.json();
+      const batchResults = fullProductAvailability.data
+      hobsonAvailabilityArray.push(...batchResults)
+    }
+
+    var hobsonPriceArray = []
+    for (let i = 0, j = 1; i < filteredItems.length; i += chunkSize, j++) {
+      const chunk = filteredItems.slice(i, i + chunkSize);
+
+      const url = 'https://hdi.hobson.com.au/v3/stock/price';
+      const data = JSON.stringify({
+        "app_token": `${appToken}`,
+        "store_code": `${storeCode}`,
+        "data": { "part_numbers": [...chunk] }
+      });
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'api-key': `${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+
+      const fullProductsPrices = await response.json();
+      const batchResults = fullProductsPrices.data
+      hobsonPriceArray.push(...batchResults)
+    }
+
+    var hobsonProductsDetailsArray = []
+    for (let i = 0, j = 1; i < filteredItems.length; i += chunkSize, j++) {
+      const chunk = filteredItems.slice(i, i + chunkSize);
+
+      const url = 'https://hdi.hobson.com.au/v3/stock/detail';
+      const data = JSON.stringify({
+        "app_token": `${appToken}`,
+        "store_code": `${storeCode}`,
+        "data": { "part_numbers": [...chunk] }
+      });
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'api-key': `${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: data,
+      });
+
+      const fullProductsDetails = await response.json();
+      const batchResults = fullProductsDetails.data
+      hobsonProductsDetailsArray.push(...batchResults)
+    }
+
+    let productsDetailsArray = []
+    let categoryDetailsArray = []
+    let fullCategoryList = []
+    let categoryPath = ""
+    let categoryLinks = ""
+    hobsonProductsDetailsArray?.map((result) => {
+      let categoryNameArray = []
+      const categoryArray = result.filters.product_types
+      categoryArray?.map((categoryValue) => {
+        completeCategoryList?.map((categoryList) => {
+          if (categoryList.code === categoryValue) {
+            categoryNameArray.push(categoryList.name.replaceAll("_-_", "-").replaceAll("_/_", "/"))
+          }
+        })
+      })
+      var categoryList = categoryNameArray
+      var categoryPathArray = []
+      var categoryPathArray1 = []
+      var categoryPath = ""
+      var firstElementArray = []
+      var firstElementArray1 = []
+      var secondElementArray = []
+      var secondElement = ""
+      var lastElementArray = []
+      var hasValue = []
+      var noValue = []
+      var finalCategoryLinks = []
+      var finalCategory = ""
+      var finalCategoryArray = []
+      var fullCategoryArray = []
+      var pCounter = 1
+      var fl_1 = 1
+
+      categoryList = Array.from(new Set(categoryList))
+      lastElementArray = []
+      firstElementArray = []
+      for (let i = 0; i < categoryList.length; i++) {
+        if (categoryList[i].includes("PRODUCT_TYPES/"))
+          firstElementArray.push(categoryList[i].split("/")[1])
+        if (!(categoryList[i].includes("/")))
+          lastElementArray.push(categoryList[i])
+      }
+      lastElementArray = Array.from(new Set(lastElementArray))
+      noValue = []
+      finalCategoryLinks = []
+      finalCategoryArray = []
+      pCounter++
+      if (firstElementArray.length === 1) {
+        categoryPath = "INDUSTRIAL/FASTENERS/" + firstElementArray
+        fullCategoryArray.push(categoryPath)
+        if (lastElementArray.length === 1) {
+          while (!(categoryPath.includes(lastElementArray[0]))) {
+            secondElementArray = Array.from(new Set(secondElementArray))
+            if (secondElementArray.length > 1) {
+              hasValue = []
+              noValue = []
+              var counter = 0
+              categoryPathArray?.map((tempCategoryPath) => {
+                if ((categoryPath + "/" + tempCategoryPath).includes(lastElementArray[0])) {
+                  hasValue.push(tempCategoryPath)
+                  if (counter === 0) {
+                    finalCategoryArray.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                    fullCategoryArray.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                    counter++
+                  }
+                }
+                else {
+                  noValue.push(tempCategoryPath)
+                }
+              })
+              if (noValue.length > 0) {
+                firstElementArray = []
+                noValue?.map((value) => {
+                  firstElementArray.push(value?.split("/").pop())
+                })
+              } else {
+                break;
+              }
+            }
+            secondElementArray = []
+            categoryPathArray1 = []
+            firstElementArray = Array.from(new Set(firstElementArray))
+            for (let i = 0; i < categoryList.length; i++) {
+              if (categoryList[i].includes("/")) {
+                firstElementArray?.map((firstElement) => {
+                  if (categoryList[i].split("/")[0] === firstElement) {
+                    secondElementArray.push(categoryList[i].split("/").slice(1).join("/"))
+                    if (noValue.length > 0) {
+                      if (firstElementArray.length > 1) {
+                        categoryPathArray1.push(firstElement)
+                      } else {
+                        fullCategoryArray.push((categoryPath + "/" + firstElement).replaceAll(",", "-"))
+                        categoryPath = (categoryPath + "/" + firstElement).replaceAll(",", "-")
+                      }
+                    }
+                  }
+                })
+              }
+            }
+            if (categoryPathArray1.length > 0) {
+              if (categoryPathArray1.length === 1) {
+                categoryPath = categoryPath + "/" + categoryPathArray1[0]
+              } else {
+                categoryPath = categoryPath + "/" + categoryPathArray1[1]
+              }
+            }
+            if (secondElementArray.length > 1) {
+              secondElementArray = Array.from(new Set(secondElementArray))
+            }
+            if (secondElementArray.length > 0) {
+              if (secondElementArray.length === 1) {
+                firstElementArray = []
+                if (secondElementArray[0] === lastElementArray[0]) {
+                  finalCategoryArray.push((categoryPath + "/" + lastElementArray[0]).replaceAll(",", "-"))
+                  fullCategoryArray.push((categoryPath + "/" + lastElementArray[0]).replaceAll(",", "-"))
+                  break;
+                }
+                firstElementArray.push(secondElementArray[0])
+                categoryPath = (categoryPath + "/" + secondElementArray[0]).replaceAll(",", "-")
+                fullCategoryArray.push((categoryPath.replaceAll(",", "-")))
+              }
+              else {
+                categoryPathArray = []
+                secondElementArray?.map((secondElement) => {
+                  categoryPathArray.push(secondElement)
+                })
+              }
+            }
+            else {
+              if (categoryPathArray1.length > 1) {
+                finalCategoryArray.push((categoryPathArray1 + "/" + lastElementArray).replaceAll(",", "-"))
+                fullCategoryArray.push((categoryPathArray1 + "/" + lastElementArray).replaceAll(",", "-"))
+              }
+              else {
+                finalCategoryArray.push((categoryPath + "/" + lastElementArray).replaceAll(",", "-"))
+                fullCategoryArray.push((categoryPath + "/" + lastElementArray).replaceAll(",", "-"))
+              }
+              break;
+            }
+          }
+          if (finalCategoryArray.length > 0) {
+            if (finalCategoryArray.length === 1) {
+              finalCategory = finalCategoryArray
+            } else {
+              finalCategory = finalCategoryArray[0]
+              finalCategoryArray.shift()
+              finalCategoryLinks = finalCategoryArray
+            }
+          }
+
+        }
+
+        else if (lastElementArray.length > 1) {
+          finalCategoryArray = []
+          var fCount = 0
+          lastElementArray?.map((lastElement) => {
+            secondElementArray = []
+            while (!(categoryPath.includes(lastElement))) {
+              secondElementArray = Array.from(new Set(secondElementArray))
+              if (secondElementArray.length > 1) {
+                hasValue = []
+                noValue = []
+                var counter = 0
+                categoryPathArray?.map((tempCategoryPath) => {
+                  if ((categoryPath + "/" + tempCategoryPath).includes(lastElement)) {
+                    hasValue.push(tempCategoryPath)
+                    if (counter === 0) {
+                      finalCategoryArray.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                      fullCategoryArray.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                      counter++
+                    }
+                  }
+                  else {
+                    noValue.push(tempCategoryPath)
+                  }
+                })
+                if (noValue.length > 0) {
+                  firstElementArray = []
+                  noValue?.map((value) => {
+                    firstElementArray.push(value.split("/").pop())
+                  })
+                } else {
+                  break;
+                }
+              }
+              secondElementArray = []
+              categoryPathArray1 = []
+              firstElementArray = Array.from(new Set(firstElementArray))
+              for (let i = 0; i < categoryList.length; i++) {
+                if (categoryList[i].includes("/")) {
+                  firstElementArray?.map((firstElement) => {
+                    if (categoryList[i].split("/")[0] === firstElement) {
+                      secondElementArray.push(categoryList[i].split("/").slice(1).join("/"))
+                      if (noValue.length > 0) {
+                        if (firstElementArray.length > 1) {
+                          categoryPathArray1.push(firstElement)
+                        } else {
+                          fullCategoryArray.push((categoryPath + "/" + firstElement).replaceAll(",", "-"))
+                          categoryPath = (categoryPath + "/" + firstElement).replaceAll(",", "-")
+                        }
+                      }
+                    }
+                  })
+                }
+              }
+              if (categoryPathArray1.length > 0) {
+                if (categoryPathArray1.length === 1) {
+                  categoryPath = categoryPath + "/" + categoryPathArray1[0]
+                } else {
+                  categoryPath = categoryPath + "/" + categoryPathArray1[1]
+                }
+              }
+              if (secondElementArray.length > 1) {
+                secondElementArray = Array.from(new Set(secondElementArray))
+              }
+              if (secondElementArray.length > 0) {
+                if (secondElementArray.length === 1) {
+                  firstElementArray = []
+                  if (secondElementArray[0] === lastElement) {
+                    finalCategoryArray.push((categoryPath + "/" + lastElement).replaceAll(",", "-"))
+                    fullCategoryArray.push((categoryPath + "/" + lastElement).replaceAll(",", "-"))
+                    firstElementArray.push(secondElementArray[0])
+                    break;
+                  }
+                  firstElementArray.push(secondElementArray[0])
+                  categoryPath = (categoryPath + "/" + secondElementArray[0]).replaceAll(",", "-")
+                  fullCategoryArray.push((categoryPath.replaceAll(",", "-")))
+                }
+                else {
+                  categoryPathArray = []
+                  secondElementArray?.map((secondElement) => {
+                    categoryPathArray.push(secondElement)
+                  })
+                }
+              }
+              else {
+                if (categoryPathArray1.length > 1) {
+                  finalCategoryArray.push((categoryPathArray1).replaceAll(",", "-"))
+                  fullCategoryArray.push((categoryPathArray1).replaceAll(",", "-"))
+                }
+                else {
+                  finalCategoryArray.push((categoryPath).replaceAll(",", "-"))
+                  fullCategoryArray.push((categoryPath).replaceAll(",", "-"))
+                }
+                break;
+              }
+            }
+          })
+          if (finalCategoryArray.length > 0) {
+            if (finalCategoryArray.length === 1) {
+              finalCategory = finalCategoryArray
+            } else {
+              finalCategory = finalCategoryArray[0]
+              finalCategoryArray.shift()
+              finalCategoryLinks = finalCategoryArray
+            }
+          }
+        } else if (lastElementArray.length === 0) {
+          finalCategory = "Assorted"
+        }
+      }
+      else if (firstElementArray.length > 1) {
+        var finalCategoryArray1 = []
+        firstElementArray?.map((firstElement) => {
+          firstElementArray1 = []
+          firstElementArray1.push(firstElement)
+          categoryPath = "INDUSTRIAL/FASTENERS/" + firstElementArray1
+          fullCategoryArray.push(categoryPath)
+          if (lastElementArray.length === 1) {
+            while (!(categoryPath.includes(lastElementArray[0]))) {
+              secondElementArray = Array.from(new Set(secondElementArray))
+              if (secondElementArray.length > 1) {
+                hasValue = []
+                noValue = []
+                var counter = 0
+                categoryPathArray?.map((tempCategoryPath) => {
+                  if ((categoryPath + "/" + tempCategoryPath).includes(lastElementArray[0])) {
+                    hasValue.push(tempCategoryPath)
+                    if (counter === 0) {
+                      finalCategoryArray1.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                      fullCategoryArray.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                      counter++
+                    }
+                  }
+                  else {
+                    noValue.push(tempCategoryPath)
+                  }
+                })
+                if (noValue.length > 0) {
+                  firstElementArray1 = []
+                  noValue?.map((value) => {
+                    firstElementArray1.push(value?.split("/").pop())
+                  })
+                } else {
+                  break;
+                }
+              }
+              secondElementArray = []
+              categoryPathArray1 = []
+              firstElementArray1 = Array.from(new Set(firstElementArray1))
+              for (let i = 0; i < categoryList.length; i++) {
+                if (categoryList[i].includes("/")) {
+                  firstElementArray1?.map((firstElement) => {
+                    if (categoryList[i].split("/")[0] === firstElement) {
+                      secondElementArray.push(categoryList[i].split("/").slice(1).join("/"))
+                      if (noValue.length > 0) {
+                        if (firstElementArray1.length > 1) {
+                          categoryPathArray1.push(firstElement)
+                        } else {
+                          fullCategoryArray.push((categoryPath + "/" + firstElement).replaceAll(",", "-"))
+                          categoryPath = (categoryPath + "/" + firstElement).replaceAll(",", "-")
+                        }
+                      }
+                    }
+                  })
+                }
+              }
+              if (categoryPathArray1.length > 0) {
+                if (categoryPathArray1.length === 1) {
+                  categoryPath = categoryPath + "/" + categoryPathArray1[0]
+                } else {
+                  categoryPath = categoryPath + "/" + categoryPathArray1[1]
+                }
+              }
+              if (secondElementArray.length > 1) {
+                secondElementArray = Array.from(new Set(secondElementArray))
+              }
+              if (secondElementArray.length > 0) {
+                if (secondElementArray.length === 1) {
+                  firstElementArray1 = []
+                  if (secondElementArray[0] === lastElementArray[0]) {
+                    finalCategoryArray1.push((categoryPath + "/" + lastElementArray[0]).replaceAll(",", "-"))
+                    fullCategoryArray.push((categoryPath + "/" + lastElementArray[0]).replaceAll(",", "-"))
+                    break;
+                  }
+                  firstElementArray1.push(secondElementArray[0])
+                  categoryPath = (categoryPath + "/" + secondElementArray[0]).replaceAll(",", "-")
+                  fullCategoryArray.push((categoryPath.replaceAll(",", "-")))
+                }
+                else {
+                  categoryPathArray = []
+                  secondElementArray?.map((secondElement) => {
+                    categoryPathArray.push(secondElement)
+                  })
+                }
+              }
+              else {
+                if (categoryPathArray1.length > 1) {
+                  finalCategoryArray1.push((categoryPathArray1 + "/" + lastElementArray).replaceAll(",", "-"))
+                  fullCategoryArray.push((categoryPathArray1 + "/" + lastElementArray).replaceAll(",", "-"))
+                }
+                else {
+                  finalCategoryArray1.push((categoryPath + "/" + lastElementArray).replaceAll(",", "-"))
+                  fullCategoryArray.push((categoryPath + "/" + lastElementArray).replaceAll(",", "-"))
+                }
+                break;
+              }
+            }
+            if (finalCategoryArray1.length > 0) {
+              if (finalCategoryArray1.length === 1) {
+                finalCategory = finalCategoryArray1
+              } else {
+                finalCategory = finalCategoryArray1[0]
+                finalCategoryArray1.shift()
+                finalCategoryLinks = finalCategoryArray1
+              }
+            }
+          }
+          else if (lastElementArray.length > 1) {
+            var fCount = 0
+            lastElementArray?.map((lastElement) => {
+              secondElementArray = []
+              while (!(categoryPath.includes(lastElement))) {
+                secondElementArray = Array.from(new Set(secondElementArray))
+                if (secondElementArray.length > 1) {
+                  hasValue = []
+                  noValue = []
+                  var counter = 0
+                  categoryPathArray?.map((tempCategoryPath) => {
+                    if ((categoryPath + "/" + tempCategoryPath).includes(lastElement)) {
+                      hasValue.push(tempCategoryPath)
+                      if (counter === 0) {
+                        finalCategoryArray1.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                        fullCategoryArray.push((categoryPath + "/" + tempCategoryPath).replaceAll(",", "-"))
+                        counter++
+                      }
+                    }
+                    else {
+                      noValue.push(tempCategoryPath)
+                    }
+                  })
+                  if (noValue.length > 0) {
+                    firstElementArray1 = []
+                    noValue?.map((value) => {
+                      firstElementArray1.push(value.split("/").pop())
+                    })
+                  } else {
+                    break;
+                  }
+                }
+                secondElementArray = []
+                categoryPathArray1 = []
+                firstElementArray1 = Array.from(new Set(firstElementArray1))
+                for (let i = 0; i < categoryList.length; i++) {
+                  if (categoryList[i].includes("/")) {
+                    firstElementArray1?.map((firstElement) => {
+                      if (categoryList[i].split("/")[0] === firstElement) {
+                        secondElementArray.push(categoryList[i].split("/").slice(1).join("/"))
+                        if (noValue.length > 0) {
+                          if (firstElementArray1.length > 1) {
+                            categoryPathArray1.push(firstElement)
+                          } else {
+                            fullCategoryArray.push((categoryPath + "/" + firstElement).replaceAll(",", "-"))
+                            categoryPath = (categoryPath + "/" + firstElement).replaceAll(",", "-")
+                          }
+                        }
+                      }
+                    })
+                  }
+                }
+                if (categoryPathArray1.length > 0) {
+                  if (categoryPathArray1.length === 1) {
+                    categoryPath = categoryPath + "/" + categoryPathArray1[0]
+                  } else {
+                    categoryPath = categoryPath + "/" + categoryPathArray1[1]
+                  }
+                }
+                if (secondElementArray.length > 1) {
+                  secondElementArray = Array.from(new Set(secondElementArray))
+                }
+                if (secondElementArray.length > 0) {
+                  if (secondElementArray.length === 1) {
+                    firstElementArray1 = []
+                    if (secondElementArray[0] === lastElement) {
+                      finalCategoryArray1.push((categoryPath + "/" + lastElement).replaceAll(",", "-"))
+                      fullCategoryArray.push((categoryPath + "/" + lastElement).replaceAll(",", "-"))
+                      firstElementArray1.push(secondElementArray[0])
+                      break;
+                    }
+                    firstElementArray1.push(secondElementArray[0])
+                    categoryPath = (categoryPath + "/" + secondElementArray[0]).replaceAll(",", "-")
+                    fullCategoryArray.push((categoryPath.replaceAll(",", "-")))
+                  }
+                  else {
+                    categoryPathArray = []
+                    secondElementArray?.map((secondElement) => {
+                      categoryPathArray.push(secondElement)
+                    })
+                  }
+                }
+                else {
+                  if (categoryPathArray1.length > 1) {
+                    finalCategoryArray1.push((categoryPathArray1).replaceAll(",", "-"))
+                    fullCategoryArray.push((categoryPathArray1).replaceAll(",", "-"))
+                  }
+                  else {
+                    finalCategoryArray1.push((categoryPath).replaceAll(",", "-"))
+                    fullCategoryArray.push((categoryPath).replaceAll(",", "-"))
+                  }
+                  break;
+                }
+              }
+            })
+          }
+        })
+        if (finalCategoryArray1.length > 0 && lastElementArray.length > 1) {
+          if (finalCategoryArray1.length === 1) {
+            finalCategory = finalCategoryArray1
+          } else {
+            finalCategory = finalCategoryArray1[0]
+            finalCategoryArray1.shift()
+            finalCategoryLinks = finalCategoryArray1
+          }
+        }
+      }
+
+      categoryPath = finalCategory.toString()
+      categoryLinks = finalCategoryLinks.toString()
+      fullCategoryList.push(...fullCategoryArray)
+
+      const availabilityList = hobsonAvailabilityArray.find((element) => {
+        return element.part_number === result.part_number
+      })
+
+      let localAvailability = 0
+      let nationalAvailability = 0
+      availabilityList.logged_in_user_availability?.map((site) => {
+        if (site.warehouse === "Perth") {
+          localAvailability = site.available
+        } else {
+          nationalAvailability = nationalAvailability + site.available
+        }
+      })
+
+      const category = completeCategoryList.find((element) => {
+        return element.code === result.filters.category
+      })
+
+      const priceArray = completePriceList.find((element) => {
+        return element.hobson_part === result.hobson_part
+      })
+
+      const purchasePriceList = priceArray?.std_portal_pr.find((element) => {
+        return element.quantity_break === result.pack_quantity
+      })
+
+      const purchasePrice = purchasePriceList?.price ? parseFloat(purchasePriceList?.price) / priceArray?.price_per : 0
+      var keys = Object.keys(result.image);
+      var last = keys[keys.length - 1];
+      const imageUrl = result.image[last]
+
+      let pdfs = []
+      result.documents?.map((doc) => {
+        pdfs.push({ path: doc.url })
+      })
+
+      productsDetailsArray.push({
+        name: result.description,
+        description:
+          result.alternate_parts.length > 0 ? (
+            result.extra_description +
+            "\n<Alternate Parts" +
+            "\n " + result.alternate_parts?.map((parts) => {
+              return parts
+            }) +
+            "\n Category:" + category?.description +
+            "\n Finish:" + result.finish +
+            "\n Size:" + result.size +
+            "\n Spec:" + result.spec +
+            "\n Length:" + result.length +
+            "\n Material:" + result.filters?.material[0] +
+            "\n Width:" + result.size
+          ) : (result.extra_description +
+            "\n Category:" + category?.description +
+            "\n Finish:" + result.finish +
+            "\n Size:" + result.size +
+            "\n Spec:" + result.spec +
+            "\n Length:" + result.length +
+            "\n Material:" + result.filters?.material[0] +
+            "\n Width:" + result.size),
+
+        saleunit: 1,
+        max: 0,
+        displayPrice: parseFloat((purchasePrice + (purchasePrice * .3)).toFixed(2)),
+        supplier: "HOBSON ENGINEERING",
+        category: categoryPath,
+        categoryLinks: categoryLinks,
+        sortOrder: 1,
+        standards: "",
+        createdBy: "API",
+        editedBy: "",
+        stock: [{
+          attrs: result.pack_quantity > 1 ? "PACK-" + result.pack_quantity : "PER UNIT",
+          uom: "PER UNIT",
+          count: 0,
+          purchaseprice: parseFloat((purchasePrice * result.pack_quantity).toFixed(2)),
+          price: parseFloat(((purchasePrice * result.pack_quantity) + ((purchasePrice * result.pack_quantity) * .7)).toFixed(2)),
+          barcode: "",
+          ctlsku: "CTL" + ctlSku,
+          suppliersku: result.hobson_part,
+          clientsSku: "",
+          sales: 0
+        }],
+        availability: [{
+          local: localAvailability,
+          national: nationalAvailability
+        }],
+        images: [{
+          path: imageUrl
+        }],
+        pdfs: [...pdfs],
+      })
+      ctlSku++
+    })
+
+    fullCategoryList = Array.from(new Set(fullCategoryList))
+    fullCategoryList?.map((categoryPath) => {
+      categoryDetailsArray.push({
+        name: categoryPath,
+        display: "TRUE",
+        description: categoryPath,
+        image: "/images/tablets-category.png",
+        attrs: [],
+        brand: "HOBSON"
+      })
+    })
+
+    const data = productsDetailsArray
+    const maxPdfs = data.reduce((max, item) => Math.max(max, item.pdfs.length), 0);
+    const maxImages = data.reduce((max, item) => Math.max(max, item.images.length), 0);
+
+    const fields = [
+      '_id',
+      'name',
+      'description',
+      'saleunit',
+      'max',
+      'displayPrice',
+      'supplier',
+      'category',
+      'categoryLinks',
+      'sortOrder',
+      'standards',
+      'createdBy',
+      'editedBy',
+      'createdAt',
+      'stock[0].attrs',
+      'stock[0].uom',
+      'stock[0].count',
+      'stock[0].purchaseprice',
+      'stock[0].price',
+      'stock[0].barcode',
+      'stock[0].ctlsku',
+      'stock[0].suppliersku',
+      'stock[0].clientsSku',
+      'stock[0].sales',
+      'stock[0]._id',
+      'availability[0].local',
+      'availability[0].national',
+      'availability[0]._id',
+    ];
+    for (let i = 0; i < maxPdfs; i++) {
+      fields.push(`pdfs[${i}].path`);
+      fields.push(`pdfs[${i}]._id`);
+    }
+    for (let i = 0; i < maxImages; i++) {
+      fields.push(`images[${i}].path`);
+      fields.push(`images[${i}]._id`);
+    }
+    const parser = new Parser({ fields });
+    const flattenedData = data.map(item => {
+      const flatItem = {
+        _id: new ObjectId(),
+        name: item.name,
+        description: item.description,
+        saleunit: item.saleunit,
+        max: item.max,
+        displayPrice: item.displayPrice,
+        supplier: item.supplier,
+        category: item.category,
+        categoryLinks: item.categoryLinks,
+        sortOrder: item.sortOrder,
+        standards: item.standards,
+        createdBy: item.createdBy,
+        editedBy: item.editedBy,
+        createdAt: new Date(),
+        'stock[0].attrs': item.stock[0] ? item.stock[0].attrs : '',
+        'stock[0].uom': item.stock[0] ? item.stock[0].uom : '',
+        'stock[0].count': item.stock[0] ? item.stock[0].count : '',
+        'stock[0].purchaseprice': item.stock[0] ? item.stock[0].purchaseprice : '',
+        'stock[0].price': item.stock[0] ? item.stock[0].price : '',
+        'stock[0].barcode': item.stock[0] ? item.stock[0].barcode : '',
+        'stock[0].ctlsku': item.stock[0] ? item.stock[0].ctlsku : '',
+        'stock[0].suppliersku': item.stock[0] ? item.stock[0].suppliersku : '',
+        'stock[0].clientsSku': item.stock[0] ? item.stock[0].clientsSku : '',
+        'stock[0].sales': item.stock[0] ? item.stock[0].sales : '',
+        'stock[0]._id': item.stock[0] ? new ObjectId() : '',
+        'availability[0].local': item.availability[0] ? item.availability[0].local : '',
+        'availability[0].national': item.availability[0] ? item.availability[0].national : '',
+        'availability[0]._id': item.availability[0] ? new ObjectId() : '',
+      };
+      for (let i = 0; i < maxImages; i++) {
+        flatItem[`images[${i}].path`] = item.images[i] ? item.images[i].path : '';
+        flatItem[`images[${i}]._id`] = item.images[i] ? new ObjectId() : '';
+      }
+      for (let i = 0; i < maxPdfs; i++) {
+        flatItem[`pdfs[${i}].path`] = item.pdfs[i] ? item.pdfs[i].path : '';
+        flatItem[`pdfs[${i}]._id`] = item.pdfs[i] ? new ObjectId() : '';
+      }
+      return flatItem;
+    });
+
+    setDisplayResults(displayResults + "\n Hobson Products List Generated, " + flattenedData.length + " Products CSV File Downloading..")
+    const csv = parser.parse(flattenedData);
+    var file = new File([csv], "hobson.csv", { type: "text/csv;charset=utf-8" });
+    saveAs(file);
+
+    setTimeout(() => { setBtnNewHobsonProducts("Processed") }, 1000);
+    setTimeout(() => { setBtnNewHobsonProducts("Process Products") }, 1000);
+  }
 
   return (
     <>
@@ -852,76 +1332,17 @@ const AdminCheckPage = () => {
                   <textarea
                     className="h_results"
                     value={displayResults} />
-
                 </div>
               </div>
-
-
               <div className="d-flex justify-content-start mb-2 h_button_group">
-                <div className="bd-highlight">
-                  <Button
-                    className="hobson_button me-2"
-                    onClick={handleExistingProducts}>
-                    {btnFetchEx}
-                  </Button>
-                </div>
                 <div className="bd-highlight me-2">
                   <Button
                     className="hobson_button"
-                    onClick={fetchAllCategories}>
-                    {btnFetchCat}
-                  </Button>
-                </div>
-                <div className="bd-highlight me-2">
-                  <Button
-                    className="hobson_button"
-                    onClick={fetchAllProductsNumber}>
-                    {btnFetchPc}
-                  </Button>
-                </div>
-                <div className="bd-highlight me-2">
-                  <Button
-                    className="hobson_button"
-                    onClick={fetchAllProductsDetails}>
-                    {btnFetchPd}
-                  </Button>
-                </div>
-                <div className="bd-highlight me-2">
-                  <Button
-                    className="hobson_button"
-                    onClick={fetchAllProductsPrices}>
-                    {btnFetchPp}
+                    onClick={updateNewProducts}>{btnNewHobsonProducts}
                   </Button>
                 </div>
               </div>
-              <div>
-                <Table striped bordered hover responsive>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th width="25%">Product Name</th>
-                      <th width="15%">Product Code</th>
-                      <th width="15%">CTL Price</th>
-                      <th width="15%">Hobson Price <i class="bi bi-broadcast-pin"></i></th>
-                      <th width="15%">CTL Quantity</th>
-                      <th width="15%">Hobson Quantity <i class="bi bi-broadcast-pin"></i></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {productsData.map((product, idx) => (
-                      <tr key={idx}>
-                        <td>{idx + 1}</td>
-                        <td>{product.name}</td>
-                        <td>{product.productCode}</td>
-                        <td>{product.CTL_price}</td>
-                        <td>{product.Hobson_price}</td>
-                        <td>{product.CTL_quantity}</td>
-                        <td>{product.Hobson_quantity}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
+
             </Tab>
 
           </Tabs>

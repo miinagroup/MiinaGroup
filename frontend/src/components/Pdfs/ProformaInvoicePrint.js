@@ -16,7 +16,7 @@ import {
   invoiceDate,
   selectedDeliverySite
 */
-const InvoicePrint = (invPrintData) => {
+const ProformaInvoicePrint = (invPrintData) => {
   const styles = StyleSheet.create({
     page: {
       padding: 50,
@@ -40,12 +40,7 @@ const InvoicePrint = (invPrintData) => {
       top: 5,
       width: "100%",
     },
-    image1: {
-      position: "absolute",
-      top: 5,
-      left: 50,
-      width: "50%",
-    },
+
     table: {
       paddingLeft: 50,
       paddingRight: 50,
@@ -141,8 +136,18 @@ const InvoicePrint = (invPrintData) => {
       borderStyle: "solid",
       borderWidth: 1,
     },
+    tableColHeader1: {
+      width: "40%",
+      borderStyle: "solid",
+      textAlign: "right",
+      marginTop: 0,
+      borderWidth: 0,
+      borderLeftWidth: 0,
+      borderTopWidth: 0,
+      fontSize: 10,
+    },
     tableColHeader: {
-      width: "30%",
+      width: "20%",
       borderStyle: "solid",
       textAlign: "right",
       marginTop: 0,
@@ -373,7 +378,6 @@ const InvoicePrint = (invPrintData) => {
   const dueDays = invPrintData.dueDays;
   const deliverySite = invPrintData.selectedDeliverySite;
   const companyAccount = invPrintData.companyAccount;
-  const isPaid = invPrintData.isPaid;
   var counter = 0;
 
   const formatNumber = (number) =>
@@ -461,16 +465,9 @@ const InvoicePrint = (invPrintData) => {
                   src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
                 />
               </View>
-              <View style={styles.tableColHeader}>
-                {isPaid ? (
-                  <Image
-                    style={styles.image1}
-                    src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/paid.jpg"
-                  />
-                ) : ("")}
-              </View>
-              <View style={styles.tableColHeader}>
-                <Text style={styles.tableCellBillHeader}>TAX INVOICE</Text>
+              <View style={styles.tableColHeader}></View>
+              <View style={styles.tableColHeader1}>
+                <Text style={styles.tableCellBillHeader}>PROFORMA INVOICE</Text>
                 <Text style={styles.tableCellBill}>CTL Australia</Text>
                 <Text style={styles.tableCellBill}>
                   E : accounts@ctlaus.com
@@ -521,7 +518,7 @@ const InvoicePrint = (invPrintData) => {
                       "7 Days from INV Date" :
                       "30 Days from INV Date"}
                     </Text> */}
-                    {<Text>{dueDays} Days from INV Date</Text>}
+                    {<Text>3 Days from INV Date</Text>}
                   </View>
                   <View style={styles.tableRow3}>
                     <Text> Dispatch From :</Text>
@@ -599,7 +596,7 @@ const InvoicePrint = (invPrintData) => {
                 <View style={styles.tableCellHeader}>
                   <Text style={styles.tableCellBillBox}>
                     {deliveryDate === "Invalid Date"
-                      ? "15-30 days"
+                      ? "7 days"
                       : deliveryDate.split("at")[0]}
                     {/* {deliveryDate.split("at")[0]} */}
                   </Text>
@@ -1206,4 +1203,4 @@ const InvoicePrint = (invPrintData) => {
   );
 };
 
-export default InvoicePrint;
+export default ProformaInvoicePrint;

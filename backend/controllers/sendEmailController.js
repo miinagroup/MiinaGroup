@@ -26,10 +26,10 @@ const transporter = nodemailer.createTransport({
 const testTransporter = nodemailer.createTransport({
   host: "mail.problematic.com.au",
   port: 465,
-  secure: true, 
+  secure: true,
   auth: {
-      user: process.env.PMEMAIL,
-      pass: process.env.PMEMAILPASSWORD,
+    user: process.env.PMEMAIL,
+    pass: process.env.PMEMAILPASSWORD,
   },
 });
 
@@ -187,6 +187,65 @@ const sendInvoice = async (req, res, next) => {
       attachments: [
         {
           filename: "Invoice.pdf",
+          content: Buffer.from(base64data, "base64"),
+          contentType: "application/pdf",
+        },
+      ],
+    };
+
+    // Send email
+    await transporter.sendMail(message);
+
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const sendProformaInvoice = async (req, res, next) => {
+  try {
+    // 因为 后面可能要改动 base64data 所以要用 let，不能用 const
+    let {
+      totalPrice,
+      billingEmail,
+      invoiceNumber,
+      base64data,
+      purchaseNumber,
+      orderID,
+    } = req.body;
+    const order = await Order.findById(orderID);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (!order.proformaInvHasSent) order.proformaInvHasSent = 0;
+    order.proformaInvHasSent++;
+
+    await order.save();
+
+    const base64prefix = "data:application/pdf;base64,";
+    if (base64data.startsWith(base64prefix)) {
+      base64data = base64data.slice(base64prefix.length);
+    }
+
+    const message = {
+      from: `"no-reply CTL" <${process.env.CTLEMAIL}>`,
+      to: `${billingEmail}`,
+      subject: `Proforma Invoice ${invoiceNumber} from CTL AUSTRALIA`,
+      text: `
+  Hi There,
+
+  Please find the attached proforma invoice for $${totalPrice}, with the INV#: ${invoiceNumber} corresponding to your P/O#: ${purchaseNumber}.
+      
+  If you have any inquiries, please do not hesitate to contact us at: accounts@ctlaus.com
+      
+  Kind Regards,
+  The CTL Australia Team
+    `,
+
+      attachments: [
+        {
+          filename: "ProformaInvoice.pdf",
           content: Buffer.from(base64data, "base64"),
           contentType: "application/pdf",
         },
@@ -934,33 +993,33 @@ const sendPOPDF = async (req, res, next) => {
 
 const sendRequest = async (req, res, next) => {
   try {
-    if(req.body.categoryTypeSelectId === "quote") {
-       let file = null;
-        if (req.files && req.files.file) {
-          file = req.files.file[0];
-        }
+    if (req.body.categoryTypeSelectId === "quote") {
+      let file = null;
+      if (req.files && req.files.file) {
+        file = req.files.file[0];
+      }
 
-    let message = {
-      from: req.body.email,
-      to: process.env.PMEMAIL,
-      subject: `Quote New Products: ${req.body.productName}`,
-      text: `
+      let message = {
+        from: req.body.email,
+        to: process.env.PMEMAIL,
+        subject: `Quote New Products: ${req.body.productName}`,
+        text: `
       This is: ${req.body.name},
       Please find the product for us: ${req.body.productName},
       Product Brand / Product code / SKU: ${req.body.brand}
       Product Description: ${req.body.description}`,
-    };
+      };
 
-    if (file) {
-      message.attachments = [
-        {
-          filename: file.name,
-          content:file.data,
-        },
-      ];
-    }
+      if (file) {
+        message.attachments = [
+          {
+            filename: file.name,
+            content: file.data,
+          },
+        ];
+      }
 
-    await testTransporter.sendMail(message);
+      await testTransporter.sendMail(message);
 
     } else {
       let message = {
@@ -971,7 +1030,7 @@ const sendRequest = async (req, res, next) => {
       This is: ${req.body.name}
       Please see the request below: ${req.body.textarea}`,
       };
-  
+
       await testTransporter.sendMail(message);
     }
 
@@ -988,6 +1047,7 @@ module.exports = {
   managementApproval,
   newOrderRemind,
   sendInvoice,
+  sendProformaInvoice,
   deliveryNotice,
   quoteCompletedNotice,
   sendQuotePDF,

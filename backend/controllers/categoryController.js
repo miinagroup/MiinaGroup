@@ -228,6 +228,35 @@ const newCategory = async (req, res, next) => {
   }
 };
 
+const newHobsonCategory = async (req, res, next) => {
+  try {
+    console.log("xxxxxxx");
+
+    const { name,
+      display,
+      description,
+      image,
+      attrs, } = req.body;
+    console.log(name);
+
+
+    // if (!category) {
+    //   res.status(400).send("Category input is required");
+    // }
+    // const categoryExists = await Category.findOne({ name: category });
+    // if (categoryExists) {
+    //   res.status(400).send("Category already exists");
+    // } else {
+    //   const categoryCreated = await Category.create({
+    //     name: category,
+    //   });
+    //   res.status(201).send({ categoryCreated: categoryCreated });
+    // }
+  } catch (err) {
+    next(err);
+  }
+};
+
 const deleteCategory = async (req, res, next) => {
   try {
     if (req.params.category !== "Choose category") {
@@ -418,6 +447,7 @@ module.exports = {
   getCategories,
   getT1Categories,
   newCategory,
+  newHobsonCategory,
   deleteCategory,
   saveAttr,
   categoriesForProductList,

@@ -159,7 +159,7 @@ const ProductListPage = ({
               fiveCat,
               brandName,
               userInfo
-            );         
+            );
             setProducts(products.products);
             setPaginationLinksNumber(products.paginationLinksNumber);
             setPageNum(products.pageNum);
@@ -304,6 +304,7 @@ const ProductListPage = ({
         <Col xxl={10} xl={9} lg={9} md={9}>
           {products.length !== 0 ? (
             <Form className="m-2">
+
               <Row>
                 <Col md={3}>
                   {paginationLinksNumber > 1 ? (
@@ -322,6 +323,9 @@ const ProductListPage = ({
                 </Col>
                 <Col md={3}></Col>
                 <Col md={3}></Col>
+              </Row>
+              <Row>
+                <Col className="ms-4" md={5}>Search Results : 0 - {paginationLinksNumber * 24} products found, displayed across {paginationLinksNumber} pages</Col>
               </Row>
             </Form>
           ) : (

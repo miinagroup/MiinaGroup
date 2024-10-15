@@ -16,6 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@gsap/react": "^2.1.1",
+    "@json2csv/plainjs": "^7.0.6",
     "@mongodb-js/charts-embed-dom": "^3.2.1",
     "@mui/material": "^5.10.15",
     "@paypal/paypal-js": "^5.1.4",
@@ -27,6 +28,7 @@
     "axios": "^1.2.1",
     "bootstrap": "^5.2.2",
     "bootstrap-icons": "^1.9.1",
+    "bson": "^6.8.0",
     "chroma-js": "^2.4.2",
     "decimal.js": "^10.4.3",
     "easyinvoice": "^2.3.3",
@@ -37,6 +39,7 @@
     "jodit-react": "^4.0.15",
     "jquery": "^3.6.3",
     "js-image-zoom": "^0.7.0",
+    "jsap": "^2.0.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
@@ -74,10 +77,10 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.2",
     "sheetjs-style": "^0.15.8",
-    "swiper": "^11.1.10",
+    "swiper": "^11.1.14",
     "tw-elements": "^1.0.0-alpha12",
     "web-vitals": "^2.1.4",
-    "webpack": "^4.46.0"
+    "webpack": "^4.44.2"
   },
   "scripts": {
     "start": "react-scripts start",

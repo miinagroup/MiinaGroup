@@ -71,7 +71,7 @@ const orderSchema = mongoose.Schema(
             color: { type: String, required: false },
             size: { type: String, required: false },
             // ID: { type: String, required: false },
-            clientsSku: { type: [clientSkuSchema], required: false},
+            clientsSku: { type: [clientSkuSchema], required: false },
             currentClientSku: {
               name: { type: String, required: false, unique: true },
               number: { type: String, required: false }
@@ -171,7 +171,24 @@ const orderSchema = mongoose.Schema(
       type: Number,
       required: false,
     },
+    proformaInvSent: {
+      type: Boolean,
+      default: false,
+    },
+    proformaInvSentAt: {
+      type: Date,
+      required: false,
+    },
+    proformaInvHasSent: {
+      type: Number,
+      required: false,
+    },
     backOrder: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    isPaid: {
       type: Boolean,
       required: false,
       default: false,

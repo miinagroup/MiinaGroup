@@ -78,10 +78,17 @@ const ProductDetailsPageComponent = ({
       setModalType(type);
       setShowLoginModal(true);
       };
-
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+  const handleShowLoginModal = (event) => {
+    event.preventDefault()
+    setShowLoginModal(true);
+  };
   //categories
   const dispatch = useDispatch();
 
@@ -274,6 +281,7 @@ const ProductDetailsPageComponent = ({
         )
       );
   }, [edit, id]);
+  //console.log(product);
 
   // 如果直接用toLocaleString() 报错的话，可能是value undefined了，那就format一下price， 然后再加上 toLocaleString
   const price = stockPrice;
@@ -367,6 +375,8 @@ const ProductDetailsPageComponent = ({
       );
     }
   }
+  //console.log("pdfs", pdfs);
+
 
   // quote price using -
   useEffect(() => {
@@ -667,11 +677,15 @@ const ProductDetailsPageComponent = ({
       });
   };
 
-
+  const [catList, setCatList] = useState([])
+  useEffect(() => {
+    if (product.category !== "" || product.category !== undefined) {
+      setCatList(product?.category?.split("/"))
+    }
+  }, [product])
 
   return (
     <Container className="content-container product-detail-page" fluid>
-      <BreadcrumbComponent />
       <Row className="product-detail-page-row">
         <Col xxl={2} xl={3} lg={3} md={3}>
           <ListGroup variant="flush">
@@ -691,9 +705,42 @@ const ProductDetailsPageComponent = ({
 
             {/* ************   Product Details  ***************  */}
             <Col lg={6} className="product-detail-page-info">
-              <span className="categoryHD">
-                {product.category?.replaceAll("/", " / ")}
-              </span>
+              {
+                catList ? (
+                  <>
+                    < span className="categoryHD">
+                      {catList[0] ? (
+                        <a href={`/product-list?categoryName=${catList[0]}`}>{catList[0]}</a>
+                      ) : ("")}
+                      {catList[1] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}`}>{catList[1]}</a>
+                        </>
+                      ) : ("")}
+                      {catList[2] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}`}>{catList[2]}</a>
+                        </>
+                      ) : ("")}
+                      {catList[3] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}`}>{catList[3]}</a>
+                        </>
+                      ) : ("")}
+                      {catList[4] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}`}>{catList[4]}</a>
+                        </>
+                      ) : ("")}
+                    </span>
+                  </>
+                ) : ("")
+              }
+
               <Row>
                 <ListGroup variant="flush" className="product-detail-page-list-group">
                   <ListGroup.Item>
@@ -953,16 +1000,17 @@ const ProductDetailsPageComponent = ({
                         <br />
                       </Col>
                       {product.availability?.length > 0 ? (
-                      <>
-                        <div float="left" className="stock-items-container">
-                        <h6 className={product.availability[0].local !== 0 ? "green" : "orange"}>Local Stock: {product.availability[0].local === 0 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
-                        <h6 className={product.availability[0].national !== 0 ? "green" : "orange"}>National Stock: {product.availability[0].national === 0 ? "Low stock" :  <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
-                        </div>
-                      </>
+                        <>
+                          <div float="left" className="stock-items-container">
+                            <h6 className={product.availability[0].local > 10 ? "green" : "orange"}>WA Stock: {product.availability[0].local < 10 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
+                            <h6 className={product.availability[0].national > 10 ? "green" : "orange"}>National Stock: {product.availability[0].national < 10 ? "Low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
+                          </div>
+                        </>
                       ) : ("")}
+
                     </Row>
-                    
-                    {!isUserInfo && <Row>
+
+                    <Row>
                       {userData.isAdmin === true ? (
                         <>
                           {product.displayPrice === 0 ? null : (
@@ -1063,7 +1111,7 @@ const ProductDetailsPageComponent = ({
                           </Col>
                         </>
                       )}
-                    </Row>}
+                    </Row>
                   </ListGroup.Item>
                 </ListGroup>
               </Row>
@@ -1301,8 +1349,6 @@ const ProductDetailsPageComponent = ({
                                                 } else {
                                                   return (
                                                     <div
-                                                    className="producr-detail-page-spec-item"
-
                                                       key={
                                                         "table2" + tableIndex
                                                       }
@@ -1468,10 +1514,10 @@ const ProductDetailsPageComponent = ({
             </Col>
           </Row>
         </Col>
-      </Row>
+      </Row >
 
       {/* edit product */}
-      <Modal
+      < Modal
         show={show}
         onHide={handleClose}
         className="edite_product_short_infor"
@@ -1483,11 +1529,11 @@ const ProductDetailsPageComponent = ({
           productChanged={productChanged}
           refreshAfterEdit={refreshAfterEdit}
         />
-      </Modal>
+      </Modal >
       <Modal show={showLoginModal} onHide={handleCloseLoginModal} className="login_preview_items">
         <LoginRegisterPage modalType={modalType} />
       </Modal>
-    </Container>
+    </Container >
   );
 };
 

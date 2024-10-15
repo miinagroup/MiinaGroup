@@ -207,6 +207,18 @@ const markAsBackOrder = async (req, res, next) => {
   }
 };
 
+const markAsPaid = async (req, res, next) => {
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(req.params.id, { isPaid: req.body.isPaid });
+    res.json({
+      updatedOrder,
+      message: `Order Marked As ${req.body.isPaid}`,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const markInvAsSent = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id).orFail();
@@ -689,28 +701,28 @@ const adminUpdateOrderClientSku = async (req, res, next) => {
     const stockItem = order.cartItems.find(item => item._id.toString() === cartItemId);
     const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === ctlsku);
 
-    if(cartProduct.currentClientSku) {
-        order = await Order.findOneAndUpdate(
-      {
-        _id: id,
-        'cartItems.cartProducts.ctlsku': ctlsku,
-        'cartItems._id': cartItemId,
-      },
-      {
-        $set: {
-          'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': clientSkuNumber,
-          'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': clientSkuName,
-
+    if (cartProduct.currentClientSku) {
+      order = await Order.findOneAndUpdate(
+        {
+          _id: id,
+          'cartItems.cartProducts.ctlsku': ctlsku,
+          'cartItems._id': cartItemId,
         },
-      },
-      {
-        arrayFilters: [
-          { 'cartItem._id': cartItemId},
-          { 'cartProduct.ctlsku': ctlsku },
-        ],
-        new: true,
-      }
-    );
+        {
+          $set: {
+            'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': clientSkuNumber,
+            'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': clientSkuName,
+
+          },
+        },
+        {
+          arrayFilters: [
+            { 'cartItem._id': cartItemId },
+            { 'cartProduct.ctlsku': ctlsku },
+          ],
+          new: true,
+        }
+      );
     } else {
       order = await Order.findOneAndUpdate(
         {
@@ -727,8 +739,8 @@ const adminUpdateOrderClientSku = async (req, res, next) => {
           },
         },
         {
-          arrayFilters: [ 
-            { 'cartItem._id': cartItemId},
+          arrayFilters: [
+            { 'cartItem._id': cartItemId },
             { "cartProduct.ctlsku": ctlsku }
           ],
           new: true,
@@ -756,6 +768,7 @@ module.exports = {
   adminCreateOrder,
   updateOrderToPaid,
   markAsBackOrder,
+  markAsPaid,
   updateOrderToDelivered,
   markInvAsSent,
   updateOrderNote,
