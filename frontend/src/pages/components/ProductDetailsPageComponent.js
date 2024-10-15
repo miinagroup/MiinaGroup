@@ -81,14 +81,7 @@ const ProductDetailsPageComponent = ({
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const handleCloseLoginModal = () => {
-    setShowLoginModal(false);
-  };
-  const handleShowLoginModal = (event) => {
-    event.preventDefault()
-    setShowLoginModal(true);
-  };
+;
   //categories
   const dispatch = useDispatch();
 
