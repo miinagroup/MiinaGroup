@@ -126,11 +126,11 @@ const UserCartDetailsPageComponent = ({
   });
 
   const [newDeliveryAddress, setNewDeliveryAddress] = useState({
-    addressLine: '',
-    city: '',
-    stateProvinceRegion: '',
-    ZIPostalCode: '',
-    country: ''
+    addressLineDelivery: '',
+    cityDelivery: '',
+    stateProvinceRegionDelivery: '',
+    ZIPostalCodeDelivery: '',
+    countryDelivery: ''
   });
 
   const [sameAddress, setSameAddress] = useState(false);
@@ -597,26 +597,20 @@ const UserCartDetailsPageComponent = ({
       [name]: value
     }));
 
-    if (sameAddress) {
-      setDeliveryAddress((prev) => ({
-        ...prev,
-        [name]: value
-      }));
-    }
+    // if (sameAddress) {
+    //   setDeliveryAddress((prev) => ({
+    //     ...prev,
+    //     [name]: value
+    //   }));
+    // }
   };
 
   const handleNewBillingAddress = (e) => {
     const { name, value } = e.target;
-    setNewBillingAddress((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setNewBillingAddress({ ...newBillingAddress, [name]: value });
 
     if (sameAddress) {
-      setNewDeliveryAddress((prev) => ({
-        ...prev,
-        [name]: value
-      }));
+      setNewDeliveryAddress({ ...newDeliveryAddress, [name]: value });
     }
   };
 
@@ -630,32 +624,24 @@ const UserCartDetailsPageComponent = ({
 
   const handleNewDeliveryAddress = (e) => {
     const { name, value } = e.target;
-    setNewDeliveryAddress((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setNewDeliveryAddress({ ...newDeliveryAddress, [name]: value });
   };
 
   const handleSameAddressChange = () => {
-    setSameAddress((prev) => {
-      const newSameAddress = !prev;
-
-      if (newSameAddress) {
-        setNewDeliveryAddress(billingAddress);
+      setSameAddress(!sameAddress)
+      if (!sameAddress) {
+        setNewDeliveryAddress(newBillingAddress);
       } else {
         setNewDeliveryAddress({
-          addressLine: '',
-          city: '',
-          stateProvinceRegion: '',
-          ZIPostalCode: '',
-          country: ''
+          addressLineDelivery: '',
+          cityDelivery: '',
+          stateProvinceRegionDelivery: '',
+          ZIPostalCodeDelivery: '',
+          countryDelivery: ''
         });
       }
-      return newSameAddress;
-    });
-  };
+    };
 
- 
   const addNewAddress = async (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -762,7 +748,7 @@ const UserCartDetailsPageComponent = ({
       console.error("Error adding new address:", error);
     }
   };
-  
+
 
   function ModalAddAddress() {
     return (
@@ -812,7 +798,7 @@ const UserCartDetailsPageComponent = ({
         <Col>
         <Form.Group controlId="formBasicCity">
         <Form.Label style={{fontSize: "12px", color: "black"}}>City</Form.Label>
-        <Form.Control required type="text" name="city" placeholder="City" onChange={handleNewBillingAddress} />
+        <Form.Control required type="text" name="city" placeholder="City"  onChange={handleNewBillingAddress} />
       </Form.Group>
         </Col>
         <Col>
@@ -857,8 +843,10 @@ const UserCartDetailsPageComponent = ({
         type="text" 
         name="addressDeliveryLine" 
         placeholder="Address Line"
-        value={sameAddress ? newBillingAddress.addressLine : newDeliveryAddress.addressLine}
+        disabled={sameAddress}
+        value={newDeliveryAddress.addressLine}
         onChange={handleNewDeliveryAddress} />
+        
       </Form.Group>
         </Col>
       </Row>
@@ -867,16 +855,15 @@ const UserCartDetailsPageComponent = ({
         <Form.Group controlId="formBasicCityDelivery">
         <Form.Label style={{fontSize: "12px", color: "black"}}>City</Form.Label>
         <Form.Control required type="text" name="cityDelivery" placeholder="City" 
-                value={sameAddress ? newBillingAddress.city : newDeliveryAddress.city}
-
+          value={newDeliveryAddress.city}
+          disabled={sameAddress}
         onChange={handleNewDeliveryAddress} />
       </Form.Group>
         </Col>
         <Col>
         <Form.Group controlId="formBasicStateProvinceRegionDelivery">
         <Form.Label style={{fontSize: "12px", color: "black"}}>State/Province/Region</Form.Label>
-        <Form.Control required type="text" name="stateProvinceRegionDelivery" 
-                        value={sameAddress ? newBillingAddress.stateProvinceRegion : newDeliveryAddress.stateProvinceRegion}
+        <Form.Control required type="text" name="stateProvinceRegionDelivery"  disabled={sameAddress}  value={newDeliveryAddress.stateProvinceRegion}
         placeholder="State/Province/Region" onChange={handleNewDeliveryAddress} />
       </Form.Group>
         </Col>
@@ -885,8 +872,9 @@ const UserCartDetailsPageComponent = ({
         <Col>
         <Form.Group className="mb-3" controlId="formBasicZIPostalCodeDelivery">
         <Form.Label style={{fontSize: "12px", color: "black"}}>ZIP/Postal Code</Form.Label>
-        <Form.Control required type="number" name="ZIPostalCodeDelivery"                         
-        value={sameAddress ? newBillingAddress.ZIPostalCode : newDeliveryAddress.ZIPostalCode}
+        <Form.Control required type="number" name="ZIPostalCodeDelivery"
+         disabled={sameAddress}  
+         value={newDeliveryAddress.ZIPostalCode}                     
         placeholder="ZIP/Postal Code" onChange={handleNewDeliveryAddress} />
       </Form.Group>
         </Col>
@@ -894,7 +882,7 @@ const UserCartDetailsPageComponent = ({
         <Form.Group className="mb-3" controlId="formBasicCountryDelivery">
         <Form.Label style={{fontSize: "12px", color: "black"}}>Country</Form.Label>
         <Form.Control required type="text" name="countryDelivery" 
-        value={sameAddress ? newBillingAddress.country : newDeliveryAddress.country}
+         disabled={sameAddress}  value={newDeliveryAddress.country}
         placeholder="Country"  onChange={handleNewDeliveryAddress} />
       </Form.Group>
         </Col>
@@ -1134,17 +1122,19 @@ const UserCartDetailsPageComponent = ({
   return (
     <>
       <Container className="userCartDetailPage">
-        <Row className="mt-4">
+        <div className="mt-4 d-flex">
+          <div>
           <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
             }}
+            className="mb-5"
           >
             <h1>CART DETAILS</h1>
           </div>
-          <Col md={9}>
+          <Col md={11}>
             <ListGroup variant="flush" className="cart-items-list"> 
               {cartItems.map((item, idx) => (
                 <CartItemComponent
@@ -1164,14 +1154,15 @@ const UserCartDetailsPageComponent = ({
               Empty Cart <i className="bi bi-trash" />
             </Button>
           </Col>
+          </div>
           <Col md={3} className="cart_detail_right">
 
             <br />
             {(hasProducts === 1) ? (
               <>
                 <ListGroup>
-                  <ListGroup.Item className="p-1 ps-2">
-                    <div className="d-grid gap-2">
+                  <ListGroup.Item>
+                    <div className="d-flex justify-content-center">
                       <PDFDownloadLink
                         document={
                           <CartPrint
@@ -1184,7 +1175,8 @@ const UserCartDetailsPageComponent = ({
                           />
                         }
                         fileName={userInfo.name + "'s Cart"}
-                        className="btn btn-success p-0 ps-1 pe-1 ms-3 me-3 download_cart_btn"
+                        className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
+                        style={{width: "100%", maxWidth: "200px"}}
                       >
                         <span>
                           Download Cart <i className="bi bi-file-earmark-pdf"></i>
@@ -1422,10 +1414,11 @@ const UserCartDetailsPageComponent = ({
                   <ListGroup.Item className="p-1 ps-2">
                     <div className="d-grid gap-2">
                     <Button
-                        size="sm"
+                        size="lg"
                         onClick={orderHandler}
                         disabled={purchaseNumber === "" ? true : false}
-                        className="btn btn-success p-0 ps-1 pe-1 download_cart_btn"
+                        className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
+                        style={{width: "100%", maxWidth: "200px", margin: "0 auto"}}
                       >
                         Confirm Order
                       </Button>
@@ -1442,8 +1435,8 @@ const UserCartDetailsPageComponent = ({
                         size="sm"
                         onClick={orderHandler}
                         disabled={purchaseNumber === ""}
-                        className="btn btn-success p-0 ps-1 pe-1 download_cart_btn"
-                      >
+                        className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
+                        style={{width: "100%", maxWidth: "200px", margin: "0 auto"}}                      >
                         Confirm Order
                       </button>
                     </div>
@@ -1454,7 +1447,7 @@ const UserCartDetailsPageComponent = ({
 
             <br />
           </Col>
-        </Row>
+        </div>
       </Container>
       {shouldRenderVerifySiteModal && (
         <VerifySiteComponent

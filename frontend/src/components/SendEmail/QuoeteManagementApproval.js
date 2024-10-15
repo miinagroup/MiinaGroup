@@ -107,15 +107,16 @@ const QuoeteManagementApproval = (quotePriceData, cartItems) => {
     <>
       <div className="container">
         <form onSubmit={handleSubmit} autoComplete="off">
-          <div className="form-group">
+          <div className="form-group d-flex justify-content-center">
             <button
-              className="btn btn-success p-0 ps-1 pe-1 w-100 download_cart_btn"
+              className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
               disabled={
                 isSending ||
                 successMessage ||
                 receiverEmail !== senderEmail ||
                 quotePriceData.quotePriceData.cartItems.length === 0
               }
+              style={{width: "100%", maxWidth: "200px"}}
             >
               {isSending ? `Sending${dots}` : "Email Cart"}
             </button>
