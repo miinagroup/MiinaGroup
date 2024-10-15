@@ -30,6 +30,14 @@ import { useTrackEvents } from "../../trackEvents/useTrackEvents";
 //import User from "../../../../../backend/models/UserModel";
 //import Order from "../../../../../backend/models/OrderModel";
 
+function titleCase(str) {
+  var splitStr = str.toLowerCase().split(' ');
+  for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+  }
+  return splitStr.join(' '); 
+}
+
 const UserOrderDetailsPageComponent = ({
   userInfo,
   getUser,
@@ -619,7 +627,7 @@ const UserOrderDetailsPageComponent = ({
                       name="shippingAddress"
                       placeholder="Shipping Address"
                       required
-                      value={orderData.deliveryAddress && orderData?.deliveryAddress.split(',').map(sentence => sentence.trim()).join('\n')}
+                      value={orderData.deliveryAddress && titleCase(orderData?.deliveryAddress).split(',').map(sentence => sentence.trim()).join('\n')}
                       style={{ fontSize: '12px', height: "100px"}}
                       disabled
                     />

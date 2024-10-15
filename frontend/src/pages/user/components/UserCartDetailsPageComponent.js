@@ -23,6 +23,14 @@ import {
 } from "../../trackEvents/useTrackEvents";
 import VerifySiteComponent from "../../components/VerifySiteComponent";
 
+function titleCase(str) {
+  var splitStr = str.toLowerCase().split(' ');
+  for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+  }
+  return splitStr.join(' '); 
+}
+
 const UserCartDetailsPageComponent = ({
   cartItems,
   itemsCount,
@@ -702,9 +710,9 @@ const UserCartDetailsPageComponent = ({
     const billingAddress = `${form.addressLine.value}, ${form.city.value}, ${form.stateProvinceRegion.value}, ${form.ZIPostalCode.value}, ${form.country.value}`;
     const deliveryAddress = `${form.deliveryAddressLine.value}, ${form.deliveryCity.value}, ${form.deliveryStateProvinceRegion.value}, ${form.deliveryZIPostalCode.value}, ${form.deliveryCountry.value}`;
     
-    const locationExists = deliveryBooks[0].sites.some(site => site.name === location && site._id !== chosenDeliverySite._id);
+    const locationExists = deliveryBooks[0].sites.some(site => site.name.toLowerCase() === location.toLowerCase() && site._id !== chosenDeliverySite._id);
 
-    if (locationExists && chosenDeliverySite.name !== location) {
+    if (locationExists && chosenDeliverySite.name.toLowerCase() !== location.toLowerCase()) {
       setIsLocationValid(false);
       return;
     }
@@ -1309,9 +1317,9 @@ const UserCartDetailsPageComponent = ({
                   >
                     <Form.Label className="fw-bold">Location</Form.Label>
                     {deliveryBooks &&  <Form.Select value={chosenDeliverySite.name} onChange={(e) => handleSelect(e)}>
-                          <option value={chosenDeliverySite.name}>{chosenDeliverySite.name}</option>
+                          <option value={chosenDeliverySite.name} style={{fontWeight: "bold", color: "#073474"}}>{chosenDeliverySite.name.toUpperCase()}</option>
                           { deliveryBooks[0]?.sites?.map((site, index) => {
-                            return <option value={index}>{site.name}</option>
+                            return <option value={index}>{site.name.toUpperCase()}</option>
                           })}
                         </Form.Select>}
                   </ListGroup.Item>
@@ -1328,7 +1336,7 @@ const UserCartDetailsPageComponent = ({
                       name="billingAddress"
                       placeholder="Billing Address"
                       required
-                      value={chosenDeliverySite.billingAddress.split(',').map(sentence => sentence.trim()).join('\n')}
+                      value={titleCase(chosenDeliverySite.billingAddress).split(',').map(sentence => sentence.trim()).join('\n')}
                       style={{ fontSize: '12px', height: "100px"}}
                       disabled
                     />
@@ -1349,7 +1357,7 @@ const UserCartDetailsPageComponent = ({
                       name="shippingAddress"
                       placeholder="Shipping Address"
                       required
-                      value={chosenDeliverySite.deliveryAddress.split(',').map(sentence => sentence.trim()).join('\n')}
+                      value={titleCase(chosenDeliverySite.deliveryAddress).split(',').map(sentence => sentence.trim()).join('\n')}
                       style={{ fontSize: '12px', height: "100px"}}
                       disabled
                     />
