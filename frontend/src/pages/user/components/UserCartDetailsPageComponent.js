@@ -1,13 +1,4 @@
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  ListGroup,
-  InputGroup,
-  Button,
-  Modal
-} from "react-bootstrap";
+import { Container,Col,Form,ListGroup,InputGroup,Button} from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,14 +13,9 @@ import {
   useTrackEvents,
 } from "../../trackEvents/useTrackEvents";
 import VerifySiteComponent from "../../components/VerifySiteComponent";
-
-function titleCase(str) {
-  var splitStr = str.toLowerCase().split(' ');
-  for (var i = 0; i < splitStr.length; i++) {
-    splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-  }
-  return splitStr.join(' ');
-}
+import AddNewAddressModalComponent from "./AddNewAddressModalComponent";
+import ChangeAddressModalComponent from "./ChangeAddressModalComponent";
+import CartAddressesSectionComponent from "./CartAddressesSectionComponent";
 
 const UserCartDetailsPageComponent = ({
   cartItems,
@@ -53,12 +39,11 @@ const UserCartDetailsPageComponent = ({
 }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const [userInfo, setUserInfo] = useState(() =>
     JSON.parse(localStorage.getItem("userInfo"))
   );
-
+  const navigate = useNavigate();
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [userAddress, setUserAddress] = useState("");
   const [missingAddress, setMissingAddress] = useState("");
@@ -77,9 +62,7 @@ const UserCartDetailsPageComponent = ({
   const [deliveryBooks, setDeliveryBooks] = useState();
   const [deliverySites, setDeliverySites] = useState();
   const [userSites, setUserSites] = useState();
-  //const [adminDeliveryBooks, setAdminDeliveryBooks] = useState();
   const [selectedDeliverySite, setSelectedDeliverySite] = useState();
-  //const [adminSelectedCompany, setAdminSelectedCompany] = useState();
   const [quickBooksCustomerId, setQuickBooksCustomerId] = useState();
   const [dueDays, setDueDays] = useState();
   const [clientSiteSku, setClientSiteSku] = useState();
@@ -95,12 +78,10 @@ const UserCartDetailsPageComponent = ({
   const [user, setUser] = useState();
   const [shippingAddress, setShippingAddress] = useState();
   const [validated, setValidated] = useState(true);
-  // const [ chosenDeliverySite, setChosenDeliverySite ] = useState();
   const [totaQuantity, setTotalQuantity] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isOpenNewAddressModal, setIsOpenNewAddressModal] = useState(false);
   const [isOpenChangeAddressModal, setIsOpenChangeAddressModal] = useState(false);
-  const [location, setLocation] = useState("");
   const [billingAddress, setBillingAddress] = useState({
     addressLine: '',
     city: '',
@@ -108,7 +89,6 @@ const UserCartDetailsPageComponent = ({
     ZIPostalCode: '',
     country: ''
   });
-
   const [deliveryAddress, setDeliveryAddress] = useState({
     addressLine: '',
     city: '',
@@ -116,7 +96,6 @@ const UserCartDetailsPageComponent = ({
     ZIPostalCode: '',
     country: ''
   });
-
   const [newBillingAddress, setNewBillingAddress] = useState({
     addressLine: '',
     city: '',
@@ -124,7 +103,6 @@ const UserCartDetailsPageComponent = ({
     ZIPostalCode: '',
     country: ''
   });
-
   const [newDeliveryAddress, setNewDeliveryAddress] = useState({
     addressLineDelivery: '',
     cityDelivery: '',
@@ -132,20 +110,14 @@ const UserCartDetailsPageComponent = ({
     ZIPostalCodeDelivery: '',
     countryDelivery: ''
   });
-
   const [sameAddress, setSameAddress] = useState(false);
-
   const [chosenDeliverySite, setChosenDeliverySite] = useState({
     location: '',
     billingAddress: '',
     deliveryAddress: ''
   });
-
   const [isLocationValid, setIsLocationValid] = useState(true);
-
   const splitAddress = (address) => address ? address.split(',').map(part => part.trim()) : ['', '', '', '', ''];
-
-
 
   useEffect(() => {
     const [address, city, state, zip, country] = splitAddress(chosenDeliverySite.billingAddress);
@@ -169,23 +141,8 @@ const UserCartDetailsPageComponent = ({
     });
   }, [chosenDeliverySite]);
 
-  const handleSiteChange = (event) => {
-    const selectedSiteIndex = event.target.value;
-    const selectedSite = deliveryBooks[0]?.sites[selectedSiteIndex];
-
-    if (selectedSite) {
-      setChosenDeliverySite({
-        location: selectedSite.name || '',
-        billingAddress: selectedSite.billingAddress || '',
-        deliveryAddress: selectedSite.deliveryAddress || ''
-      });
-    }
-  };
-
   //Tracking user Interactions
   useTrackEvents();
-  // var trackData = localStorage.getItem("trackData")
-  // console.log("trackData", trackData);
   useEffect(() => {
     let total = 0;
     if (cartItems) {
@@ -194,7 +151,6 @@ const UserCartDetailsPageComponent = ({
           setUniformUserId(item.uniformUserId)
           setUniformUserName(item.uniformUserName)
         }
-
         total += item.cartProducts[0].quantity
       })
     }
@@ -202,8 +158,6 @@ const UserCartDetailsPageComponent = ({
     setCreatedUserName(userInfo.name + " " + userInfo.lastName + "(" + userInfo.email + ")")
     setTotalQuantity(total)
   }, [cartItems])
-
-  const navigate = useNavigate();
 
   const changeCount = (id, qty) => {
     reduxDispatch(editQuantity(id, qty));
@@ -429,13 +383,6 @@ const UserCartDetailsPageComponent = ({
     saveTrackEvents();
   };
 
-  // useEffect(() => {
-  //   getUniformById(uniformId)
-  //     .then((data) => setUniforms(data))
-  // }, [uniformId])
-
-  // console.log("uniforms", unifroms);
-
   /* 修改支付方式的vale */
   const choosePayment = (e) => {
     setPaymentMethod(e.target.value);
@@ -453,11 +400,6 @@ const UserCartDetailsPageComponent = ({
   const enterManagerEmail = (e) => {
     setManagerEmail(e.target.value + `@${userEmail}`);
   };
-
-  const enterShippingAddress = (e) => {
-    setValidated(true);
-    setShippingAddress(e.target.value)
-  }
 
   const removeFromCartHandler = (productId, qty, price, attrs, uniformUserId) => {
     reduxDispatch(removeFromCart(productId, qty, price));
@@ -532,7 +474,6 @@ const UserCartDetailsPageComponent = ({
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64data = reader.result;
-        // console.log(base64data);
         setBase64Data({
           base64data,
         });
@@ -587,7 +528,6 @@ const UserCartDetailsPageComponent = ({
 
   const handleLocation = (event) => {
     setIsLocationValid(true);
-    setLocation(event.target.value);
   }
 
   const handleBillingAddress = (e) => {
@@ -596,13 +536,6 @@ const UserCartDetailsPageComponent = ({
       ...prev,
       [name]: value
     }));
-
-    // if (sameAddress) {
-    //   setDeliveryAddress((prev) => ({
-    //     ...prev,
-    //     [name]: value
-    //   }));
-    // }
   };
 
   const handleNewBillingAddress = (e) => {
@@ -686,9 +619,7 @@ const UserCartDetailsPageComponent = ({
       setIsLocationValid(false);
       console.error("Error adding new address:", error);
     }
-
   }
-
 
   const updateAddress = async (event) => {
     event.preventDefault();
@@ -697,7 +628,6 @@ const UserCartDetailsPageComponent = ({
     const location = form.location.value;
     const billingAddress = `${form.addressLine.value}, ${form.city.value}, ${form.stateProvinceRegion.value}, ${form.ZIPostalCode.value}, ${form.country.value}`;
     const deliveryAddress = `${form.deliveryAddressLine.value}, ${form.deliveryCity.value}, ${form.deliveryStateProvinceRegion.value}, ${form.deliveryZIPostalCode.value}, ${form.deliveryCountry.value}`;
-
     const locationExists = deliveryBooks[0].sites.some(site => site.name.toLowerCase() === location.toLowerCase() && site._id !== chosenDeliverySite._id);
 
     if (locationExists && chosenDeliverySite.name.toLowerCase() !== location.toLowerCase()) {
@@ -751,382 +681,13 @@ const UserCartDetailsPageComponent = ({
     }
   };
 
-
-  function ModalAddAddress() {
-    return (
-      <Modal show={isOpenNewAddressModal} onHide={handleClose} size="lg">
-        <Modal.Header
-          closeButton
-          onClick={() => {
-            setIsOpenNewAddressModal(false);
-            setNewDeliveryAddress({
-              addressLine: '',
-              city: '',
-              stateProvinceRegion: '',
-              ZIPostalCode: '',
-              country: ''
-            });
-            setNewBillingAddress({
-              addressLine: '',
-              city: '',
-              stateProvinceRegion: '',
-              ZIPostalCode: '',
-              country: ''
-            });
-            setIsLocationValid(true);
-          }}>
-          <Modal.Title>Add New Address</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-          <Form onSubmit={addNewAddress}>
-            <Form.Group className="mb-3" controlId="formBasicLocation">
-              <Form.Label>Location</Form.Label>
-              <Form.Control required type="text" name="location" placeholder="Location" onChange={handleLocation} isInvalid={!isLocationValid} />
-              <Form.Control.Feedback type="invalid">A site with this name already exists.</Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Label>Billing address</Form.Label>
-            <Row>
-              <Col>
-                <Form.Group controlId="formBasicAddressLine">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>Address Line</Form.Label>
-                  <Form.Control required type="text" name="addressLine" placeholder="Address Line" onChange={handleNewBillingAddress} />
-                </Form.Group>
-              </Col>
-
-      </Row>
-      <Row col={2}>
-        <Col>
-        <Form.Group controlId="formBasicCity">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>City</Form.Label>
-        <Form.Control required type="text" name="city" placeholder="City"  onChange={handleNewBillingAddress} />
-      </Form.Group>
-        </Col>
-        <Col>
-        <Form.Group controlId="formBasicStateProvinceRegion">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>State/Province/Region</Form.Label>
-        <Form.Control required type="text" name="stateProvinceRegion" placeholder="State/Province/Region" onChange={handleNewBillingAddress} />
-      </Form.Group>
-        </Col>
-      </Row>
-      <Row col={2}>
-        <Col>
-        <Form.Group className="mb-3" controlId="formBasicZIPostalCode">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>ZIP/Postal Code</Form.Label>
-        <Form.Control required type="number" name="ZIPostalCode" placeholder="ZIP/Postal Code" onChange={handleNewBillingAddress} />
-      </Form.Group>
-        </Col>
-        <Col>
-        <Form.Group className="mb-3" controlId="formBasicCountry">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>Country</Form.Label>
-        <Form.Control required type="text" name="country" placeholder="Country" onChange={handleNewBillingAddress} />
-      </Form.Group>
-        </Col>
-      </Row>
-
-            <Form.Check
-              type="checkbox"
-              label="Same as Billing Address"
-              checked={sameAddress}
-              onChange={handleSameAddressChange}
-              style={{ fontSize: "12px" }}
-              className="mb-1"
-            />
-
-
-      <Form.Label>Delivery address</Form.Label>
-      <Row>
-        <Col>
-        <Form.Group controlId="formBasicAddressDeliveryLine">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>Address Line 1</Form.Label>
-        <Form.Control 
-        required 
-        type="text" 
-        name="addressDeliveryLine" 
-        placeholder="Address Line"
-        disabled={sameAddress}
-        value={newDeliveryAddress.addressLine}
-        onChange={handleNewDeliveryAddress} />
-        
-      </Form.Group>
-        </Col>
-      </Row>
-      <Row col={2}>
-        <Col>
-        <Form.Group controlId="formBasicCityDelivery">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>City</Form.Label>
-        <Form.Control required type="text" name="cityDelivery" placeholder="City" 
-          value={newDeliveryAddress.city}
-          disabled={sameAddress}
-        onChange={handleNewDeliveryAddress} />
-      </Form.Group>
-        </Col>
-        <Col>
-        <Form.Group controlId="formBasicStateProvinceRegionDelivery">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>State/Province/Region</Form.Label>
-        <Form.Control required type="text" name="stateProvinceRegionDelivery"  disabled={sameAddress}  value={newDeliveryAddress.stateProvinceRegion}
-        placeholder="State/Province/Region" onChange={handleNewDeliveryAddress} />
-      </Form.Group>
-        </Col>
-      </Row>
-      <Row col={2}>
-        <Col>
-        <Form.Group className="mb-3" controlId="formBasicZIPostalCodeDelivery">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>ZIP/Postal Code</Form.Label>
-        <Form.Control required type="number" name="ZIPostalCodeDelivery"
-         disabled={sameAddress}  
-         value={newDeliveryAddress.ZIPostalCode}                     
-        placeholder="ZIP/Postal Code" onChange={handleNewDeliveryAddress} />
-      </Form.Group>
-        </Col>
-        <Col>
-        <Form.Group className="mb-3" controlId="formBasicCountryDelivery">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>Country</Form.Label>
-        <Form.Control required type="text" name="countryDelivery" 
-         disabled={sameAddress}  value={newDeliveryAddress.country}
-        placeholder="Country"  onChange={handleNewDeliveryAddress} />
-      </Form.Group>
-        </Col>
-      </Row>
-
-            <div style={{ display: "flex", gap: "15px", justifyContent: "flex-end" }}>
-              <Button variant="secondary"
-                onClick={() => {
-                  setIsOpenNewAddressModal(false);
-                  setNewDeliveryAddress({
-                    addressLine: '',
-                    city: '',
-                    stateProvinceRegion: '',
-                    ZIPostalCode: '',
-                    country: ''
-                  });
-                  setNewBillingAddress({
-                    addressLine: '',
-                    city: '',
-                    stateProvinceRegion: '',
-                    ZIPostalCode: '',
-                    country: ''
-                  });
-                  setIsLocationValid(true);
-                }}
-
-              >
-                Close
-              </Button>
-              <Button variant="primary" type="submit" onClick={handleClose}>
-                Save New Address
-              </Button>
-            </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    );
-  }
-
-  function ModalChangeAddress() {
-    return (
-      <Modal show={isOpenChangeAddressModal} size="lg">
-        <Modal.Header closeButton onClick={() => {
-          setIsOpenChangeAddressModal(false)
-          setIsLocationValid(true);
-        }}>
-          <Modal.Title>Change Address</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={updateAddress}>
-            <Form.Group className="mb-3" controlId="formBasicLocation">
-              <Form.Label>Location</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                name="location"
-                placeholder="Location"
-                onChange={handleLocation}
-                defaultValue={chosenDeliverySite.name}
-                isInvalid={!isLocationValid}
-              />
-              <Form.Control.Feedback type="invalid">A site with this name already exists.</Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Label>Billing Address</Form.Label>
-            <Row>
-              <Col>
-                <Form.Group controlId="formBasicBillingAddressLine">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>Address Line</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    name="addressLine"
-                    placeholder="Address Line"
-                    onChange={handleBillingAddress}
-                    value={billingAddress.addressLine}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Form.Group controlId="formBasicCity">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>City</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    name="city"
-                    placeholder="City"
-                    onChange={handleBillingAddress}
-                    value={billingAddress.city}
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="formBasicStateProvinceRegion">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>State/Province/Region</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    name="stateProvinceRegion"
-                    placeholder="State/Province/Region"
-                    onChange={handleBillingAddress}
-                    value={billingAddress.stateProvinceRegion}
-
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="mb-3">
-              <Col>
-                <Form.Group controlId="formBasicZIPostalCode">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>ZIP/Postal Code</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    name="ZIPostalCode"
-                    placeholder="ZIP/Postal Code"
-                    onChange={handleBillingAddress}
-                    value={billingAddress.ZIPostalCode}
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group controlId="formBasicCountry">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>Country</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    name="country"
-                    placeholder="Country"
-                    onChange={handleBillingAddress}
-                    value={billingAddress.country}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Form.Group className="mb-3" controlId="formBasicDeliveryAddress">
-              <Form.Label>Delivery Address</Form.Label>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formBasicDeliveryAddressLine">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>Address Line</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="deliveryAddressLine"
-                      placeholder="Address Line"
-                      onChange={handleDeliveryAddress}
-                      defaultValue={deliveryAddress.addressLine}
-                    />
-                  </Form.Group>
-                </Col>
-
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formBasicDeliveryCity">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>City</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="deliveryCity"
-                      placeholder="City"
-                      onChange={handleDeliveryAddress}
-                      defaultValue={deliveryAddress.city}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formBasicDeliveryStateProvinceRegion">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>State/Province/Region</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="deliveryStateProvinceRegion"
-                      placeholder="State/Province/Region"
-                      onChange={handleDeliveryAddress}
-                      defaultValue={deliveryAddress.stateProvinceRegion}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formBasicDeliveryZIPostalCode">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>ZIP/Postal Code</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="deliveryZIPostalCode"
-                      placeholder="ZIP/Postal Code"
-                      onChange={handleDeliveryAddress}
-                      defaultValue={deliveryAddress.ZIPostalCode}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formBasicDeliveryCountry">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>Country</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="deliveryCountry"
-                      placeholder="Country"
-                      onChange={handleDeliveryAddress}
-                      defaultValue={deliveryAddress.country}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Form.Group>
-
-            <div style={{ display: "flex", gap: "15px", justifyContent: "flex-end" }}>
-              <Button variant="secondary" onClick={() => {
-                setIsOpenChangeAddressModal(false)
-                setIsLocationValid(true);
-              }}>
-                Close
-              </Button>
-              <Button variant="primary" type="submit">
-                Change Address
-              </Button>
-            </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    );
-  }
-
   const handleSelect = (e) => {
     const newChosenSite = deliveryBooks[0].sites[e.target.value];
     setChosenDeliverySite(newChosenSite);
 
-    const selectedIndex = e.target.value; // Capture the selected index
-    setSelectedIndex(selectedIndex); // Update the state for the selected index
-    //const selectedSite = deliveryBooks[0]?.sites[selectedIndex];
+    const selectedIndex = e.target.value;
+    setSelectedIndex(selectedIndex);
   }
-
-  //console.log(deliveryBooks[0]?.sites, deliveryBooks[0]?.sites[0]?.name);
-
 
   return (
     <>
@@ -1134,11 +695,7 @@ const UserCartDetailsPageComponent = ({
         <div className="mt-4 d-flex">
           <div>
           <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between"}}
             className="mb-5"
           >
             <h1>CART DETAILS</h1>
@@ -1165,7 +722,6 @@ const UserCartDetailsPageComponent = ({
           </Col>
           </div>
           <Col md={3} className="cart_detail_right">
-
             <br />
             {(hasProducts === 1) ? (
               <>
@@ -1276,7 +832,6 @@ const UserCartDetailsPageComponent = ({
                     <Form.Control.Feedback type="invalid">
                       Please Enter Your Purchase Number.{" "}
                     </Form.Control.Feedback>
-                    {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
                   </ListGroup.Item>
 
                     <ListGroup.Item
@@ -1296,77 +851,47 @@ const UserCartDetailsPageComponent = ({
                       </Form.Control.Feedback>
                     </ListGroup.Item>
 
-                    <ListGroup.Item className="p-1 ps-2">
-                      <h4 className="m-0">Address</h4>
-                      <div style={{ display: 'flex', alignItems: "center", gap: "10px" }}>
-                        <Button onClick={() => setIsOpenNewAddressModal(true)} className="p-1" style={{ width: '110px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                          Add New Address
-                        </Button>
-                        <Button onClick={() => setIsOpenChangeAddressModal(true)} className="p-1" style={{ width: '110px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                          Change Address
-                        </Button>
-                      </div>
+                    <CartAddressesSectionComponent 
+                    setIsOpenNewAddressModal={setIsOpenNewAddressModal}
+                    setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
+                    deliveryBooks={deliveryBooks}
+                    selectedIndex={selectedIndex}
+                    handleSelect={handleSelect}
+                    chosenDeliverySite={chosenDeliverySite}
+                    />
+                    {<AddNewAddressModalComponent 
+                      isOpenNewAddressModal={isOpenNewAddressModal}
+                      handleClose={handleClose}
+                      setIsOpenNewAddressModal={setIsOpenNewAddressModal}
+                      setNewDeliveryAddress={setNewDeliveryAddress}
+                      setNewBillingAddress={setNewBillingAddress}
+                      setIsLocationValid={setIsLocationValid}
+                      addNewAddress={addNewAddress}
+                      sameAddress={sameAddress}
+                      handleSameAddressChange={handleSameAddressChange}
+                      newDeliveryAddress={newDeliveryAddress}
+                      handleNewDeliveryAddress={handleNewDeliveryAddress}
+                      handleLocation={handleLocation}
+                      handleNewBillingAddress={handleNewBillingAddress}
+                      isLocationValid={isLocationValid}
+                      />}
 
-                    </ListGroup.Item>
-
-                    {ModalAddAddress()}
-                    {ModalChangeAddress()}
-
-                    <ListGroup.Item
-                      controlid="validationLocation"
-                      className="p-1 ps-2"
-                    >
-                      <Form.Label className="fw-bold">Location</Form.Label>
-                      {deliveryBooks && <Form.Select value={selectedIndex} onChange={(e) => handleSelect(e)}>
-                        {deliveryBooks[0]?.sites?.map((site, index) => {
-                          return <option value={index}>{site.name.toUpperCase()}</option>
-                        })}
-                      </Form.Select>}
-                    </ListGroup.Item>
-
-                    <ListGroup.Item
-                      controlid="validationBillingAddress"
-                      className="p-1 ps-2"
-                    >
-                      <Form.Label className="fw-bold">Billing Address:</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        className="p-0 ps-1"
-                        type="string"
-                        name="billingAddress"
-                        placeholder="Billing Address"
-                        required
-                        value={titleCase(chosenDeliverySite.billingAddress).split(',').map(sentence => sentence.trim()).join('\n')}
-                        style={{ fontSize: '12px', height: "100px" }}
-                        disabled
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please Enter Shipping Address.{" "}
-                      </Form.Control.Feedback>
-                    </ListGroup.Item>
-
-                    <ListGroup.Item
-                      controlid="validationShippingAddress"
-                      className="p-1 ps-2"
-                    >
-                      <Form.Label className="fw-bold">Shipping Address:</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        className="p-0 ps-1"
-                        type="string"
-                        name="shippingAddress"
-                        placeholder="Shipping Address"
-                        required
-                        value={titleCase(chosenDeliverySite.deliveryAddress).split(',').map(sentence => sentence.trim()).join('\n')}
-                        style={{ fontSize: '12px', height: "100px" }}
-                        disabled
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please Enter Shipping Address.{" "}
-                      </Form.Control.Feedback>
-                    </ListGroup.Item>
+                      {
+                        <ChangeAddressModalComponent 
+                        isOpenChangeAddressModal={isOpenChangeAddressModal}
+                        setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
+                        setIsLocationValid={setIsLocationValid}
+                        updateAddress={updateAddress}
+                        handleLocation={handleLocation}
+                        chosenDeliverySite={chosenDeliverySite}
+                        isLocationValid={isLocationValid}
+                        handleBillingAddress={handleBillingAddress}
+                        billingAddress={billingAddress}
+                        handleDeliveryAddress={handleDeliveryAddress}
+                        deliveryAddress={deliveryAddress}
+                        />
+                      }
                   </>
-
                   <>
                     {userInfo.isSiteManager && deliverySites?.length > 0 ? (
                       <ListGroup.Item className="p-1 ps-2">
@@ -1452,7 +977,6 @@ const UserCartDetailsPageComponent = ({
                 </ListGroup>
               </>
             )}
-
             <br />
           </Col>
         </div>
