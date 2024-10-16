@@ -85,7 +85,7 @@ const quotePrice = async (req, res, next) => {
 
     message = {
       from: `"no-reply CTL" <${process.env.CTLEMAIL}>`,
-      to: process.env.QTEMAIL,
+      to: process.env.CTLEMAIL,
       subject: `Quote Price: ${productName}`,
       text: `
     This is: ${from},
@@ -999,13 +999,15 @@ const sendRequest = async (req, res, next) => {
         file = req.files.file[0];
       }
 
-      let message = {
-        from: req.body.email,
-        to: process.env.PMEMAIL,
-        subject: `Quote New Products: ${req.body.productName}`,
+      message = {
+        from: `"no-reply CTL" <${process.env.CTLEMAIL}>`,
+        to: process.env.QTEMAIL,
+        subject: `Enquiry : Quote New Products: ${req.body.productName}`,
         text: `
-      This is: ${req.body.name},
-      Please find the product for us: ${req.body.productName},
+      We received an Enquiry from, 
+      ${req.body.name} :  ${req.body.email},
+
+      Product : ${req.body.productName},
       Product Brand / Product code / SKU: ${req.body.brand}
       Product Description: ${req.body.description}`,
       };
@@ -1019,19 +1021,22 @@ const sendRequest = async (req, res, next) => {
         ];
       }
 
-      await testTransporter.sendMail(message);
+      await transporter.sendMail(message);
+      res.status(200).json({ message: "Email sent successfully" });
 
     } else {
-      let message = {
-        from: req.body.email,
-        to: process.env.PMEMAIL,
-        subject: "General request",
+      message = {
+        from: `"no-reply CTL" <${process.env.CTLEMAIL}>`,
+        to: process.env.QTEMAIL,
+        subject: "Enquiry : General request",
         text: `
-      This is: ${req.body.name}
-      Please see the request below: ${req.body.textarea}`,
+      We received an Enquiry from,
+      ${req.body.name} :  ${req.body.email},
+
+      ${req.body.textarea}`,
       };
 
-      await testTransporter.sendMail(message);
+      await transporter.sendMail(message);
     }
 
     res.status(200).json({ message: "Email sent successfully" });

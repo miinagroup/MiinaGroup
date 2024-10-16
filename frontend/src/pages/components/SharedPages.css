@@ -60,15 +60,13 @@
 .btn_blue:hover {
   background-color: #3a74c5;
 }
-
-.categoryHD{
-    margin-top: 0%;
-    margin-left: 0.5%;
-/*     color: gray;    
-    cursor: text;
-    pointer-events: none;
-    opacity: 0.60;
- font-size: small; */
+.categoryHD {
+  margin-top: 0%;
+  margin-left: 0.5%;
+  color: gray;
+  cursor: text;
+  opacity: 0.5;
+  font-size: medium;
 }
 
 .btnLogin {
@@ -89,7 +87,6 @@
   width: 100%;
   max-width: 70px;
 }
-
 
 .btnLoginProductPage {
   display: flex;
@@ -264,10 +261,10 @@
 }
 
 .min-500-order {
-   padding: 7px 2px;
+  padding: 7px 2px;
 }
 
-.min-500-order, .min-500-order i { 
+.min-500-order,
+.min-500-order i {
   font-size: 12px;
 }
-

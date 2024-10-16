@@ -76,7 +76,6 @@ const adminCreateDeliveryBook = async (req, res, next) => {
           billingAddress: billingAddress || "",
           deliveryAddress: deliveryAddress || "",
           storeEmail: storeEmail || "",
-          siteSku: name || "",
         });
       });
     } else {
@@ -129,7 +128,6 @@ const adminUpdateDeliveryBook = async (req, res, next) => {
           name: name || "",
           billingAddress: billingAddress || "",
           deliveryAddress: deliveryAddress || "",
-          siteSku: siteSku || "",
           storeEmail: storeEmail || "",
         });
       });
@@ -200,13 +198,13 @@ const addNewSiteToDeliveryBook = async (req, res, next) => {
     await deliveryBook.save();
 
     res.status(200).json({ message: 'Site added successfully', deliveryBook });
-    
+
   } catch (error) {
     next(error);
   }
 }
 
-const updateSiteToDeliveryBook = async (req, res, next) => { 
+const updateSiteToDeliveryBook = async (req, res, next) => {
   try {
     const { location, billingAddress, deliveryAddress, id, idSite } = req.body;
 
@@ -227,7 +225,7 @@ const updateSiteToDeliveryBook = async (req, res, next) => {
     await deliveryBook.save();
 
     res.status(200).json({ message: 'Site updated successfully', site: deliveryBook.sites[siteIndex] });
-    
+
   } catch (error) {
     next(error);
   }

@@ -49,14 +49,13 @@ const EditDeliveryBookComponent = ({
             const deliveryAddress = document.getElementsByName(
                 `deliveryAddress-${i}`
             )[0].value;
-            const siteSku = document.getElementsByName(`siteSku-${i}`)[0].value;
+            //const siteSku = document.getElementsByName(`siteSku-${i}`)[0].value;
             const storeEmail = document.getElementsByName(`storeEmail-${i}`)[0].value;
 
             sites.push({
                 name,
                 billingAddress,
                 deliveryAddress,
-                siteSku,
                 storeEmail,
             });
         }
@@ -71,7 +70,7 @@ const EditDeliveryBookComponent = ({
             const deliveryAddress = document.getElementsByName(
                 `newDeliveryAddress-${i}`
             )[0].value;
-            const siteSku = document.getElementsByName(`newSiteSku-${i}`)[0].value;
+            //const siteSku = document.getElementsByName(`newSiteSku-${i}`)[0].value;
             const storeEmail = document.getElementsByName(`newStoreEmail-${i}`)[0]
                 .value;
 
@@ -79,7 +78,6 @@ const EditDeliveryBookComponent = ({
                 name,
                 billingAddress,
                 deliveryAddress,
-                siteSku,
                 storeEmail,
             });
         }
@@ -276,7 +274,7 @@ const EditDeliveryBookComponent = ({
                                                         defaultValue={book.deliveryAddress}
                                                     />
                                                 </Form.Group>
-                                                <Form.Group
+                                                {/* <Form.Group
                                                     as={Col}
                                                     md="4"
                                                     className="mb-3"
@@ -289,7 +287,7 @@ const EditDeliveryBookComponent = ({
                                                         required
                                                         defaultValue={book.siteSku}
                                                     />
-                                                </Form.Group>
+                                                </Form.Group> */}
                                                 <Form.Group
                                                     as={Col}
                                                     md="4"
@@ -423,7 +421,7 @@ const EditDeliveryBookComponent = ({
                                                 required
                                             />
                                         </Form.Group>
-                                        <Form.Group
+                                        {/* <Form.Group
                                             as={Col}
                                             md="4"
                                             className="mb-3"
@@ -435,7 +433,7 @@ const EditDeliveryBookComponent = ({
                                                 name={`newSiteSku-${index}`}
                                                 required
                                             />
-                                        </Form.Group>
+                                        </Form.Group> */}
                                         <Form.Group
                                             as={Col}
                                             md="4"

@@ -21,8 +21,6 @@ const deliveryBookSchema = new mongoose.Schema({
       billingAddress: { type: String, required: true },
       deliveryAddress: { type: String, required: true },
       storeEmail: { type: String, required: false },
-      siteSku: { type: String, required: true },
-      // latLon: { type: String, required: false },
     },
   ],
   abn: {
