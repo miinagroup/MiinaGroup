@@ -64,24 +64,25 @@ const ProductDetailsPageComponent = ({
   const [stockPrice, setStockPrice] = useState('');
   const [stockCode, setstockCode] = useState('');
   const [supplierCode, setsupplierCode] = useState('');
+  const [stockLevel, setStockLevel] = useState(0)
   const [clientSkuName, setClientSkuName] = useState('');
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-  const [ isUserInfo, setIsUserInfo ] = useState(Object.keys(userInfo).length === 0);
+  const [isUserInfo, setIsUserInfo] = useState(Object.keys(userInfo).length === 0);
   const [modalType, setModalType] = useState("LoginForm")
-  
+
   const [showLoginModal, setShowLoginModal] = useState(false);
-    const handleCloseLoginModal = () => {
-      setShowLoginModal(false);
-    };
-    const handleShowLoginModal = (event, type) => {
-      event.preventDefault();
-      setModalType(type);
-      setShowLoginModal(true);
-      };
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+  const handleShowLoginModal = (event, type) => {
+    event.preventDefault();
+    setModalType(type);
+    setShowLoginModal(true);
+  };
   //check for uniform content in cart
   const [isUniform, setIsUniform] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems);
-;
+  ;
   //categories
   const dispatch = useDispatch();
 
@@ -223,6 +224,7 @@ const ProductDetailsPageComponent = ({
       setStockPrice(selectedStock.price);
       setstockCode(selectedStock.ctlsku);
       setsupplierCode(selectedStock.suppliersku);
+      setStockLevel(selectedStock.count);
 
       // if (clientSiteSku && selectedStock[clientSiteSku] !== undefined) {
       //   clientSku = selectedStock[clientSiteSku];
@@ -926,29 +928,42 @@ const ProductDetailsPageComponent = ({
                           {userData.isAdmin === true ||
                             userData.isMarketing === true ? (
                             <>
-                              <h6>Supplier Code: {supplierCode}</h6>
-                              <h6>
-                                Supplier: {product.supplier}{" "}
-                                <i
-                                  onClick={() => brandSearchHandler()}
-                                  className="bi bi-box-arrow-in-right"
-                                  style={{ cursor: "pointer" }}
-                                ></i>
-                              </h6>
-                              <h6>
-                                Margin:{" "}
-                                {(
-                                  (100 *
-                                    (selectedStock?.price -
-                                      selectedStock?.purchaseprice)) /
-                                  selectedStock?.purchaseprice
-                                ).toFixed(2)}
-                                %
-                              </h6>
+                              <table className="productTable">
+                                <tr>
+                                  <td className="colKey"><h6>Stock Level:</h6></td>
+                                  <td className="colValue"><h6>{stockLevel}</h6></td>
+                                </tr>
+                                <tr>
+                                  <td className="colKey"><h6>Supplier Code:</h6></td>
+                                  <td className="colValue"><h6>{supplierCode}</h6></td>
+                                </tr>
+                                <tr>
+                                  <td className="colKey"><h6>Supplier:</h6></td>
+                                  <td className="colValue"><h6>{product.supplier}{" "}<i
+                                    onClick={() => brandSearchHandler()}
+                                    className="bi bi-box-arrow-in-right"
+                                    style={{ cursor: "pointer" }}
+                                  ></i></h6>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className="colKey"><h6>Margin:</h6></td>
+                                  <td className="colValue"><h6>{(
+                                    (100 *
+                                      (selectedStock?.price -
+                                        selectedStock?.purchaseprice)) /
+                                    selectedStock?.purchaseprice
+                                  ).toFixed(2)}
+                                    %</h6>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className="colKey"><h6>Price:</h6></td>
+                                  <td className="colValue"><h6><b>${formattedPrice}</b></h6>
+                                  </td>
+                                </tr>
+                              </table>
 
-                              <span className="fw-bold">
-                                Price: ${formattedPrice}
-                              </span>
                               {diff < 0 ? (
                                 <span className="text-danger ms-5">
                                   PRICE EXPIRED, PLEASE CHECK WITH SUPPLIER
@@ -984,11 +999,11 @@ const ProductDetailsPageComponent = ({
                         </h6>}
                         {isUserInfo && <div className="btnLogin btnLoginText btnLoginProductPage">
                           <div className="btnsLoginRegistration">
-                          <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
-                          <div>or</div>
-                          <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button>
+                            <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
+                            <div>or</div>
+                            <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button>
                           </div>
-                  </div>}
+                        </div>}
 
                         <br />
                       </Col>

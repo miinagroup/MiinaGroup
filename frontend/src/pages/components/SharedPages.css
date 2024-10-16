@@ -268,3 +268,18 @@
 .min-500-order i {
   font-size: 12px;
 }
+.colKey {
+  width: 120px;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+.colValue {
+  width: 250px;
+  padding-left: 10px;
+}
+.productTable {
+  width: 400px;
+  border-radius: 2%;
+  /* border-style: solid; */
+  background-color: rgb(231, 229, 229);
+}
