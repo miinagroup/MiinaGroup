@@ -27,7 +27,8 @@ const {
   adminStockTake,
   searchProducts,
   getProductsVisitor,
-  searchProductsForVisitor
+  searchProductsForVisitor,
+  adminBulkUpdateClientSkus
 } = require("../controllers/productController");
 const {
   getClientSkuNamesList
@@ -63,6 +64,7 @@ router.delete("/admin/image/:imagePath/:productId", adminDeleteProductImage);
 router.delete("/admin/pdf/:pdfPath/:productId", adminDeleteProductPdf);
 router.put("/admin/updateProduct/:id", adminUpdateProduct);
 router.put("/admin/updateSKU/:ctlsku", adminUpdateSKU);
+router.put("/admin/updateSKUBulk", adminBulkUpdateClientSkus);
 router.put("/admin/updateImages/:id", adminUpdateImages);
 router.put("/admin/updateCategory/:id", adminUpdateCategory);
 router.put("/admin/replenishment", adminReplenishment);

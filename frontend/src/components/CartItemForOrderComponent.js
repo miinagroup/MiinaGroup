@@ -22,7 +22,10 @@ const CartItemForOrderComponent = ({
   selectedDeliverySite,
   editingIndex,
   setEditingIndex,
-  index
+  index,
+  handleNewClientSkusChange,
+  isCancel,
+  isUpdated
 }) => {
   const [qty, setQty] = useState(item.cartProducts[0].suppliedQty);
   const [price, setPrice] = useState(item.cartProducts[0].price);
@@ -40,29 +43,15 @@ const CartItemForOrderComponent = ({
     setPreviousClientSkuValue(item.cartProducts[0].currentClientSku?.number)
   }, [item]);
 
-  const getClientSKUByCTLSKU = async (ctlsku, clientSiteSku) => {
-    try {
-      const url = `/api/products/getClientSKU?ctlsku=${ctlsku}&clientSiteSku=${clientSiteSku}`;
-      const response = await axios.get(url);
-      return response.data[clientSiteSku]
-    } catch (error) {
-      console.error("Failed to fetch client sku:", error);
-      return null;
-    }
-  };
+  useEffect(() => {
+    isCancel && setClientSKU(clientSKU => ({
+      ...clientSKU,
+      number: previousClientSkuValue
+    }));
 
-  const changeClientSku = async (ctlsku, clientSku) => {
-    try {
-      const { data } = await axios.put(
-        `/api/products/admin/updateSKU/${ctlsku}`,
-        { "clientSku": clientSku }
-      );
-      return data;
-    } catch (error) {
-      console.log("Failed to change sku", error);
-    }
-  };
-
+    isUpdated && setPreviousClientSkuValue(clientSKU.number)
+  }, [isCancel, previousClientSkuValue, isUpdated])
+  
 
   useEffect(() => {
     if (item.saleunit) {
@@ -118,29 +107,10 @@ const CartItemForOrderComponent = ({
       ...updatedCientSku
     }));
     }
+    handleNewClientSkusChange(updatedCientSku, ctlsku, item._id)
     setIsSaveEnabled(true);
   };
 
-  const handleSaveClientSku = async () => {
-    if (!isSaveEnabled) return;
-    try {
-      const data = await changeClientSku(ctlsku, clientSKU);
-      const order = await axios.put(
-        `/api/orders/admin/updateClientSku/${id}`,
-        { "clientSku": clientSKU,
-          "ctlsku": ctlsku,
-          "cartItemId": item._id 
-         }
-      );
-      setIsSaveEnabled(false);
-      setEditingIndex(null);
-      setPreviousClientSkuValue(clientSKU.number)
-      console.log("Client SKU updated successfully");
-      onSkuUpdateSuccess();
-    } catch (error) {
-      console.error("Failed to save client SKU", error);
-    }
-  };
 
   const backOrderQuantity = item.cartProducts[0].quantity - qty;
 
@@ -183,28 +153,8 @@ const CartItemForOrderComponent = ({
                   className="form-control"
                   onChange={hanldeSkuChange}
                   value={clientSKU?.number}
-                  disabled={editingIndex !== index && editingIndex !== null}
                 />
-                {editingIndex === index ? (<><button
-                  className="btn btn-primary mt-2 p-0 pe-1 ps-1"
-                  onClick={handleSaveClientSku}
-                  disabled={!isSaveEnabled}
-                >
-                  Save
-                </button>
-                <button
-                  className="btn btn-primary mt-2 p-0 pe-1 ps-1"
-                  onClick={() => {
-                    setClientSKU(clientSKU => ({
-                      ...clientSKU,
-                      number: previousClientSkuValue
-                    }));
-                    setEnterClientSKU(false);
-                    setEditingIndex(null);
-                  }}
-                >
-                  Cancel
-                </button></>) : (<></>)}
+               
               </>
             )}
           </td>

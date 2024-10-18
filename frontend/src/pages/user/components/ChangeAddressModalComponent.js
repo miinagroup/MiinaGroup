@@ -5,9 +5,7 @@ const ChangeAddressModalComponent = ({
     setIsOpenChangeAddressModal,
     setIsLocationValid,
     updateAddress,
-    handleLocation,
     chosenDeliverySite,
-    isLocationValid,
     handleBillingAddress,
     billingAddress,
     handleDeliveryAddress,
@@ -24,18 +22,25 @@ const ChangeAddressModalComponent = ({
         <Modal.Body>
           <Form onSubmit={updateAddress}>
             <Form.Group className="mb-3" controlId="formBasicLocation">
-              <Form.Label>Location</Form.Label>
+            <Form.Label>
+              Location
+            </Form.Label>
               <Form.Control
                 required
                 type="text"
                 name="location"
                 placeholder="Location"
-                onChange={handleLocation}
                 defaultValue={chosenDeliverySite.name}
-                isInvalid={!isLocationValid}
+                disabled
               />
-              <Form.Control.Feedback type="invalid">A site with this name already exists.</Form.Control.Feedback>
+               <div className="mt-1 px-1" style={{color: "rgb(7, 52, 116)", fontSize: "11px"}}>
+               <i class="bi bi-exclamation-circle"></i>{" "} 
+                For security reasons, changes to the location cannot be made. 
+                If you still wish to proceed with a change, please contact{" "} 
+              <a href="mailto:techctlaustralia@gmail.com" style={{textDecoration: "underline"}}>techctlaustralia@gmail.com</a>.
+              </div>
             </Form.Group>
+            
 
             <Form.Label>Billing Address</Form.Label>
             <Row>

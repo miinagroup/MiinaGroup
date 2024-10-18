@@ -238,7 +238,7 @@ const ProductDetailsPageComponent = ({
 
       if (selectedStock.clientsSku?.length > 0) {
         const matchedSku = selectedStock.clientsSku.find(sku =>
-          sku.name.toLowerCase() === clientSkuName.toLowerCase()
+          sku.name?.toLowerCase() === clientSkuName.toLowerCase()
         );
         return matchedSku ? setClientSKU(matchedSku.number) : setClientSKU('');
       } else {

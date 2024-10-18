@@ -26,7 +26,7 @@ import SendInvoice from "../../../components/SendEmail/SendInvoice";
 import { emptyCart } from "../../../redux/actions/cartActions";
 import { useSelector, useDispatch } from "react-redux";
 
-import axios from "axios";
+import axios, { isCancel } from "axios";
 
 const OrderDetailsPageComponent = ({
   getOrder,
@@ -94,17 +94,64 @@ const OrderDetailsPageComponent = ({
   const [editingIndex, setEditingIndex] = useState(null);
   const [showProformaInvoice, setShowProformaInvoice] = useState(false)
   const [btnMarkAsPaid, setBtnMarkAsPaid] = useState(false)
-
   const dispatch = useDispatch();
+
+  const { clientsSkuList } = useSelector((state) => state.products);
+  const [currentClientSkuName, setCurrentClientSkuName] = useState();
+  const [ newClientSkus, setNewClientSkus ] = useState([]);
+
+  const [ isCancelClientSku , setIsCancelClientSku ] = useState(false);
+  const [ isUpdatedClientSku, setIsUpdatedClientSku ] = useState(false);
 
   useEffect(() => {
     dispatch(getClientsSkuList());
   }, [dispatch]);
 
-  const { clientsSkuList } = useSelector((state) => state.products);
-  const [currentClientSkuName, setCurrentClientSkuName] = useState();
+  const handleNewClientSkusChange = (newClientSku, ctlSku, cartItemId) => {
+    const existingProduct = newClientSkus.find(product => product.ctlSku === ctlSku);
+    
+    if (existingProduct) {
+      setNewClientSkus((prevProducts) =>
+        prevProducts.map((product) =>
+          product.ctlSku === ctlSku 
+            ? { ...product, newClientSku: {name: currentClientSkuName, number: newClientSku.number  } }
+            : product
+        )
+      );
+    } else {
+  
+      setNewClientSkus((prevProducts) => [
+        ...prevProducts,
+        { newClientSku: {name: currentClientSkuName, number: newClientSku.number  }, ctlSku, cartItemId }
+      ]);
+    }
+  };
 
-  const navigate = useNavigate();
+  const changeClientSkuBulk = async (newClientSkusSku) => {
+    try {
+      const { data } = await axios.put(
+        `/api/products/admin/updateSKUBulk`, newClientSkusSku
+  
+      );
+      return data;
+    } catch (error) {
+      console.log("Failed to change sku", error);
+    }
+  };
+
+  const handleSaveClientSku = async () => {
+    try {
+      const data = await changeClientSkuBulk(newClientSkus)
+      const order = await axios.put(
+        `/api/orders/admin/bulkUpdateClientSkus/${id}`, newClientSkus
+      );
+      console.log("Client SKU updated successfully");
+      setIsUpdatedClientSku(true)
+      handleClientSKU()
+    } catch (error) {
+      console.error("Failed to save client SKU", error);
+    }
+  };
 
   useEffect(() => {
     getUser()
@@ -123,6 +170,8 @@ const OrderDetailsPageComponent = ({
     })
 
   }, [clientsSkuList, order]);
+
+  
 
   useEffect(() => {
     getOrder(id)
@@ -313,7 +362,7 @@ const OrderDetailsPageComponent = ({
   };
 
   // edit client sku
-  const handleClientSKU = () => setEnterClientSKU(true);
+  const handleClientSKU = () => setEnterClientSKU(!enterClientSKU);
   const saveClientSKU = () => {
     setTimeout(() => {
       setEnterClientSKU(false);
@@ -825,7 +874,6 @@ const OrderDetailsPageComponent = ({
           if (response.status === 200) {
             window.location.href = `/admin/order-details/${data._id}`;
           }
-          //console.log(response);
         }
       })
       .catch((err) => console.log(err));
@@ -933,7 +981,6 @@ const OrderDetailsPageComponent = ({
           <br />
           <Row>
             <Col md={6} className="mb-0">
-              {/* <h3>SHIPPING</h3> */}
               <b>Name</b>: {userInfo?.name} {userInfo?.lastName}{" "}
               <b className="ms-3">Phone</b>: {userInfo?.phone} <br />
               <b>Company</b>: {orderData.userCompany}
@@ -1098,17 +1145,36 @@ const OrderDetailsPageComponent = ({
                   <th style={{ width: "22%" }}>Product</th>
                   <th style={{ width: "8%" }}>
                     Client SKU
-                    {/* TODO 解锁下面的编辑 客户 库存代码*/}
                     {enterClientSKU === false ? (
                       <>
                         {" "}
                         <i
-                          onClick={handleClientSKU}
+                          onClick={() => {
+                            handleClientSKU()
+                            setIsCancelClientSku(false)
+                            setIsUpdatedClientSku(false)
+                          }}
                           className="bi bi-pencil-square"
                           style={{ cursor: "pointer" }}
                         ></i>
                       </>
-                    ) : null}
+                    ) : <><button
+                    className="btn btn-primary mt-2 p-0 pe-1 ps-1"
+                    onClick={handleSaveClientSku}
+                  >
+                    <small>Save</small>
+                  </button>
+                  <button
+                    className="btn btn-primary mt-2 p-0 pe-1 ps-1 mx-1"
+                    onClick={
+                      () => {
+                        handleClientSKU()
+                        setIsCancelClientSku(true)
+                    }
+                  }
+                  >
+                     <small>Cancel</small>
+                  </button></>}
                   </th>
                   <th style={{ width: "8%" }}>CTLSKU</th>
                   <th style={{ width: "7%" }}>Unit Price</th>
@@ -1139,6 +1205,9 @@ const OrderDetailsPageComponent = ({
                   selectedDeliverySite={setSelectedDeliverySite}
                   editingIndex={editingIndex}
                   setEditingIndex={setEditingIndex}
+                  handleNewClientSkusChange={handleNewClientSkusChange}
+                  isCancel={isCancelClientSku}
+                  isUpdated={isUpdatedClientSku}
                 />)
               })}
             </table>

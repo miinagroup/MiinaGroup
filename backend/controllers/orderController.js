@@ -758,6 +758,78 @@ const adminUpdateOrderClientSku = async (req, res, next) => {
   }
 };
 
+const adminBulkUpdateClientSkus = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const clientSkuArray = req.body;
+    let order = await Order.findOne({ _id: id });
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    const updatePromises = clientSkuArray.map(async (product) => {
+      const stockItem = order.cartItems.find(item => item._id.toString() === product.cartItemId);
+      const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === product.ctlSku);
+
+      if (cartProduct && cartProduct.currentClientSku) {
+        return Order.findOneAndUpdate(
+          {
+            _id: id,
+            'cartItems._id': product.cartItemId,
+            'cartItems.cartProducts.ctlsku': product.ctlSku,
+          },
+          {
+            $set: {
+              'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': product.newClientSku.number,
+              'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': product.newClientSku.name,
+            },
+          },
+          {
+            arrayFilters: [
+              { 'cartItem._id': product.cartItemId },
+              { 'cartProduct.ctlsku': product.ctlSku },
+            ],
+            new: true,
+          }
+        );
+      } else if (cartProduct) {
+        return Order.findOneAndUpdate(
+          {
+            _id: id,
+            'cartItems._id': product.cartItemId,
+            'cartItems.cartProducts.ctlsku': product.ctlSku,
+          },
+          {
+            $push: {
+              "cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku": {
+                number: product.newClientSku.number,
+                name: product.newClientSku.name,
+              }
+            },
+          },
+          {
+            arrayFilters: [
+              { 'cartItem._id': product.cartItemId },
+              { "cartProduct.ctlsku": product.ctlSku }
+            ],
+            new: true,
+          }
+        );
+      }
+    });
+
+    await Promise.all(updatePromises);
+
+    order = await Order.findOne({ _id: id });
+
+    return res.status(200).json(order);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 module.exports = {
   getUserOrders,
@@ -784,5 +856,6 @@ module.exports = {
   orderSalesToProduct,
   getSupplier,
   updateApprovedPO,
-  adminUpdateOrderClientSku
+  adminUpdateOrderClientSku,
+  adminBulkUpdateClientSkus
 };

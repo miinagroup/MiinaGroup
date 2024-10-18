@@ -1268,6 +1268,77 @@ const adminUpdateSKU = async (req, res, next) => {
   }
 };
 
+
+const adminBulkUpdateClientSkus = async (req, res, next) => {
+    try {
+      const clientSkuArray = req.body;
+  
+      const updatePromises = clientSkuArray.map(async (product) => {
+        const ctlsku = product.ctlSku;
+        const newClientSku = product.newClientSku;
+        const clientSkuName = newClientSku.name;
+        const clientSkuNumber = newClientSku.number;
+  
+        let productDoc = await Product.findOne({ "stock.ctlsku": ctlsku });
+  
+        if (!productDoc) {
+          return { error: `Product with ctlSku ${ctlsku} not found` };
+        }
+  
+        const stockItem = productDoc.stock.find(item => item.ctlsku === ctlsku);
+        const existingClientSku = stockItem.clientsSku.find(c => c.name === clientSkuName);
+  
+        if (existingClientSku) {
+          productDoc = await Product.findOneAndUpdate(
+            { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName },
+            {
+              $set: {
+                "stock.$[stock].clientsSku.$[clientSku].number": clientSkuNumber,
+              },
+            },
+            {
+              arrayFilters: [
+                { "stock.ctlsku": ctlsku },
+                { "clientSku.name": clientSkuName },
+              ],
+              new: true,
+              runValidators: true,
+            }
+          );
+        } else {
+          productDoc = await Product.findOneAndUpdate(
+            { "stock.ctlsku": ctlsku },
+            {
+              $push: {
+                "stock.$.clientsSku": {
+                  name: clientSkuName,
+                  number: clientSkuNumber,
+                },
+              },
+            },
+            {
+              arrayFilters: [{ "stock.ctlsku": ctlsku }],
+              new: true,
+            }
+          );
+        }
+  
+        return productDoc;
+      });
+  
+      const results = await Promise.all(updatePromises);
+  
+      const errors = results.filter(result => result.error);
+      if (errors.length > 0) {
+        return res.status(400).json({ errors });
+      }
+
+      return res.status(200).json(results);
+    } catch (error) {
+      next(error);
+    }
+  };
+
 const adminUpdateImages = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -1323,7 +1394,6 @@ const adminUpdateCategory = async (req, res, next) => {
 //   next(err);
 // }
 // };
-
 // cron.schedule("* * 24 * * *", adminUpdateHobsonAvailability, {
 //   scheduled: true,
 //   timezone: "UTC",
@@ -2234,5 +2304,6 @@ module.exports = {
   adminStockTake,
   searchProducts,
   getProductsVisitor,
-  searchProductsForVisitor
+  searchProductsForVisitor,
+  adminBulkUpdateClientSkus
 };
