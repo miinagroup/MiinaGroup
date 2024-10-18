@@ -2009,29 +2009,53 @@ const searchProducts = async (req, res, next) => {
       return array.slice(startIndex, startIndex + recordsPerPage);
     }
 
-    // Search starts from SKU serach. And if the first word in query return 0, this search stops.
-    for (const word of query) {
-      const regex = new RegExp(`${word}`, "i");
-
+    if (searchQuery !== "" || searchQuery !== null || searchQuery !== undefined) {
+      const regex = new RegExp(`${searchQuery}`, "i");
       searchCondition = {
         $or: [
           { "stock.slrsku": regex },
           { "stock.ctlsku": regex },
-          { "stock.suppliersku": regex }
+          { "stock.suppliersku": regex },
+          { "supplier": regex },
+          { "name": regex },
         ]
       }
 
       const productMatch = await Product.find(searchCondition).skip(skip).limit(recordsPerPage);
       const totalProductsMatch = await Product.countDocuments(searchCondition);
-
       if (productMatch.length === 0) {
-        skuSearch = false;
-        break;
+        skuSearch = false
       } else {
         products = products.concat(productMatch);
         totalProducts = totalProducts += totalProductsMatch
       }
     }
+
+    // Search starts from SKU search. And if the first word in query return 0, this search stops.
+    // for (const word of query) {
+    //   const regex = new RegExp(`${word}`, "i");
+
+    //   searchCondition = {
+    //     $or: [
+    //       { "stock.slrsku": regex },
+    //       { "stock.ctlsku": regex },
+    //       { "stock.suppliersku": regex },
+    //       { "supplier": regex },
+    //       { "name": regex },
+    //     ]
+    //   }
+
+    //   const productMatch = await Product.find(searchCondition).skip(skip).limit(recordsPerPage);
+    //   const totalProductsMatch = await Product.countDocuments(searchCondition);
+
+    //   if (productMatch.length === 0) {
+    //     skuSearch = false;
+    //     break;
+    //   } else {
+    //     products = products.concat(productMatch);
+    //     totalProducts = totalProducts += totalProductsMatch
+    //   }
+    // }
 
     // General search by supplier, name, description depending on how many words in search.
     // Now search by tags doesn't work as field tag is not completed for a Product. It is for future. 
@@ -2119,9 +2143,9 @@ const searchProducts = async (req, res, next) => {
       console.log("query", query)
     }
 
-    const filetredProducst = _.uniqBy(products, 'id');
+    const filetredProducts = _.uniqBy(products, 'id');
 
-    const productsNew = filetredProducst.filter((product) => product.category !== "QUOTE");
+    const productsNew = filetredProducts.filter((product) => product.category !== "QUOTE");
 
     return res.json({
       products: productsNew,
