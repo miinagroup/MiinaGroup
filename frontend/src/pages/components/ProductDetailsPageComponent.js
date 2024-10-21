@@ -928,6 +928,14 @@ const ProductDetailsPageComponent = ({
                           {userData.isAdmin === true ||
                             userData.isMarketing === true ? (
                             <>
+                              {product.availability?.length > 0 ? (
+                                <>
+                                  <div float="left" className="stock-items-container">
+                                    <h6 className={product.availability[0].local > 10 ? "green" : "orange"}>WA Stock: {product.availability[0].local < 10 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
+                                    <h6 className={product.availability[0].national > 10 ? "green" : "orange"}>National Stock: {product.availability[0].national < 10 ? "Low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
+                                  </div>
+                                </>
+                              ) : ("")}
                               <table className="productTable">
                                 <tr>
                                   <td className="colKey"><h6>Stock Level:</h6></td>
@@ -963,7 +971,6 @@ const ProductDetailsPageComponent = ({
                                   </td>
                                 </tr>
                               </table>
-
                               {diff < 0 ? (
                                 <span className="text-danger ms-5">
                                   PRICE EXPIRED, PLEASE CHECK WITH SUPPLIER
@@ -1007,7 +1014,7 @@ const ProductDetailsPageComponent = ({
 
                         <br />
                       </Col>
-                      {product.availability?.length > 0 ? (
+                      {(product.availability?.length > 0) && (!userData.isAdmin) ? (
                         <>
                           <div float="left" className="stock-items-container">
                             <h6 className={product.availability[0].local > 10 ? "green" : "orange"}>WA Stock: {product.availability[0].local < 10 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>

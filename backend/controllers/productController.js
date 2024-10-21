@@ -2010,57 +2010,60 @@ const searchProducts = async (req, res, next) => {
     }
 
     if (searchQuery !== "" || searchQuery !== null || searchQuery !== undefined) {
-      const regex = new RegExp(`${searchQuery}`, "i");
+      const spaceReplaced = searchQuery.replace(/ /g, '-')
+      const escapeRegex = (string) => {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapes special characters
+      };
+      const escapedSearchQuery = escapeRegex(searchQuery);
+      const regex = new RegExp(`${escapedSearchQuery}s?`, "i");
+      const regExact = new RegExp(`\\b${escapedSearchQuery}s?\\b`, "i");
+      const regexSpace = new RegExp(`\\b${spaceReplaced}s?\\b`, "i")
       searchCondition = {
         $or: [
           { "stock.slrsku": regex },
           { "stock.ctlsku": regex },
           { "stock.suppliersku": regex },
-          { "supplier": regex },
-          { "name": regex },
+          { "supplier": regExact },
+          { "name": regExact },
+          { "description": regExact },
+          { "category": regexSpace },
+          { "tags": regExact }
         ]
       }
 
-      const productMatch = await Product.find(searchCondition).skip(skip).limit(recordsPerPage);
+      const productFound = await Product.find(searchCondition)
+      const categoryList = productFound.filter((product) => {
+        const categoryParts = product.category?.split("/");
+        return categoryParts.some(part => regexSpace.test(part));
+      })
+      const categoryFilteredList = productFound.filter(
+        (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
+      );
+      const nameList = categoryFilteredList.filter((product) => regExact.test(product.name))
+      const descriptionList = productFound.filter(
+        (product) => !nameList.some((nameProduct) => nameProduct._id === product._id)
+      );
+      console.log(categoryList.length, nameList.length, descriptionList.length);
+
+      const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
+      const productMatch = concatenatedList.slice(skip, skip + recordsPerPage);
+
+      const productsNew = productMatch.filter((product) => product.category !== "QUOTE");
       const totalProductsMatch = await Product.countDocuments(searchCondition);
-      if (productMatch.length === 0) {
+
+      if (productsNew.length === 0) {
         skuSearch = false
       } else {
-        products = products.concat(productMatch);
+        products = products.concat(productsNew);
         totalProducts = totalProducts += totalProductsMatch
       }
     }
-
-    // Search starts from SKU search. And if the first word in query return 0, this search stops.
-    // for (const word of query) {
-    //   const regex = new RegExp(`${word}`, "i");
-
-    //   searchCondition = {
-    //     $or: [
-    //       { "stock.slrsku": regex },
-    //       { "stock.ctlsku": regex },
-    //       { "stock.suppliersku": regex },
-    //       { "supplier": regex },
-    //       { "name": regex },
-    //     ]
-    //   }
-
-    //   const productMatch = await Product.find(searchCondition).skip(skip).limit(recordsPerPage);
-    //   const totalProductsMatch = await Product.countDocuments(searchCondition);
-
-    //   if (productMatch.length === 0) {
-    //     skuSearch = false;
-    //     break;
-    //   } else {
-    //     products = products.concat(productMatch);
-    //     totalProducts = totalProducts += totalProductsMatch
-    //   }
-    // }
 
     // General search by supplier, name, description depending on how many words in search.
     // Now search by tags doesn't work as field tag is not completed for a Product. It is for future. 
     if (!skuSearch && query.length === 1) {
       const regexQueries = query.map(term => new RegExp(term, 'i'));
+      const regExactQueries = query.map(term => new RegExp(`\\b${term}\\b`, "i"));
       const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
 
       let searchCondition = {}
@@ -2077,7 +2080,7 @@ const searchProducts = async (req, res, next) => {
           $or: [
             { name: regexQueries },
             { supplier: supplierFilters },
-            { description: regexQueries },
+            { description: regExactQueries },
             { tags: regexQueries }
           ]
         }
@@ -2086,13 +2089,13 @@ const searchProducts = async (req, res, next) => {
           $or: [
             { name: regexQueries },
             { supplier: supplierFilters },
-            { description: regexQueries },
+            { description: regExactQueries },
             { tags: regexQueries }
           ],
           $and: [{ supplier: { $nin: excludedSuppliers } }]
         }
       }
-
+      console.log(...regexQueries);
       const foundProducts = await Product.find(searchCondition);
       const sortedProductsArray = sortByName(foundProducts);
       const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
@@ -2101,7 +2104,7 @@ const searchProducts = async (req, res, next) => {
       products = productsPerPage;
 
     } else if (!skuSearch && query.length >= 2) {
-      const regexQueries = query.map(term => new RegExp(term, 'i'));
+      const regExactQueries = query.map(term => new RegExp(`\\b${term}\\b`, "i"));
       let searchCondition = {}
 
       if (req.user.email.endsWith("@slrltd.com") ||
@@ -2112,16 +2115,16 @@ const searchProducts = async (req, res, next) => {
         req.user.email.endsWith("@focusminerals.com.au") ||
         req.user.email.endsWith("@evolutionmining.com")) {
 
-        searchCondition = regexQueries.map(regex => ({
+        searchCondition = regExactQueries.map(regex => ({
           $or: [
             { name: regex },
-            { description: regex },
             { supplier: regex },
+            { description: regex },
             { tags: regex }
           ]
         }));
       } else {
-        searchCondition = regexQueries.map(regex => ({
+        searchCondition = regExactQueries.map(regex => ({
           $or: [
             { name: regex },
             { description: regex },
@@ -2144,7 +2147,7 @@ const searchProducts = async (req, res, next) => {
     }
 
     const filetredProducts = _.uniqBy(products, 'id');
-
+    const regex = new RegExp(searchQuery, "i");
     const productsNew = filetredProducts.filter((product) => product.category !== "QUOTE");
 
     return res.json({
@@ -2215,27 +2218,52 @@ const searchProductsForVisitor = async (req, res, next) => {
       return array.slice(startIndex, startIndex + recordsPerPage);
     }
 
-    // Search starts from SKU serach. And if the first word in query return 0, this search stops.
-    for (const word of query) {
-      const regex = new RegExp(`${word}`, "i");
-
+    if (searchQuery !== "" || searchQuery !== null || searchQuery !== undefined) {
+      const spaceReplaced = searchQuery.replace(/ /g, '-')
+      const escapeRegex = (string) => {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapes special characters
+      };
+      const escapedSearchQuery = escapeRegex(searchQuery);
+      const regex = new RegExp(`${escapedSearchQuery}s?`, "i");
+      const regExact = new RegExp(`\\b${escapedSearchQuery}s?\\b`, "i");
+      const regexSpace = new RegExp(`\\b${spaceReplaced}s?\\b`, "i")
       searchCondition = {
         $or: [
           { "stock.slrsku": regex },
           { "stock.ctlsku": regex },
-          { "stock.suppliersku": regex }
-        ],
-        $and: [{ supplier: { $nin: excludedSuppliers } }]
+          { "stock.suppliersku": regex },
+          { "supplier": regExact },
+          { "name": regExact },
+          { "description": regExact },
+          { "category": regexSpace },
+          { "tags": regExact }
+        ]
       }
 
-      const productMatch = await Product.find(searchCondition).skip(skip).limit(recordsPerPage);
+      const productFound = await Product.find(searchCondition)
+      const categoryList = productFound.filter((product) => {
+        const categoryParts = product.category?.split("/");
+        return categoryParts.some(part => regexSpace.test(part));
+      })
+      const categoryFilteredList = productFound.filter(
+        (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
+      );
+      const nameList = categoryFilteredList.filter((product) => regExact.test(product.name))
+      const descriptionList = productFound.filter(
+        (product) => !nameList.some((nameProduct) => nameProduct._id === product._id)
+      );
+      console.log(categoryList.length, nameList.length, descriptionList.length);
+
+      const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
+      const productMatch = concatenatedList.slice(skip, skip + recordsPerPage);
+
+      const productsNew = productMatch.filter((product) => product.category !== "QUOTE");
       const totalProductsMatch = await Product.countDocuments(searchCondition);
 
-      if (productMatch.length === 0) {
-        skuSearch = false;
-        break;
+      if (productsNew.length === 0) {
+        skuSearch = false
       } else {
-        products = products.concat(productMatch);
+        products = products.concat(productsNew);
         totalProducts = totalProducts += totalProductsMatch
       }
     }
@@ -2244,6 +2272,7 @@ const searchProductsForVisitor = async (req, res, next) => {
     // Now search by tags doesn't work as field tag is not completed for a Product. It is for future. 
     if (!skuSearch && query.length === 1) {
       const regexQueries = query.map(term => new RegExp(term, 'i'));
+      const regExactQueries = query.map(term => new RegExp(`\\b${term}\\b`, "i"));
       const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
 
       searchCondition = {
