@@ -101,28 +101,23 @@ useGSAP(() => {
     scrollTrigger: {
       trigger: "#blocks",
       start: "top 80%",
-      toggleActions: "play none none none",
       end: "bottom 35%",
       scrub: true,
       once: true,
     },
   });
 
-  tlBlocks
-    .set(".topLine", { xPercent: -100})
-    .set(".bottomLine", { xPercent: 100})
 
   tlBlocks
-      .to(".topLine", {
-        duration: 0.5,
-        xPercent: 0,
-      })
-      .to(
+      .fromTo(
+        ".topLine",
+        { xPercent: -100 },
+        { duration: 0.5, xPercent: 0 }
+      )
+      .fromTo(
         ".bottomLine",
-        {
-          duration: 0.5,
-          xPercent: 0,
-        },
+        { xPercent: 100 },
+        { duration: 0.5, xPercent: 0 }, 
         0
       ); 
   });
@@ -144,7 +139,7 @@ useGSAP(() => {
       }, [blocks])
 
     return <div className={styles.blocksNew} id="blocks"> 
-    <div className="topLine">
+    <div className={`topLine`}>
       <div className={`${styles.promotionBlockTopNew} ${styles.desktop}`}>
               <div className={`${styles.promotionBlockNewVideo} ${styles.newBlockItem}`}>
                 <video src={bottomArray.video?.image} controls autoPlay muted loop/>
@@ -154,7 +149,7 @@ useGSAP(() => {
     </div>
     </div>
 
-    <div className="bottomLine">
+    <div className={`bottomLine`}>
       <div className={`${styles.promotionBlockTopNew} ${styles.desktop}`}>
       <div className={styles.textBlock}><NewTextBlock sign={"+"} title="k" number={1} subtitle="suppliers" description="national & international" />  </div> 
           {topArray.images && <ImageRotator images={topArray.images} />}

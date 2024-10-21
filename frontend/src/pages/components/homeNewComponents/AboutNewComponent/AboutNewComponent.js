@@ -24,7 +24,7 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       const tlImages = gsap.timeline({
         scrollTrigger: {
           trigger: ".aboutNew",
-          start: "top top",
+          start: "top 10%",
           end: "+=50%",
           scrub: 1,
         },
@@ -45,8 +45,7 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       const tlImages = gsap.timeline({
         scrollTrigger: {
           trigger: ".aboutNew",
-          // start: "top 70%",
-          start: "top bottom",
+          start: "top 70%",
           end: "+=50%",
           scrub: 1,
         },
@@ -62,7 +61,6 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       .fromTo("#aboutSection #second img", { y: 60 }, { y: 0 }, "<");
     });
   
-
 }, [])
 
     return <>

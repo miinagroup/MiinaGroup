@@ -381,6 +381,11 @@ const NewHeaderComponentLoggedIn = ({setIsOpenModal, goToAboutSection, goToPromo
                             </a>
                           </li>
                           <li>
+                            <a href="/product-list?categoryName=QUOTE" className="hd_c">
+                              Quote
+                            </a>
+                          </li>
+                          <li>
                             <a href="/admin/users" className="hd_c">
                               Users
                             </a>

@@ -2,6 +2,7 @@
     background: linear-gradient(180deg, #59b7e4 0%, #1e4881 100%);
     padding: 100px 50px;
     overflow: hidden;
+    height: 90vh;
 }
 
 .promotionBlockTopNew {
@@ -48,6 +49,13 @@
 
 .textBlock {
     align-self: center;
+}
+
+.topLine {
+    transform: translateX(100%);
+}
+.bottomLine {
+    transform: translateX(100%);
 }
 
 .mobile {

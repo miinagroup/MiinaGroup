@@ -19,6 +19,7 @@ import { pdf } from "@react-pdf/renderer";
 import CartPrint from "../../../components/Pdfs/CartPrint";
 import axios from "axios";
 import "./invoicePDF.css";
+import { titleCase } from "../../user/utils/utils";
 
 const AdminCartDetailsPageComponent = ({
   cartItems,
@@ -74,12 +75,32 @@ const AdminCartDetailsPageComponent = ({
   const [quickBooksCustomerId, setQuickBooksCustomerId] = useState();
   const [dueDays, setDueDays] = useState();
   const [userNameList, setUserNamesList] = useState([])
+  const [shippingAddress, setShippingAddress] = useState("");
 
   const navigate = useNavigate();
 
   const changeCount = (id, qty) => {
-    reduxDispatch(editQuantity(id, qty));
+    reduxDispatch(editQuantity(id, qty)); 
   };
+
+  useEffect(() => {
+    const handleShippingAddress = () => {
+      if (!adminSelectedCompany || !adminSelectedDeliverySite) {
+          return;
+      }
+  
+      const selectedCompany = adminDeliveryBooks.find(company => company.companyName === adminSelectedCompany);
+      if (selectedCompany) {
+          const selectedSite = selectedCompany.sites.find(site => site.name === adminSelectedDeliverySite);
+          if (selectedSite) {
+              setShippingAddress(selectedSite.deliveryAddress);
+          }
+      }
+  };
+
+    handleShippingAddress();
+  }, [adminSelectedDeliverySite, adminSelectedCompany, adminDeliveryBooks])
+  
 
   const removeFromCartHandler = (productId, quantity, price) => {
     reduxDispatch(removeFromCart(productId, quantity, price));
@@ -133,7 +154,6 @@ const AdminCartDetailsPageComponent = ({
 
       if (newInvoiceNumbers.length > 0) {
         const filteredInvoiceNumbers = newInvoiceNumbers.filter(num => num < 165000)
-        console.log(filteredInvoiceNumbers);
         setLargestInvoice(Math.max(...filteredInvoiceNumbers));
       } else {
         setLargestInvoice(100000);
@@ -208,7 +228,6 @@ const AdminCartDetailsPageComponent = ({
       setAdminSelectedDeliverySite(deliverySiteList[0]);
       setDeliverySiteListSorted(Array.from(new Set(deliverySiteList)))
       setUserInformation({ name: userList[0].userFname, email: userList[0].userEmail });
-      console.log(userList[0].userName, userList[0].userId, userList[0].userEmail);
     }
   };
 
@@ -234,7 +253,6 @@ const AdminCartDetailsPageComponent = ({
     setAdminSelectedUserId(userList[0].userId);
     setAdminSelectedDeliverySite(deliverySiteFinalList[0]);
     setUserInformation({ name: userList[0].userFname, email: userList[0].userEmail });
-    console.log(userList[0].userName, userList[0].userId, userList[0].userEmail);
   };
 
   const changeDeliverySite = (e) => {
@@ -715,6 +733,27 @@ const AdminCartDetailsPageComponent = ({
                   Please Enter Your Note.{" "}
                 </Form.Control.Feedback>
               </ListGroup.Item>
+
+              <ListGroup.Item
+        controlid="validationShippingAddress"
+        className="p-1 ps-2"
+      >
+        <Form.Label className="fw-bold">Shipping Address:</Form.Label>
+        <Form.Control
+          as="textarea"
+          className="p-0 ps-1"
+          type="string"
+          name="shippingAddress"
+          placeholder="Shipping Address"
+          required
+          value={titleCase(shippingAddress).split(',').map(sentence => sentence.trim()).join('\n')}
+          style={{ fontSize: '12px', height: "100px" }}
+          disabled
+        />
+        <Form.Control.Feedback type="invalid">
+          Please Enter Shipping Address.{" "}
+        </Form.Control.Feedback>
+      </ListGroup.Item>
 
               <ListGroup.Item className="p-1 ps-2">
                 <div className="d-grid gap-2">
