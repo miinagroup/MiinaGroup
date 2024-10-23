@@ -1005,7 +1005,7 @@ const ProductDetailsPageComponent = ({
                           )}
                         </h6>}
                         {isUserInfo && <div className="btnLogin btnLoginText btnLoginProductPage">
-                          <div className="btnsLoginRegistration">
+                          <div className="btnsLoginRegistrationProductPage">
                             <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
                             <div>or</div>
                             <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button>

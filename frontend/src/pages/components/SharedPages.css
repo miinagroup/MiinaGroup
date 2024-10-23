@@ -75,7 +75,13 @@
 
 .btnsLoginRegistration {
   display: flex;
-  /* justify-content: space-around; */
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.btnsLoginRegistrationProductPage {
+  display: flex;
   gap: 5px;
   width: 100%;
 }
