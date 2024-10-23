@@ -39,21 +39,18 @@ const CartItemComponent = ({
     maximumFractionDigits: 2,
   });
 
-  //console.log(item);
   return (
     <>
-      <ListGroup.Item className="mt-1 cart-item">
+      <ListGroup.Item className="pt-3 cart-item">
         <Row>
           <Col md={1}>
             <div className="">
-              {/* Image */}
               <img
                 crossOrigin="anonymous"
                 src={item.image ? item.image ?? null : null}
                 className="w-100 img_hovf"
                 alt="s"
               />
-              {/* Image */}
             </div>
           </Col>
           <Col md={5}>

@@ -1,4 +1,4 @@
-import { Container,Col,Form,ListGroup,InputGroup,Button} from "react-bootstrap";
+import { Container,Col,Form,ListGroup,InputGroup,Button, Row} from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -692,16 +692,91 @@ const UserCartDetailsPageComponent = ({
   return (
     <>
       <Container className="userCartDetailPage">
-        <div className="mt-4 d-flex">
+        <div className="mt-4 d-flex cart_detail_container">
           <div>
           <div
             style={{ display: "flex", alignItems: "center", justifyContent: "space-between"}}
-            className="mb-5"
+            className="mb-1"
           >
             <h1>CART DETAILS</h1>
           </div>
+          {(hasProducts === 1) && (
+              <Row className="mb-4 p-0" style={{fontSize: "12px", width: "100%", maxWidth: "915px"}}>
+                   <div className="d-flex justify-content-between cart_detail_btns" style={{width: "100%"}}>
+                    <div className="d-flex gap-5 cart_detail_btns_email_download">
+                   <div>
+                      <PDFDownloadLink
+                        document={
+                          <CartPrint
+                            cartItems={cartItems}
+                            userInfo={userInfo}
+                            userAddress={userAddress}
+                            purchaseNumber={purchaseNumber}
+                            cartSubtotal={cartSubtotal}
+                            taxAmount={taxAmount}
+                          />
+                        }
+                        fileName={userInfo.name + "'s Cart"}
+                        className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
+                        style={{width: "100%", maxWidth: "200px", fontSize: "12px"}}
+                      >
+                        <span>
+                          Download Cart <i className="bi bi-file-earmark-pdf"></i>
+                        </span>
+                      </PDFDownloadLink>
+                    </div>
+                    <div >
+                     <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
+                    
+                      <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{width: "300px"}}>
+                    <InputGroup size="sm">
+                      <Form.Control
+                        className="p-0 ps-2"
+                        onChange={enterManagerEmail}
+                        type="string"
+                        name="MangerEmail"
+                        placeholder={`Enter email`}
+                        required
+                        aria-label="Recipient's username"
+                        aria-describedby="basic-addon2"
+                        style={{ border: "none", fontSize:"12px" }}
+                      />
+                      <InputGroup.Text
+                        id="basic-addon2"
+                        style={{ border: "none", borderRadius: "0", fontSize:"12px" }}
+                      >
+                        @{userEmail}
+                      </InputGroup.Text>
+                    </InputGroup>
+                    <Form.Control.Feedback type="invalid">
+                      Please Enter Your Manager's Email.{" "}
+                    </Form.Control.Feedback>
+                   </ListGroup.Item>
+                    
+                      <div className="d-grid gap-2">
+                      <QuoeteManagementApproval quotePriceData={quotePriceData} />
+                    </div>
+                </ListGroup> 
+                    </div>
+                    </div>
+                    <div>
+                      <Button
+                    type="button"
+                    onClick={removeAllItems}
+                  variant="primary" size="sm"
+                    style={{ fontSize:"12px"}}
+                  >
+                    Empty Cart <i className="bi bi-trash" />
+                  </Button>
+                    </div>
+                   </div>
+              </Row>
+          )}
+
+
+              
           <Col md={11}>
-            <ListGroup variant="flush" className="cart-items-list"> 
+            <ListGroup className="cart-items-list mb-3"> 
               {cartItems.map((item, idx) => (
                 <CartItemComponent
                   item={item}
@@ -712,20 +787,14 @@ const UserCartDetailsPageComponent = ({
                 />
               ))}
             </ListGroup>
-            <Button
-              type="button"
-              onClick={removeAllItems}
-              className="p-0 ps-1 pe-1 empty_cart_btn"
-            >
-              Empty Cart <i className="bi bi-trash" />
-            </Button>
+        
           </Col>
           </div>
           <Col md={3} className="cart_detail_right">
             <br />
             {(hasProducts === 1) ? (
               <>
-                <ListGroup>
+                {/* <ListGroup>
                   <ListGroup.Item>
                     <div className="d-flex justify-content-center">
                       <PDFDownloadLink
@@ -784,7 +853,7 @@ const UserCartDetailsPageComponent = ({
                     </div>
                   </ListGroup.Item>
                 </ListGroup>
-                <br />
+                <br /> */}
                 <ListGroup className="">
                   <ListGroup.Item className="p-1 ps-2">
                     <h4 className="m-0">Order Summary</h4>

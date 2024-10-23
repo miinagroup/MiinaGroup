@@ -23,7 +23,7 @@ const ChangeAddressModalComponent = ({
           <Form onSubmit={updateAddress}>
             <Form.Group className="mb-3" controlId="formBasicLocation">
             <Form.Label>
-              Location
+              Location / Site
             </Form.Label>
               <Form.Control
                 required
@@ -74,12 +74,12 @@ const ChangeAddressModalComponent = ({
               </Col>
               <Col>
                 <Form.Group controlId="formBasicStateProvinceRegion">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>State/Province/Region</Form.Label>
+                  <Form.Label style={{ fontSize: "12px", color: "black" }}>State</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="stateProvinceRegion"
-                    placeholder="State/Province/Region"
+                    placeholder="State"
                     onChange={handleBillingAddress}
                     value={billingAddress.stateProvinceRegion}
 
@@ -90,12 +90,12 @@ const ChangeAddressModalComponent = ({
             <Row className="mb-3">
               <Col>
                 <Form.Group controlId="formBasicZIPostalCode">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>ZIP/Postal Code</Form.Label>
+                  <Form.Label style={{ fontSize: "12px", color: "black" }}>Postal Code</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="ZIPostalCode"
-                    placeholder="ZIP/Postal Code"
+                    placeholder="Postal Code"
                     onChange={handleBillingAddress}
                     value={billingAddress.ZIPostalCode}
                   />
@@ -150,12 +150,12 @@ const ChangeAddressModalComponent = ({
                 </Col>
                 <Col>
                   <Form.Group controlId="formBasicDeliveryStateProvinceRegion">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>State/Province/Region</Form.Label>
+                    <Form.Label style={{ fontSize: "12px", color: "black" }}>State</Form.Label>
                     <Form.Control
                       required
                       type="text"
                       name="deliveryStateProvinceRegion"
-                      placeholder="State/Province/Region"
+                      placeholder="State"
                       onChange={handleDeliveryAddress}
                       defaultValue={deliveryAddress.stateProvinceRegion}
                     />
@@ -165,12 +165,12 @@ const ChangeAddressModalComponent = ({
               <Row>
                 <Col>
                   <Form.Group controlId="formBasicDeliveryZIPostalCode">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>ZIP/Postal Code</Form.Label>
+                    <Form.Label style={{ fontSize: "12px", color: "black" }}>Postal Code</Form.Label>
                     <Form.Control
                       required
                       type="text"
                       name="deliveryZIPostalCode"
-                      placeholder="ZIP/Postal Code"
+                      placeholder="Postal Code"
                       onChange={handleDeliveryAddress}
                       defaultValue={deliveryAddress.ZIPostalCode}
                     />

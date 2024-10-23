@@ -27,7 +27,7 @@ const CartAddressesSectionComponent = ({
         controlid="validationLocation"
         className="p-1 ps-2"
       >
-        <Form.Label className="fw-bold">Location</Form.Label>
+        <Form.Label className="fw-bold">Location / Site</Form.Label>
         {deliveryBooks && <Form.Select value={selectedIndex} onChange={(e) => handleSelect(e)}>
           {deliveryBooks[0]?.sites?.map((site, index) => {
             return <option value={index}>{site.name.toUpperCase()}</option>

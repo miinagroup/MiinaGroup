@@ -149,6 +149,10 @@
     margin-top: 20%;
 }
 
+.cart_detail_list_group {
+    flex-direction: row !important;
+}
+
 @media screen and (min-width: 1024px) {
     .product_replenishment_items .modal-content {
         width: 150%;
@@ -190,4 +194,24 @@
     .user_side_navBar .nav-link {
         width: 100%;
     }
+
+    .cart_detail_container {
+        flex-direction: column;
+    }
+
+    .cart_detail_btns {
+        flex-direction: column;
+    }
+
+    .cart_detail_btns_email_download {
+        flex-direction: column;
+        gap: 25px !important;
+        margin-bottom: 25px;
+    }
+
+    .cart_detail_list_group {
+        flex-direction: column !important;
+        gap: 10px;
+    }
+    
   }

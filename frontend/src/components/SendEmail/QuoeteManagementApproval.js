@@ -52,9 +52,6 @@ const QuoeteManagementApproval = (quotePriceData, cartItems) => {
   const receiverEmail = quotePriceData.quotePriceData.managerEmail?.split("@")[1];
   const senderEmail = quotePriceData.quotePriceData.email?.split("@")[1]
   const base64data = quotePriceData.quotePriceData.base64Data.base64data
-  
-
-  // console.log("quotePriceDataCCCCCCCompoent", base64data);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,16 +104,16 @@ const QuoeteManagementApproval = (quotePriceData, cartItems) => {
     <>
       <div className="container">
         <form onSubmit={handleSubmit} autoComplete="off">
-          <div className="form-group d-flex justify-content-center">
+          <div className="form-group d-flex justify-content-center email_cart_btn_wrapper">
             <button
-              className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
+              className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded"
               disabled={
                 isSending ||
                 successMessage ||
                 receiverEmail !== senderEmail ||
                 quotePriceData.quotePriceData.cartItems.length === 0
               }
-              style={{width: "100%", maxWidth: "200px"}}
+              style={{width: "100%", maxWidth: "200px", fontSize:"12px"}}
             >
               {isSending ? `Sending${dots}` : "Email Cart"}
             </button>

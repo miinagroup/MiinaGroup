@@ -44,8 +44,8 @@ const AddNewAddressModalComponent = ({
 
           <Form onSubmit={addNewAddress}>
             <Form.Group className="mb-3" controlId="formBasicLocation">
-              <Form.Label>Location</Form.Label>
-              <Form.Control required type="text" name="location" placeholder="Location" onChange={handleLocation} isInvalid={!isLocationValid} />
+              <Form.Label>Location / Site</Form.Label>
+              <Form.Control required type="text" name="location" placeholder="Location / Site" onChange={handleLocation} isInvalid={!isLocationValid} />
               <Form.Control.Feedback type="invalid">A site with this name already exists.</Form.Control.Feedback>
             </Form.Group>
 
@@ -68,16 +68,16 @@ const AddNewAddressModalComponent = ({
         </Col>
         <Col>
         <Form.Group controlId="formBasicStateProvinceRegion">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>State/Province/Region</Form.Label>
-        <Form.Control required type="text" name="stateProvinceRegion" placeholder="State/Province/Region" onChange={handleNewBillingAddress} />
+        <Form.Label style={{fontSize: "12px", color: "black"}}>State</Form.Label>
+        <Form.Control required type="text" name="stateProvinceRegion" placeholder="State" onChange={handleNewBillingAddress} />
       </Form.Group>
         </Col>
       </Row>
       <Row col={2}>
         <Col>
         <Form.Group className="mb-3" controlId="formBasicZIPostalCode">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>ZIP/Postal Code</Form.Label>
-        <Form.Control required type="number" name="ZIPostalCode" placeholder="ZIP/Postal Code" onChange={handleNewBillingAddress} />
+        <Form.Label style={{fontSize: "12px", color: "black"}}>Postal Code</Form.Label>
+        <Form.Control required type="number" name="ZIPostalCode" placeholder="Postal Code" onChange={handleNewBillingAddress} />
       </Form.Group>
         </Col>
         <Col>
@@ -102,7 +102,7 @@ const AddNewAddressModalComponent = ({
       <Row>
         <Col>
         <Form.Group controlId="formBasicAddressDeliveryLine">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>Address Line 1</Form.Label>
+        <Form.Label style={{fontSize: "12px", color: "black"}}>Address Line</Form.Label>
         <Form.Control 
         required 
         type="text" 
@@ -127,20 +127,20 @@ const AddNewAddressModalComponent = ({
         </Col>
         <Col>
         <Form.Group controlId="formBasicStateProvinceRegionDelivery">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>State/Province/Region</Form.Label>
+        <Form.Label style={{fontSize: "12px", color: "black"}}>State</Form.Label>
         <Form.Control required type="text" name="stateProvinceRegionDelivery"  disabled={sameAddress}  value={newDeliveryAddress.stateProvinceRegion}
-        placeholder="State/Province/Region" onChange={handleNewDeliveryAddress} />
+        placeholder="State" onChange={handleNewDeliveryAddress} />
       </Form.Group>
         </Col>
       </Row>
       <Row col={2}>
         <Col>
         <Form.Group className="mb-3" controlId="formBasicZIPostalCodeDelivery">
-        <Form.Label style={{fontSize: "12px", color: "black"}}>ZIP/Postal Code</Form.Label>
+        <Form.Label style={{fontSize: "12px", color: "black"}}>Postal Code</Form.Label>
         <Form.Control required type="number" name="ZIPostalCodeDelivery"
          disabled={sameAddress}  
          value={newDeliveryAddress.ZIPostalCode}                     
-        placeholder="ZIP/Postal Code" onChange={handleNewDeliveryAddress} />
+        placeholder="Postal Code" onChange={handleNewDeliveryAddress} />
       </Form.Group>
         </Col>
         <Col>

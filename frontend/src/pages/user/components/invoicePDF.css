@@ -257,9 +257,19 @@
     }
 
     .userCartDetailPage .list-group-item{
-        padding: 0px 0px;
+        padding: 0px 25px;
         margin-top: 0px !important;
         padding-bottom: 10px;
+    }
+
+    .email_cart_btn_wrapper {
+        justify-content: flex-start !important;
+        margin-left: -12px;
+        max-width: 100px !important;
+    }
+
+    .download_cart_btn_wrapper {
+        max-width: 150px !important;
     }
 }
 
