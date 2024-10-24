@@ -23,16 +23,15 @@ const HomePageForVisitorMobile = () => {
   const [blocks, setBlocks] = useState([]);
   const [error, setError] = useState(false);
 
-  console.log(isTablet)
 
   const navigate = useNavigate()
   useEffect(() => {
-      if (!isMobile) {
-      navigate("/");
-    } else if(isTablet) {
-      navigate("/m.home");
-    }
-  }, [])
+    if(isMobile && isTablet) {
+      navigate("/") 
+    } else if (!isMobile) {
+      navigate("/") 
+    } 
+}, [])
 
   // const isAuth = FetchAuthFromServer();
   useEffect(() => {

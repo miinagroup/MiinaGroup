@@ -26,12 +26,14 @@ const HomePageForVisitor = () => {
   const [blocks, setBlocks] = useState([]);
   const [error, setError] = useState(false);
 
+  
+
   const navigate = useNavigate()
   useEffect(() => {
-    if (isMobile) {
-      navigate("/m.home");
-    } else if(isTablet) {
-      navigate("/m.home");
+    if (isMobile && isTablet) {
+      navigate("/");
+    } else if (isMobile) {
+      navigate("/m.home")
     }
   }, [])
 
