@@ -85,7 +85,7 @@ const RegisterPageComponent = ({
     //TODO if need deliveryAddress again, change the value from location to deliveryAddress.
     const state = form.state.value;
     const postCode = form.postCode.value;
-    const abn = form.abn.value;
+    const abn = form.abn?.value;
     // if (email.endsWith("@slrltd.com") || email.endsWith("@slrltd.com.au") || email.endsWith("@silverlakeresources.com.au")) {
     //   if (location.toUpperCase() === "RANDALLS" || location.toUpperCase() === "RANDALLS MILLS") { setStoreEmail("randallssupply@silverlakeresources.com.au") }
     //   if (location.toUpperCase() === "DAISY MILANO" || location.toUpperCase() === "DAISY") { setStoreEmail("daisymilano@silverlakeresources.com.au") }
@@ -204,7 +204,8 @@ const RegisterPageComponent = ({
   /* **************** Show Password **************** */
   const [showPassword, setShowPassword] = useState(false);
 
-  const [show, setShow] = useState(false);
+  const [ show, setShow ] = useState(false);
+  const [ showAbn, setShowAbn ] = useState(false);
   const handleClose = () => {
     setShow(false);
   };
@@ -218,12 +219,14 @@ const RegisterPageComponent = ({
     if (email === "" || email === null) {
       setShow(false);
       setShowLocation(false);
+      setShowAbn(false)
     } else {
       var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (!email.match(mailformat)) {
         alert("Invalid email format")
       } else {
-        setShow(false)
+        setShow(true);
+        setShowAbn(false);
         const emailHost = email.split("@")[1]
         const tempCompany = emailHost.split(".")[0]
         switch (emailHost.toLowerCase()) {
@@ -271,6 +274,7 @@ const RegisterPageComponent = ({
             setUserLocation("No Site")
             setShow(false)
             setShowLocation(false)
+            setShowAbn(true)
             break;
         }
       }
@@ -358,29 +362,6 @@ const RegisterPageComponent = ({
                   </Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
-            <Form.Group as={Col} md="6" controlId="formBasicAbn">
-              <MaskedInput
-                mask={abnMask}
-                placeholder="ABN"
-                guide={false}
-                value={abn}
-                onChange={handleAbn}
-                id="abn"
-                render={(ref, props) => <Form.Control
-                  required
-                  minLength={14}
-                  maxLength={14}
-                  type="text"
-                  name="abn"
-                  pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
-                  ref={ref}
-                  {...props}
-                />} 
-               />
-              <Form.Control.Feedback type="invalid">
-                Please enter ABN.
-              </Form.Control.Feedback>
-            </Form.Group>
             </Row>
 
             <Row className="mb-3">
@@ -398,7 +379,7 @@ const RegisterPageComponent = ({
                   Please enter phone number.{" "}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group as={Col} md="4" controlId="formBasicRole">
+              {/* <Form.Group as={Col} md="4" controlId="formBasicRole">
                 <Form.Control
                   required
                   type="text"
@@ -410,7 +391,7 @@ const RegisterPageComponent = ({
                 <Form.Control.Feedback type="invalid">
                   Please mention your Job Title.{" "}
                 </Form.Control.Feedback>
-              </Form.Group>
+              </Form.Group> */}
               <Form.Group as={Col} md="4" controlId="formBasicMobile">
                 <Form.Control
                   required
@@ -439,93 +420,6 @@ const RegisterPageComponent = ({
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
-            {show ? (
-              <>
-                <Row className="mb-3" >
-                  <Form.Group as={Col} md="6" controlId="formBasicCompany">
-                    <InputGroup hasValidation>
-                      <Form.Control
-                        type="text"
-                        name="company"
-                        placeholder="Company"
-                        value={userCompany}
-                        aria-describedby="inputGroupPrepend"
-                        required
-                        disabled
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please mention company name.{" "}
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-
-                  <Form.Group as={Col} md="6" controlId="formBasicLocation">
-                    {/* <Form.Control
-                        type="text"
-                        name="location"
-                        placeholder="Site"
-                        aria-describedby="inputGroupPrepend"
-                        required
-                      /> */}
-
-                    <Form.Select
-                      required
-                      name="location"
-                      onChange={handleChangeLocation}
-                    >
-                      <option>--Select Site--</option>
-                      {
-                        selectedSites.sites?.map((site, idx) => (
-                          < option key={idx} value={site} >
-                            {site}
-                          </option>))
-                      }
-                    </Form.Select>
-                    {/* <Form.Control.Feedback type="invalid">
-                        Please enter site location.{" "}
-                      </Form.Control.Feedback> */}
-                  </Form.Group>
-                </Row>
-              </>
-            ) : showLocation ? (
-              <>
-                <Row className="mb-3" >
-                  <Form.Group as={Col} md="6" controlId="formBasicCompany">
-                    <InputGroup hasValidation>
-                      <Form.Control
-                        type="text"
-                        name="company"
-                        placeholder="Company"
-                        value={userCompany}
-                        onChange={handleInputChange}
-                        aria-describedby="inputGroupPrepend"
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please mention company name.{" "}
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-
-                  <Form.Group as={Col} md="6" controlId="formBasicLocation">
-                    <InputGroup hasValidation>
-                      <Form.Control
-                        type="text"
-                        name="location"
-                        placeholder="Site"
-                        value={userLocation}
-                        aria-describedby="inputGroupPrepend"
-                        required
-                      />
-
-                      <Form.Control.Feedback type="invalid">
-                        Please enter site location.{" "}
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-                </Row>
-              </>
-            ) : ("")}
 
             <Row className="mb-3" style={{ display: "none" }}>
               <Form.Group as={Col} md="4" controlId="formBasicBillAddress">
@@ -608,6 +502,134 @@ const RegisterPageComponent = ({
             </Form.Group>
 
             <Row></Row>
+
+            {show ? (
+              <>
+                <Row className="mb-3" >
+                  <Form.Group as={Col} md="6" controlId="formBasicCompany">
+                    <InputGroup hasValidation>
+                      <Form.Control
+                        type="text"
+                        name="company"
+                        placeholder="Company"
+                        value={userCompany}
+                        aria-describedby="inputGroupPrepend"
+                        required
+                        disabled
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Please mention company name.{" "}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+
+                  <Form.Group as={Col} md="6" controlId="formBasicLocation">
+                    {/* <Form.Control
+                        type="text"
+                        name="location"
+                        placeholder="Site"
+                        aria-describedby="inputGroupPrepend"
+                        required
+                      />  */}
+
+                    <Form.Select
+                      required
+                      name="location"
+                      onChange={handleChangeLocation}
+                    >
+                      <option>--Select Site--</option>
+                      {
+                        selectedSites.sites?.map((site, idx) => (
+                          < option key={idx} value={site} >
+                            {site}
+                          </option>))
+                      }
+                    </Form.Select>
+                    {/* <Form.Control.Feedback type="invalid">
+                        Please enter site location.{" "}
+                      </Form.Control.Feedback> */}
+                  </Form.Group>
+
+                  <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
+                  <Form.Control
+                    required
+                    type="text"
+                    name="role"
+                    placeholder="Job Title"
+                    // value="Employee"
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please mention your Job Title.{" "}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                </Row>
+              </>
+            ) : showLocation ? (
+              <>
+                <Row className="mb-3" >
+                  <Form.Group as={Col} md="6" controlId="formBasicCompany">
+                    <InputGroup hasValidation>
+                      <Form.Control
+                        type="text"
+                        name="company"
+                        placeholder="Company"
+                        value={userCompany}
+                        onChange={handleInputChange}
+                        aria-describedby="inputGroupPrepend"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Please mention company name.{" "}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+
+                  <Form.Group as={Col} md="6" controlId="formBasicLocation">
+                    <InputGroup hasValidation>
+                      <Form.Control
+                        type="text"
+                        name="location"
+                        placeholder="Site"
+                        value={userLocation}
+                        aria-describedby="inputGroupPrepend"
+                        required
+                      />
+
+                      <Form.Control.Feedback type="invalid">
+                        Please enter site location.{" "}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+                </Row>
+              </>
+            ) : ("")}
+
+            {showAbn ? (
+           <Form.Group as={Col} md="6" controlId="formBasicAbn">
+           <MaskedInput
+             mask={abnMask}
+             placeholder="ABN"
+             guide={false}
+             value={abn}
+             onChange={handleAbn}
+            //  id="abn"
+             render={(ref, props) => <Form.Control
+               required
+               minLength={14}
+               maxLength={14}
+               type="text"
+               name="abn"
+              //  pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
+               ref={ref}
+               {...props}
+             /> } 
+            />
+           <Form.Control.Feedback type="invalid">
+             Please enter ABN.
+           </Form.Control.Feedback>
+         </Form.Group>
+
+            ) : null}
 
             {/* <Form.Group className="mb-3">
               <Form.Check
