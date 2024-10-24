@@ -106,6 +106,10 @@
 }
 
 @media (max-width: 1024px) {
+
+    .aboutNew {
+        height: auto;
+    }
     .aboutNewSecondImg {
         width: 100%;
         max-width: 400px;

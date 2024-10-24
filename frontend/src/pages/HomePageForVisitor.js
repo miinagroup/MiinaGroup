@@ -2,7 +2,7 @@ import ProductCarouselComponent from "../components/ProductCarouselComponent";
 import ProductsPromotionComponent from "../components/ProductsPromotionComponent";
 import React, { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
-import {isMobile} from 'react-device-detect';
+import {isMobile, isTablet} from 'react-device-detect';
 import axios from "axios";
 import moment from "moment-timezone";
 import {
@@ -29,6 +29,8 @@ const HomePageForVisitor = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (isMobile) {
+      navigate("/m.home");
+    } else if(isTablet) {
       navigate("/m.home");
     }
   }, [])

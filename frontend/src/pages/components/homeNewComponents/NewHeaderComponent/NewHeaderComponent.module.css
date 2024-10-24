@@ -262,14 +262,14 @@ input {
 }
 
 @media (max-width: 1025px) {
-    /* .desktop {
+    .desktop {
         display: none;
     }
 
     .mobile {
         display: block;
     }
-     */
+     
 
      .tablet {
          display: none;
@@ -308,16 +308,21 @@ input {
         align-items: center;
     }
 
+    .searchFieldNewInputBlock {
+        position: relative;
+        max-width: 350px;
+        width: 100%;
+    }
+
     .searchFieldNew {
         position : relative;
         max-width: 250px;
         top: 0;
         left: 0;
-
     }
 
     .headerNewBtns {
-        justify-content: space-between
+        justify-content: flex-end;
     }
 
     ::placeholder {
@@ -335,6 +340,39 @@ input {
 
     .headerNewBtnsLoggedIn {
         gap: 0px
+    }
+
+    .searchFieldNewWrapper {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        max-width: 1024px;
+        gap: 25px;
+    }
+
+    .sidebarMobileMenu {
+        z-index: 1000;
+        position: absolute;
+        width: 35%;
+        height: 150px;
+        top: 0;
+        left: 0;
+        transform: translate(170%, 75%);
+        background: linear-gradient(180deg, #59b7e4 0%, #1e4881 100%);
+        border-radius: 25px;
+        padding: 10px 20px;
+    }
+
+    .sidebarMobileMenuWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .sidebarMobileMenuWrapper button {
+        border: none;
+        background-color: transparent;
+        color: white;
     }
 
 }
@@ -359,7 +397,7 @@ input {
     }
 
     .searchFieldNew {
-        max-width: 200px;
+        /* max-width: 200px; */
     }
 
     .headerNewMenu {

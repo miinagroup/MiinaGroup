@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
-import {isMobile} from 'react-device-detect';
+import {isMobile, isTablet} from 'react-device-detect';
 import axios from "axios";
 import moment from "moment-timezone";
 import { Modal } from "react-bootstrap";
@@ -23,10 +23,14 @@ const HomePageForVisitorMobile = () => {
   const [blocks, setBlocks] = useState([]);
   const [error, setError] = useState(false);
 
+  console.log(isTablet)
+
   const navigate = useNavigate()
   useEffect(() => {
       if (!isMobile) {
       navigate("/");
+    } else if(isTablet) {
+      navigate("/m.home");
     }
   }, [])
 
