@@ -34,8 +34,8 @@ const registerUser = async (req, res, next) => {
       role,
       deliveryAddress,
       billAddress,
-      state,
-      postCode,
+      // state,
+      // postCode,
       mobileRegistration,
       abn
     } = req.body;
@@ -52,8 +52,8 @@ const registerUser = async (req, res, next) => {
         role &&
         deliveryAddress &&
         billAddress &&
-        state &&
-        postCode &&
+        // state &&
+        // postCode &&
         abn
       )
     ) {
@@ -78,8 +78,8 @@ const registerUser = async (req, res, next) => {
         role,
         deliveryAddress,
         billAddress,
-        state,
-        postCode,
+        // state,
+        // postCode,
         abn
       });
 
@@ -130,8 +130,8 @@ const registerUser = async (req, res, next) => {
           role: user.role,
           deliveryAddress: user.deliveryAddress,
           billAddress: user.billAddress,
-          state: user.state,
-          postCode: user.postCode,
+          // state: user.state,
+          // postCode: user.postCode,
           mobileLogin: true,
           abn: user.abn
         },

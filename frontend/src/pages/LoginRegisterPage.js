@@ -59,8 +59,8 @@ const registerUserApiRequest = async (
   role,
   deliveryAddress,
   billAddress,
-  state,
-  postCode,
+  // state,
+  // postCode,
   abn
 ) => {
   const { data } = await axios.post("/api/users/register", {
@@ -75,8 +75,8 @@ const registerUserApiRequest = async (
     role,
     deliveryAddress,
     billAddress,
-    state,
-    postCode,
+    // state,
+    // postCode,
     abn
   });
   /* 传信息去redux ？？？？*/

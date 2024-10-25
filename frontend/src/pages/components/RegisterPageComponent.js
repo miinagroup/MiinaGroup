@@ -48,15 +48,16 @@ const RegisterPageComponent = ({
   const [emailSent, setEmailSent] = useState(false);
   const [userCompany, setUserCompany] = useState("")
   const [userLocation, setUserLocation] = useState("")
+  const [userRole, setUserRole] = useState("")
   const [userSites, setUserSites] = useState([
-    { company: "SILVERLAKE RESOURCES", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'] },
-    { company: "CTL AUSTRALIA", sites: ['PERTH', 'EMBLETON', 'CANNINGTON', 'China', 'India'] },
-    { company: "FOCUS MINERALS OPERATIONS", sites: ['THREE MILE HILL COOLGARDIE', 'COOLGARDIE GOLD OPERATIONS'] },
-    { company: "EVOLUTION MINING (MUNGARI)", sites: ['MUNGARI'] },
-    { company: "RED 5 LIMITED", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'] }
+    { company: "SILVERLAKE RESOURCES", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'], abn: "5" },
+    { company: "CTL AUSTRALIA", sites: ['PERTH', 'EMBLETON', 'CANNINGTON', 'China', 'India'], abn: "2" },
+    { company: "FOCUS MINERALS OPERATIONS", sites: ['THREE MILE HILL COOLGARDIE', 'COOLGARDIE GOLD OPERATIONS'], abn: "3" },
+    { company: "EVOLUTION MINING (MUNGARI)", sites: ['MUNGARI'], abn: "4" },
+    { company: "RED 5 LIMITED", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'], abn: "5" }
   ])
   const [selectedSites, setSelectedSites] = useState({})
-  const [abn, setAbn] = useState("")
+  const [abnNum, setAbnNum] = useState("")
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
 
   const handleConfirmPassword = (e) => {
@@ -64,7 +65,7 @@ const RegisterPageComponent = ({
     setConfirmPassword(value);
     setPasswordsMatch(value === password);
   };
-
+  
   // submit form
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -79,18 +80,17 @@ const RegisterPageComponent = ({
     const location = userLocation;
     //const company = form.company?.value.toUpperCase();
     const company = userCompany;
-    const role = form.role.value;
+    const role = userRole;
     const deliveryAddress = "new user";
     const billAddress = "new user";
     //TODO if need deliveryAddress again, change the value from location to deliveryAddress.
-    const state = form.state.value;
-    const postCode = form.postCode.value;
-    const abn = form.abn?.value;
+    //const state = form.state.value;
+    //const postCode = form.postCode.value;
+    const abn = abnNum;
     // if (email.endsWith("@slrltd.com") || email.endsWith("@slrltd.com.au") || email.endsWith("@silverlakeresources.com.au")) {
     //   if (location.toUpperCase() === "RANDALLS" || location.toUpperCase() === "RANDALLS MILLS") { setStoreEmail("randallssupply@silverlakeresources.com.au") }
     //   if (location.toUpperCase() === "DAISY MILANO" || location.toUpperCase() === "DAISY") { setStoreEmail("daisymilano@silverlakeresources.com.au") }
     //   if (location.toUpperCase() === "MOUNT MONGER" || location.toUpperCase() === "MMO") { setStoreEmail("mountmonger@silverlakeresources.com.au") }
-
     // }
     /* 下面是一些form里面的判定 validation的判定 */
     //console.log(company, location);
@@ -109,8 +109,8 @@ const RegisterPageComponent = ({
       role &&
       deliveryAddress &&
       billAddress &&
-      state &&
-      postCode &&
+      //state &&
+      //postCode &&
       form.password.value === form.confirmPassword.value &&
       abn
     ) {
@@ -128,8 +128,8 @@ const RegisterPageComponent = ({
         role,
         deliveryAddress,
         billAddress,
-        state,
-        postCode,
+        //state,
+        //postCode,
         abn
       )
         .then((data) => {
@@ -163,13 +163,13 @@ const RegisterPageComponent = ({
             form.password.value = "";
             form.phone.value = "";
             form.mobile.value = "";
-            // form.location.value = "";
-            // form.company.value = "";
+            form.location.value = "";
+            form.company.value = "";
             form.role.value = "";
             form.deliveryAddress.value = "";
             form.billAddress.value = "";
-            form.state.value = "";
-            form.postCode.value = "";
+            //form.state.value = "";
+            // form.postCode.value = "";
             form.abn.value = "";
             setValidated(false);
             setEmailSent(true);
@@ -181,12 +181,13 @@ const RegisterPageComponent = ({
           }
         })
         // incase some error写一个catch error的function
-        .catch((er) =>
+        .catch((er) => {
           setRegisterUserResponseState({
             error: er.response.data.message
               ? er.response.data.message
               : er.response.data,
           })
+        }
         );
     } else {
       console.log("Something wrong");
@@ -234,37 +235,47 @@ const RegisterPageComponent = ({
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
             setUserLocation(userSites[0].sites[0])
+            setAbnNum(userSites[0].abn)
             //handleSelectedSites("SILVERLAKE RESOURCES")
             break;
           case 'silverlakeresources.com.au':
             setUserCompany("SILVERLAKE RESOURCES")
             setSelectedSites(userSites[0])
             setUserLocation(userSites[0].sites[0])
+            setAbnNum(userSites[0].abn)
             break;
           case 'ctlservices.com.au':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
             setUserLocation(userSites[1].sites[0])
+            setAbnNum(userSites[1].abn)
+
             break;
           case 'ctlaus.com':
             setUserCompany("CTL AUSTRALIA")
             setSelectedSites(userSites[1])
             setUserLocation(userSites[1].sites[0])
+            setAbnNum(userSites[1].abn)
+
             break;
           case 'focusminerals.com.au':
             setUserCompany("FOCUS MINERALS OPERATIONS")
             setSelectedSites(userSites[2])
             setUserLocation(userSites[2].sites[0])
+            setAbnNum(userSites[2].abn)
             break;
           case 'evolutionmining.com':
             setUserCompany("EVOLUTION MINING (MUNGARI)")
             setSelectedSites(userSites[3])
             setUserLocation(userSites[3].sites[0])
+            setAbnNum(userSites[3].abn)
+
             break;
           case 'red5limited.com.au':
             setUserCompany("RED 5 LIMITED")
             setSelectedSites(userSites[4])
             setUserLocation(userSites[4].sites[0])
+            setAbnNum(userSites[4].abn)
             //handleSelectedSites("SILVERLAKE RESOURCES")
             break;
           default:
@@ -272,9 +283,11 @@ const RegisterPageComponent = ({
             // setUserLocation(tempCompany+"site-1")
             setUserCompany("No Company")
             setUserLocation("No Site")
+            setUserRole("No Role")
             setShow(false)
             setShowLocation(false)
             setShowAbn(true)
+            setAbnNum("No abn")
             break;
         }
       }
@@ -282,7 +295,7 @@ const RegisterPageComponent = ({
   };
   const handleAbn = (e) => {
     const newValue = e.target.value;
-    setAbn(newValue);
+    setAbnNum(newValue);
   };
 
 
@@ -308,11 +321,15 @@ const RegisterPageComponent = ({
     setUserCompany(e.target.value)
   }
 
+  const handleChangeRole = (e) => {
+    setUserRole(e.target.value)
+  }
+
   return (
     <Container>
       <Row className="mt-4 justify-content-md-center">
         <Col md={6} className="w-100">
-          {/* <h2>Register</h2> */}
+          <h2>Register</h2>
           <Form
             noValidate
             validated={validated}
@@ -452,6 +469,7 @@ const RegisterPageComponent = ({
                   placeholder="State"
                   value="WA"
                   required
+                  style={{ display: "none" }}
                 />
                 <Form.Control.Feedback type="invalid">
                   {" "}
@@ -556,7 +574,8 @@ const RegisterPageComponent = ({
                     type="text"
                     name="role"
                     placeholder="Job Title"
-                    // value="Employee"
+                    onChange={handleChangeRole}
+                    value={userRole}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please mention your Job Title.{" "}
@@ -610,7 +629,7 @@ const RegisterPageComponent = ({
              mask={abnMask}
              placeholder="ABN"
              guide={false}
-             value={abn}
+             value={abnNum}
              onChange={handleAbn}
             //  id="abn"
              render={(ref, props) => <Form.Control
@@ -629,7 +648,7 @@ const RegisterPageComponent = ({
            </Form.Control.Feedback>
          </Form.Group>
 
-            ) : null}
+            ) : ("")}
 
             {/* <Form.Group className="mb-3">
               <Form.Check
