@@ -78,7 +78,43 @@ const getUniforms = async (req, res, next) => {
             var childCategoryName = req.query.childCategoryName;
             var fourCategoryName = req.query.fourCategoryName;
             var fiveCategoryName = req.query.fiveCategoryName;
-            if (fiveCategoryName) {
+            var sixCategoryName = req.query.sixCategoryName;
+            var sevenCategoryName = req.query.sevenCategoryName;
+            if (sevenCategoryName) {
+                regEx = new RegExp(
+                    "^" +
+                    a +
+                    "/" +
+                    subCategoryName +
+                    "/" +
+                    childCategoryName +
+                    "/" +
+                    fourCategoryName +
+                    "/" +
+                    fiveCategoryName +
+                    "/" +
+                    sixCategoryName +
+                    "/" +
+                    sevenCategoryName +
+                    "(?![\\w-])"
+                );
+            } else if (sixCategoryName) {
+                regEx = new RegExp(
+                    "^" +
+                    a +
+                    "/" +
+                    subCategoryName +
+                    "/" +
+                    childCategoryName +
+                    "/" +
+                    fourCategoryName +
+                    "/" +
+                    fiveCategoryName +
+                    "/" +
+                    sixCategoryName +
+                    "(?![\\w-])"
+                );
+            } else if (fiveCategoryName) {
                 regEx = new RegExp(
                     "^" +
                     a +

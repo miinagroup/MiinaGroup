@@ -12,18 +12,20 @@ const getProducts = async (
   childCategoryName = "",
   fourCategoryName = "",
   fiveCategoryName = "",
-  brandName = "", 
+  sixCategoryName = "",
+  sevenCategoryName = "",
+  brandName = "",
   userInfo
 ) => {
   const search = searchQuery ? `search/${searchQuery}/` : "";
   const category = categoryName ? `category/${categoryName}/` : "";
   const brand = brandName ? `brand/${brandName}/` : "";
   const sort = sortOrder ? `sort/${sortOrder}/` : "";
-  const url = `/api/products/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
-  const urlVisitor = `/api/products/visitor/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
-  
+  const url = `/api/products/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}&brandName=${brandName}`;
+  const urlVisitor = `/api/products/visitor/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}&brandName=${brandName}`;
+
   try {
-    if(Object.keys(userInfo).length === 0) {
+    if (Object.keys(userInfo).length === 0) {
       var { data } = await axios.get(urlVisitor);
     } else {
       var { data } = await axios.get(url);
@@ -44,10 +46,12 @@ const getProductCategories = async (
   subCategoryName = "",
   childCategoryName = "",
   fourCategoryName = "",
-  fiveCategoryName = ""
+  fiveCategoryName = "",
+  sixCategoryName = "",
+  sevenCategoryName = ""
 ) => {
   const category = categoryName ? `categoryBlocks/${categoryName}/` : "";
-  const url = `/api/categories/${category}?subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}`;
+  const url = `/api/categories/${category}?subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}`;
   var { data } = await axios.get(url);
   // console.log('我是data,ProductListPage', data);
   // console.log('search', categoryName);
@@ -61,6 +65,8 @@ const ProductListPage = () => {
   var childCategoryName = params.get("childCategoryName") || "";
   var fourCategoryName = params.get("fourCategoryName") || "";
   var fiveCategoryName = params.get("fiveCategoryName") || "";
+  var sixCategoryName = params.get("sixCategoryName") || "";
+  var sevenCategoryName = params.get("sevenCategoryName") || "";
 
   var brandName = params.get("brandName") || "";
 
@@ -88,6 +94,8 @@ const ProductListPage = () => {
       childCat={childCategoryName}
       fourCat={fourCategoryName}
       fiveCat={fiveCategoryName}
+      sixCat={sixCategoryName}
+      sevenCat={sevenCategoryName}
       brandName={brandName}
       getProductCategories={getProductCategories}
       createQuote={createQuote}

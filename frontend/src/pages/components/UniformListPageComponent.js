@@ -25,6 +25,8 @@ const UniformListPageComponent = ({
     childCat = "",
     fourCat = "",
     fiveCat = "",
+    sixCat = "",
+    sevenCat = "",
     brandName = "",
 }) => {
 
@@ -117,7 +119,9 @@ const UniformListPageComponent = ({
                         subCat,
                         childCat,
                         fourCat,
-                        fiveCat
+                        fiveCat,
+                        sixCat,
+                        sevenCat
                     );
                     setUniformCategories(categories.map((item) => item.name));
                     if (categories?.length < 2) {
@@ -129,6 +133,8 @@ const UniformListPageComponent = ({
                             childCat,
                             fourCat,
                             fiveCat,
+                            sixCat,
+                            sevenCat,
                             brandName
                         );
                         const selectedBrands = await getSelectedSuppliersByCompanyName(userInfo.company);
@@ -155,6 +161,8 @@ const UniformListPageComponent = ({
                         childCat,
                         fourCat,
                         fiveCat,
+                        sixCat,
+                        sevenCat,
                         brandName
                     );
                     const selectedBrands = await getSelectedSuppliersByCompanyName(userInfo.company);
@@ -189,6 +197,8 @@ const UniformListPageComponent = ({
         childCat,
         fourCat,
         fiveCat,
+        sixCat,
+        sevenCat,
         pageNumParam,
         searchQuery,
     ]);
@@ -201,6 +211,8 @@ const UniformListPageComponent = ({
             if (childCat) baseCategory += `/${childCat}`;
             if (fourCat) baseCategory += `/${fourCat}`;
             if (fiveCat) baseCategory += `/${fiveCat}`;
+            if (sixCat) baseCategory += `${sixCat}`;
+            if (sevenCat) baseCategory += `${sevenCat}`;
 
             const baseDepth = baseCategory.split("/").length;
 
@@ -213,7 +225,7 @@ const UniformListPageComponent = ({
                     .map((item) => item.split("/")[baseDepth])
             );
         }
-    }, [uniformCategories, categoryName, subCat, childCat, fourCat, fiveCat]);
+    }, [uniformCategories, categoryName, subCat, childCat, fourCat, fiveCat, sixCat, sevenCat]);
 
     const minimumPrice = (stock) => {
         const priceList = []
@@ -250,6 +262,8 @@ const UniformListPageComponent = ({
                                             childCategoryName={childCat}
                                             fourCategoryName={fourCat}
                                             fiveCategoryName={fiveCat}
+                                            sixCategoryName={sixCat}
+                                            sevenCategoryName={sevenCat}
                                             brandName={brandName}
                                             paginationLinksNumber={paginationLinksNumber}
                                             pageNum={pageNum}
@@ -277,6 +291,8 @@ const UniformListPageComponent = ({
                                     childCat={childCat}
                                     fourCat={fourCat}
                                     fiveCat={fiveCat}
+                                    sixCat={sixCat}
+                                    sevenCat={sevenCat}
                                 />
                             ))
                         ) : uniformCategories?.length < 2 && uniforms?.length === 0 ? null : (
@@ -311,6 +327,8 @@ const UniformListPageComponent = ({
                             childCategoryName={childCat}
                             fourCategoryName={fourCat}
                             fiveCategoryName={fiveCat}
+                            sixCategoryName={sixCat}
+                            sevenCategoryName={sevenCat}
                             brandName={brandName}
                             paginationLinksNumber={paginationLinksNumber}
                             pageNum={pageNum}

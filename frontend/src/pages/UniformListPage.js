@@ -17,6 +17,8 @@ const getUniforms = async (
     childCategoryName = "",
     fourCategoryName = "",
     fiveCategoryName = "",
+    sixCategoryName = "",
+    sevenCategoryName = "",
     brandName = ""
 ) => {
     const search = searchQuery ? `search/${searchQuery}/` : "";
@@ -38,10 +40,12 @@ const getUniformCategories = async (
     subCategoryName = "",
     childCategoryName = "",
     fourCategoryName = "",
-    fiveCategoryName = ""
+    fiveCategoryName = "",
+    sixCategoryName = "",
+    sevenCategoryName = ""
 ) => {
     const category = categoryName ? `uniformCategoryBlocks/${categoryName}/` : "";
-    const url = `/api/uniformCategories/${category}?subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}`;
+    const url = `/api/uniformCategories/${category}?subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}`;
     var { data } = await axios.get(url);
     return data;
 };
@@ -57,6 +61,8 @@ const UniformListPage = () => {
     var childCategoryName = params.get("childCategoryName") || "";
     var fourCategoryName = params.get("fourCategoryName") || "";
     var fiveCategoryName = params.get("fiveCategoryName") || "";
+    var sixCategoryName = params.get("sixCategoryName") || "";
+    var sevenCategoryName = params.get("sevenCategoryName") || "";
 
     //const categories = ["uniforms/shirts", "uniforms/pant", "uniforms/boots"]
 
@@ -76,6 +82,8 @@ const UniformListPage = () => {
             childCat={childCategoryName}
             fourCat={fourCategoryName}
             fiveCat={fiveCategoryName}
+            sixCat={sixCategoryName}
+            sevenCat={sevenCategoryName}
             getUniformCategories={getUniformCategories}
             getSelectedSuppliersByCompanyName={getSelectedSuppliersByCompanyName}
         />

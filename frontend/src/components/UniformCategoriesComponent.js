@@ -9,7 +9,9 @@ const UniformCategoriesComponent = ({
     subCat,
     childCat,
     fourCat,
-    fiveCat
+    fiveCat,
+    sixCat,
+    sevenCat
 }) => {
     const onHover = {
         cursor: "pointer",
@@ -41,6 +43,20 @@ const UniformCategoriesComponent = ({
             baseCategory += `&fourCategoryName=${fourCat}&fiveCategoryName=${category}`;
         } else {
             baseCategory += `&fourCategoryName=${fourCat}`;
+        }
+    }
+    if (fiveCat) {
+        if (!sixCat) {
+            baseCategory += `&fiveCategoryName=${fiveCat}&sixCategoryName=${category}`;
+        } else {
+            baseCategory += `&fiveCategoryName=${fiveCat}`;
+        }
+    }
+    if (sixCat) {
+        if (!sevenCat) {
+            baseCategory += `&sixCategoryName=${sixCat}&sevenCategoryName=${category}`;
+        } else {
+            baseCategory += `&sixCategoryName=${sixCat}`;
         }
     }
 

@@ -56,7 +56,7 @@ const getCategories = async (req, res, next) => {
   }
 };
 
-const getSubcategoriesT2 = async (req, res, next ) => {
+const getSubcategoriesT2 = async (req, res, next) => {
   try {
     let subCategories = {};
 
@@ -84,7 +84,7 @@ const getSubcategoriesT2 = async (req, res, next ) => {
     });
     res.json(subCategories);
   } catch (error) {
-    
+
   }
 }
 
@@ -151,9 +151,45 @@ const categoriesForProductList = async (req, res, next) => {
       const childCategoryName = req.query.childCategoryName;
       const fourCategoryName = req.query.fourCategoryName;
       var fiveCategoryName = req.query.fiveCategoryName;
+      var sixCategoryName = req.query.sixCategoryName;
+      var sevenCategoryName = req.query.sevenCategoryName;
 
 
-      if (fiveCategoryName) {
+      if (sevenCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "/" +
+          fiveCategoryName +
+          "/" +
+          sixCategoryName +
+          "/" +
+          sevenCategoryName +
+          "(?![\\w-])"
+        );
+      } else if (sixCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "/" +
+          fiveCategoryName +
+          "/" +
+          sixCategoryName +
+          "(?![\\w-])"
+        );
+      } else if (fiveCategoryName) {
         regEx = new RegExp(
           "^" +
           a +
