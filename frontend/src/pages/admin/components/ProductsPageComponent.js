@@ -166,49 +166,113 @@ const ProductsPageComponent = ({
   }, [productDeleted])
 
   const [productsCount, setProductsCount] = useState([])
+  // useEffect(() => {
+  //   if (products) {
+  //     productsCount.length = 0
+  //     let productsWithoutPrice = []
+  //     let productsWithPrice = []
+  //     let productsWithoutImage = []
+  //     let productsWithoutDownloads = []
+  //     products?.map((product) => {
+  //       if (product.displayPrice === 0 || product.displayPrice === null) {
+  //         productsWithoutPrice.push(product)
+  //       } else {
+  //         productsWithPrice.push(product)
+  //       }
+  //       if (product.images) {
+  //         product.images.map((image) => {
+  //           if (image.path.includes("Image_Coming_Soon.jpg")) {
+  //             productsWithoutImage.push(product)
+  //           }
+  //         })
+  //       }
+  //       if (!product.pdfs || product.pdfs.length === 0) {
+  //         productsWithoutDownloads.push(product)
+  //       }
+  //     })
+  //     console.log(productsWithoutDownloads.length);
+
+  //     let productsWithoutImageInOrders = []
+  //     productsWithoutImage?.map((product) => {
+  //       orders?.map((order) => {
+  //         order.cartItems?.map((cartItem) => {
+  //           if (cartItem.productId === product._id)
+  //             productsWithoutImageInOrders.push(product)
+  //         })
+  //       })
+  //     })
+  //     //console.log("productsWithoutImageInOrders", productsWithoutImageInOrders);
+
+  //     setProductsCount([...productsCount,
+  //     {
+  //       totalProductsCount: products.length,
+  //       productsWithPriceCount: productsWithPrice.length,
+  //       productsWithoutPriceCount: productsWithoutPrice.length,
+  //       productsWithoutImage: productsWithoutImage.length,
+  //       productsWithoutImageInOrders: productsWithoutImageInOrders.length
+  //     }])
+  //   }
+  // }, [products])
+
   useEffect(() => {
     if (products) {
-      productsCount.length = 0
-      let productsWithoutPrice = []
-      let productsWithPrice = []
-      let productsWithoutImage = []
-      products?.map((product) => {
+      // Initialize counters
+      let productsWithPriceCount = 0;
+      let productsWithoutPriceCount = 0;
+      let productsWithoutImageCount = 0;
+      let productsWithoutDownloadsCount = 0;
+      let productsWithoutImageInOrdersCount = 0;
+
+      // Iterate through products
+      products.forEach((product) => {
+        // Count products with and without price
         if (product.displayPrice === 0 || product.displayPrice === null) {
-          productsWithoutPrice.push(product)
+          productsWithoutPriceCount++;
         } else {
-          productsWithPrice.push(product)
+          productsWithPriceCount++;
         }
+
+        // Count products without images
         if (product.images) {
-          product.images.map((image) => {
+          product.images.forEach((image) => {
             if (image.path.includes("Image_Coming_Soon.jpg")) {
-              productsWithoutImage.push(product)
+              productsWithoutImageCount++;
             }
-          })
+          });
         }
-      })
-      console.log(productsWithoutImage);
 
-      let productsWithoutImageInOrders = []
-      productsWithoutImage?.map((product) => {
-        orders?.map((order) => {
-          order.cartItems?.map((cartItem) => {
-            if (cartItem.productId === product._id)
-              productsWithoutImageInOrders.push(product)
-          })
-        })
-      })
-      console.log("productsWithoutImageInOrders", productsWithoutImageInOrders);
+        // Count products without downloads
+        if (!product.pdfs || product.pdfs.length === 0) {
+          productsWithoutDownloadsCount++;
+        }
+      });
 
-      setProductsCount([...productsCount,
-      {
-        totalProductsCount: products.length,
-        productsWithPriceCount: productsWithPrice.length,
-        productsWithoutPriceCount: productsWithoutPrice.length,
-        productsWithoutImage: productsWithoutImage.length,
-        productsWithoutImageInOrders: productsWithoutImageInOrders.length
-      }])
+      // Count products without images that appear in orders
+      products.forEach((product) => {
+        if (product.images?.some((image) => image.path.includes("Image_Coming_Soon.jpg"))) {
+          orders?.forEach((order) => {
+            order.cartItems?.forEach((cartItem) => {
+              if (cartItem.productId === product._id) {
+                productsWithoutImageInOrdersCount++;
+              }
+            });
+          });
+        }
+      });
+
+      // Set the counts
+      setProductsCount([
+        {
+          totalProductsCount: products.length,
+          productsWithPriceCount,
+          productsWithoutPriceCount,
+          productsWithoutImage: productsWithoutImageCount,
+          productsWithoutImageInOrders: productsWithoutImageInOrdersCount,
+          productsWithoutDownloads: productsWithoutDownloadsCount,
+        },
+      ]);
     }
-  }, [products])
+  }, [products, orders]);
 
   const pullStockItemsOut = (products) => {
     return products.map((product) => {
@@ -260,7 +324,7 @@ const ProductsPageComponent = ({
           <div className="priceRange_item">Products Without Pricing : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutPriceCount}</label></div>
           <div className="priceRange_item">Products Without Images : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImage}</label></div>
           <div className="priceRange_item">Products Without Images in Orders : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImageInOrders}</label></div>
-
+          <div className="priceRange_item">Products Without Downloads : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutDownloads}</label></div>
         </div>
         <h1>
           Product List{" "}
