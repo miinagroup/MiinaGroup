@@ -41,6 +41,7 @@ const {
 } = require("../middleware/verifyAuthToken");
 
 // router.get("/visitor/search/:searchQuery", searchProductsForVisitor);
+router.get("/visitor/search", searchProducts);
 router.get("/visitor/category/:categoryName", getProductsVisitor);
 router.get("/get-one/:id", getProductById);
 

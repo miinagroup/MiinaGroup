@@ -2074,7 +2074,7 @@ const searchProducts = async (req, res, next) => {
   try {
     let skuSearch = true;
     const { searchQuery } = req.query;
-    const limit = parseInt(req.query.limit) || 12;
+    const limit = parseInt(req.query.limit) || 24;
     const offset = parseInt(req.query.offset) || 0;
     let query = searchQuery.split(/[\s-]+/);
     const pageNum = Number(req.query.pageNum) || 1;
@@ -2244,13 +2244,13 @@ const searchProducts = async (req, res, next) => {
 
       let searchCondition = {}
 
-      if (req.user.email.endsWith("@slrltd.com") ||
-        req.user.email.endsWith("@silverlakeresources.com.au") ||
-        req.user.email.endsWith("@red5limited.com.au") ||
-        req.user.email.endsWith("@ctlservices.com.au") ||
-        req.user.email.endsWith("@ctlaus.com") ||
-        req.user.email.endsWith("@focusminerals.com.au") ||
-        req.user.email.endsWith("@evolutionmining.com")) {
+      if (req.user?.email.endsWith("@slrltd.com") ||
+        req.user?.email.endsWith("@silverlakeresources.com.au") ||
+        req.user?.email.endsWith("@red5limited.com.au") ||
+        req.user?.email.endsWith("@ctlservices.com.au") ||
+        req.user?.email.endsWith("@ctlaus.com") ||
+        req.user?.email.endsWith("@focusminerals.com.au") ||
+        req.user?.email.endsWith("@evolutionmining.com")) {
 
         const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
         productFound = productFound.concat(supplierMatches);
@@ -2287,13 +2287,13 @@ const searchProducts = async (req, res, next) => {
       const regExactQueries = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
       const supplierFilters = query.map(term => (new RegExp(`^${term.replace(/\s/g, '\\s*')}$`, 'i')));
 
-      if (req.user.email.endsWith("@slrltd.com") ||
-        req.user.email.endsWith("@silverlakeresources.com.au") ||
-        req.user.email.endsWith("@red5limited.com.au") ||
-        req.user.email.endsWith("@ctlservices.com.au") ||
-        req.user.email.endsWith("@ctlaus.com") ||
-        req.user.email.endsWith("@focusminerals.com.au") ||
-        req.user.email.endsWith("@evolutionmining.com")) {
+      if (req.user?.email.endsWith("@slrltd.com") ||
+        req.user?.email.endsWith("@silverlakeresources.com.au") ||
+        req.user?.email.endsWith("@red5limited.com.au") ||
+        req.user?.email.endsWith("@ctlservices.com.au") ||
+        req.user?.email.endsWith("@ctlaus.com") ||
+        req.user?.email.endsWith("@focusminerals.com.au") ||
+        req.user?.email.endsWith("@evolutionmining.com")) {
 
         const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
         productFound = productFound.concat(tagsMatches);

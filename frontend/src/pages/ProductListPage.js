@@ -95,6 +95,15 @@ const ProductListPage = () => {
     }
   }
 
+  const getProductsBySearchForVisitor = async (offset, limit, searchQuery) => {
+    try {
+      const response = await axios.get(`/api/products/visitor/search?offset=${offset}&limit=${limit}&searchQuery=${searchQuery}`);
+      return response;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <ProductListPageComponent
       getUser={getUser}
@@ -111,6 +120,7 @@ const ProductListPage = () => {
       createQuote={createQuote}
       userInfo={userInfo}
       getProductsBySearch={getProductsBySearch}
+      getProductsBySearchForVisitor={getProductsBySearchForVisitor}
     />
   );
 };

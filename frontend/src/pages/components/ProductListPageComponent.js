@@ -31,7 +31,8 @@ const ProductListPage = ({
   sevenCat = "",
   brandName = "",
   userInfo,
-  getProductsBySearch
+  getProductsBySearch,
+  getProductsBySearchForVisitor
 }) => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
@@ -314,7 +315,7 @@ const ProductListPage = ({
   const [searchedData, setSearchedData] = useState([]);
   const [offset, setOffset] = useState(0);
   const [previousQuery, setPreviousQuery] = useState("");
-  const limit = 12;
+  const limit = 24;
 
   const fetchData = useCallback(async () => {
     setLoadingTwo(true);
@@ -322,17 +323,22 @@ const ProductListPage = ({
        let response;
      if(searchQuery !== previousQuery) {
         //  setSearchedData([]);
-         response = await getProductsBySearch(0, limit, searchQuery);
+        if (Object.keys(userInfo).length === 0) {
+          response = await getProductsBySearchForVisitor(0, limit, searchQuery);
+        } else {
+          response = await getProductsBySearch(0, limit, searchQuery);
+        }
        } else {
-        response = await getProductsBySearch(offset, limit, searchQuery);
+        if (Object.keys(userInfo).length === 0) {
+          response = await getProductsBySearchForVisitor(offset, limit, searchQuery);
+        } else {
+          response = await getProductsBySearch(offset, limit, searchQuery);
+        }
      }
       
       const newData = response.data.products;
       const hasMore = response.data.hasMore;
       
-      console.log("hasMore", hasMore);
-
-
       if (searchedData.length === 0 ) {
         setSearchedData(newData)
         setOffset(prevOffset => prevOffset + limit);
