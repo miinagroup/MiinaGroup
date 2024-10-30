@@ -10,6 +10,7 @@ import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
 //import { Tooltip } from '@mui/material';
 import { useTrackEvents } from "../../trackEvents/useTrackEvents";
+import { useDispatch, useSelector } from "react-redux";
 
 const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   const [orders, setOrders] = useState([]);
@@ -17,6 +18,7 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   const [filterValue, setFilterValue] = useState("");
   const [monthTotal, setMothTotal] = useState(0);
   const [monthProfitMargin, setMonthProfitMargin] = useState(0)
+  const { userInfo } = useSelector((state) => state.userRegisterLogin);
   // orders.push("cartSubtotal", orders.orderTotal.cartSubtotal);
   // orders.push("username", orders.user.name + orders.user.lastName);
 
@@ -270,7 +272,11 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
             </div>
             <div className="col-md-5" style={{ width: "33%", textAlign: "left", paddingLeft: "13%" }}>
               This Month's Order Total =  <b>${new Intl.NumberFormat('en-US').format(monthTotal)}</b><br />
-              This Month's Profit Margin =  <b>{monthProfitMargin}%</b>
+              {userInfo.isSalesAdmin === true ? (
+                <>
+                  This Month's Profit Margin =  <b>{monthProfitMargin}%</b>
+                </>
+              ) : ("")}
             </div>
 
           </div>
