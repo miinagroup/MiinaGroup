@@ -972,7 +972,7 @@ const ProductDetailsPageComponent = ({
                                     (100 *
                                       (selectedStock?.price -
                                         selectedStock?.purchaseprice)) /
-                                    selectedStock?.purchaseprice
+                                    selectedStock?.price
                                   ).toFixed(2)}
                                     %</h6>
                                   </td>
