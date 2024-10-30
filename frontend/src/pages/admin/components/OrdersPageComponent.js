@@ -15,8 +15,8 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   const [orders, setOrders] = useState([]);
   const [orderDeleted, setOrderDeleted] = useState(false);
   const [filterValue, setFilterValue] = useState("");
-  const [monthTotal, setMothTotal] = useState();
-
+  const [monthTotal, setMothTotal] = useState(0);
+  const [monthProfitMargin, setMonthProfitMargin] = useState(0)
   // orders.push("cartSubtotal", orders.orderTotal.cartSubtotal);
   // orders.push("username", orders.user.name + orders.user.lastName);
 
@@ -229,15 +229,28 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     const thisMonth = new Date().getMonth();
     const thisYear = new Date().getFullYear()
     let totalValue = 0
+    let purchasePriceTotal = 0
+    let priceTotal = 0
     orders.map((order) => {
       const month = new Date(order.createdAt).getMonth();
       const year = new Date(order.createdAt).getFullYear();
       // console.log(thisYear, year, thisMonth, month);
       if (month === thisMonth && year === thisYear) {
         totalValue = totalValue + order.orderTotal.cartSubtotal
-      }
 
+        const cartItems = order.cartItems
+        cartItems.forEach(item => {
+          if (item.cartProducts[0].purchaseprice) {
+            purchasePriceTotal = purchasePriceTotal + item.cartProducts[0].purchaseprice
+          }
+          if (item.cartProducts[0].price) {
+            priceTotal = priceTotal + item.cartProducts[0].price
+          }
+        })
+      }
     })
+    const marginProfit = (((priceTotal - purchasePriceTotal) / priceTotal) * 100).toFixed(2)
+    setMonthProfitMargin(marginProfit)
     setMothTotal(totalValue.toFixed(2))
   }, [orders])
 
@@ -249,11 +262,15 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
         </Col>
         <Col md={10}>
           <div className="row">
-            <div className="col-md-5" style={{ width: "50%" }}>
+            <div className="col-md-5" style={{ width: "33%" }}>
               <h1>ORDERS </h1>
             </div>
-            <div className="col-md-5" style={{ width: "50%", textAlign: "right" }}>
-              This Month's Order Total =  <b>${new Intl.NumberFormat('en-US').format(monthTotal)}</b>
+            <div className="col-md-5" style={{ width: "33%" }}>
+
+            </div>
+            <div className="col-md-5" style={{ width: "33%", textAlign: "left", paddingLeft: "13%" }}>
+              This Month's Order Total =  <b>${new Intl.NumberFormat('en-US').format(monthTotal)}</b><br />
+              This Month's Profit Margin =  <b>{monthProfitMargin}%</b>
             </div>
 
           </div>

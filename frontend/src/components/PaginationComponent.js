@@ -11,6 +11,8 @@ const PaginationComponent = ({
   childCategoryName,
   fourCategoryName,
   fiveCategoryName,
+  sixCategoryName,
+  sevenCategoryName,
   brandName,
   searchQuery,
   paginationLinksNumber,
@@ -23,11 +25,11 @@ const PaginationComponent = ({
   if (categoryName.includes("UNIFORM")) {
     url = `/uniform-list?categoryName=${categoryName || ""
       }&subCategoryName=${subCategoryName || ""
-      }&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&searchQuery=${searchQuery}&brandName=${brandName}&`
+      }&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}&searchQuery=${searchQuery}&brandName=${brandName}&`
   } else {
     url = `/product-list?categoryName=${categoryName || ""
       }&subCategoryName=${subCategoryName || ""
-      }&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&searchQuery=${searchQuery}&brandName=${brandName}&`
+      }&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}&searchQuery=${searchQuery}&brandName=${brandName}&`
   }
 
   // return console.log(pageNum);

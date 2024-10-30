@@ -731,6 +731,18 @@ const ProductDetailsPageComponent = ({
                           <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}`}>{catList[4]}</a>
                         </>
                       ) : ("")}
+                      {catList[5] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}&sixCategoryName=${catList[5]}`}>{catList[5]}</a>
+                        </>
+                      ) : ("")}
+                      {catList[6] ? (
+                        <>
+                          <label>&nbsp; /&nbsp; </label>
+                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}&sixCategoryName=${catList[5]}&sevenCategoryName=${catList[6]}`}>{catList[6]}</a>
+                        </>
+                      ) : ("")}
                     </span>
                   </>
                 ) : ("")
@@ -960,7 +972,7 @@ const ProductDetailsPageComponent = ({
                                     (100 *
                                       (selectedStock?.price -
                                         selectedStock?.purchaseprice)) /
-                                    selectedStock?.purchaseprice
+                                    selectedStock?.price
                                   ).toFixed(2)}
                                     %</h6>
                                   </td>

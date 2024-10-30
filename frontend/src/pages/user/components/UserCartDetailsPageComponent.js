@@ -1,4 +1,4 @@
-import { Container,Col,Form,ListGroup,InputGroup,Button, Row} from "react-bootstrap";
+import { Container, Col, Form, ListGroup, InputGroup, Button, Row } from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -318,6 +318,7 @@ const UserCartDetailsPageComponent = ({
               count: item.cartProducts[0].count,
               ctlsku: item.cartProducts[0].ctlsku,
               price: item.cartProducts[0].price,
+              purchaseprice: item.cartProducts[0].purchaseprice,
               quantity: item.cartProducts[0].quantity,
               suppliedQty: item.cartProducts[0].quantity,
               backOrder: 0,
@@ -561,19 +562,19 @@ const UserCartDetailsPageComponent = ({
   };
 
   const handleSameAddressChange = () => {
-      setSameAddress(!sameAddress)
-      if (!sameAddress) {
-        setNewDeliveryAddress(newBillingAddress);
-      } else {
-        setNewDeliveryAddress({
-          addressLineDelivery: '',
-          cityDelivery: '',
-          stateProvinceRegionDelivery: '',
-          ZIPostalCodeDelivery: '',
-          countryDelivery: ''
-        });
-      }
-    };
+    setSameAddress(!sameAddress)
+    if (!sameAddress) {
+      setNewDeliveryAddress(newBillingAddress);
+    } else {
+      setNewDeliveryAddress({
+        addressLineDelivery: '',
+        cityDelivery: '',
+        stateProvinceRegionDelivery: '',
+        ZIPostalCodeDelivery: '',
+        countryDelivery: ''
+      });
+    }
+  };
 
   const addNewAddress = async (event) => {
     event.preventDefault();
@@ -694,17 +695,17 @@ const UserCartDetailsPageComponent = ({
       <Container className="userCartDetailPage">
         <div className="mt-4 d-flex cart_detail_container">
           <div>
-          <div
-            style={{ display: "flex", alignItems: "center", justifyContent: "space-between"}}
-            className="mb-1"
-          >
-            <h1>CART DETAILS</h1>
-          </div>
-          {(hasProducts === 1) && (
-              <Row className="mb-4 p-0" style={{fontSize: "12px", width: "100%", maxWidth: "915px"}}>
-                   <div className="d-flex justify-content-between cart_detail_btns" style={{width: "100%"}}>
-                    <div className="d-flex gap-5 cart_detail_btns_email_download">
-                   <div>
+            <div
+              style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+              className="mb-1"
+            >
+              <h1>CART DETAILS</h1>
+            </div>
+            {(hasProducts === 1) && (
+              <Row className="mb-4 p-0" style={{ fontSize: "12px", width: "100%", maxWidth: "915px" }}>
+                <div className="d-flex justify-content-between cart_detail_btns" style={{ width: "100%" }}>
+                  <div className="d-flex gap-5 cart_detail_btns_email_download">
+                    <div>
                       <PDFDownloadLink
                         document={
                           <CartPrint
@@ -718,7 +719,7 @@ const UserCartDetailsPageComponent = ({
                         }
                         fileName={userInfo.name + "'s Cart"}
                         className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
-                        style={{width: "100%", maxWidth: "200px", fontSize: "12px"}}
+                        style={{ width: "100%", maxWidth: "200px", fontSize: "12px" }}
                       >
                         <span>
                           Download Cart <i className="bi bi-file-earmark-pdf"></i>
@@ -726,69 +727,69 @@ const UserCartDetailsPageComponent = ({
                       </PDFDownloadLink>
                     </div>
                     <div >
-                     <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
-                    
-                      <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{width: "300px"}}>
-                    <InputGroup size="sm">
-                      <Form.Control
-                        className="p-0 ps-2"
-                        onChange={enterManagerEmail}
-                        type="string"
-                        name="MangerEmail"
-                        placeholder={`Enter email`}
-                        required
-                        aria-label="Recipient's username"
-                        aria-describedby="basic-addon2"
-                        style={{ border: "none", fontSize:"12px" }}
-                      />
-                      <InputGroup.Text
-                        id="basic-addon2"
-                        style={{ border: "none", borderRadius: "0", fontSize:"12px" }}
-                      >
-                        @{userEmail}
-                      </InputGroup.Text>
-                    </InputGroup>
-                    <Form.Control.Feedback type="invalid">
-                      Please Enter Your Manager's Email.{" "}
-                    </Form.Control.Feedback>
-                   </ListGroup.Item>
-                    
-                      <div className="d-grid gap-2">
-                      <QuoeteManagementApproval quotePriceData={quotePriceData} />
+                      <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
+
+                        <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px" }}>
+                          <InputGroup size="sm">
+                            <Form.Control
+                              className="p-0 ps-2"
+                              onChange={enterManagerEmail}
+                              type="string"
+                              name="MangerEmail"
+                              placeholder={`Enter email`}
+                              required
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              style={{ border: "none", fontSize: "12px" }}
+                            />
+                            <InputGroup.Text
+                              id="basic-addon2"
+                              style={{ border: "none", borderRadius: "0", fontSize: "12px" }}
+                            >
+                              @{userEmail}
+                            </InputGroup.Text>
+                          </InputGroup>
+                          <Form.Control.Feedback type="invalid">
+                            Please Enter Your Manager's Email.{" "}
+                          </Form.Control.Feedback>
+                        </ListGroup.Item>
+
+                        <div className="d-grid gap-2">
+                          <QuoeteManagementApproval quotePriceData={quotePriceData} />
+                        </div>
+                      </ListGroup>
                     </div>
-                </ListGroup> 
-                    </div>
-                    </div>
-                    <div>
-                      <Button
-                    type="button"
-                    onClick={removeAllItems}
-                  variant="primary" size="sm"
-                    style={{ fontSize:"12px"}}
-                  >
-                    Empty Cart <i className="bi bi-trash" />
-                  </Button>
-                    </div>
-                   </div>
+                  </div>
+                  <div>
+                    <Button
+                      type="button"
+                      onClick={removeAllItems}
+                      variant="primary" size="sm"
+                      style={{ fontSize: "12px" }}
+                    >
+                      Empty Cart <i className="bi bi-trash" />
+                    </Button>
+                  </div>
+                </div>
               </Row>
-          )}
+            )}
 
 
-              
-          <Col md={11}>
-            <ListGroup className="cart-items-list mb-3"> 
-              {cartItems.map((item, idx) => (
-                <CartItemComponent
-                  item={item}
-                  key={idx}
-                  changeCount={changeCount}
-                  removeFromCartHandler={removeFromCartHandler}
-                  uniformUserId={uniformUserId}
-                />
-              ))}
-            </ListGroup>
-        
-          </Col>
+
+            <Col md={11}>
+              <ListGroup className="cart-items-list mb-3">
+                {cartItems.map((item, idx) => (
+                  <CartItemComponent
+                    item={item}
+                    key={idx}
+                    changeCount={changeCount}
+                    removeFromCartHandler={removeFromCartHandler}
+                    uniformUserId={uniformUserId}
+                  />
+                ))}
+              </ListGroup>
+
+            </Col>
           </div>
           <Col md={3} className="cart_detail_right">
             <br />
@@ -920,15 +921,15 @@ const UserCartDetailsPageComponent = ({
                       </Form.Control.Feedback>
                     </ListGroup.Item>
 
-                    <CartAddressesSectionComponent 
-                    setIsOpenNewAddressModal={setIsOpenNewAddressModal}
-                    setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
-                    deliveryBooks={deliveryBooks}
-                    selectedIndex={selectedIndex}
-                    handleSelect={handleSelect}
-                    chosenDeliverySite={chosenDeliverySite}
+                    <CartAddressesSectionComponent
+                      setIsOpenNewAddressModal={setIsOpenNewAddressModal}
+                      setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
+                      deliveryBooks={deliveryBooks}
+                      selectedIndex={selectedIndex}
+                      handleSelect={handleSelect}
+                      chosenDeliverySite={chosenDeliverySite}
                     />
-                    {<AddNewAddressModalComponent 
+                    {<AddNewAddressModalComponent
                       isOpenNewAddressModal={isOpenNewAddressModal}
                       handleClose={handleClose}
                       setIsOpenNewAddressModal={setIsOpenNewAddressModal}
@@ -943,10 +944,10 @@ const UserCartDetailsPageComponent = ({
                       handleLocation={handleLocation}
                       handleNewBillingAddress={handleNewBillingAddress}
                       isLocationValid={isLocationValid}
-                      />}
+                    />}
 
-                      {
-                        <ChangeAddressModalComponent 
+                    {
+                      <ChangeAddressModalComponent
                         isOpenChangeAddressModal={isOpenChangeAddressModal}
                         setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
                         setIsLocationValid={setIsLocationValid}
@@ -958,8 +959,8 @@ const UserCartDetailsPageComponent = ({
                         billingAddress={billingAddress}
                         handleDeliveryAddress={handleDeliveryAddress}
                         deliveryAddress={deliveryAddress}
-                        />
-                      }
+                      />
+                    }
                   </>
                   <>
                     {userInfo.isSiteManager && deliverySites?.length > 0 ? (
@@ -1015,12 +1016,12 @@ const UserCartDetailsPageComponent = ({
                   </>
                   <ListGroup.Item className="p-1 ps-2">
                     <div className="d-grid gap-2">
-                    <Button
+                      <Button
                         size="lg"
                         onClick={orderHandler}
                         disabled={purchaseNumber === "" ? true : false}
                         className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
-                        style={{width: "100%", maxWidth: "200px", margin: "0 auto"}}
+                        style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}
                       >
                         Confirm Order
                       </Button>
@@ -1038,7 +1039,7 @@ const UserCartDetailsPageComponent = ({
                         onClick={orderHandler}
                         disabled={purchaseNumber === ""}
                         className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
-                        style={{width: "100%", maxWidth: "200px", margin: "0 auto"}}                      >
+                        style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}                      >
                         Confirm Order
                       </button>
                     </div>

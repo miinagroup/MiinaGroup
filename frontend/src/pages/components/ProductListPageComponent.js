@@ -27,6 +27,8 @@ const ProductListPage = ({
   childCat = "",
   fourCat = "",
   fiveCat = "",
+  sixCat = "",
+  sevenCat = "",
   brandName = "",
   userInfo,
   getProductsBySearch
@@ -145,7 +147,9 @@ const ProductListPage = ({
             subCat,
             childCat,
             fourCat,
-            fiveCat
+            fiveCat,
+            sixCat,
+            sevenCat
           );
           setProductCategories(categories.map((item) => item.name));
 
@@ -159,6 +163,8 @@ const ProductListPage = ({
               childCat,
               fourCat,
               fiveCat,
+              sixCat,
+              sevenCat,
               brandName,
               userInfo
             );
@@ -185,6 +191,8 @@ const ProductListPage = ({
             childCat,
             fourCat,
             fiveCat,
+            sixCat,
+            sevenCat,
             brandName,
             userInfo
           );
@@ -209,6 +217,8 @@ const ProductListPage = ({
     childCat,
     fourCat,
     fiveCat,
+    sixCat,
+    sevenCat,
     pageNumParam,
     searchQuery,
   ]);
@@ -225,6 +235,8 @@ const ProductListPage = ({
       if (childCat) baseCategory += `/${childCat}`;
       if (fourCat) baseCategory += `/${fourCat}`;
       if (fiveCat) baseCategory += `/${fiveCat}`;
+      if (sixCat) baseCategory += `/${sixCat}`;
+      if (sevenCat) baseCategory += `/${sevenCat}`;
 
       const baseDepth = baseCategory.split("/").length;
 
@@ -237,7 +249,7 @@ const ProductListPage = ({
           .map((item) => item.split("/")[baseDepth])
       );
     }
-  }, [productCategories, categoryName, subCat, childCat, fourCat, fiveCat]);
+  }, [productCategories, categoryName, subCat, childCat, fourCat, fiveCat, sixCat, sevenCat]);
 
 
   // console.log("products ", products);
@@ -377,6 +389,8 @@ const ProductListPage = ({
                       childCategoryName={childCat}
                       fourCategoryName={fourCat}
                       fiveCategoryName={fiveCat}
+                      sixCategoryName={sixCat}
+                      sevenCategoryName={sevenCat}
                       brandName={brandName}
                       paginationLinksNumber={paginationLinksNumber}
                       pageNum={pageNum}
@@ -407,6 +421,8 @@ const ProductListPage = ({
                   childCat={childCat}
                   fourCat={fourCat}
                   fiveCat={fiveCat}
+                  sixCat={sixCat}
+                  sevenCat={sevenCat}
                 />
               ))
             ) : productCategories.length < 2 && products.length === 0 ? null : (
@@ -446,6 +462,8 @@ const ProductListPage = ({
               childCategoryName={childCat}
               fourCategoryName={fourCat}
               fiveCategoryName={fiveCat}
+              sixCategoryName={sixCat}
+              sevenCategoryName={sevenCat}
               brandName={brandName}
               paginationLinksNumber={paginationLinksNumber}
               pageNum={pageNum}

@@ -33,6 +33,7 @@ const cartSchema = new mongoose.Schema(
         cartProducts: [
           {
             price: { type: Number, required: true },
+            purchaseprice: { type: Number, required: false },
             quantity: { type: Number, required: true },
             count: { type: Number, required: false },
             ctlsku: { type: String, required: false },
@@ -42,7 +43,7 @@ const cartSchema = new mongoose.Schema(
             category: { type: String, required: false },
             size: { type: String, required: false },
             color: { type: String, required: false },
-            clientsSku: { type: [clientSkuSchema], required: false},
+            clientsSku: { type: [clientSkuSchema], required: false },
             currentClientSku: {
               name: { type: String, required: false, unique: true },
               number: { type: String, required: false }

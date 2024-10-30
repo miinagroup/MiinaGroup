@@ -44,7 +44,44 @@ const getProductsVisitor = async (req, res, next) => {
       var childCategoryName = req.query.childCategoryName;
       var fourCategoryName = req.query.fourCategoryName;
       var fiveCategoryName = req.query.fiveCategoryName;
-      if (fiveCategoryName) {
+      var sixCategoryName = req.query.sixCategoryName;
+      var sevenCategoryName = req.query.sevenCategoryName;
+
+      if (sevenCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "/" +
+          fiveCategoryName +
+          "/" +
+          sixCategoryName +
+          "/" +
+          sevenCategoryName +
+          "(?:/|$)"
+        );
+      } else if (sixCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "/" +
+          fiveCategoryName +
+          "/" +
+          sixCategoryName +
+          "(?:/|$)"
+        );
+      } else if (fiveCategoryName) {
         regEx = new RegExp(
           "^" +
           a +
@@ -146,7 +183,44 @@ const getProducts = async (req, res, next) => {
       var childCategoryName = req.query.childCategoryName;
       var fourCategoryName = req.query.fourCategoryName;
       var fiveCategoryName = req.query.fiveCategoryName;
-      if (fiveCategoryName) {
+      var sixCategoryName = req.query.sixCategoryName;
+      var sevenCategoryName = req.query.sevenCategoryName;
+
+      if (sevenCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "/" +
+          fiveCategoryName +
+          "/" +
+          sixCategoryName +
+          "/" +
+          sevenCategoryName +
+          "(?:/|$)"
+        );
+      } else if (sixCategoryName) {
+        regEx = new RegExp(
+          "^" +
+          a +
+          "/" +
+          subCategoryName +
+          "/" +
+          childCategoryName +
+          "/" +
+          fourCategoryName +
+          "/" +
+          fiveCategoryName +
+          "/" +
+          sixCategoryName +
+          "(?:/|$)"
+        );
+      } else if (fiveCategoryName) {
         regEx = new RegExp(
           "^" +
           a +
@@ -2002,7 +2076,7 @@ const searchProducts = async (req, res, next) => {
     const { searchQuery } = req.query;
     const limit = parseInt(req.query.limit) || 12;
     const offset = parseInt(req.query.offset) || 0;
-    let query = searchQuery.split(" ");
+    let query = searchQuery.split(/[\s-]+/);
     const pageNum = Number(req.query.pageNum) || 1;
     const skip = (pageNum - 1) * recordsPerPage;
     let totalProducts = 0;
@@ -2090,7 +2164,6 @@ const searchProducts = async (req, res, next) => {
       const escapedSearchQuery = escapeRegex(searchQuery);
       const regex = new RegExp(`${escapedSearchQuery}s?`, "i");
       const regExact = new RegExp(`\\b${escapedSearchQuery.replace(/\s/g, '\\s*')}s?\\b`, "i");
-      //const regexSpace = new RegExp(`\\b${searchQuery}s?\\b`, "i")
       const regexSpace = new RegExp(`(^|[\\/\\s])${searchQuery}s?([\\/\\s]|$)`, "i");
 
       const categoryMatches = await Product.find({ "category": regexSpace }).limit(250);
@@ -2102,37 +2175,26 @@ const searchProducts = async (req, res, next) => {
         productFound = productFound.concat(supplierMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
-
       if (productFound.length < 250) {
         const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
         productFound = productFound.concat(nameMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
-
-      if (productFound.length < 250) {
-        const descriptionMatches = await Product.find({ "description": regExact }).limit(250 - productFound.length);
-        productFound = productFound.concat(descriptionMatches);
-      }
-      productFound = _.uniqBy(productFound, 'id');
-
       if (productFound.length < 250) {
         const slrskuMatches = await Product.find({ "stock.slrsku": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(slrskuMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
-
       if (productFound.length < 250) {
         const ctlskuMatches = await Product.find({ "stock.ctlsku": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(ctlskuMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
-
       if (productFound.length < 250) {
         const supplierskuMatches = await Product.find({ "stock.suppliersku": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(supplierskuMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
-
       if (productFound.length < 250) {
         const tagsMatches = await Product.find({ "tags": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(tagsMatches);
@@ -2140,24 +2202,23 @@ const searchProducts = async (req, res, next) => {
       productFound = _.uniqBy(productFound, 'id');
 
       if (productFound.length === 250) {
-        const categoryList = productFound.filter((product) => {
-          const categoryParts = product.category.split("/")
-          if (categoryParts.length > 1)
-            return categoryParts?.some(part => regexSpace.test(part));
-          else
-            return regexSpace.test(product.category);
-        })
-        const categoryFilteredList = productFound.filter(
-          (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
-        );
-        const nameList = categoryFilteredList.filter((product) => regExact.test(product.name))
-        const descriptionList = productFound.filter(
-          (product) => !nameList.some((nameProduct) => nameProduct._id === product._id)
-        );
+        // const categoryList = productFound.filter((product) => {
+        //   const categoryParts = product.tags.split(" ")
+        //   if (categoryParts.length > 1)
+        //     return categoryParts?.some(part => regexSpace.test(part));
+        //   else
+        //     return regexSpace.test(product.category);
+        // })
+        // const categoryFilteredList = productFound.filter(
+        //   (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
+        // );
+        // const nameList = categoryFilteredList.filter((product) => regexSpace.test(product.supplier))
 
-        console.log(categoryList.length, nameList.length, descriptionList.length);
-        const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
-        const filetredProducts = _.uniqBy(concatenatedList, 'id');
+        // // console.log(categoryList.length, nameList.length);
+        // console.log(productFound.length);
+
+        // const concatenatedList = [...categoryList, ...nameList]
+        const filetredProducts = _.uniqBy(productFound, 'id');
         const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
         // const productsNew = productMatch.slice(skip, skip + recordsPerPage);
         const productsNew = productMatch;
@@ -2193,19 +2254,13 @@ const searchProducts = async (req, res, next) => {
 
         const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
         productFound = productFound.concat(supplierMatches);
+        productFound = _.uniqBy(productFound, 'id');
 
         if (productFound.length < 250) {
           const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
           productFound = productFound.concat(nameMatches);
         }
         productFound = _.uniqBy(productFound, 'id');
-
-        if (productFound.length < 250) {
-          const descriptionMatches = await Product.find({ "description": regExact }).limit(250 - productFound.length);
-          productFound = productFound.concat(descriptionMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
-
       } else {
         const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
         productFound = productFound.concat(supplierMatches);
@@ -2214,12 +2269,6 @@ const searchProducts = async (req, res, next) => {
         if (productFound.length < 250) {
           const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
           productFound = productFound.concat(nameMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
-
-        if (productFound.length < 250) {
-          const descriptionMatches = await Product.find({ "description": { $in: regExact }, "supplier": { $nin: supplierFilter } }).limit(250 - productFound.length);
-          productFound = productFound.concat(descriptionMatches);
         }
         productFound = _.uniqBy(productFound, 'id');
       }
@@ -2250,32 +2299,11 @@ const searchProducts = async (req, res, next) => {
         productFound = productFound.concat(tagsMatches);
         productFound = _.uniqBy(productFound, 'id');
 
-        // const categoryMatches = await Product.find({ $and: regNormal.map(regex => ({ category: regex })) }).limit(250);
-        // productFound = productFound.concat(categoryMatches);
-
-        // if (productFound.length < 250) {
-        //   const nameMatches = await Product.find({ $and: regNormal.map(regex => ({ name: regex })) }).limit(250 - productFound.length);
-        //   productFound = productFound.concat(nameMatches);
-        // }
-        // if (productFound.length < 250) {
-        //   const descriptionMatches = await Product.find({ $and: regExactQueries.map(regex => ({ description: regex })) }).limit(250 - productFound.length);
-        //   productFound = productFound.concat(descriptionMatches);
-        // }
       } else {
-        const categoryMatches = await Product.find({ $and: regNormal.map(regex => ({ category: regex })) }).limit(250);
-        productFound = productFound.concat(categoryMatches);
+        const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
+        productFound = productFound.concat(tagsMatches);
         productFound = _.uniqBy(productFound, 'id');
 
-        if (productFound.length < 250) {
-          const nameMatches = await Product.find({ $and: regNormal.map(regex => ({ name: regex })) }).limit(250 - productFound.length);
-          productFound = productFound.concat(nameMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
-        if (productFound.length < 250) {
-          const descriptionMatches = await Product.find({ $and: regExactQueries.map(regex => ({ description: regex })) }).limit(250 - productFound.length);
-          productFound = productFound.concat(descriptionMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
       }
 
       const keywords = regExactQueries.map(regex => regex.source); // Get the raw keyword from the regex
@@ -2283,43 +2311,33 @@ const searchProducts = async (req, res, next) => {
 
       // const regexSpace = new RegExp(`(^|[\\/\\s])${searchQuery}s?([\\/\\s]|$)`, "i");
 
-      // const categoryList = productFound.filter((product) => {
-      //   const categoryParts = product.category.split("/")
-      //   if (categoryParts.length > 1)
-      //     return categoryParts?.some(part => regexSpace.test(part));
-      //   else
-      //     return regexSpace.test(product.category);
-      // })
-      // const categoryFilteredList = productFound.filter(
-      //   (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
-      // );
-      // const nameList = categoryFilteredList.filter((product) => regexSpace.test(product.name))
+      // const tagsList = productFound.filter((product) => regexSpace.test(product.tags));
       // const descriptionList = productFound.filter(
-      //   (product) => !nameList.some((nameProduct) => nameProduct._id === product._id)
+      //   (product) => !tagsList.some((nameProduct) => nameProduct._id === product._id)
       // );
-
-      // console.log(categoryList.length, nameList.length, descriptionList.length);
-      // const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
+      // const concatenatedList = [...tagsList, ...descriptionList]
       // const filetredProducts = _.uniqBy(concatenatedList, 'id');
-      //const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
-      //const productsNew = productMatch.slice(skip, skip + recordsPerPage);
-      //const totalProductsMatch = productFound.length
+      // const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
+      // const sortedProducts = productMatch.slice(skip, skip + recordsPerPage);
+      // const totalProductsMatch = productFound.length
 
-      // const filteredProducts = productFound.filter(product => {
-      //   const combinedFields = `${product.name} ${product.description} ${product.category}`.toLowerCase();
-      //   return keywords.every(keyword => combinedFields.includes(keyword.toLowerCase()));
-      // });
+      // const productsPerPage = getProductsbyPage(pageNum, sortedProducts);
+      // products = productsPerPage;
+      // totalProducts = totalProducts += totalProductsMatch
+      // console.log(totalProducts);
 
       const sortedProducts = productFound.sort((a, b) => {
         // Check how many keywords occur in `category`, `name`, or `description` for each product
         const aCount = keywords.filter(keyword =>
           new RegExp(keyword, 'i').test(a.tags) ||
-          new RegExp(keyword, 'i').test(a.name)
+          new RegExp(keyword, 'i').test(a.name) ||
+          new RegExp(keyword, 'i').test(a.category)
         ).length;
 
         const bCount = keywords.filter(keyword =>
           new RegExp(keyword, 'i').test(b.tags) ||
-          new RegExp(keyword, 'i').test(a.name)
+          new RegExp(keyword, 'i').test(a.name) ||
+          new RegExp(keyword, 'i').test(a.category)
         ).length;
 
         // Sort by how many keywords are found (products with more matches come first)
@@ -2327,7 +2345,7 @@ const searchProducts = async (req, res, next) => {
       });
 
       const filetredProducts = _.uniqBy(sortedProducts, 'id');
-      const productsPerPage = getProductsbyPage(pageNum, filetredProducts);
+      const productsPerPage = getProductsbyPage(pageNum, sortedProducts);
       const totalProductsMatch = productFound.length
       products = filetredProducts;
       totalProducts = totalProducts += totalProductsMatch

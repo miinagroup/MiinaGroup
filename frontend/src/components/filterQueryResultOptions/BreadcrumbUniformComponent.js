@@ -75,7 +75,47 @@ const BreadcrumbUniformComponent = () => {
           query.fiveCategoryName
         }
       >
-        <span className={!!query.fiveCategoryName ? "Highlight" : ""}>{!!query.fiveCategoryName ? query.fiveCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.sixCategoryName ? "" : "Highlight"}>{!!query.fiveCategoryName ? query.fiveCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item
+        className={!!query.sixCategoryName ? "active" : "hideit"}
+        href={
+          "/product-list?categoryName=" +
+          query.categoryName +
+          "&subCategoryName=" +
+          query.subCategoryName +
+          "&childCategoryName=" +
+          query.childCategoryName +
+          "&fourCategoryName=" +
+          query.fourCategoryName +
+          "&fiveCategoryName=" +
+          query.fiveCategoryName +
+          "&sixCategoryName=" +
+          query.sixCategoryName
+        }
+      >
+        <span className={!!query.sevenCategoryName ? "" : "Highlight"}>{!!query.sixCategoryName ? query.sixCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+      </Breadcrumb.Item>
+      <Breadcrumb.Item
+        className={!!query.sevenCategoryName ? "active" : "hideit"}
+        href={
+          "/product-list?categoryName=" +
+          query.categoryName +
+          "&subCategoryName=" +
+          query.subCategoryName +
+          "&childCategoryName=" +
+          query.childCategoryName +
+          "&fourCategoryName=" +
+          query.fourCategoryName +
+          "&fiveCategoryName=" +
+          query.fiveCategoryName +
+          "&sixCategoryName=" +
+          query.sixCategoryName +
+          "&sevenCategoryName=" +
+          query.sevenCategoryName
+        }
+      >
+        <span className={!!query.sevenCategoryName ? "Highlight" : ""}>{!!query.sevenCategoryName ? query.sevenCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
       </Breadcrumb.Item>
     </Breadcrumb>
   );

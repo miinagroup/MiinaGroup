@@ -80,27 +80,27 @@ const AdminCartDetailsPageComponent = ({
   const navigate = useNavigate();
 
   const changeCount = (id, qty) => {
-    reduxDispatch(editQuantity(id, qty)); 
+    reduxDispatch(editQuantity(id, qty));
   };
 
   useEffect(() => {
     const handleShippingAddress = () => {
       if (!adminSelectedCompany || !adminSelectedDeliverySite) {
-          return;
+        return;
       }
-  
+
       const selectedCompany = adminDeliveryBooks.find(company => company.companyName === adminSelectedCompany);
       if (selectedCompany) {
-          const selectedSite = selectedCompany.sites.find(site => site.name === adminSelectedDeliverySite);
-          if (selectedSite) {
-              setShippingAddress(selectedSite.deliveryAddress);
-          }
+        const selectedSite = selectedCompany.sites.find(site => site.name === adminSelectedDeliverySite);
+        if (selectedSite) {
+          setShippingAddress(selectedSite.deliveryAddress);
+        }
       }
-  };
+    };
 
     handleShippingAddress();
   }, [adminSelectedDeliverySite, adminSelectedCompany, adminDeliveryBooks])
-  
+
 
   const removeFromCartHandler = (productId, quantity, price) => {
     reduxDispatch(removeFromCart(productId, quantity, price));
@@ -312,6 +312,7 @@ const AdminCartDetailsPageComponent = ({
               count: item.cartProducts[0].count,
               ctlsku: item.cartProducts[0].ctlsku,
               price: item.cartProducts[0].price,
+              purchaseprice: item.cartProducts[0].purchaseprice,
               quantity: item.cartProducts[0].quantity,
               suppliedQty: item.cartProducts[0].quantity,
               backOrder: 0,
@@ -451,7 +452,6 @@ const AdminCartDetailsPageComponent = ({
     }
   );
 
-
   return (
     <>
       <Container>
@@ -502,16 +502,16 @@ const AdminCartDetailsPageComponent = ({
                       aria-label="Default select example"
                       onChange={changeUserName}
                       className="p-0 ps-2"
-                      value= {userList?.name}
+                      value={userList?.name}
                     >
-                      <option value= {userList.name}>Select a name</option>
+                      <option value={userList.name}>Select a name</option>
                       {userNameList &&
                         userNameList
                           .sort((a, b) => a.userName.localeCompare(b.userName))
                           .map((user, idx) => {
                             return user !== "" ? (
-                              <option key={idx} 
-                            value={user.userName}
+                              <option key={idx}
+                                value={user.userName}
                               >
                                 {" "}
                                 {user.userName}
@@ -735,25 +735,25 @@ const AdminCartDetailsPageComponent = ({
               </ListGroup.Item>
 
               <ListGroup.Item
-        controlid="validationShippingAddress"
-        className="p-1 ps-2"
-      >
-        <Form.Label className="fw-bold">Shipping Address:</Form.Label>
-        <Form.Control
-          as="textarea"
-          className="p-0 ps-1"
-          type="string"
-          name="shippingAddress"
-          placeholder="Shipping Address"
-          required
-          value={titleCase(shippingAddress).split(',').map(sentence => sentence.trim()).join('\n')}
-          style={{ fontSize: '12px', height: "100px" }}
-          disabled
-        />
-        <Form.Control.Feedback type="invalid">
-          Please Enter Shipping Address.{" "}
-        </Form.Control.Feedback>
-      </ListGroup.Item>
+                controlid="validationShippingAddress"
+                className="p-1 ps-2"
+              >
+                <Form.Label className="fw-bold">Shipping Address:</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  className="p-0 ps-1"
+                  type="string"
+                  name="shippingAddress"
+                  placeholder="Shipping Address"
+                  required
+                  value={titleCase(shippingAddress).split(',').map(sentence => sentence.trim()).join('\n')}
+                  style={{ fontSize: '12px', height: "100px" }}
+                  disabled
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please Enter Shipping Address.{" "}
+                </Form.Control.Feedback>
+              </ListGroup.Item>
 
               <ListGroup.Item className="p-1 ps-2">
                 <div className="d-grid gap-2">

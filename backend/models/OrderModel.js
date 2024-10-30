@@ -58,6 +58,7 @@ const orderSchema = mongoose.Schema(
         },
         cartProducts: [
           {
+            purchaseprice: { type: Number, required: false },
             price: { type: Number, required: true },
             quantity: { type: Number, required: true },
             suppliedQty: { type: Number, required: true },
