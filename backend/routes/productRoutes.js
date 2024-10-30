@@ -28,7 +28,8 @@ const {
   searchProducts,
   getProductsVisitor,
   searchProductsForVisitor,
-  adminBulkUpdateClientSkus
+  adminBulkUpdateClientSkus,
+  lazyLoadingData
 } = require("../controllers/productController");
 const {
   getClientSkuNamesList
@@ -39,7 +40,7 @@ const {
   verifyIsAdmin,
 } = require("../middleware/verifyAuthToken");
 
-router.get("/visitor/search/:searchQuery", searchProductsForVisitor);
+// router.get("/visitor/search/:searchQuery", searchProductsForVisitor);
 router.get("/visitor/category/:categoryName", getProductsVisitor);
 router.get("/get-one/:id", getProductById);
 
@@ -50,8 +51,10 @@ router.get("/", getProducts);
 router.get("/get-one/:id", getProductById);
 router.get("/getClientSKU", getProductByCTLSKU);
 router.put("/client/updateSKU/:ctlsku", userUpdateSKU);
-router.get("/search/:searchQuery", searchProducts);
+// router.get("/search/:offset:limit:searchQuery", searchProducts);
+router.get("/search", searchProducts);
 router.get("/getClientsSkuList", getClientSkuNamesList);
+// router.get("/data", lazyLoadingData);
 
 // admin routes:
 router.use(verifyIsAdmin);

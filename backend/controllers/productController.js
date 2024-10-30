@@ -1999,7 +1999,9 @@ const adminStockTake = async (req, res, next) => {
 const searchProducts = async (req, res, next) => {
   try {
     let skuSearch = true;
-    const { searchQuery } = req.params;
+    const { searchQuery } = req.query;
+    const limit = parseInt(req.query.limit) || 12;
+    const offset = parseInt(req.query.offset) || 0;
     let query = searchQuery.split(" ");
     const pageNum = Number(req.query.pageNum) || 1;
     const skip = (pageNum - 1) * recordsPerPage;
@@ -2093,37 +2095,49 @@ const searchProducts = async (req, res, next) => {
 
       const categoryMatches = await Product.find({ "category": regexSpace }).limit(250);
       productFound = productFound.concat(categoryMatches);
+      productFound = _.uniqBy(productFound, 'id');
 
       if (productFound.length < 250) {
         const supplierMatches = await Product.find({ "supplier": regExact }).limit(250 - productFound.length);
         productFound = productFound.concat(supplierMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
+
       if (productFound.length < 250) {
         const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
         productFound = productFound.concat(nameMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
+
       if (productFound.length < 250) {
         const descriptionMatches = await Product.find({ "description": regExact }).limit(250 - productFound.length);
         productFound = productFound.concat(descriptionMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
+
       if (productFound.length < 250) {
         const slrskuMatches = await Product.find({ "stock.slrsku": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(slrskuMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
+
       if (productFound.length < 250) {
         const ctlskuMatches = await Product.find({ "stock.ctlsku": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(ctlskuMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
+
       if (productFound.length < 250) {
         const supplierskuMatches = await Product.find({ "stock.suppliersku": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(supplierskuMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
+
       if (productFound.length < 250) {
         const tagsMatches = await Product.find({ "tags": regex }).limit(250 - productFound.length);
         productFound = productFound.concat(tagsMatches);
       }
-
-      console.log(productFound.length);
+      productFound = _.uniqBy(productFound, 'id');
 
       if (productFound.length === 250) {
         const categoryList = productFound.filter((product) => {
@@ -2145,7 +2159,8 @@ const searchProducts = async (req, res, next) => {
         const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
         const filetredProducts = _.uniqBy(concatenatedList, 'id');
         const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
-        const productsNew = productMatch.slice(skip, skip + recordsPerPage);
+        // const productsNew = productMatch.slice(skip, skip + recordsPerPage);
+        const productsNew = productMatch;
         const totalProductsMatch = productFound.length
 
         if (productsNew.length === 0) {
@@ -2183,29 +2198,36 @@ const searchProducts = async (req, res, next) => {
           const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
           productFound = productFound.concat(nameMatches);
         }
+        productFound = _.uniqBy(productFound, 'id');
+
         if (productFound.length < 250) {
           const descriptionMatches = await Product.find({ "description": regExact }).limit(250 - productFound.length);
           productFound = productFound.concat(descriptionMatches);
         }
+        productFound = _.uniqBy(productFound, 'id');
+
       } else {
         const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
         productFound = productFound.concat(supplierMatches);
+        productFound = _.uniqBy(productFound, 'id');
 
         if (productFound.length < 250) {
           const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
           productFound = productFound.concat(nameMatches);
         }
+        productFound = _.uniqBy(productFound, 'id');
 
         if (productFound.length < 250) {
           const descriptionMatches = await Product.find({ "description": { $in: regExact }, "supplier": { $nin: supplierFilter } }).limit(250 - productFound.length);
           productFound = productFound.concat(descriptionMatches);
         }
+        productFound = _.uniqBy(productFound, 'id');
       }
 
       const filetredProducts = _.uniqBy(productFound, 'id');
       const productsPerPage = getProductsbyPage(pageNum, filetredProducts);
       const totalProductsMatch = productFound.length
-      products = productsPerPage;
+      products = filetredProducts;
       totalProducts = totalProducts += totalProductsMatch
       console.log(totalProducts);
 
@@ -2226,6 +2248,7 @@ const searchProducts = async (req, res, next) => {
 
         const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
         productFound = productFound.concat(tagsMatches);
+        productFound = _.uniqBy(productFound, 'id');
 
         // const categoryMatches = await Product.find({ $and: regNormal.map(regex => ({ category: regex })) }).limit(250);
         // productFound = productFound.concat(categoryMatches);
@@ -2241,15 +2264,18 @@ const searchProducts = async (req, res, next) => {
       } else {
         const categoryMatches = await Product.find({ $and: regNormal.map(regex => ({ category: regex })) }).limit(250);
         productFound = productFound.concat(categoryMatches);
+        productFound = _.uniqBy(productFound, 'id');
 
         if (productFound.length < 250) {
           const nameMatches = await Product.find({ $and: regNormal.map(regex => ({ name: regex })) }).limit(250 - productFound.length);
           productFound = productFound.concat(nameMatches);
         }
+        productFound = _.uniqBy(productFound, 'id');
         if (productFound.length < 250) {
           const descriptionMatches = await Product.find({ $and: regExactQueries.map(regex => ({ description: regex })) }).limit(250 - productFound.length);
           productFound = productFound.concat(descriptionMatches);
         }
+        productFound = _.uniqBy(productFound, 'id');
       }
 
       const keywords = regExactQueries.map(regex => regex.source); // Get the raw keyword from the regex
@@ -2283,6 +2309,7 @@ const searchProducts = async (req, res, next) => {
       //   const combinedFields = `${product.name} ${product.description} ${product.category}`.toLowerCase();
       //   return keywords.every(keyword => combinedFields.includes(keyword.toLowerCase()));
       // });
+
       const sortedProducts = productFound.sort((a, b) => {
         // Check how many keywords occur in `category`, `name`, or `description` for each product
         const aCount = keywords.filter(keyword =>
@@ -2302,22 +2329,26 @@ const searchProducts = async (req, res, next) => {
       const filetredProducts = _.uniqBy(sortedProducts, 'id');
       const productsPerPage = getProductsbyPage(pageNum, filetredProducts);
       const totalProductsMatch = productFound.length
-      products = productsPerPage;
+      products = filetredProducts;
       totalProducts = totalProducts += totalProductsMatch
-      console.log(totalProducts);
 
     } else {
       console.log("query", query)
     }
 
-    const productsNew = products.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
-    console.log(totalProducts);
 
-    return res.json({
-      products: productsNew,
-      pageNum,
-      paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
-    });
+    // const productsNew = products.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
+    const productsNew = _.uniqBy(products, 'id')
+    .filter((product) => product.category !== "QUOTE" && product.category !== "CLIENTQUOTE")
+    .slice(offset, offset + limit);
+    const hasMore = (parseInt(offset) + limit) < products.length;
+    
+    return res.json(
+      {
+        products: productsNew,
+        hasMore: hasMore,
+    }
+    );
 
   } catch (error) {
     console.log(error);
@@ -2524,3 +2555,4 @@ module.exports = {
   adminBulkUpdateClientSkus,
   adminUpdateTags
 };
+

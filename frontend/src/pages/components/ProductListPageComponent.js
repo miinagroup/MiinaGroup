@@ -2,7 +2,7 @@ import { Row, Col, Container, ListGroup, Form, Button } from "react-bootstrap";
 import PaginationComponent from "../../components/PaginationComponent";
 import ProductForListComponent from "../../components/ProductForListComponent";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo , useRef, Suspense} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import FilterComponent from "../../components/filterQueryResultOptions/FilterComponent";
@@ -13,6 +13,7 @@ import axios from "axios";
 import { useTrackEvents } from "../trackEvents/useTrackEvents";
 import QuoteSubmitComponent from "../user/components/QuoteSubmitComponent";
 import UserQuoteSubmitPage from "../user/UserQuoteSubmitPage";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 // import ReactGA from "react-ga";
 
@@ -27,7 +28,8 @@ const ProductListPage = ({
   fourCat = "",
   fiveCat = "",
   brandName = "",
-  userInfo
+  userInfo,
+  getProductsBySearch
 }) => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
@@ -163,8 +165,15 @@ const ProductListPage = ({
             setProducts(products.products);
             setPaginationLinksNumber(products.paginationLinksNumber);
             setPageNum(products.pageNum);
-            //console.log("products", products);
+            // console.log("products", products);
           }
+        } else if(searchQuery.length > 0) {
+        //   console.log(searchQuery);
+        // fetchData()
+          
+        //   const res = await getProductsBySearch(offset, limit, searchQuery);
+        // console.log(res);
+        //   setSearchedData(res.data.products)
         } else {
           //console.log("Am I here, brandName", brandName);
           const products = await getProducts(
@@ -230,6 +239,7 @@ const ProductListPage = ({
     }
   }, [productCategories, categoryName, subCat, childCat, fourCat, fiveCat]);
 
+
   // console.log("products ", products);
   // function removeDuplicates(arr) {
   //   return arr.filter((item,
@@ -287,7 +297,59 @@ const ProductListPage = ({
   //   setThicknessFilter("");
   // };
 
-  // console.log("productCategories", productCategories);
+  const [loadingTwo, setLoadingTwo] = useState(false);
+  const [hasMore, setHasMore ] = useState(true);
+  const [searchedData, setSearchedData] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [previousQuery, setPreviousQuery] = useState("");
+  const limit = 12;
+
+  const fetchData = useCallback(async () => {
+    setLoadingTwo(true);
+    try {
+       let response;
+     if(searchQuery !== previousQuery) {
+        //  setSearchedData([]);
+         response = await getProductsBySearch(0, limit, searchQuery);
+       } else {
+        response = await getProductsBySearch(offset, limit, searchQuery);
+     }
+      
+      const newData = response.data.products;
+      const hasMore = response.data.hasMore;
+      
+      console.log("hasMore", hasMore);
+
+
+      if (searchedData.length === 0 ) {
+        setSearchedData(newData)
+        setOffset(prevOffset => prevOffset + limit);
+        setHasMore(hasMore);
+      } else if (newData.length > 0) {
+        setHasMore(hasMore);
+        setSearchedData(prevData => [...prevData, ...newData]);
+        setOffset(prevOffset => prevOffset + limit);
+      } else {
+        setHasMore(hasMore);
+        setOffset(0)
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } 
+    setLoadingTwo(false);
+  }, [offset, searchQuery, previousQuery]);
+
+  useEffect(() => {
+    if(searchQuery && searchQuery !== previousQuery){
+      setProductCategories([]);
+      setProducts([]);
+      setOffset(0)
+      setSearchedData([]);
+      setHasMore(true);
+      fetchData();
+    }
+    setPreviousQuery(searchQuery);
+  }, [searchQuery, previousQuery, fetchData]);
 
 
   return (
@@ -332,7 +394,7 @@ const ProductListPage = ({
             ""
           )}
 
-          <Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={5}>
+          {!searchQuery ? <><Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={5}>
             {loading ? (
               <img className="loading-spinner" src="./loading-gif.gif"></img>
             ) : productCategories.length > 1 ? (
@@ -365,6 +427,7 @@ const ProductListPage = ({
                     createQuote={createQuote}
                     ctlsku={product.stock[0].ctlsku}
                   />
+
                 );
               })
             )}
@@ -387,7 +450,39 @@ const ProductListPage = ({
               paginationLinksNumber={paginationLinksNumber}
               pageNum={pageNum}
             />
-          ) : null}
+          ) : null}</>
+          :
+          <>
+      <InfiniteScroll dataLength={searchedData.length} next={fetchData} hasMore={hasMore} loader={<img alt="Loading..." className="loading-spinner" src="./loading-gif.gif" />} endMessage={<p className="mx-4"><b>No more products to load</b></p>}>
+        <Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={5}>
+        {searchedData?.map((product, index) => {
+                return (
+                  <ProductForListComponent
+                    key={product._id}
+                    images={product.images}
+                    name={product.name}
+                    price={product.displayPrice}
+                    productId={product._id}
+                    slrsku={product.slrsku}
+                    saleunit={product.saleunit}
+                    stock={product.stock}
+                    reduxDispatch={dispatch}
+                    categories={categories}
+                    sortOrder={product.sortOrder}
+                    createQuote={createQuote}
+                    ctlsku={product.stock[0].ctlsku}
+                  />
+                );
+              })
+            }
+            </Row>
+          </InfiniteScroll>
+    
+          {searchedData.length === 0 && !loadingTwo && <div className="w-50 m-2 p-3 border rounded">
+              <UserQuoteSubmitPage fromProductList={true} />
+            </div>} 
+            </>
+          }
         </Col>
       </Row>
     </Container>
@@ -395,3 +490,6 @@ const ProductListPage = ({
 };
 
 export default ProductListPage;
+
+
+

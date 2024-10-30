@@ -19,8 +19,8 @@ const getProducts = async (
   const category = categoryName ? `category/${categoryName}/` : "";
   const brand = brandName ? `brand/${brandName}/` : "";
   const sort = sortOrder ? `sort/${sortOrder}/` : "";
-  const url = `/api/products/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
-  const urlVisitor = `/api/products/visitor/${category}${search}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
+  const url = `/api/products/${category}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
+  const urlVisitor = `/api/products/visitor/${category}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&brandName=${brandName}`;
   
   try {
     if(Object.keys(userInfo).length === 0) {
@@ -79,6 +79,15 @@ const ProductListPage = () => {
     return data;
   };
 
+  const getProductsBySearch = async (offset, limit, searchQuery) => {
+    try {
+      const response = await axios.get(`/api/products/search?offset=${offset}&limit=${limit}&searchQuery=${searchQuery}`);
+      return response;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <ProductListPageComponent
       getUser={getUser}
@@ -92,6 +101,7 @@ const ProductListPage = () => {
       getProductCategories={getProductCategories}
       createQuote={createQuote}
       userInfo={userInfo}
+      getProductsBySearch={getProductsBySearch}
     />
   );
 };
