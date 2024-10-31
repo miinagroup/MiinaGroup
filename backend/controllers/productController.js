@@ -2286,7 +2286,9 @@ const searchProducts = async (req, res, next) => {
 
     } else if (productFound.length < 250 && query.length >= 2) {
       console.log("Test2");
-      const regNormal = query.map(term => new RegExp(`${term.replace(/\s/g, '\\s*')}s?`, "i"));
+      const regNormal = query.map(term => new RegExp(`${term.replace(/\s/g, '\\s*').replace(/s$/, '')}s?`, "i"));
+      //const regNormal = query.map(term => new RegExp(`${term}s?`, "i"));
+      //const regNormal = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
       const regExact = query.map(term => new RegExp(`(^|[^a-zA-Z0-9])${term.replace(/\s/g, '\\s*')}([^a-zA-Z0-9]|$)s?`, "i"));
       const regExactQueries = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
       const supplierFilters = query.map(term => (new RegExp(`^${term.replace(/\s/g, '\\s*')}$`, 'i')));
@@ -2310,7 +2312,7 @@ const searchProducts = async (req, res, next) => {
 
       }
 
-      const keywords = regExactQueries.map(regex => regex.source); // Get the raw keyword from the regex
+      const keywords = regNormal.map(regex => regex.source); // Get the raw keyword from the regex
       console.log(keywords);
 
       // const regexSpace = new RegExp(`(^|[\\/\\s])${searchQuery}s?([\\/\\s]|$)`, "i");
@@ -2361,15 +2363,15 @@ const searchProducts = async (req, res, next) => {
 
     // const productsNew = products.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
     const productsNew = _.uniqBy(products, 'id')
-    .filter((product) => product.category !== "QUOTE" && product.category !== "CLIENTQUOTE")
-    .slice(offset, offset + limit);
+      .filter((product) => product.category !== "QUOTE" && product.category !== "CLIENTQUOTE")
+      .slice(offset, offset + limit);
     const hasMore = (parseInt(offset) + limit) < products.length;
-    
+
     return res.json(
       {
         products: productsNew,
         hasMore: hasMore,
-    }
+      }
     );
 
   } catch (error) {
