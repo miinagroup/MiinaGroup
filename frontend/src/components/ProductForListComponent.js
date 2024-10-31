@@ -338,8 +338,8 @@ const ProductForListComponent = ({
                 {isUserInfo && <div className="btnLogin btnLoginText">
                   <div className="btnsLoginRegistration">
                   <button onClick={(e) => handleShow(e, "LoginForm")} className="btn_blue">LogIn</button>
-                  <div>or</div>
-                  <button className="btn_blue" onClick={(e) => handleShow(e, "RegisterForm")}>Register</button>
+                  {/* <div>or</div>
+                  <button className="btn_blue" onClick={(e) => handleShow(e, "RegisterForm")}>Register</button> */}
                   </div>
                   </div>}
               </div>

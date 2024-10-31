@@ -1019,8 +1019,8 @@ const ProductDetailsPageComponent = ({
                         {isUserInfo && <div className="btnLogin btnLoginText btnLoginProductPage">
                           <div className="btnsLoginRegistrationProductPage">
                             <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
-                            <div>or</div>
-                            <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button>
+                            {/* <div>or</div>
+                            <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button> */}
                           </div>
                         </div>}
 

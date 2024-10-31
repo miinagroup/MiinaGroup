@@ -207,6 +207,7 @@ const CreateProductPageComponent = ({
       createdBy: userInfo.name + " " + userInfo.lastName,
       editedBy: "",
       stock: stock,
+      tags: form.tags.value
     };
 
 
@@ -813,6 +814,17 @@ const CreateProductPageComponent = ({
               <Form.Control
                 onKeyUp={newCategoryHandler}
                 name="newCategory"
+                type="text"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicTags">
+              <Form.Label>
+                Tags / Keywords
+              </Form.Label>
+              <Form.Control
+                // onKeyUp={newCategoryHandler}
+                name="tags"
                 type="text"
               />
             </Form.Group>

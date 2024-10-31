@@ -3,6 +3,14 @@ a {
     color: black;
 }
 
+.notActive {
+    pointer-events: none;
+    color: gray;
+    text-decoration: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .newCardsCategories {
 margin: 0 auto;
     width: 100%;
@@ -135,7 +143,7 @@ a .category_grid__title {
 .category_grid__menu_wrap {
     position: absolute;
     top: -185px;
-    left: 0;
+    left: 20px;
     /* overflow: hidden; */
     display: flex;
     flex-direction: column;

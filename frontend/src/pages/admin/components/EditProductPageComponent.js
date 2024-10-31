@@ -329,6 +329,7 @@ const EditProductPageComponent = ({
       expireDate: form.expireDate.value,
       editedBy: userInfo.name + " " + userInfo.lastName,
       attributesTable: [],
+      tags: form.tags.value,
       stock: [...stock, ...stockNew],
     };
 
@@ -1336,6 +1337,18 @@ const EditProductPageComponent = ({
                   );
                 })}
               </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicTags">
+              <Form.Label>
+                Tags / Keywords
+              </Form.Label>
+              <Form.Control
+                // onKeyUp={newCategoryHandler}
+                name="tags"
+                type="text"
+                defaultValue={product.tags}
+              />
             </Form.Group>
 
             {/* attributes */}

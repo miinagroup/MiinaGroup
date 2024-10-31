@@ -681,6 +681,7 @@ const adminCreateProduct = async (req, res, next) => {
       standards,
       createdBy,
       editedBy,
+      tags
     } = req.body;
 
     // console.log(req.body);
@@ -695,6 +696,7 @@ const adminCreateProduct = async (req, res, next) => {
     product.createdBy = createdBy;
     product.editedBy = editedBy;
     product.standards = standards || "";
+    product.tags = tags;
     if (stock.length > 0) {
       product.stock = [];
       stock.map((item) => {
@@ -1131,6 +1133,7 @@ const adminUpdateProduct = async (req, res, next) => {
       supplier,
       RRP,
       category,
+      tags,
       images,
       pdfs,
       sortOrder,
@@ -1147,6 +1150,7 @@ const adminUpdateProduct = async (req, res, next) => {
     product.supplier = supplier || product.supplier;
     product.RRP = RRP || product.RRP;
     product.category = category || product.category;
+    product.tags = tags || product.tags;
     product.images = images || product.images;
     product.pdfs = pdfs || product.pdfs;
     product.sortOrder = sortOrder || product.sortOrder;
