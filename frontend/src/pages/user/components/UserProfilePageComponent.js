@@ -19,6 +19,7 @@ const UserProfilePageComponent = ({
   reduxDispatch,
   localStorage,
   sessionStorage,
+  getAllUniformRole
 }) => {
   const [validated, setValidated] = useState(false);
   const [updateUserResponseState, setUpdateUserResponseState] = useState({
@@ -31,7 +32,24 @@ const UserProfilePageComponent = ({
   const [selectedSite, setSelectedSite] = useState(null);
   const [abnNum, setAbnNum] = useState("");
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/];
+  const [allUniformRoles, setAllUniformRoles] = useState([])
+  const [userRole, setUserRole] = useState();
+  const [ otherRole, setOtherRole ] = useState();
 
+  const handleOtherRole = (e) => {
+     setOtherRole(e.target.value);
+  }
+
+  const handleChangeRole = (e) => {
+    setUserRole(e.target.value)
+  }
+
+  useEffect(() => {
+    getAllUniformRole()
+      .then((data) => setAllUniformRoles(data))
+
+      .catch((er) => console.log(er));
+  }, []);
 
   useEffect(() => {
     fetchUser(userInfo._id)
@@ -40,6 +58,7 @@ const UserProfilePageComponent = ({
         setAbnNum(data.abn);      
       })
       .catch((er) => console.log(er));
+
   }, [userInfo._id]);
 
   useEffect(() => {
@@ -66,7 +85,7 @@ const UserProfilePageComponent = ({
     const phone = form.phone.value;
     const mobile = form.mobile.value;
     const company = form.company.value;
-    const role = form.role.value;
+    const role = userRole === "other role" ? otherRole : userRole;
     const deliveryAddress = form.deliveryAddress.value;
     const state = form.state.value;
     const postCode = form.postCode.value;
@@ -288,17 +307,6 @@ const UserProfilePageComponent = ({
                 />
               </Form.Group>
 
-              <Form.Group as={Col} md="4" controlId="formBasicRole">
-                <Form.Label>Role</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  name="role"
-                  placeholder="Role"
-                  defaultValue={user.role}
-                />
-              </Form.Group>
-
               <Form.Group as={Col} md="4" controlId="formBasicPostCode">
                 <Form.Label>Postcode</Form.Label>
                 <Form.Control
@@ -332,8 +340,43 @@ const UserProfilePageComponent = ({
                 />
               </Form.Group>
             </Row>
+            <Row>
+            <Form.Group as={Col} md="6" controlId="formBasicRole">
+            <Form.Label>Role</Form.Label>
+                  <Form.Select
+                      required
+                      name="role"
+                      onChange={handleChangeRole}
+                    >
+                      <option>{user.role}</option>
+                      {
+                        allUniformRoles.map((role, idx) => (
+                          <option key={idx} value={role.role} >
+                            {role.role}
+                          </option>))
+                      }
+                    </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Please Select your Role.{" "}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicOtherRole" className="mt-2">
+                <Form.Label></Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    name="otherRole"
+                    placeholder="Job Title"
+                    onChange={handleOtherRole}
+                    value={otherRole}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please mention your Job Title.{" "}
+                  </Form.Control.Feedback>
+                </Form.Group>}
+            </Row>
 
-            <Row className="mt-1 ms-2 justify-content-md-left">
+            <Row className="mt-4 ms-1 justify-content-md-left">
               <Button variant="primary" type="submit" className="w-auto">
                 Update
               </Button>

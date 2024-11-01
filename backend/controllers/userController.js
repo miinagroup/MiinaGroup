@@ -622,7 +622,8 @@ const updateUserProfile = async (req, res, next) => {
         siteSku: user.siteSku,
         siteVerified: user.siteVerified,
         location: user.location,
-        abn: user.abn
+        abn: user.abn,
+        role: user.role
       },
     });
   } catch (err) {
@@ -711,7 +712,7 @@ const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id)
       .select(
-        "name lastName email phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isDeveloper isSuperAdmin wantWeather isVIP isCreditVerified abn"
+        "name lastName email role phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isDeveloper isSuperAdmin wantWeather isVIP isCreditVerified abn"
       )
       .orFail();
     return res.send(user);
@@ -749,6 +750,7 @@ const updateUser = async (req, res, next) => {
     user.location = req.body.location || user.location;
     user.company = req.body.company || user.company;
     user.abn = req.body.abn || user.abn;
+    user.role = req.body.role || user.role;
 
     if (req.body.ipAddress === "") {
       user.ipAddress = "";
@@ -769,6 +771,7 @@ const updateUser = async (req, res, next) => {
     user.isCreditVerified = req.body.isCreditVerified;
     user.accounts = req.body.accounts;
     user.abn = req.body.abn;
+    user.role = req.body.role;
     await user.save();
 
     res.send("user updated");

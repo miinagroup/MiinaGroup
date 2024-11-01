@@ -60,6 +60,11 @@ const UserProfilePage = () => {
     return data;
   };
 
+  const getAllUniformRole = async () => {
+    const { data } = await axios.get("/api/uniformRoles");
+    return data;
+  }
+
 
   return (
     <Row className={`m-5 ${styles.userProfilePageComponentWrapper}`}>
@@ -76,6 +81,7 @@ const UserProfilePage = () => {
           reduxDispatch={reduxDispatch}
           localStorage={window.localStorage}
           sessionStorage={window.sessionStorage}
+          getAllUniformRole={getAllUniformRole}
         />
       </Col>
     </Row>

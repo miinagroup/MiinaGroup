@@ -7,7 +7,7 @@ import GoBackButton from "./GoBackButton";
 import FetchAuthFromServer from "../../../components/FetchAuthFromServer";
 import MaskedInput from 'react-text-mask';
 
-const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
+const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformRole }) => {
   const [validated, setValidated] = useState(false);
   const [user, setUser] = useState([]);
   const [isAdminState, setIsAdminState] = useState(false);
@@ -64,6 +64,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
     const isCreditVerified = form.isCreditVerified.checked;
     const accounts = form.accounts.checked;
     const abn = form.abn.value;
+    const role = form.role.value;
 
     // Set ipAddress to "" if "remove" is entered
     if (ipAddress === "remove") {
@@ -93,7 +94,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
         isVIP,
         isCreditVerified,
         accounts,
-        abn
+        abn,
+        role
       )
         .then((data) => {
           if (data === "user updated") {
@@ -116,7 +118,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
     fetchUser(id)
       .then((data) => {
         setUser(data);
-        console.log("useruseruseruser", data);
         setIsAdminState(data.isAdmin);
         setVerified(data.verified);
         setIsPD(data.isPD);
@@ -179,6 +180,15 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
                 type="email"
                 defaultValue={user.email}
                 disabled
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicRole">
+              <Form.Label>Role</Form.Label>
+              <Form.Control
+                name="role"
+                required
+                type="text"
+                defaultValue={user.role}
               />
             </Form.Group>
 
