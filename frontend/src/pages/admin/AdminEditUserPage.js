@@ -58,11 +58,17 @@ const updateUserApiRequest = async (
   return data;
 };
 
+const getAllUniformRole = async () => {
+  const { data } = await axios.get("/api/uniformRoles");
+  return data;
+}
+
 const AdminEditUserPage = () => {
   return (
     <EditUserPageComponent
       updateUserApiRequest={updateUserApiRequest}
       fetchUser={fetchUser}
+      getAllUniformRole={getAllUniformRole}
     />
   );
 };

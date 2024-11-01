@@ -46,8 +46,11 @@ const UserProfilePageComponent = ({
 
   useEffect(() => {
     getAllUniformRole()
-      .then((data) => setAllUniformRoles(data))
-
+      .then((data) => {
+       const updatedRoles = data.filter(role => role.role !== "other role");
+       setAllUniformRoles(updatedRoles)
+     })
+ 
       .catch((er) => console.log(er));
   }, []);
 
@@ -355,6 +358,9 @@ const UserProfilePageComponent = ({
                             {role.role}
                           </option>))
                       }
+                      <option key="other role">
+                            other role
+                        </option>
                     </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     Please Select your Role.{" "}

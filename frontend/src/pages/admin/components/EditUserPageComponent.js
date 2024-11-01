@@ -28,6 +28,27 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
     error: "",
   }); // handling errors and messages
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/];
+  const [allUniformRoles, setAllUniformRoles] = useState([])
+  const [userRole, setUserRole] = useState();
+  const [ otherRole, setOtherRole ] = useState();
+
+  const handleOtherRole = (e) => {
+    setOtherRole(e.target.value);
+ }
+
+ const handleChangeRole = (e) => {
+   setUserRole(e.target.value)
+ }
+
+ useEffect(() => {
+   getAllUniformRole()
+     .then((data) => {
+      const updatedRoles = data.filter(role => role.role !== "other role");
+      setAllUniformRoles(updatedRoles)
+    })
+
+     .catch((er) => console.log(er));
+ }, []);
 
   const handleAbn = (e) => {
     const newValue = e.target.value;
@@ -64,7 +85,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
     const isCreditVerified = form.isCreditVerified.checked;
     const accounts = form.accounts.checked;
     const abn = form.abn.value;
-    const role = form.role.value;
+    const role = userRole === "other role" ? otherRole : userRole;
 
     // Set ipAddress to "" if "remove" is entered
     if (ipAddress === "remove") {
@@ -182,7 +203,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 disabled
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicRole">
+            {/* <Form.Group className="mb-3" controlId="formBasicRole">
               <Form.Label>Role</Form.Label>
               <Form.Control
                 name="role"
@@ -190,7 +211,44 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 type="text"
                 defaultValue={user.role}
               />
-            </Form.Group>
+            </Form.Group> */}
+
+<Form.Group className="mb-3" controlId="formBasicRole">
+            <Form.Label>Role</Form.Label>
+                  <Form.Select
+                      required
+                      name="role"
+                      onChange={handleChangeRole}
+                    >
+                      <option>{user.role}</option>
+                      {
+                        allUniformRoles.map((role, idx) => (
+                          <option key={idx} value={role.role} >
+                            {role.role}
+                          </option>))
+                      }
+                       <option key="other role">
+                            other role
+                        </option>
+                    </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Please Select your Role.{" "}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                {userRole === "other role" && <Form.Group className="mb-3" controlId="formBasicOtherRole">
+                <Form.Label>User Role</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    name="otherRole"
+                    placeholder="Job Title"
+                    onChange={handleOtherRole}
+                    value={otherRole}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please mention your Job Title.{" "}
+                  </Form.Control.Feedback>
+                </Form.Group>}
 
             <Form.Group className="mb-3" controlId="formBasicAbn">
               <Form.Label>ABN</Form.Label>
