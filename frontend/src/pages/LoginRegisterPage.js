@@ -96,6 +96,11 @@ const getAlldeliveryBooks = async (email) => {
   return data;
 };
 
+const getAllUniformRole = async () => {
+  const { data } = await axios.get("/api/uniformRoles");
+  return data;
+}
+
 const LoginRegisterPage = ({ modalType}) => {
   const [selectedTab, setSelectedTab] = useState(modalType);
 
@@ -140,6 +145,7 @@ const LoginRegisterPage = ({ modalType}) => {
                   registerUserApiRequest={registerUserApiRequest}
                   reduxDispatch={reduxDispatch}
                   setReduxUserState={setReduxUserState}
+                  getAllUniformRole={getAllUniformRole}
                 />
               </Tab>
             </Tabs>

@@ -5,9 +5,9 @@ const { verifyIsLoggedIn, verifyIsAdmin, } = require('../middleware/verifyAuthTo
 const {
     getUniformRole, getUniformRoleByRole, adminCreateUniformRole, adminRemoveUniformRole, adminUpdateUniformRole
 } = require('../controllers/uniformRoleController');
-
-router.use(verifyIsLoggedIn);
 router.get("/", getUniformRole);
+router.use(verifyIsLoggedIn);
+// router.get("/", getUniformRole);
 router.get("/get-one/:userRole", getUniformRoleByRole)
 
 // admin routes:

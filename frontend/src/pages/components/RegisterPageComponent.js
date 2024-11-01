@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MaskedInput from 'react-text-mask';
 import {
   Alert,
@@ -16,6 +16,7 @@ const RegisterPageComponent = ({
   registerUserApiRequest,
   reduxDispatch,
   setReduxUserState,
+  getAllUniformRole
 }) => {
   //去react bootstrap里面找，form => validation 抄一个
   const [validated, setValidated] = useState(false);
@@ -59,12 +60,21 @@ const RegisterPageComponent = ({
   const [selectedSites, setSelectedSites] = useState({})
   const [abnNum, setAbnNum] = useState("")
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
+  const [allUniformRoles, setAllUniformRoles] = useState([])
 
   const handleConfirmPassword = (e) => {
     const { value } = e.target;
     setConfirmPassword(value);
     setPasswordsMatch(value === password);
   };
+
+  useEffect(() => {
+    getAllUniformRole()
+      .then((data) => setAllUniformRoles(data))
+
+      .catch((er) => console.log(er));
+  }, []);
+
   
   // submit form
   const handleSubmit = (event) => {
@@ -80,7 +90,7 @@ const RegisterPageComponent = ({
     const location = userLocation;
     //const company = form.company?.value.toUpperCase();
     const company = userCompany;
-    const role = userRole;
+    const role = userRole === "other role" ? otherRole : userRole;
     const deliveryAddress = "new user";
     const billAddress = "new user";
     //TODO if need deliveryAddress again, change the value from location to deliveryAddress.
@@ -321,6 +331,11 @@ const RegisterPageComponent = ({
     setUserCompany(e.target.value)
   }
 
+  const [ otherRole, setOtherRole ] = useState();
+
+  const handleOtherRole = (e) => {
+     setOtherRole(e.target.value);
+  }
   const handleChangeRole = (e) => {
     setUserRole(e.target.value)
   }
@@ -569,18 +584,36 @@ const RegisterPageComponent = ({
                   </Form.Group>
 
                   <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
+                  <Form.Select
+                      required
+                      name="role"
+                      onChange={handleChangeRole}
+                    >
+                      <option>--Select Role--</option>
+                      {
+                        allUniformRoles.map((role, idx) => (
+                          < option key={idx} value={role.role} >
+                            {role.role}
+                          </option>))
+                      }
+                    </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Please Select your Role.{" "}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                {userRole === "other role" &&<Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
                   <Form.Control
                     required
                     type="text"
-                    name="role"
+                    name="otherRole"
                     placeholder="Job Title"
-                    onChange={handleChangeRole}
-                    value={userRole}
+                    onChange={handleOtherRole}
+                    value={otherRole}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please mention your Job Title.{" "}
                   </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group>}
                 </Row>
               </>
             ) : showLocation ? (
