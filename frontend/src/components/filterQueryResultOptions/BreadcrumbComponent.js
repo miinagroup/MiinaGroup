@@ -19,7 +19,7 @@ const BreadcrumbComponent = () => {
         className={!!query.categoryName ? "active" : "hideit"}
         href={"/product-list?categoryName=" + query.categoryName}
       >
-        <span className={!!query.subCategoryName ? " " : "Highlight"}>{!!query.categoryName ? query.categoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.subCategoryName ? " " : "Highlight"}>{!!query.categoryName ? query.categoryName.replace(/-/g, " ").replace(/_/g, " & ").replace(/,/g, ".") : ""}</span>
       </Breadcrumb.Item>
       <Breadcrumb.Item
         className={!!query.subCategoryName ? "active" : "hideit"}
@@ -30,7 +30,7 @@ const BreadcrumbComponent = () => {
           query.subCategoryName
         }
       >
-        <span className={!!query.childCategoryName ? " " : "Highlight"}>{!!query.subCategoryName ? query.subCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.childCategoryName ? " " : "Highlight"}>{!!query.subCategoryName ? query.subCategoryName.replace(/-/g, " ").replace(/_/g, " & ").replace(/,/g, ".") : ""}</span>
       </Breadcrumb.Item>
       <Breadcrumb.Item
         className={!!query.childCategoryName ? "active" : "hideit"}
@@ -43,7 +43,7 @@ const BreadcrumbComponent = () => {
           query.childCategoryName
         }
       >
-        <span className={!!query.fourCategoryName ? "" : "Highlight"}>{!!query.childCategoryName ? query.childCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.fourCategoryName ? "" : "Highlight"}>{!!query.childCategoryName ? query.childCategoryName.replace(/-/g, " ").replace(/_/g, " & ").replace(/,/g, ".") : ""}</span>
       </Breadcrumb.Item>
       <Breadcrumb.Item
         className={!!query.fourCategoryName ? "active" : "hideit"}
@@ -58,7 +58,7 @@ const BreadcrumbComponent = () => {
           query.fourCategoryName
         }
       >
-        <span className={!!query.fiveCategoryName ? "" : "Highlight"}>{!!query.fourCategoryName ? query.fourCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.fiveCategoryName ? "" : "Highlight"}>{!!query.fourCategoryName ? query.fourCategoryName.replace(/-/g, " ").replace(/_/g, " & ").replace(/,/g, ".") : ""}</span>
       </Breadcrumb.Item>
       <Breadcrumb.Item
         className={!!query.fiveCategoryName ? "active" : "hideit"}
@@ -75,7 +75,7 @@ const BreadcrumbComponent = () => {
           query.fiveCategoryName
         }
       >
-        <span className={!!query.sixCategoryName ? "" : "Highlight"}>{!!query.fiveCategoryName ? query.fiveCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.sixCategoryName ? "" : "Highlight"}>{!!query.fiveCategoryName ? query.fiveCategoryName.replace(/-/g, " ").replace(/_/g, " & ").replace(/,/g, ".") : ""}</span>
       </Breadcrumb.Item>
       <Breadcrumb.Item
         className={!!query.sixCategoryName ? "active" : "hideit"}
@@ -94,7 +94,7 @@ const BreadcrumbComponent = () => {
           query.sixCategoryName
         }
       >
-        <span className={!!query.sevenCategoryName ? "" : "Highlight"}>{!!query.sixCategoryName ? query.sixCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.sevenCategoryName ? "" : "Highlight"}>{!!query.sixCategoryName ? query.sixCategoryName.replace(/-/g, " ").replace(/_/g, " & ").replace(/,/g, ".") : ""}</span>
       </Breadcrumb.Item>
       <Breadcrumb.Item
         className={!!query.sevenCategoryName ? "active" : "hideit"}
@@ -115,7 +115,7 @@ const BreadcrumbComponent = () => {
           query.sevenCategoryName
         }
       >
-        <span className={!!query.sevenCategoryName ? "Highlight" : ""}>{!!query.sevenCategoryName ? query.sevenCategoryName.replace(/-/g, " ").replace(/_/g, " & ") : ""}</span>
+        <span className={!!query.sevenCategoryName ? "Highlight" : ""}>{!!query.sevenCategoryName ? query.sevenCategoryName.replace(/-/g, " ").replace(/_/g, " & ").replace(/,/g, ".") : ""}</span>
       </Breadcrumb.Item>
     </Breadcrumb>
   );
