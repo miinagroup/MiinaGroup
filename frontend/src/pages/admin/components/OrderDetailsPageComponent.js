@@ -98,10 +98,10 @@ const OrderDetailsPageComponent = ({
 
   const { clientsSkuList } = useSelector((state) => state.products);
   const [currentClientSkuName, setCurrentClientSkuName] = useState();
-  const [ newClientSkus, setNewClientSkus ] = useState([]);
+  const [newClientSkus, setNewClientSkus] = useState([]);
 
-  const [ isCancelClientSku , setIsCancelClientSku ] = useState(false);
-  const [ isUpdatedClientSku, setIsUpdatedClientSku ] = useState(false);
+  const [isCancelClientSku, setIsCancelClientSku] = useState(false);
+  const [isUpdatedClientSku, setIsUpdatedClientSku] = useState(false);
 
   useEffect(() => {
     dispatch(getClientsSkuList());
@@ -109,20 +109,20 @@ const OrderDetailsPageComponent = ({
 
   const handleNewClientSkusChange = (newClientSku, ctlSku, cartItemId) => {
     const existingProduct = newClientSkus.find(product => product.ctlSku === ctlSku);
-    
+
     if (existingProduct) {
       setNewClientSkus((prevProducts) =>
         prevProducts.map((product) =>
-          product.ctlSku === ctlSku 
-            ? { ...product, newClientSku: {name: currentClientSkuName, number: newClientSku.number  } }
+          product.ctlSku === ctlSku
+            ? { ...product, newClientSku: { name: currentClientSkuName, number: newClientSku.number } }
             : product
         )
       );
     } else {
-  
+
       setNewClientSkus((prevProducts) => [
         ...prevProducts,
-        { newClientSku: {name: currentClientSkuName, number: newClientSku.number  }, ctlSku, cartItemId }
+        { newClientSku: { name: currentClientSkuName, number: newClientSku.number }, ctlSku, cartItemId }
       ]);
     }
   };
@@ -131,7 +131,7 @@ const OrderDetailsPageComponent = ({
     try {
       const { data } = await axios.put(
         `/api/products/admin/updateSKUBulk`, newClientSkusSku
-  
+
       );
       return data;
     } catch (error) {
@@ -171,7 +171,7 @@ const OrderDetailsPageComponent = ({
 
   }, [clientsSkuList, order]);
 
-  
+
 
   useEffect(() => {
     getOrder(id)
@@ -1159,22 +1159,22 @@ const OrderDetailsPageComponent = ({
                         ></i>
                       </>
                     ) : <><button
-                    className="btn btn-primary mt-2 p-0 pe-1 ps-1"
-                    onClick={handleSaveClientSku}
-                  >
-                    <small>Save</small>
-                  </button>
-                  <button
-                    className="btn btn-primary mt-2 p-0 pe-1 ps-1 mx-1"
-                    onClick={
-                      () => {
-                        handleClientSKU()
-                        setIsCancelClientSku(true)
-                    }
-                  }
-                  >
-                     <small>Cancel</small>
-                  </button></>}
+                      className="btn btn-primary mt-2 p-0 pe-1 ps-1"
+                      onClick={handleSaveClientSku}
+                    >
+                      <small>Save</small>
+                    </button>
+                      <button
+                        className="btn btn-primary mt-2 p-0 pe-1 ps-1 mx-1"
+                        onClick={
+                          () => {
+                            handleClientSKU()
+                            setIsCancelClientSku(true)
+                          }
+                        }
+                      >
+                        <small>Cancel</small>
+                      </button></>}
                   </th>
                   <th style={{ width: "8%" }}>CTLSKU</th>
                   <th style={{ width: "7%" }}>Unit Price</th>
@@ -1298,24 +1298,6 @@ const OrderDetailsPageComponent = ({
             </ListGroup.Item>
             <PDFPopupButton
               documentComponent={
-                <DeliveryNotePrint
-                  cartItems={cartItems}
-                  invoiceNumber={invoiceNumber}
-                  userInfo={userInfo}
-                  purchaseNumber={purchaseNumber}
-                  cartSubtotal={cartSubtotal}
-                  invoiceDate={createdAt}
-                  dueDays={dueDays}
-                  selectedDeliverySite={selectedDeliverySite}
-                  companyAccount={companyAccount}
-                  deliveredAt={deliveredAt}
-                />
-              }
-              fileName={"DN" + invoiceNumber}
-              loadingText="Print Delivery Note"
-            />
-            <PDFPopupButton
-              documentComponent={
                 <PickingPackingPrint
                   cartItems={cartItems}
                   invoiceNumber={invoiceNumber}
@@ -1323,7 +1305,7 @@ const OrderDetailsPageComponent = ({
                   purchaseNumber={purchaseNumber}
                   cartSubtotal={cartSubtotal}
                   dueDays={dueDays}
-                  invoiceDate={createdAt}
+                  invoiceDate={deliveredAt}
                   selectedDeliverySite={selectedDeliverySite}
                   companyAccount={companyAccount}
                   deliveredAt={deliveredAt}
@@ -1345,6 +1327,50 @@ const OrderDetailsPageComponent = ({
                 </Button>
               </div>
             </ListGroup.Item>
+            {!deliveredButtonDisabled ? (
+              <ListGroup.Item className="p-1 ps-2">
+                <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Delivery Note</Button>
+              </ListGroup.Item>
+              // <PDFPopupButton disabled loadingText="Print Delivery Note" style={{ opacity: 0.5, cursor: 'not-allowed' }} />
+            ) : (
+              <PDFPopupButton
+                documentComponent={
+                  <DeliveryNotePrint
+                    cartItems={cartItems}
+                    invoiceNumber={invoiceNumber}
+                    userInfo={userInfo}
+                    purchaseNumber={purchaseNumber}
+                    cartSubtotal={cartSubtotal}
+                    invoiceDate={deliveredAt}
+                    dueDays={dueDays}
+                    selectedDeliverySite={selectedDeliverySite}
+                    companyAccount={companyAccount}
+                    deliveredAt={deliveredAt}
+                  />
+                }
+                fileName={"DN" + invoiceNumber}
+                loadingText="Print Delivery Note"
+              />
+            )}
+            {/* <PDFPopupButton
+              documentComponent={
+                <DeliveryNotePrint
+                  cartItems={cartItems}
+                  invoiceNumber={invoiceNumber}
+                  userInfo={userInfo}
+                  purchaseNumber={purchaseNumber}
+                  cartSubtotal={cartSubtotal}
+                  invoiceDate={deliveredAt}
+                  dueDays={dueDays}
+                  selectedDeliverySite={selectedDeliverySite}
+                  companyAccount={companyAccount}
+                  deliveredAt={deliveredAt}
+                />
+              }
+              disabled={deliveredButtonDisabled}
+              fileName={"DN" + invoiceNumber}
+              loadingText="Print Delivery Note"
+            /> */}
             <ListGroup.Item
               className="p-1 ps-2"
               hidden={backOrderStatus === false}
@@ -1385,44 +1411,58 @@ const OrderDetailsPageComponent = ({
                 disabled={btnMarkAsPaid}
               />
             </ListGroup.Item>
-            <PDFPopupButton
-              documentComponent={
-                <InvoicePrint
-                  cartItems={cartItems}
-                  invoiceNumber={invoiceNumber}
-                  userInfo={userInfo}
-                  purchaseNumber={purchaseNumber}
-                  cartSubtotal={cartSubtotal}
-                  dueDays={dueDays}
-                  invoiceDate={deliveredAt}
-                  selectedDeliverySite={selectedDeliverySite}
-                  companyAccount={companyAccount}
-                  taxAmount={taxAmount}
-                  isPaid={btnMarkAsPaid}
-                />
-              }
-              fileName={invoiceNumber}
-              loadingText="Print Invoice"
-            />
-            <ListGroup.Item className="p-1 ps-2">
-              <div className="d-grid gap-2">
-                <Button
-                  className="p-0 m-0 w-50"
-                  onClick={
-                    sentInvButtonDisabled
-                      ? () => sendInvoiceEmail(invData)
-                      : handleSentInv
+            {!deliveredButtonDisabled ? (
+              <>
+                <ListGroup.Item className="p-1 ps-2">
+                  <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Invoice</Button>
+                </ListGroup.Item>
+                <ListGroup.Item className="p-1 ps-2">
+                  <Button className="p-0 m-0 pe-2 ps-2 w-50 " variant="secondary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Send Invoice</Button>
+                </ListGroup.Item>
+              </>
+            ) : (
+              <>
+                <PDFPopupButton
+                  documentComponent={
+                    <InvoicePrint
+                      cartItems={cartItems}
+                      invoiceNumber={invoiceNumber}
+                      userInfo={userInfo}
+                      purchaseNumber={purchaseNumber}
+                      cartSubtotal={cartSubtotal}
+                      dueDays={dueDays}
+                      invoiceDate={deliveredAt}
+                      selectedDeliverySite={selectedDeliverySite}
+                      companyAccount={companyAccount}
+                      taxAmount={taxAmount}
+                      isPaid={btnMarkAsPaid}
+                    />
                   }
-                  variant={sentInvButtonDisabled ? "secondary" : "success"}
-                  type="button"
-                  disabled={sendingInv}
-                >
-                  {sendingInv ? "Sending..." : invSentButton}{" "}
-                  <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
-                  {/* {`(${order?.invHasSent})`} */}
-                </Button>
-              </div>
-            </ListGroup.Item>
+                  fileName={invoiceNumber}
+                  loadingText="Print Invoice"
+                />
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <Button
+                      className="p-0 m-0 w-50"
+                      onClick={
+                        sentInvButtonDisabled
+                          ? () => sendInvoiceEmail(invData)
+                          : handleSentInv
+                      }
+                      variant={sentInvButtonDisabled ? "secondary" : "success"}
+                      type="button"
+                      disabled={sendingInv}
+                    >
+                      {sendingInv ? "Sending..." : invSentButton}{" "}
+                      <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
+                      {/* {`(${order?.invHasSent})`} */}
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+              </>
+            )}
+
           </ListGroup>
           <br />
           <div style={{ height: "100px" }}>
