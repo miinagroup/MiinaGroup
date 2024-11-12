@@ -57,6 +57,8 @@ const OrderDetailsPageComponent = ({
   const [paymentMethod, setPaymentMethod] = useState("");
   const [purchaseNumber, setPurchaseNumber] = useState("");
   const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [createdAt, setCreatedAt] = useState("");
   const [dueDays, setDueDays] = useState();
   const [deliveredAt, setDeliveredAt] = useState("");
@@ -360,7 +362,10 @@ const OrderDetailsPageComponent = ({
     setInvoiceNumber(e.target.value);
     updateInvoiceNumber(id, e.target.value);
   };
-
+  const handleChangeEmailAddress = (e) => {
+    const email = e.target.value;
+    setEmailAddress(email);
+  };
   // edit client sku
   const handleClientSKU = () => setEnterClientSKU(!enterClientSKU);
   const saveClientSKU = () => {
@@ -530,6 +535,8 @@ const OrderDetailsPageComponent = ({
   // ap@slrltd.com.au
 
   const [sendingInv, setSendingInv] = useState(false);
+  const [sendingInvManually, setSendingInvManually] = useState(false);
+  //const [sendingInv, setSendingInv] = useState(false);
 
   const sendInvoiceEmail = async (invData) => {
     setSendingInv(true);
@@ -559,6 +566,44 @@ const OrderDetailsPageComponent = ({
       console.error(err);
       setSendingInv(false);
       return false;
+    }
+  };
+
+  const sendInvoiceEmailManually = async (invData) => {
+    if (emailAddress && emailAddress.trim() !== "") {
+      console.log("email", emailAddress);
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setIsEmailValid(emailPattern.test(emailAddress));
+      if (emailPattern.test(emailAddress)) {
+        setSendingInvManually(true);
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        const formDataToSend = new FormData();
+        formDataToSend.append("billingEmail", `${emailAddress}`);
+        formDataToSend.append("purchaseNumber", `${invData.purchaseNumber}`);
+        formDataToSend.append("totalPrice", `${invData.cartSubtotal}`);
+        formDataToSend.append("invoiceNumber", `${invData.invoiceNumber}`);
+        formDataToSend.append("base64data", `${invData.base64data}`);
+        formDataToSend.append("orderID", `${id}`);
+
+        try {
+          const res = await axios.post(
+            "/api/sendemail/emailInv",
+            formDataToSend,
+            config
+          );
+          setSendingInvManually(false);
+          setRefreshOrder(!refreshOrder);
+          return true;
+        } catch (err) {
+          console.error(err);
+          setSendingInvManually(false);
+          return false;
+        }
+      }
     }
   };
 
@@ -1457,6 +1502,31 @@ const OrderDetailsPageComponent = ({
                       {sendingInv ? "Sending..." : invSentButton}{" "}
                       <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
                       {/* {`(${order?.invHasSent})`} */}
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <Form.Control
+                      type="text"
+                      style={{ width: "99%" }}
+                      min="0"
+                      className="form-control pe-0"
+                      onChange={handleChangeEmailAddress}
+                      value={emailAddress}
+                      isInvalid={!isEmailValid}
+                    />
+                    {!isEmailValid && (
+                      <Alert variant="danger" className="mt-2">
+                        Please enter a valid email address.
+                      </Alert>
+                    )}
+                    <Button
+                      className="p-0 m-0 w-50"
+                      onClick={() => sendInvoiceEmailManually(invData)}
+                      type="button"
+                      disabled={sendingInvManually}
+                    >{sendingInvManually ? "Sending..." : "Send Invoice"}
                     </Button>
                   </div>
                 </ListGroup.Item>
