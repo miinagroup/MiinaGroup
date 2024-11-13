@@ -57,6 +57,8 @@ const OrderDetailsPageComponent = ({
   const [paymentMethod, setPaymentMethod] = useState("");
   const [purchaseNumber, setPurchaseNumber] = useState("");
   const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [createdAt, setCreatedAt] = useState("");
   const [dueDays, setDueDays] = useState();
   const [deliveredAt, setDeliveredAt] = useState("");
@@ -98,10 +100,10 @@ const OrderDetailsPageComponent = ({
 
   const { clientsSkuList } = useSelector((state) => state.products);
   const [currentClientSkuName, setCurrentClientSkuName] = useState();
-  const [ newClientSkus, setNewClientSkus ] = useState([]);
+  const [newClientSkus, setNewClientSkus] = useState([]);
 
-  const [ isCancelClientSku , setIsCancelClientSku ] = useState(false);
-  const [ isUpdatedClientSku, setIsUpdatedClientSku ] = useState(false);
+  const [isCancelClientSku, setIsCancelClientSku] = useState(false);
+  const [isUpdatedClientSku, setIsUpdatedClientSku] = useState(false);
 
   useEffect(() => {
     dispatch(getClientsSkuList());
@@ -109,20 +111,20 @@ const OrderDetailsPageComponent = ({
 
   const handleNewClientSkusChange = (newClientSku, ctlSku, cartItemId) => {
     const existingProduct = newClientSkus.find(product => product.ctlSku === ctlSku);
-    
+
     if (existingProduct) {
       setNewClientSkus((prevProducts) =>
         prevProducts.map((product) =>
-          product.ctlSku === ctlSku 
-            ? { ...product, newClientSku: {name: currentClientSkuName, number: newClientSku.number  } }
+          product.ctlSku === ctlSku
+            ? { ...product, newClientSku: { name: currentClientSkuName, number: newClientSku.number } }
             : product
         )
       );
     } else {
-  
+
       setNewClientSkus((prevProducts) => [
         ...prevProducts,
-        { newClientSku: {name: currentClientSkuName, number: newClientSku.number  }, ctlSku, cartItemId }
+        { newClientSku: { name: currentClientSkuName, number: newClientSku.number }, ctlSku, cartItemId }
       ]);
     }
   };
@@ -131,7 +133,7 @@ const OrderDetailsPageComponent = ({
     try {
       const { data } = await axios.put(
         `/api/products/admin/updateSKUBulk`, newClientSkusSku
-  
+
       );
       return data;
     } catch (error) {
@@ -171,7 +173,7 @@ const OrderDetailsPageComponent = ({
 
   }, [clientsSkuList, order]);
 
-  
+
 
   useEffect(() => {
     getOrder(id)
@@ -360,7 +362,10 @@ const OrderDetailsPageComponent = ({
     setInvoiceNumber(e.target.value);
     updateInvoiceNumber(id, e.target.value);
   };
-
+  const handleChangeEmailAddress = (e) => {
+    const email = e.target.value;
+    setEmailAddress(email);
+  };
   // edit client sku
   const handleClientSKU = () => setEnterClientSKU(!enterClientSKU);
   const saveClientSKU = () => {
@@ -530,6 +535,8 @@ const OrderDetailsPageComponent = ({
   // ap@slrltd.com.au
 
   const [sendingInv, setSendingInv] = useState(false);
+  const [sendingInvManually, setSendingInvManually] = useState(false);
+  //const [sendingInv, setSendingInv] = useState(false);
 
   const sendInvoiceEmail = async (invData) => {
     setSendingInv(true);
@@ -559,6 +566,44 @@ const OrderDetailsPageComponent = ({
       console.error(err);
       setSendingInv(false);
       return false;
+    }
+  };
+
+  const sendInvoiceEmailManually = async (invData) => {
+    if (emailAddress && emailAddress.trim() !== "") {
+      console.log("email", emailAddress);
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setIsEmailValid(emailPattern.test(emailAddress));
+      if (emailPattern.test(emailAddress)) {
+        setSendingInvManually(true);
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        const formDataToSend = new FormData();
+        formDataToSend.append("billingEmail", `${emailAddress}`);
+        formDataToSend.append("purchaseNumber", `${invData.purchaseNumber}`);
+        formDataToSend.append("totalPrice", `${invData.cartSubtotal}`);
+        formDataToSend.append("invoiceNumber", `${invData.invoiceNumber}`);
+        formDataToSend.append("base64data", `${invData.base64data}`);
+        formDataToSend.append("orderID", `${id}`);
+
+        try {
+          const res = await axios.post(
+            "/api/sendemail/emailInv",
+            formDataToSend,
+            config
+          );
+          setSendingInvManually(false);
+          setRefreshOrder(!refreshOrder);
+          return true;
+        } catch (err) {
+          console.error(err);
+          setSendingInvManually(false);
+          return false;
+        }
+      }
     }
   };
 
@@ -1159,22 +1204,22 @@ const OrderDetailsPageComponent = ({
                         ></i>
                       </>
                     ) : <><button
-                    className="btn btn-primary mt-2 p-0 pe-1 ps-1"
-                    onClick={handleSaveClientSku}
-                  >
-                    <small>Save</small>
-                  </button>
-                  <button
-                    className="btn btn-primary mt-2 p-0 pe-1 ps-1 mx-1"
-                    onClick={
-                      () => {
-                        handleClientSKU()
-                        setIsCancelClientSku(true)
-                    }
-                  }
-                  >
-                     <small>Cancel</small>
-                  </button></>}
+                      className="btn btn-primary mt-2 p-0 pe-1 ps-1"
+                      onClick={handleSaveClientSku}
+                    >
+                      <small>Save</small>
+                    </button>
+                      <button
+                        className="btn btn-primary mt-2 p-0 pe-1 ps-1 mx-1"
+                        onClick={
+                          () => {
+                            handleClientSKU()
+                            setIsCancelClientSku(true)
+                          }
+                        }
+                      >
+                        <small>Cancel</small>
+                      </button></>}
                   </th>
                   <th style={{ width: "8%" }}>CTLSKU</th>
                   <th style={{ width: "7%" }}>Unit Price</th>
@@ -1298,24 +1343,6 @@ const OrderDetailsPageComponent = ({
             </ListGroup.Item>
             <PDFPopupButton
               documentComponent={
-                <DeliveryNotePrint
-                  cartItems={cartItems}
-                  invoiceNumber={invoiceNumber}
-                  userInfo={userInfo}
-                  purchaseNumber={purchaseNumber}
-                  cartSubtotal={cartSubtotal}
-                  invoiceDate={createdAt}
-                  dueDays={dueDays}
-                  selectedDeliverySite={selectedDeliverySite}
-                  companyAccount={companyAccount}
-                  deliveredAt={deliveredAt}
-                />
-              }
-              fileName={"DN" + invoiceNumber}
-              loadingText="Print Delivery Note"
-            />
-            <PDFPopupButton
-              documentComponent={
                 <PickingPackingPrint
                   cartItems={cartItems}
                   invoiceNumber={invoiceNumber}
@@ -1323,7 +1350,7 @@ const OrderDetailsPageComponent = ({
                   purchaseNumber={purchaseNumber}
                   cartSubtotal={cartSubtotal}
                   dueDays={dueDays}
-                  invoiceDate={createdAt}
+                  invoiceDate={deliveredAt}
                   selectedDeliverySite={selectedDeliverySite}
                   companyAccount={companyAccount}
                   deliveredAt={deliveredAt}
@@ -1345,6 +1372,50 @@ const OrderDetailsPageComponent = ({
                 </Button>
               </div>
             </ListGroup.Item>
+            {!deliveredButtonDisabled ? (
+              <ListGroup.Item className="p-1 ps-2">
+                <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Delivery Note</Button>
+              </ListGroup.Item>
+              // <PDFPopupButton disabled loadingText="Print Delivery Note" style={{ opacity: 0.5, cursor: 'not-allowed' }} />
+            ) : (
+              <PDFPopupButton
+                documentComponent={
+                  <DeliveryNotePrint
+                    cartItems={cartItems}
+                    invoiceNumber={invoiceNumber}
+                    userInfo={userInfo}
+                    purchaseNumber={purchaseNumber}
+                    cartSubtotal={cartSubtotal}
+                    invoiceDate={deliveredAt}
+                    dueDays={dueDays}
+                    selectedDeliverySite={selectedDeliverySite}
+                    companyAccount={companyAccount}
+                    deliveredAt={deliveredAt}
+                  />
+                }
+                fileName={"DN" + invoiceNumber}
+                loadingText="Print Delivery Note"
+              />
+            )}
+            {/* <PDFPopupButton
+              documentComponent={
+                <DeliveryNotePrint
+                  cartItems={cartItems}
+                  invoiceNumber={invoiceNumber}
+                  userInfo={userInfo}
+                  purchaseNumber={purchaseNumber}
+                  cartSubtotal={cartSubtotal}
+                  invoiceDate={deliveredAt}
+                  dueDays={dueDays}
+                  selectedDeliverySite={selectedDeliverySite}
+                  companyAccount={companyAccount}
+                  deliveredAt={deliveredAt}
+                />
+              }
+              disabled={deliveredButtonDisabled}
+              fileName={"DN" + invoiceNumber}
+              loadingText="Print Delivery Note"
+            /> */}
             <ListGroup.Item
               className="p-1 ps-2"
               hidden={backOrderStatus === false}
@@ -1385,44 +1456,83 @@ const OrderDetailsPageComponent = ({
                 disabled={btnMarkAsPaid}
               />
             </ListGroup.Item>
-            <PDFPopupButton
-              documentComponent={
-                <InvoicePrint
-                  cartItems={cartItems}
-                  invoiceNumber={invoiceNumber}
-                  userInfo={userInfo}
-                  purchaseNumber={purchaseNumber}
-                  cartSubtotal={cartSubtotal}
-                  dueDays={dueDays}
-                  invoiceDate={deliveredAt}
-                  selectedDeliverySite={selectedDeliverySite}
-                  companyAccount={companyAccount}
-                  taxAmount={taxAmount}
-                  isPaid={btnMarkAsPaid}
-                />
-              }
-              fileName={invoiceNumber}
-              loadingText="Print Invoice"
-            />
-            <ListGroup.Item className="p-1 ps-2">
-              <div className="d-grid gap-2">
-                <Button
-                  className="p-0 m-0 w-50"
-                  onClick={
-                    sentInvButtonDisabled
-                      ? () => sendInvoiceEmail(invData)
-                      : handleSentInv
+            {!deliveredButtonDisabled ? (
+              <>
+                <ListGroup.Item className="p-1 ps-2">
+                  <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Invoice</Button>
+                </ListGroup.Item>
+                <ListGroup.Item className="p-1 ps-2">
+                  <Button className="p-0 m-0 pe-2 ps-2 w-50 " variant="secondary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Send Invoice</Button>
+                </ListGroup.Item>
+              </>
+            ) : (
+              <>
+                <PDFPopupButton
+                  documentComponent={
+                    <InvoicePrint
+                      cartItems={cartItems}
+                      invoiceNumber={invoiceNumber}
+                      userInfo={userInfo}
+                      purchaseNumber={purchaseNumber}
+                      cartSubtotal={cartSubtotal}
+                      dueDays={dueDays}
+                      invoiceDate={deliveredAt}
+                      selectedDeliverySite={selectedDeliverySite}
+                      companyAccount={companyAccount}
+                      taxAmount={taxAmount}
+                      isPaid={btnMarkAsPaid}
+                    />
                   }
-                  variant={sentInvButtonDisabled ? "secondary" : "success"}
-                  type="button"
-                  disabled={sendingInv}
-                >
-                  {sendingInv ? "Sending..." : invSentButton}{" "}
-                  <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
-                  {/* {`(${order?.invHasSent})`} */}
-                </Button>
-              </div>
-            </ListGroup.Item>
+                  fileName={invoiceNumber}
+                  loadingText="Print Invoice"
+                />
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <Button
+                      className="p-0 m-0 w-50"
+                      onClick={
+                        sentInvButtonDisabled
+                          ? () => sendInvoiceEmail(invData)
+                          : handleSentInv
+                      }
+                      variant={sentInvButtonDisabled ? "secondary" : "success"}
+                      type="button"
+                      disabled={sendingInv}
+                    >
+                      {sendingInv ? "Sending..." : invSentButton}{" "}
+                      <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
+                      {/* {`(${order?.invHasSent})`} */}
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <Form.Control
+                      type="text"
+                      style={{ width: "99%" }}
+                      min="0"
+                      className="form-control pe-0"
+                      onChange={handleChangeEmailAddress}
+                      value={emailAddress}
+                      isInvalid={!isEmailValid}
+                    />
+                    {!isEmailValid && (
+                      <Alert variant="danger" className="mt-2">
+                        Please enter a valid email address.
+                      </Alert>
+                    )}
+                    <Button
+                      className="p-0 m-0 w-50"
+                      onClick={() => sendInvoiceEmailManually(invData)}
+                      type="button"
+                      disabled={sendingInvManually}
+                    >{sendingInvManually ? "Sending..." : "Send Invoice"}
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+              </>
+            )}
+
           </ListGroup>
           <br />
           <div style={{ height: "100px" }}>

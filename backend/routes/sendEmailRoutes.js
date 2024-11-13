@@ -11,7 +11,8 @@ const {
   quoteCompletedNotice,
   sendQuotePDF,
   sendPOPDF,
-  sendRequest
+  sendRequest,
+  sendNotification
 } = require("../controllers/sendEmailController");
 const { verifyIsLoggedIn } = require("../middleware/verifyAuthToken");
 
@@ -24,6 +25,7 @@ router.post("/quoteprice", quotePrice);
 router.post("/managementApproval", managementApproval);
 router.post("/newOrderRemind", newOrderRemind);
 router.post("/emailInv", sendInvoice);
+router.post("/emailNotification", sendNotification);
 router.post("/emailProformaInv", sendProformaInvoice);
 router.post("/emailPO", sendPOPDF);
 router.post("/emailShipping", deliveryNotice);

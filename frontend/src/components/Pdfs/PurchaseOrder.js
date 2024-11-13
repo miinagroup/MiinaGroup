@@ -516,7 +516,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
               <View style={styles.tableRow4}>
                 <View style={styles.tableColHeaderSide}>
                   <Text style={styles.tableCellBill}>
-                    {purchaseData?.supplierAddress?.replaceAll(',', '\n')}
+                    {purchaseData?.supplierName + "\n" + purchaseData?.supplierAddress?.replaceAll(',', '\n')}
                   </Text>
                 </View>
                 <View style={styles.tableColHeaderSide}>

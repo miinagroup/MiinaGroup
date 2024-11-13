@@ -1046,6 +1046,34 @@ const sendRequest = async (req, res, next) => {
   }
 }
 
+const sendNotification = async (receivingEmail, backOrderList) => {
+  try {
+    const message = {
+      from: `"no-reply CTL" <${process.env.CTLEMAIL}>`,
+      to: `${receivingEmail}`,
+      subject: `CTL Overdue Orders List`,
+      text: `
+  Hi Sales,
+
+  Please note that the following orders are overdue by more than 7 days: 
+ 
+  ${backOrderList}
+
+  Could you please follow up with our suppliers and provide an update to our client?
+
+  Kind Regards,
+  The CTL Australia Team
+    `
+    };
+
+    // Send email
+    await transporter.sendMail(message);
+
+  } catch (err) {
+    console.error("Error in sending notification:", err);
+  }
+};
+
 module.exports = {
   quoteProduct,
   quotePrice,
@@ -1058,5 +1086,6 @@ module.exports = {
   sendQuotePDF,
   newUserNoticeToJosh,
   sendPOPDF,
-  sendRequest
+  sendRequest,
+  sendNotification
 };

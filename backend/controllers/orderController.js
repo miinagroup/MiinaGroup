@@ -4,6 +4,8 @@ const Quote = require("../models/QuoteModel");
 const ObjectId = require("mongodb").ObjectId;
 const mongoose = require("mongoose");
 const Decimal = require('decimal.js');
+const cron = require("node-cron");
+const { sendNotification } = require("./sendEmailController")
 
 const getUserOrders = async (req, res, next) => {
   try {
@@ -415,9 +417,6 @@ const updateBackOrder = async (req, res) => {
   }
 };
 
-
-
-
 const deleteOrderItem = async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -649,8 +648,6 @@ const orderSalesToProduct = async (req, res, next) => {
   }
 }
 
-
-
 const getSupplier = async (req, res) => {
   try {
     const results = await Order.aggregate([
@@ -828,6 +825,46 @@ const adminBulkUpdateClientSkus = async (req, res, next) => {
     next(error);
   }
 };
+
+const scheduledEmailNotificationForOverdueOrders = async () => {
+  try {
+    let backOrderList = []
+    const orders = await Order.find({})
+    orders?.map((order) => {
+      const dateDifferenceInMs = new Date() - new Date(order.createdAt)
+      const differenceInDays = Math.floor(dateDifferenceInMs / (1000 * 60 * 60 * 24));
+
+      const date = new Date(order.createdAt)
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+      if (!order.isDelivered && differenceInDays > 7) {
+        backOrderList.push("Invoice Number : " + order.invoiceNumber + " , Created Date : " + formattedDate + "\n")
+      }
+    })
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    const receivingEmail = "techteam@ctlaus.com"
+    const res = await sendNotification(receivingEmail, backOrderList)
+
+  } catch (err) {
+    console.error("Error in scheduled Email Notification For Overdue Orders:", err);
+  }
+};
+
+//Auto Update Hobson Stock Every Day 12am
+cron.schedule("0 8 * * 1", scheduledEmailNotificationForOverdueOrders, {
+  scheduled: true,
+  timezone: "Australia/Perth",
+});
 
 
 

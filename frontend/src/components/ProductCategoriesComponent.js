@@ -61,7 +61,7 @@ const ProductCategoriesComponent = ({
     }
   }
 
-  const displayCategory = category.replace(/-/g, ' ').replace(/_/g, " & ");
+  const displayCategory = category.replace(/-/g, ' ').replace(/_/g, " & ").replace(/,/g, ".");
 
   return (
     <Col className="bigbox_product_categories_col">

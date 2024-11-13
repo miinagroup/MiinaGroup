@@ -328,7 +328,8 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
             />
             <tbody>
               {ordersData.map((order, idx) => (
-                <tr key={idx}>
+
+                <tr key={idx} style={{ backgroundColor: !order.isDelivered && (new Date() - new Date(order.createdAt) > 7 * 24 * 60 * 60 * 1000) ? "orange" : "white" }}>
                   <td className="no-wrap-td">{idx + 1}</td>
                   <td
                     onClick={() => handleShow(order._id)}
