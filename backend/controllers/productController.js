@@ -8,7 +8,7 @@ const moment = require("moment-timezone");
 const _ = require('lodash');
 const recordsPerPage = 100
 
-const excludedSuppliers = ["PARAMOUNT-SAFETY", "SHEFFIELD"];
+const excludedSuppliers = ["CAPRARI", "CABLE SUPPLY", "CABLE DISTRIBUTION SERVICES", "ELECTRA CABLES", "POWER SAFE", "SCINTEX"];
 const appToken = "9Ark2TryUeCOQObeKkxnVoB4IwPznpoE"
 const storeCode = "EMBLETON"
 const apiKey = "6d234218-9973-4e57-9b29-d93d1c98e436"
@@ -2383,12 +2383,40 @@ const searchProducts = async (req, res, next) => {
 const searchProductsForVisitor = async (req, res, next) => {
   try {
     let skuSearch = true;
-    const { searchQuery } = req.params;
-    const query = searchQuery.split(" ");
+    const { searchQuery } = req.query;
+    const limit = parseInt(req.query.limit) || 24;
+    const offset = parseInt(req.query.offset) || 0;
+    let query = searchQuery.split(/[\s-]+/);
     const pageNum = Number(req.query.pageNum) || 1;
     const skip = (pageNum - 1) * recordsPerPage;
     let totalProducts = 0;
     let products = [];
+    let productFound = []
+
+    const combineNumberWithNext = (keywords) => {
+      const combinedKeywords = [];
+      for (let i = 0; i < keywords.length; i++) {
+        if (/^\d+$/.test(keywords[i]) && i + 1 < keywords.length) {
+          // Combine the number-containing keyword with the next one
+          combinedKeywords.push(`${keywords[i]} ${keywords[i + 1]}`);
+          i++; // Skip the next keyword since it's already combined
+        } else {
+          combinedKeywords.push(keywords[i]);
+        }
+      }
+
+      return combinedKeywords;
+    };
+    let modifiedKeywords = []
+    if (query.length > 1) {
+      modifiedKeywords = combineNumberWithNext(query)
+    }
+
+    console.log(modifiedKeywords);
+    if (modifiedKeywords.length > 0) {
+      query = modifiedKeywords
+    }
+
 
     function sortByName(array) {
       let withQueryWordsInName = [];
@@ -2437,116 +2465,395 @@ const searchProductsForVisitor = async (req, res, next) => {
     }
 
     if (searchQuery !== "" || searchQuery !== null || searchQuery !== undefined) {
+      console.log("Test");
+
       const spaceReplaced = searchQuery.replace(/ /g, '-')
       const escapeRegex = (string) => {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapes special characters
       };
       const escapedSearchQuery = escapeRegex(searchQuery);
       const regex = new RegExp(`${escapedSearchQuery}s?`, "i");
-      const regExact = new RegExp(`\\b${escapedSearchQuery}s?\\b`, "i");
-      const regexSpace = new RegExp(`\\b${spaceReplaced}s?\\b`, "i")
-      searchCondition = {
-        $or: [
-          { "stock.slrsku": regex },
-          { "stock.ctlsku": regex },
-          { "stock.suppliersku": regex },
-          { "supplier": regExact },
-          { "name": regExact },
-          { "description": regExact },
-          { "category": regexSpace },
-          { "tags": regExact }
-        ]
+      const regExact = new RegExp(`\\b${escapedSearchQuery.replace(/\s/g, '\\s*')}s?\\b`, "i");
+      const regexSpace = new RegExp(`(^|[\\/\\s])${searchQuery}s?([\\/\\s]|$)`, "i");
+
+      const categoryMatches = await Product.find({ "category": regexSpace }).limit(250);
+      productFound = productFound.concat(categoryMatches);
+      productFound = _.uniqBy(productFound, 'id');
+
+      if (productFound.length < 250) {
+        const supplierMatches = await Product.find({ "supplier": regExact }).limit(250 - productFound.length);
+        productFound = productFound.concat(supplierMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
+      if (productFound.length < 250) {
+        const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
+        productFound = productFound.concat(nameMatches);
+      }
+      productFound = _.uniqBy(productFound, 'id');
+      if (productFound.length < 250) {
+        const slrskuMatches = await Product.find({ "stock.slrsku": regex }).limit(250 - productFound.length);
+        productFound = productFound.concat(slrskuMatches);
+      }
+      productFound = _.uniqBy(productFound, 'id');
+      if (productFound.length < 250) {
+        const ctlskuMatches = await Product.find({ "stock.ctlsku": regex }).limit(250 - productFound.length);
+        productFound = productFound.concat(ctlskuMatches);
+      }
+      productFound = _.uniqBy(productFound, 'id');
+      if (productFound.length < 250) {
+        const supplierskuMatches = await Product.find({ "stock.suppliersku": regex }).limit(250 - productFound.length);
+        productFound = productFound.concat(supplierskuMatches);
+      }
+      productFound = _.uniqBy(productFound, 'id');
+      if (productFound.length < 250) {
+        const tagsMatches = await Product.find({ "tags": regex }).limit(250 - productFound.length);
+        productFound = productFound.concat(tagsMatches);
+      }
+      productFound = _.uniqBy(productFound, 'id');
 
-      const productFound = await Product.find(searchCondition)
-      const categoryList = productFound.filter((product) => {
-        const categoryParts = product.category?.split("/");
-        return categoryParts.some(part => regexSpace.test(part));
-      })
-      const categoryFilteredList = productFound.filter(
-        (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
-      );
-      const nameList = categoryFilteredList.filter((product) => regExact.test(product.name))
-      const descriptionList = productFound.filter(
-        (product) => !nameList.some((nameProduct) => nameProduct._id === product._id)
-      );
-      console.log(categoryList.length, nameList.length, descriptionList.length);
+      if (productFound.length === 250) {
+        // const categoryList = productFound.filter((product) => {
+        //   const categoryParts = product.tags.split(" ")
+        //   if (categoryParts.length > 1)
+        //     return categoryParts?.some(part => regexSpace.test(part));
+        //   else
+        //     return regexSpace.test(product.category);
+        // })
+        // const categoryFilteredList = productFound.filter(
+        //   (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
+        // );
+        // const nameList = categoryFilteredList.filter((product) => regexSpace.test(product.supplier))
 
-      const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
-      const productMatch = concatenatedList.slice(skip, skip + recordsPerPage);
+        // // console.log(categoryList.length, nameList.length);
+        // console.log(productFound.length);
 
-      const productsNew = productMatch.filter((product) => product.category !== "QUOTE");
-      const totalProductsMatch = await Product.countDocuments(searchCondition);
+        // const concatenatedList = [...categoryList, ...nameList]
+        const filetredProducts = _.uniqBy(productFound, 'id');
+        const productMatch = filetredProducts.filter((product) => product.category !== "QUOTE" && product.category !== "CLIENTQUOTE" && !excludedSuppliers.includes(product.supplier))
+        // .filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
+        // const productsNew = productMatch.slice(skip, skip + recordsPerPage);
+        const productsNew = productMatch;
+        const totalProductsMatch = productFound.length
 
-      if (productsNew.length === 0) {
-        skuSearch = false
-      } else {
-        products = products.concat(productsNew);
-        totalProducts = totalProducts += totalProductsMatch
+        if (productsNew.length === 0) {
+          skuSearch = false
+        } else {
+          products = products.concat(productsNew);
+          totalProducts = totalProducts += totalProductsMatch
+        }
       }
     }
 
     // General search by supplier, name, description depending on how many words in search.
     // Now search by tags doesn't work as field tag is not completed for a Product. It is for future. 
-    if (!skuSearch && query.length === 1) {
-      const regexQueries = query.map(term => new RegExp(term, 'i'));
-      const regExactQueries = query.map(term => new RegExp(`\\b${term}\\b`, "i"));
-      const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
+    if (productFound.length < 250 && query.length === 1) {
+      console.log("Test1");
 
-      searchCondition = {
-        $or: [
-          { name: regexQueries },
-          { supplier: supplierFilters },
-          { description: regexQueries },
-          { tags: regexQueries }
-        ],
-        $and: [{ supplier: { $nin: excludedSuppliers } }]
+      const regNormal = new RegExp(`${searchQuery.replace(/\s/g, '\\s*')}s?`, "i");
+      const regExact = new RegExp(`\\b${searchQuery.replace(/\s/g, '\\s*')}s?\\b`, "i");
+      const supplierFilter = new RegExp(`^${searchQuery}$`, 'i')
+
+      let searchCondition = {}
+
+      if (req.user?.email.endsWith("@slrltd.com") ||
+        req.user?.email.endsWith("@silverlakeresources.com.au") ||
+        req.user?.email.endsWith("@red5limited.com.au") ||
+        req.user?.email.endsWith("@ctlservices.com.au") ||
+        req.user?.email.endsWith("@ctlaus.com") ||
+        req.user?.email.endsWith("@focusminerals.com.au") ||
+        req.user?.email.endsWith("@evolutionmining.com")) {
+
+        const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
+        productFound = productFound.concat(supplierMatches);
+        productFound = _.uniqBy(productFound, 'id');
+
+        if (productFound.length < 250) {
+          const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
+          productFound = productFound.concat(nameMatches);
+        }
+        productFound = _.uniqBy(productFound, 'id');
+      } else {
+        const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
+        productFound = productFound.concat(supplierMatches);
+        productFound = _.uniqBy(productFound, 'id');
+
+        if (productFound.length < 250) {
+          const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
+          productFound = productFound.concat(nameMatches);
+        }
+        productFound = _.uniqBy(productFound, 'id');
       }
 
-      const foundProducts = await Product.find(searchCondition);
-      const sortedProductsArray = sortByName(foundProducts);
-      const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
+      const filetredProducts = _.uniqBy(productFound, 'id').filter((product) => !excludedSuppliers.includes(product.supplier));;
+      const productsPerPage = getProductsbyPage(pageNum, filetredProducts);
+      const totalProductsMatch = productFound.length
+      products = filetredProducts;
+      totalProducts = totalProducts += totalProductsMatch
+      console.log(totalProducts);
 
-      totalProducts = await Product.countDocuments(searchCondition);
-      products = productsPerPage;
+    } else if (productFound.length < 250 && query.length >= 2) {
+      console.log("Test2");
+      const regNormal = query.map(term => new RegExp(`${term.replace(/\s/g, '\\s*').replace(/s$/, '')}s?`, "i"));
+      //const regNormal = query.map(term => new RegExp(`${term}s?`, "i"));
+      //const regNormal = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
+      const regExact = query.map(term => new RegExp(`(^|[^a-zA-Z0-9])${term.replace(/\s/g, '\\s*')}([^a-zA-Z0-9]|$)s?`, "i"));
+      const regExactQueries = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
+      const supplierFilters = query.map(term => (new RegExp(`^${term.replace(/\s/g, '\\s*')}$`, 'i')));
 
-    } else if (!skuSearch && query.length >= 2) {
-      const regexQueries = query.map(term => new RegExp(term, 'i'));
-      const searchCondition = regexQueries.map(regex => ({
-        $or: [
-          { name: regex },
-          { description: regex },
-          { supplier: regex },
-          { tags: regex }
-        ],
-        $and: [{ supplier: { $nin: excludedSuppliers } }]
-      }));
+      if (req.user?.email.endsWith("@slrltd.com") ||
+        req.user?.email.endsWith("@silverlakeresources.com.au") ||
+        req.user?.email.endsWith("@red5limited.com.au") ||
+        req.user?.email.endsWith("@ctlservices.com.au") ||
+        req.user?.email.endsWith("@ctlaus.com") ||
+        req.user?.email.endsWith("@focusminerals.com.au") ||
+        req.user?.email.endsWith("@evolutionmining.com")) {
 
-      const foundProducts = await Product.find({ $and: searchCondition });
-      const sortedProductsArray = sortByName(foundProducts);
-      const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
+        const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
+        productFound = productFound.concat(tagsMatches);
+        productFound = _.uniqBy(productFound, 'id');
 
-      totalProducts = await Product.countDocuments({ $and: searchCondition });
-      products = productsPerPage;
+      } else {
+        const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
+        productFound = productFound.concat(tagsMatches);
+        productFound = _.uniqBy(productFound, 'id');
+
+      }
+
+      const keywords = regNormal.map(regex => regex.source); // Get the raw keyword from the regex
+      console.log(keywords);
+
+      // const regexSpace = new RegExp(`(^|[\\/\\s])${searchQuery}s?([\\/\\s]|$)`, "i");
+
+      // const tagsList = productFound.filter((product) => regexSpace.test(product.tags));
+      // const descriptionList = productFound.filter(
+      //   (product) => !tagsList.some((nameProduct) => nameProduct._id === product._id)
+      // );
+      // const concatenatedList = [...tagsList, ...descriptionList]
+      // const filetredProducts = _.uniqBy(concatenatedList, 'id');
+      // const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
+      // const sortedProducts = productMatch.slice(skip, skip + recordsPerPage);
+      // const totalProductsMatch = productFound.length
+
+      // const productsPerPage = getProductsbyPage(pageNum, sortedProducts);
+      // products = productsPerPage;
+      // totalProducts = totalProducts += totalProductsMatch
+      // console.log(totalProducts);
+
+      const sortedProducts = productFound.sort((a, b) => {
+        // Check how many keywords occur in `category`, `name`, or `description` for each product
+        const aCount = keywords.filter(keyword =>
+          new RegExp(keyword, 'i').test(a.tags) ||
+          new RegExp(keyword, 'i').test(a.name) ||
+          new RegExp(keyword, 'i').test(a.category)
+        ).length;
+
+        const bCount = keywords.filter(keyword =>
+          new RegExp(keyword, 'i').test(b.tags) ||
+          new RegExp(keyword, 'i').test(a.name) ||
+          new RegExp(keyword, 'i').test(a.category)
+        ).length;
+
+        // Sort by how many keywords are found (products with more matches come first)
+        return bCount - aCount;
+      });
+
+      const filetredProducts = _.uniqBy(sortedProducts, 'id').filter((product) => !excludedSuppliers.includes(product.supplier));
+      const productsPerPage = getProductsbyPage(pageNum, sortedProducts);
+      const totalProductsMatch = productFound.length
+      products = filetredProducts;
+      totalProducts = totalProducts += totalProductsMatch
 
     } else {
       console.log("query", query)
     }
 
-    const filetredProducst = _.uniqBy(products, 'id');
-    const productsNew = filetredProducst.filter((product) => product.category !== "QUOTE");
 
-    return res.json({
-      products: productsNew,
-      pageNum,
-      paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
-    });
+    // const productsNew = products.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
+    const productsNew = _.uniqBy(products, 'id')
+      .filter((product) => product.category !== "QUOTE" && product.category !== "CLIENTQUOTE")
+      .slice(offset, offset + limit);
+    const hasMore = (parseInt(offset) + limit) < products.length;
+
+    return res.json(
+      {
+        products: productsNew,
+        hasMore: hasMore,
+      }
+    );
 
   } catch (error) {
     console.log(error);
     next(error);
   }
 }
+
+// const searchProductsForVisitor = async (req, res, next) => {
+//   try {
+//     let skuSearch = true;
+//     const { searchQuery } = req.params;
+//     const query = searchQuery.split(" ");
+//     const pageNum = Number(req.query.pageNum) || 1;
+//     const skip = (pageNum - 1) * recordsPerPage;
+//     let totalProducts = 0;
+//     let products = [];
+
+//     function sortByName(array) {
+//       let withQueryWordsInName = [];
+//       let withoutQueryWordsInName = [];
+
+//       query.map(word => {
+//         array.map(product => {
+//           let nameWords = product.name.toLowerCase().split(/\s+/);
+//           if (nameWords.includes(word.toLowerCase())) {
+//             if (!withQueryWordsInName.some(item => item.name === product.name)) {
+//               return withQueryWordsInName.push(product);
+//             }
+//           } else {
+//             return withoutQueryWordsInName.push(product);
+//           }
+//         });
+//       });
+
+//       const sortedWithQueryWordsInName = sortByNameArray(withQueryWordsInName);
+
+//       return [...new Set([...sortedWithQueryWordsInName, ...withoutQueryWordsInName])]
+//     }
+
+//     function sortByNameArray(array) {
+//       let lowerCaseQuery = query.map(word => word.toLowerCase());
+//       let productsWithCounts = array.map(product => {
+//         let nameWords = product.name.toLowerCase().split(/\s+/);
+//         let count = lowerCaseQuery.reduce((acc, word) => {
+//           if (nameWords.includes(word)) {
+//             acc++;
+//           }
+//           return acc;
+//         }, 0);
+//         return { product: product, count: count };
+//       });
+
+//       productsWithCounts.sort((a, b) => b.count - a.count);
+//       let sortedProducts = productsWithCounts.map(obj => obj.product);
+
+//       return sortedProducts;
+//     }
+
+//     function getProductsbyPage(pageNumber, array) {
+//       const startIndex = (pageNumber - 1) * recordsPerPage;
+//       return array.slice(startIndex, startIndex + recordsPerPage);
+//     }
+
+//     if (searchQuery !== "" || searchQuery !== null || searchQuery !== undefined) {
+//       const spaceReplaced = searchQuery.replace(/ /g, '-')
+//       const escapeRegex = (string) => {
+//         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapes special characters
+//       };
+//       const escapedSearchQuery = escapeRegex(searchQuery);
+//       const regex = new RegExp(`${escapedSearchQuery}s?`, "i");
+//       const regExact = new RegExp(`\\b${escapedSearchQuery}s?\\b`, "i");
+//       const regexSpace = new RegExp(`\\b${spaceReplaced}s?\\b`, "i")
+//       searchCondition = {
+//         $or: [
+//           { "stock.slrsku": regex },
+//           { "stock.ctlsku": regex },
+//           { "stock.suppliersku": regex },
+//           { "supplier": regExact },
+//           { "name": regExact },
+//           { "description": regExact },
+//           { "category": regexSpace },
+//           { "tags": regExact }
+//         ]
+//       }
+
+//       const productFound = await Product.find(searchCondition)
+//       const categoryList = productFound.filter((product) => {
+//         const categoryParts = product.category?.split("/");
+//         return categoryParts.some(part => regexSpace.test(part));
+//       })
+//       const categoryFilteredList = productFound.filter(
+//         (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
+//       );
+//       const nameList = categoryFilteredList.filter((product) => regExact.test(product.name))
+//       const descriptionList = productFound.filter(
+//         (product) => !nameList.some((nameProduct) => nameProduct._id === product._id)
+//       );
+//       console.log(categoryList.length, nameList.length, descriptionList.length);
+
+//       const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
+//       const productMatch = concatenatedList.slice(skip, skip + recordsPerPage);
+
+//       const productsNew = productMatch.filter((product) => product.category !== "QUOTE");
+//       const totalProductsMatch = await Product.countDocuments(searchCondition);
+
+//       if (productsNew.length === 0) {
+//         skuSearch = false
+//       } else {
+//         products = products.concat(productsNew);
+//         totalProducts = totalProducts += totalProductsMatch
+//       }
+//     }
+
+//     // General search by supplier, name, description depending on how many words in search.
+//     // Now search by tags doesn't work as field tag is not completed for a Product. It is for future. 
+//     if (!skuSearch && query.length === 1) {
+//       const regexQueries = query.map(term => new RegExp(term, 'i'));
+//       const regExactQueries = query.map(term => new RegExp(`\\b${term}\\b`, "i"));
+//       const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
+
+//       searchCondition = {
+//         $or: [
+//           { name: regexQueries },
+//           { supplier: supplierFilters },
+//           { description: regexQueries },
+//           { tags: regexQueries }
+//         ],
+//         $and: [{ supplier: { $nin: excludedSuppliers } }]
+//       }
+
+//       const foundProducts = await Product.find(searchCondition);
+//       const sortedProductsArray = sortByName(foundProducts);
+//       const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
+
+//       totalProducts = await Product.countDocuments(searchCondition);
+//       products = productsPerPage;
+
+//     } else if (!skuSearch && query.length >= 2) {
+//       const regexQueries = query.map(term => new RegExp(term, 'i'));
+//       const searchCondition = regexQueries.map(regex => ({
+//         $or: [
+//           { name: regex },
+//           { description: regex },
+//           { supplier: regex },
+//           { tags: regex }
+//         ],
+//         $and: [{ supplier: { $nin: excludedSuppliers } }]
+//       }));
+
+//       const foundProducts = await Product.find({ $and: searchCondition });
+//       const sortedProductsArray = sortByName(foundProducts);
+//       const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
+
+//       totalProducts = await Product.countDocuments({ $and: searchCondition });
+//       products = productsPerPage;
+
+//     } else {
+//       console.log("query", query)
+//     }
+
+//     const filetredProducst = _.uniqBy(products, 'id');
+//     const productsNew = filetredProducst.filter((product) => product.category !== "QUOTE");
+
+//     return res.json({
+//       products: productsNew,
+//       pageNum,
+//       paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
+//     });
+
+//   } catch (error) {
+//     console.log(error);
+//     next(error);
+//   }
+// }
 
 module.exports = {
   getProducts,

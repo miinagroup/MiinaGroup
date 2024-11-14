@@ -1037,7 +1037,7 @@ const ProductDetailsPageComponent = ({
 
                     </Row>
 
-                    <Row>
+                    {!isUserInfo && <Row>
                       {userData.isAdmin === true ? (
                         <>
                           {product.displayPrice === 0 ? null : (
@@ -1084,7 +1084,7 @@ const ProductDetailsPageComponent = ({
                         <>
                           {product.displayPrice === 0 || diff < 0 ? null : (
                             <h6 hidden={selectedProduct === "Please-Select"}>
-                              Quantity :
+                              Quantity:
                             </h6>
                           )}
                           <Col
@@ -1139,9 +1139,11 @@ const ProductDetailsPageComponent = ({
                         </>
                       )}
                     </Row>
+                      }
                   </ListGroup.Item>
                 </ListGroup>
               </Row>
+            
 
               {/* ************   Product details with download pdf  ***************  */}
               <Row>
