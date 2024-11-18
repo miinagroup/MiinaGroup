@@ -2185,8 +2185,8 @@ const searchProducts = async (req, res, next) => {
       }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
-        const slrskuMatches = await Product.find({ "stock.slrsku": regex }).limit(250 - productFound.length);
-        productFound = productFound.concat(slrskuMatches);
+        const clientskuMatches = await Product.find({ "stock.clientsSku": { $elemMatch: { number: { $regex: regex } }, }, }).limit(250 - productFound.length);
+        productFound = productFound.concat(clientskuMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
@@ -2204,27 +2204,11 @@ const searchProducts = async (req, res, next) => {
         productFound = productFound.concat(tagsMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
+      console.log(productFound.length);
 
       if (productFound.length === 250) {
-        // const categoryList = productFound.filter((product) => {
-        //   const categoryParts = product.tags.split(" ")
-        //   if (categoryParts.length > 1)
-        //     return categoryParts?.some(part => regexSpace.test(part));
-        //   else
-        //     return regexSpace.test(product.category);
-        // })
-        // const categoryFilteredList = productFound.filter(
-        //   (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
-        // );
-        // const nameList = categoryFilteredList.filter((product) => regexSpace.test(product.supplier))
-
-        // // console.log(categoryList.length, nameList.length);
-        // console.log(productFound.length);
-
-        // const concatenatedList = [...categoryList, ...nameList]
         const filetredProducts = _.uniqBy(productFound, 'id');
         const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
-        // const productsNew = productMatch.slice(skip, skip + recordsPerPage);
         const productsNew = productMatch;
         const totalProductsMatch = productFound.length
 
