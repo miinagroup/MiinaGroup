@@ -1,10 +1,9 @@
 import { Row, Col, Container, Form, Button } from "react-bootstrap";
 import React, { useState, useEffect, Fragment, useRef } from "react";
-import { Link } from "react-router-dom";
-
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import MaskedInput from 'react-text-mask';
 import GoBackButton from "./GoBackButton";
+
 
 const EditDeliveryBookComponent = ({
     updateDeliveryBookApiRequest,
@@ -17,7 +16,8 @@ const EditDeliveryBookComponent = ({
             message: "",
             error: "",
         });
-
+    const [abnNum, setAbnNum] = useState("")
+    const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -29,13 +29,16 @@ const EditDeliveryBookComponent = ({
         setRowCount(rowCount - 1);
     };
 
+    const handleAbn = (e) => {
+        const newValue = e.target.value;
+        setAbnNum(newValue);
+      };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
         const sites = [];
-
-        // console.log("sites existing", document.querySelectorAll(".sitesExisting").length)
 
         for (
             let i = 0;
@@ -61,7 +64,6 @@ const EditDeliveryBookComponent = ({
         }
 
         const sitesNew = [];
-        // console.log("sites new", document.querySelectorAll(".sitesNew").length)
         for (let i = 0; i < document.querySelectorAll(".sitesNew").length; i++) {
             const name = document.getElementsByName(`newName-${i}`)[0].value;
             const billingAddress = document.getElementsByName(
@@ -90,6 +92,7 @@ const EditDeliveryBookComponent = ({
             quickBooksCustomerId: form.quickBooksCustomerId.value,
             dueDays: form.dueDays.value,
             sites: [...sites, ...sitesNew],
+            abn: form.abn.value
         };
 
         if (event.currentTarget.checkValidity() === true) {
@@ -119,7 +122,7 @@ const EditDeliveryBookComponent = ({
         fetchDeliveryBook(id)
             .then((data) => {
                 setDeliveryBook(data);
-                // console.log("Delivery Book data", data);
+                setAbnNum(data.abn)
             })
             .catch((er) =>
                 console.log(
@@ -181,6 +184,25 @@ const EditDeliveryBookComponent = ({
                                 type="text"
                                 defaultValue={deliveryBook.billingEmail}
                             />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicAbn">
+                            <Form.Label>Company ABN</Form.Label>
+                            <MaskedInput
+                                mask={abnMask}
+                                placeholder="ABN"
+                                guide={false}
+                                value={abnNum}
+                                onChange={handleAbn}
+                                render={(ref, props) => <Form.Control
+                                required
+                                minLength={14}
+                                maxLength={14}
+                                type="text"
+                                name="abn"
+                                ref={ref}
+                                {...props}
+                                /> } 
+                                />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicCompanyAccount">
                             <Form.Label>Company Account </Form.Label>

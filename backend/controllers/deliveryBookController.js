@@ -59,7 +59,7 @@ const getDeliveryBookById = async (req, res, next) => {
 const adminCreateDeliveryBook = async (req, res, next) => {
   try {
     const deliveryBook = new DeliveryBook();
-    const { companyName, emailHost, billingEmail, companyAccount, dueDays, quickBooksCutomerId, sites } =
+    const { companyName, emailHost, billingEmail, companyAccount, dueDays, quickBooksCutomerId, sites, abn } =
       req.body;
     deliveryBook.companyName = companyName;
     deliveryBook.emailHost = emailHost;
@@ -67,6 +67,7 @@ const adminCreateDeliveryBook = async (req, res, next) => {
     deliveryBook.companyAccount = companyAccount;
     deliveryBook.dueDays = dueDays;
     deliveryBook.quickBooksCustomerId = quickBooksCutomerId;
+    deliveryBook.abn = abn;
     if (sites.length > 0) {
       deliveryBook.sites = [];
       sites.map((item) => {
@@ -112,7 +113,7 @@ const adminUpdateDeliveryBook = async (req, res, next) => {
       return res.status(403).json({ message: "You do not have permission to update delivery book." });
     }
 
-    const { companyName, emailHost, billingEmail, companyAccount, quickBooksCustomerId, dueDays, sites } =
+    const { companyName, emailHost, billingEmail, companyAccount, quickBooksCustomerId, dueDays, sites, abn } =
       req.body;
     deliveryBook.companyName = companyName || deliveryBook.companyName;
     deliveryBook.emailHost = emailHost || deliveryBook.emailHost;
@@ -120,6 +121,7 @@ const adminUpdateDeliveryBook = async (req, res, next) => {
     deliveryBook.companyAccount = companyAccount || deliveryBook.companyAccount;
     deliveryBook.quickBooksCustomerId = quickBooksCustomerId || deliveryBook.quickBooksCustomerId;
     deliveryBook.dueDays = dueDays || deliveryBook.dueDays;
+    deliveryBook.abn = abn || deliveryBook.abn;
     if (sites.length > 0) {
       deliveryBook.sites = [];
       sites.map((item) => {

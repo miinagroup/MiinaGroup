@@ -146,6 +146,7 @@ const LoginRegisterPage = ({ modalType}) => {
                   reduxDispatch={reduxDispatch}
                   setReduxUserState={setReduxUserState}
                   getAllUniformRole={getAllUniformRole}
+                  getAlldeliveryBooks={getAlldeliveryBooks}
                 />
               </Tab>
             </Tabs>

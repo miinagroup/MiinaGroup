@@ -16,7 +16,8 @@ const RegisterPageComponent = ({
   registerUserApiRequest,
   reduxDispatch,
   setReduxUserState,
-  getAllUniformRole
+  getAllUniformRole,
+  getAlldeliveryBooks
 }) => {
   //去react bootstrap里面找，form => validation 抄一个
   const [validated, setValidated] = useState(false);
@@ -50,23 +51,31 @@ const RegisterPageComponent = ({
   const [userCompany, setUserCompany] = useState("")
   const [userLocation, setUserLocation] = useState("")
   const [userRole, setUserRole] = useState("")
-  const [userSites, setUserSites] = useState([
-    { company: "SILVERLAKE RESOURCES", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'], abn: "5" },
-    { company: "CTL AUSTRALIA", sites: ['PERTH', 'EMBLETON', 'CANNINGTON', 'China', 'India'], abn: "2" },
-    { company: "FOCUS MINERALS OPERATIONS", sites: ['THREE MILE HILL COOLGARDIE', 'COOLGARDIE GOLD OPERATIONS'], abn: "3" },
-    { company: "EVOLUTION MINING (MUNGARI)", sites: ['MUNGARI'], abn: "4" },
-    { company: "RED 5 LIMITED", sites: ['RANDALLS', 'DAISY MILANO', 'MAXWELLS'], abn: "5" }
-  ])
   const [selectedSites, setSelectedSites] = useState({})
   const [abnNum, setAbnNum] = useState("")
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
-  const [allUniformRoles, setAllUniformRoles] = useState([])
+  const [allUniformRoles, setAllUniformRoles] = useState([]);
+  const [deliveryBookData, setDeliveryBookData ] = useState();
+  const [userSites, setUserSites] = useState([])
 
   const handleConfirmPassword = (e) => {
     const { value } = e.target;
     setConfirmPassword(value);
     setPasswordsMatch(value === password);
   };
+
+    useEffect(() => {
+    getAlldeliveryBooks().then((data) => {
+      setDeliveryBookData(data);
+      const userSitesData = data.map(company => ({
+        company: company.companyName,
+        sites: company.sites.map(site => site.name),
+        abn: company.abn || "",
+        emailHost: company.emailHost
+      }))
+      setUserSites(userSitesData)
+    })
+  }, [])
 
 
   useEffect(() => {
@@ -79,7 +88,45 @@ const RegisterPageComponent = ({
       .catch((er) => console.log(er));
   }, []);
 
+  const isValidEmail = (email) => {
+    const emailDomain = email.split('@')[1];
   
+    const isAllowedEmail = userSites.some((site) => {
+      const allowedDomains = site.emailHost.split('/');
+      
+      return allowedDomains.some(domain => emailDomain.endsWith(domain));
+    });
+  
+    return !isAllowedEmail
+  };
+  
+
+  const setUserDetails = (emailHost) => {
+    const emailDomain = emailHost.toLowerCase();
+  
+    const userCompany = userSites.find((site) => {
+      const allowedDomains = site.emailHost.toLowerCase().split('/');
+  
+      return allowedDomains.some((domain) => emailDomain.endsWith(domain));
+    });
+  
+    if (userCompany) {
+      setUserCompany(userCompany.company);
+      setSelectedSites(userCompany);
+      setUserLocation(userCompany.sites[0]);
+      setAbnNum(userCompany.abn || "No ABN");
+    } else {
+      setUserCompany("No Company");
+      setUserLocation("No Site");
+      setUserRole("No Role");
+      setShow(false);
+      setShowLocation(false);
+      setShowAbn(true);
+      setAbnNum("No abn");
+    }
+  };
+  
+
   // submit form
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -101,13 +148,7 @@ const RegisterPageComponent = ({
     //const state = form.state.value;
     //const postCode = form.postCode.value;
     const abn = abnNum;
-    // if (email.endsWith("@slrltd.com") || email.endsWith("@slrltd.com.au") || email.endsWith("@silverlakeresources.com.au")) {
-    //   if (location.toUpperCase() === "RANDALLS" || location.toUpperCase() === "RANDALLS MILLS") { setStoreEmail("randallssupply@silverlakeresources.com.au") }
-    //   if (location.toUpperCase() === "DAISY MILANO" || location.toUpperCase() === "DAISY") { setStoreEmail("daisymilano@silverlakeresources.com.au") }
-    //   if (location.toUpperCase() === "MOUNT MONGER" || location.toUpperCase() === "MMO") { setStoreEmail("mountmonger@silverlakeresources.com.au") }
-    // }
     /* 下面是一些form里面的判定 validation的判定 */
-    //console.log(company, location);
     if ((location === "") && (company !== "")) {
       alert("Please Select Your Site")
     } else if (
@@ -128,7 +169,7 @@ const RegisterPageComponent = ({
       form.password.value === form.confirmPassword.value &&
       abn
     ) {
-      /* 点击submit了之后，判定validity，如果form里面的东西都是true了，那loading true。后面会用这个state操作spinner */
+      /* After clicking submit, the validity is determined. If everything in the form is true, then loading is true. This state will be used later to operate the spinner. */
       setRegisterUserResponseState({ loading: true });
       registerUserApiRequest(
         name,
@@ -155,15 +196,7 @@ const RegisterPageComponent = ({
           reduxDispatch(setReduxUserState(data.userCreated));
 
           // Check if the user's email ends with "@slrltd.com"
-          if (
-            (!email.endsWith("@slrltd.com") &&
-              !email.endsWith("@ctlservices.com.au") &&
-              !email.endsWith("@ctlaus.com") &&
-              !email.endsWith("@focusminerals.com.au") &&
-              !email.endsWith("@evolutionmining.com")) ||
-            email === "Mekins@slrltd.com" ||
-            email === "enzo@ctlservices.com.au"
-          ) {
+          if (isValidEmail(email)) {
             // If not, redirect to the /unfortunately page
             window.location.href = "/unfortunately";
           } else {
@@ -242,68 +275,9 @@ const RegisterPageComponent = ({
       } else {
         setShow(true);
         setShowAbn(false);
-        const emailHost = email.split("@")[1]
-        const tempCompany = emailHost.split(".")[0]
-        switch (emailHost.toLowerCase()) {
-          case 'slrltd.com':
-            setUserCompany("SILVERLAKE RESOURCES")
-            setSelectedSites(userSites[0])
-            setUserLocation(userSites[0].sites[0])
-            setAbnNum(userSites[0].abn)
-            //handleSelectedSites("SILVERLAKE RESOURCES")
-            break;
-          case 'silverlakeresources.com.au':
-            setUserCompany("SILVERLAKE RESOURCES")
-            setSelectedSites(userSites[0])
-            setUserLocation(userSites[0].sites[0])
-            setAbnNum(userSites[0].abn)
-            break;
-          case 'ctlservices.com.au':
-            setUserCompany("CTL AUSTRALIA")
-            setSelectedSites(userSites[1])
-            setUserLocation(userSites[1].sites[0])
-            setAbnNum(userSites[1].abn)
-
-            break;
-          case 'ctlaus.com':
-            setUserCompany("CTL AUSTRALIA")
-            setSelectedSites(userSites[1])
-            setUserLocation(userSites[1].sites[0])
-            setAbnNum(userSites[1].abn)
-
-            break;
-          case 'focusminerals.com.au':
-            setUserCompany("FOCUS MINERALS OPERATIONS")
-            setSelectedSites(userSites[2])
-            setUserLocation(userSites[2].sites[0])
-            setAbnNum(userSites[2].abn)
-            break;
-          case 'evolutionmining.com':
-            setUserCompany("EVOLUTION MINING (MUNGARI)")
-            setSelectedSites(userSites[3])
-            setUserLocation(userSites[3].sites[0])
-            setAbnNum(userSites[3].abn)
-
-            break;
-          case 'red5limited.com.au':
-            setUserCompany("RED 5 LIMITED")
-            setSelectedSites(userSites[4])
-            setUserLocation(userSites[4].sites[0])
-            setAbnNum(userSites[4].abn)
-            //handleSelectedSites("SILVERLAKE RESOURCES")
-            break;
-          default:
-            // setUserCompany(tempCompany)
-            // setUserLocation(tempCompany+"site-1")
-            setUserCompany("No Company")
-            setUserLocation("No Site")
-            setUserRole("No Role")
-            setShow(false)
-            setShowLocation(false)
-            setShowAbn(true)
-            setAbnNum("No abn")
-            break;
-        }
+        const emailHost = email.split("@")[1];
+        const tempCompany = emailHost.split(".")[0];
+        setUserDetails(emailHost);
       }
     }
   };

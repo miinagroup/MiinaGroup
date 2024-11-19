@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import MaskedInput from 'react-text-mask';
 import GoBackButton from "./GoBackButton";
 
 const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
@@ -22,6 +23,8 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
       message: "",
       error: "",
     });
+    const [abnNum, setAbnNum] = useState("")
+    const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
 
   const [rowCount, setRowCount] = useState(1);
   const handleNewDeliveryBook = () => {
@@ -68,6 +71,7 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
       dueDays: form.dueDays.value,
       quickBooksCutomerId: form.quickBooksCustomerId.value,
       sites: sites,
+      abn: form.abn.value
     };
 
     if (event.currentTarget.checkValidity() === true) {
@@ -88,6 +92,11 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
   };
   const checkKeyDown = (e) => {
     if (e.code === "Enter") e.preventDefault();
+  };
+
+  const handleAbn = (e) => {
+    const newValue = e.target.value;
+    setAbnNum(newValue);
   };
 
   return (
@@ -119,6 +128,25 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
               <Form.Group className="mb-3" controlId="formBasicBillingEmail">
                 <Form.Label>Billing Email</Form.Label>
                 <Form.Control name="billingEmail" required type="text" />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicAbn">
+                <Form.Label>Company ABN</Form.Label>
+                <MaskedInput
+                                mask={abnMask}
+                                placeholder="ABN"
+                                guide={false}
+                                value={abnNum}
+                                onChange={handleAbn}
+                                render={(ref, props) => <Form.Control
+                                required
+                                minLength={14}
+                                maxLength={14}
+                                type="text"
+                                name="abn"
+                                ref={ref}
+                                {...props}
+                                /> } 
+                                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicCompanyAccount">
                 <Form.Label>Company Account</Form.Label>
