@@ -45,7 +45,7 @@ const NewFooter = () => {
         <div><a id="privacy_policy" href="/privacypolicy" target="_blank">Privacy Policy</a></div>
         </div>
         
-    <div className={styles.copyright}>
+    <div className={`${styles.copyright} desktop`}>
             <div className={styles.logo_container}>
             <img
                 src="/images/CTL-hex.png"

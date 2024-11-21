@@ -24,8 +24,8 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       const tlImages = gsap.timeline({
         scrollTrigger: {
           trigger: ".aboutNew",
-          start: "top 10%",
-          end: "+=50%",
+          start: "top 50%",
+          // end: "+=50%",
           scrub: 1,
         },
       });
@@ -34,10 +34,10 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       .to("#aboutSection", {
         duration: 1,
         opacity: 1,
-        y: 0,
+        // y: 0,
       })
-      .fromTo("#aboutSection #first", { y: 60 }, { y: 0 }, "<")
-      .fromTo("#aboutSection #second img", { y: 60 }, { y: 0 }, "<");
+      // .fromTo("#aboutSection #first", { y: 60 }, { y: 0 }, "<")
+      // .fromTo("#aboutSection #second img", { y: 60 }, { y: 0 }, "<");
 
     });
 
@@ -45,8 +45,8 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       const tlImages = gsap.timeline({
         scrollTrigger: {
           trigger: ".aboutNew",
-          start: "top 70%",
-          end: "+=50%",
+          start: "top 90%",
+          // end: "+=50%",
           scrub: 1,
         },
       });
@@ -57,8 +57,8 @@ const AboutNewComponent = ({setIsOpenModal}) => {
         opacity: 1,
         y: 0,
       })
-      .fromTo("#aboutSection #first", { y: 60 }, { y: 0 }, "<")
-      .fromTo("#aboutSection #second img", { y: 60 }, { y: 0 }, "<");
+      // .fromTo("#aboutSection #first", { y: 60 }, { y: 0 }, "<")
+      // .fromTo("#aboutSection #second img", { y: 60 }, { y: 0 }, "<");
     });
   
 }, [])
@@ -83,7 +83,7 @@ const AboutNewComponent = ({setIsOpenModal}) => {
         </div>
         <div className={styles.aboutNewRight} id="aboutSection">
               <div id="first">
-                <img src="/images/about_1.png" className={styles.aboutNewFirstImg}></img>
+                <div className={styles.aboutNewFirstImg}><img src="/images/about_1_2.png"></img></div>
                 <div className={styles.aboutNewSecondBlock}>
                 <NewTextBlock  sign={"+"} title={""} number={200} subtitle="categories" description="available for order" />
 

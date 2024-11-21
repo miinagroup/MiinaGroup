@@ -2,7 +2,7 @@
     padding: 100px 50px;
     margin: 0 auto;
     position: relative;
-    height: 110vh;
+    /* height: 110vh; */
 }
 
 .aboutNewWrapper {
@@ -46,7 +46,15 @@
 
 .aboutNewFirstImg {
     width: 100%;
-    max-width: 800px;
+    /* max-width: 800px; */
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.aboutNewFirstImg img {
+    width: 100%;
+    /* max-width: 800px; */
+    max-width: 550px;
 }
 
 .aboutNewSecondImg {
