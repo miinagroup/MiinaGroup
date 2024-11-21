@@ -27,34 +27,32 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
     message: "",
     error: "",
   }); // handling errors and messages
-  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/];
+  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/];
   const [allUniformRoles, setAllUniformRoles] = useState([])
   const [userRole, setUserRole] = useState();
-  const [ otherRole, setOtherRole ] = useState();
+  const [otherRole, setOtherRole] = useState();
 
   const handleOtherRole = (e) => {
     setOtherRole(e.target.value);
- }
+  }
 
- const handleChangeRole = (e) => {
-   setUserRole(e.target.value)
- }
+  const handleChangeRole = (e) => {
+    setUserRole(e.target.value)
+  }
 
- useEffect(() => {
-   getAllUniformRole()
-     .then((data) => {
-      const updatedRoles = data.filter(role => role.role !== "other role");
-      setAllUniformRoles(updatedRoles)
-    })
-
-     .catch((er) => console.log(er));
- }, []);
+  useEffect(() => {
+    getAllUniformRole()
+      .then((data) => {
+        setAllUniformRoles(data)
+      })
+      .catch((er) => console.log(er));
+  }, []);
 
   const handleAbn = (e) => {
     const newValue = e.target.value;
     setAbn(newValue);
   };
-  
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -120,6 +118,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
       )
         .then((data) => {
           if (data === "user updated") {
+            // console.log(verified);
             navigate("/admin/users");
           }
         })
@@ -213,42 +212,42 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
               />
             </Form.Group> */}
 
-<Form.Group className="mb-3" controlId="formBasicRole">
-            <Form.Label>Role</Form.Label>
-                  <Form.Select
-                      required
-                      name="role"
-                      onChange={handleChangeRole}
-                    >
-                      <option>{user.role}</option>
-                      {
-                        allUniformRoles.map((role, idx) => (
-                          <option key={idx} value={role.role} >
-                            {role.role}
-                          </option>))
-                      }
-                       <option key="other role">
-                            other role
-                        </option>
-                    </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    Please Select your Role.{" "}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                {userRole === "other role" && <Form.Group className="mb-3" controlId="formBasicOtherRole">
-                <Form.Label>User Role</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    name="otherRole"
-                    placeholder="Job Title"
-                    onChange={handleOtherRole}
-                    value={otherRole}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please mention your Job Title.{" "}
-                  </Form.Control.Feedback>
-                </Form.Group>}
+            <Form.Group className="mb-3" controlId="formBasicRole">
+              <Form.Label>Role</Form.Label>
+              <Form.Select
+                required
+                name="role"
+                onChange={handleChangeRole}
+              >
+                <option>{user.role}</option>
+                {
+                  allUniformRoles.map((role, idx) => (
+                    <option key={idx} value={role.role} >
+                      {role.role}
+                    </option>))
+                }
+                <option key="other role">
+                  other role
+                </option>
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                Please Select your Role.{" "}
+              </Form.Control.Feedback>
+            </Form.Group>
+            {userRole === "other role" && <Form.Group className="mb-3" controlId="formBasicOtherRole">
+              <Form.Label>User Role</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="otherRole"
+                placeholder="Job Title"
+                onChange={handleOtherRole}
+                value={otherRole}
+              />
+              <Form.Control.Feedback type="invalid">
+                Please mention your Job Title.{" "}
+              </Form.Control.Feedback>
+            </Form.Group>}
 
             <Form.Group className="mb-3" controlId="formBasicAbn">
               <Form.Label>ABN</Form.Label>
@@ -272,8 +271,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                   name="abn"
                   ref={ref}
                   {...props}
-                />} 
-               />
+                />}
+              />
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="formBasicPhone">
@@ -376,7 +375,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 </Col>
               </Row>
               <Row>
-              <Col md={2}>
+                <Col md={2}>
                   <Form.Check
                     name="isVIP"
                     type="checkbox"

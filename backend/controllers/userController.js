@@ -780,6 +780,35 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+const updateUserBulk = async (req, res, next) => {
+  try {
+    const { updatedUniformUsers } = req.body;
+
+    if (!updatedUniformUsers || updatedUniformUsers.length === 0) {
+      return res.status(400).json({ message: "No users provided for bulk update." });
+    }
+
+    // Prepare bulk operations
+    const bulkOperations = updatedUniformUsers.map((user) => ({
+      updateOne: {
+        filter: { _id: user.userId }, // Match the user by ID
+        update: { $set: { role: user.userRole } }, // Update the user role
+      },
+    }));
+
+    // Execute bulk operation
+    const result = await User.bulkWrite(bulkOperations);
+
+    res.status(200).json({
+      message: "success",
+      modifiedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    console.error("Bulk update error:", error);
+    res.status(500).json({ message: "Bulk update failed.", error: error.message });
+  }
+};
+
 const deleteUser = async (req, res, next) => {
   try {
     const { isAdmin, isSuperAdmin, isSales, email } = req.user;
@@ -916,4 +945,5 @@ module.exports = {
   forgotPassword,
   validateResetLink,
   resetPassword,
+  updateUserBulk
 };

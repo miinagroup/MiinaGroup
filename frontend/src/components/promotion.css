@@ -108,6 +108,12 @@
   margin-top: 20%;
 }
 
+.order_preview_items_uniform .modal-content {
+  width: 110%;
+  margin-left: -10%;
+  margin-top: 20%;
+}
+
 /* ********* PO items preview ********* */
 .PO_preview_items .modal-content {
   width: 250%;
@@ -120,5 +126,5 @@
     width: 100%;
     margin-left: 0px;
     margin-top: 0px;
-}
+  }
 }

@@ -23,7 +23,6 @@ const getUniformCartByCompany = async (req, res, next) => {
     }
 };
 
-
 const getUniformCartById = async (req, res, next) => {
     try {
         const uniformCart = await UniformCart.findById(req.params.id).orFail();
@@ -94,6 +93,7 @@ const updateUniformCart = async (req, res, next) => {
         next(err);
     }
 };
+
 const updateUniformCartByUser = async (req, res, next) => {
     try {
         const uniformCart = await UniformCart.findOne({ userId: req.params.id }).orFail();
@@ -144,6 +144,7 @@ const updateUniformCartByUser = async (req, res, next) => {
         next(err);
     }
 };
+
 const updateUniformCartLimit = async (req, res, next) => {
     try {
         const uniformCart = await UniformCart.findById(req.params.id).orFail();
@@ -254,29 +255,76 @@ const deleteUniformCart = async (req, res, next) => {
 };
 
 /**Admin Operations */
-
-const adminCreateUniformCart = async (req, res, next) => {
+const createUniformCart = async (req, res, next) => {
     try {
-        const uniformCart = new uniformCarts();
-        const { userId, shirtSKU, pantSKU, maxShirtQuantity, maxpantQuantity, extraShirtQuantity, extrapantQuantity, purchasedShirtQuantity, purchasedpantQuantity } = req.body;
-        uniformCart.userId = userId;
-        uniformCart.shirtSKU = shirtSKU;
-        uniformCart.pantSKU = pantSKU;
-        uniformCart.maxShirtQuantity = maxShirtQuantity;
-        uniformCart.maxpantQuantity = maxpantQuantity;
-        uniformCart.extraShirtQuantity = extraShirtQuantity;
-        uniformCart.extrapantQuantity = extrapantQuantity;
-        uniformCart.purchasedShirtQuantity = purchasedShirtQuantity;
-        uniformCart.purchasedpantQuantity = purchasedpantQuantity;
+        const { userId, userName, userCompany, userRole, stock } = req.body.userData1;
+        console.log(userId, userName, userCompany, userRole, stock);
+        console.log(req.body.userData1);
 
-        await uniformCart.save();
-        res.json({
-            message: "uniformCart created",
-            uniformCartId: uniformCart._id,
+        //Validate required fields
+        if (!userId || !userName || !userCompany || !userRole || !stock) {
+            return res.status(400).json({ message: "All fields are required for insertion." });
+        }
+
+        // Create a new document
+        const newDocument = {
+            userId,
+            userName,
+            userCompany,
+            userRole,
+            stock,
+        };
+
+        // Insert the single document
+        const result = await UniformCart.create(newDocument);
+        console.log("Single insertion success:", result);
+
+        return res.status(200).json({ message: "Insertion succeeded.", result });
+    } catch (err) {
+        console.error("Error in insertion:", err);
+        return res.status(500).json({ message: "Insertion failed.", error: err });
+    }
+};
+
+const adminCreateBulkUniformCart = async (req, res, next) => {
+    try {
+        var bulk = UniformCart.collection.initializeUnorderedBulkOp();
+        const roleArray = req.body.userData
+        console.log("userData", req.body.userData.length);
+        if (!roleArray || roleArray.length === 0) {
+            return res.status(400).json({ message: "No data provided for bulk operation." });
+        }
+        roleArray?.forEach((role) => {
+            //console.log("Processing role with userId:", role.userId, role.stock);
+            bulk.find({
+                userId: role.userId
+            }).updateOne(
+                {
+                    $set: {
+                        userId: role.userId,
+                        userName: role.userName,
+                        userCompany: role.userCompany,
+                        userRole: role.userRole,
+                        stock: role.stock
+                    }
+                },
+                { upsert: true }
+            );
         })
 
+        // Execute bulk operation if there are pending operations
+        if (bulk.s && bulk.s.currentBatch) {
+            const result = await bulk.execute();
+            console.log("Bulk operation success:", result);
+            return res.status(200).json({ message: "Bulk operation succeeded.", result });
+        } else {
+            console.log("No operations to execute in bulk.");
+            return res.status(400).json({ message: "No bulk operations to execute." });
+        }
+
     } catch (err) {
-        next(err);
+        console.error("Error in bulk operation:", err);
+        return res.status(500).json({ message: "Bulk operation failed.", error: err });
     }
 };
 
@@ -296,18 +344,13 @@ const adminRemoveUniformCart = async (req, res, next) => {
 
 const adminUpdateUniformCart = async (req, res, next) => {
     try {
-        const uniformCart = await UniformCart.findById(req.params.id).orFail();
-        const { userId, shirtSKU, pantSKU, maxShirtQuantity, maxpantQuantity, extraShirtQuantity, extrapantQuantity, purchasedShirtQuantity, purchasedpantQuantity } = req.body;
+        const uniformCart = await UniformCart.findOne({ userId: req.params.id }).orFail();
+        const { userId, userName, userCompany, userRole, stock } = req.body.userData1;
         uniformCart.userId = userId || uniformCart.userId;
-        uniformCart.shirtSKU = shirtSKU || uniformCart.shirtSKU;
-        uniformCart.pantSKU = pantSKU || uniformCart.pantSKU;
-        uniformCart.maxShirtQuantity = maxShirtQuantity || uniformCart.maxShirtQuantity;
-        uniformCart.maxpantQuantity = maxpantQuantity || uniformCart.maxpantQuantity;
-        uniformCart.extraShirtQuantity = extraShirtQuantity || uniformCart.extraShirtQuantity;
-        uniformCart.extrapantQuantity = extrapantQuantity || uniformCart.extrapantQuantity;
-        uniformCart.purchasedShirtQuantity = purchasedShirtQuantity || uniformCart.purchasedShirtQuantity;
-        uniformCart.purchasedpantQuantity = purchasedpantQuantity || uniformCart.purchasedpantQuantity;
-
+        uniformCart.userName = userName || uniformCart.userName;
+        uniformCart.userCompany = userCompany || uniformCart.userCompany;
+        uniformCart.userRole = userRole || uniformCart.userRole;
+        uniformCart.stock = stock || uniformCart.stock;
         await uniformCart.save();
         res.json({
             message: "uniformCart updated",
@@ -317,7 +360,32 @@ const adminUpdateUniformCart = async (req, res, next) => {
     }
 };
 
+const updateUserCartBulk = async (req, res, next) => {
+    try {
+        const { userData } = req.body;
+
+        if (!userData || userData.length === 0) {
+            return res.status(400).json({ message: "No users provided for bulk update." });
+        }
+        // Prepare bulk operations
+        const bulkOperations = userData.map((user) => ({
+            updateOne: {
+                filter: { userId: user.userId }, // Match the user by ID
+                update: { $set: { userRole: user.userRole, stock: user.stock } }, // Update the user role
+            },
+        }));
+        // Execute bulk operation
+        const result = await UniformCart.bulkWrite(bulkOperations);
+        res.status(200).json({
+            message: "Success",
+            modifiedCount: result.modifiedCount,
+        });
+    } catch (error) {
+        console.error("Bulk update error:", error);
+        res.status(500).json({ message: "Bulk update failed.", error: error.message });
+    }
+};
 
 module.exports = {
-    getUniformCart, getUniformCartByCompany, getUniformCartById, updateUniformCartByUser, updateUniformCartOnPurchase, updateUniformCartOnEmptyCart, getUniformCartGetOne, updateUniformCart, updateUniformCartLimit, updateUniformCartOnCartItemDelete, deleteUniformCart, adminRemoveUniformCart, adminUpdateUniformCart, adminCreateUniformCart,
+    getUniformCart, getUniformCartByCompany, getUniformCartById, updateUniformCartByUser, updateUniformCartOnPurchase, updateUniformCartOnEmptyCart, getUniformCartGetOne, updateUniformCart, updateUniformCartLimit, updateUniformCartOnCartItemDelete, deleteUniformCart, adminRemoveUniformCart, adminUpdateUniformCart, createUniformCart, adminCreateBulkUniformCart, updateUserCartBulk
 };

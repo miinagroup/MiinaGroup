@@ -1,6 +1,7 @@
 import UserProfilePageComponent from "./components/UserProfilePageComponent";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import { setReduxUserState } from "../../redux/actions/userActions";
 import UserLinksComponent from "../../components/user/UserLinksComponent";
 import {
@@ -10,22 +11,13 @@ import {
 
 import styles from "../user/components/UserProfilePageComponent.module.css";
 
-const updateUserApiRequest = async (
-  name,
-  lastName,
-  email,
-  phone,
-  mobile,
-  location,
-  company,
-  role,
-  deliveryAddress,
-  state,
-  postCode,
-  siteSku,
-  abn
-) => {
-  const { data } = await axios.put("/api/users/profile", {
+const UserProfilePage = () => {
+  const reduxDispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userRegisterLogin);
+  const [userUpdated, setUserUpdated] = useState()
+  const [userDetails, setUserDetails] = useState()
+
+  const updateUserApiRequest = async (
     name,
     lastName,
     email,
@@ -39,15 +31,28 @@ const updateUserApiRequest = async (
     postCode,
     siteSku,
     abn
-  });
-  return data;
-};
+  ) => {
+    const { data } = await axios.put("/api/users/profile", {
+      name,
+      lastName,
+      email,
+      phone,
+      mobile,
+      location,
+      company,
+      role,
+      deliveryAddress,
+      state,
+      postCode,
+      siteSku,
+      abn
+    });
+    setUserUpdated(data.success)
+    setUserDetails({ "_id": userInfo._id, "userName": name + " " + lastName, "company": company, "role": role })
+    console.log(data);
 
-
-const UserProfilePage = () => {
-  const reduxDispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.userRegisterLogin);
-
+    return data;
+  };
 
   const fetchUser = async (id) => {
     const { data } = await axios.get("/api/users/profile/" + id);
@@ -64,6 +69,103 @@ const UserProfilePage = () => {
     const { data } = await axios.get("/api/uniformRoles");
     return data;
   }
+
+  const handleUniformCart = async (userId, userData) => {
+    try {
+      const userData1 = userData[0]
+      const updateResponse = await axios.put(`/api/uniformCarts/user/${userId}`, { userData1 });
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  }
+
+  useEffect(() => {
+    if (userUpdated === "user updated") {
+      try {
+        getAllUniformRole()
+          .then((data) => {
+            let userData = []
+            let roleData = []
+            let flag = 0
+
+            if (data?.map((role) => {
+              if (role.role?.toUpperCase() === userDetails.role?.toUpperCase()) {
+                if (role.stock) {
+                  role.stock?.map((sRole) => {
+                    roleData.push({
+                      "_id": sRole._id,
+                      "itemName": sRole.itemName,
+                      "cartCount": 0,
+                      "purchaseCount": 0,
+                      "purchaseLimit": sRole.itemLimit
+                    })
+                  })
+                }
+                userData.push({
+                  "userId": userDetails._id,
+                  "userName": userDetails.userName,
+                  "userCompany": userDetails.company,
+                  "userRole": userDetails.role,
+                  "stock": roleData
+                })
+                flag++
+              }
+            }))
+              if (flag === 0) {
+                roleData = [{
+                  "_id": "6620a0445e581b7b980b107a",
+                  "itemName": "SHIRTS",
+                  "cartCount": 0,
+                  "purchaseCount": 0,
+                  "purchaseLimit": 5
+                },
+                {
+                  "_id": "6620a0585e581b7b980b1083",
+                  "itemName": "JACKETS",
+                  "cartCount": 0,
+                  "purchaseCount": 0,
+                  "purchaseLimit": 5
+                },
+                {
+                  "_id": "6620a0685e581b7b980b108c",
+                  "itemName": "PANTS",
+                  "cartCount": 0,
+                  "purchaseCount": 0,
+                  "purchaseLimit": 5
+                },
+                {
+                  "_id": "6620a0805e581b7b980b1095",
+                  "itemName": "OVERALLS",
+                  "cartCount": 0,
+                  "purchaseCount": 0,
+                  "purchaseLimit": 5
+                },
+                {
+                  "_id": "6620a0925e581b7b980b109e",
+                  "itemName": "BOOTS",
+                  "cartCount": 0,
+                  "purchaseCount": 0,
+                  "purchaseLimit": 5
+                }]
+                userData.push({
+                  "userId": userDetails._id,
+                  "userName": userDetails.name + " " + userDetails.lastName,
+                  "userCompany": userDetails.company,
+                  "userRole": userDetails.role,
+                  "stock": roleData
+                })
+              }
+            console.log(userDetails._id, userData);
+
+            handleUniformCart(userDetails._id, userData)
+          })
+          .catch((er) => console.log(er));
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    }
+    setUserUpdated("")
+  }, [userUpdated])
 
 
   return (

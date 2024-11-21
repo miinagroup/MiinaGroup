@@ -31,13 +31,13 @@ const UserProfilePageComponent = ({
   const [deliveryBooks, setDeliveryBooks] = useState();
   const [selectedSite, setSelectedSite] = useState(null);
   const [abnNum, setAbnNum] = useState("");
-  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/];
+  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/];
   const [allUniformRoles, setAllUniformRoles] = useState([])
   const [userRole, setUserRole] = useState();
-  const [ otherRole, setOtherRole ] = useState();
+  const [otherRole, setOtherRole] = useState();
 
   const handleOtherRole = (e) => {
-     setOtherRole(e.target.value);
+    setOtherRole(e.target.value);
   }
 
   const handleChangeRole = (e) => {
@@ -47,18 +47,18 @@ const UserProfilePageComponent = ({
   useEffect(() => {
     getAllUniformRole()
       .then((data) => {
-       const updatedRoles = data.filter(role => role.role !== "other role");
-       setAllUniformRoles(updatedRoles)
-     })
- 
+        const updatedRoles = data.filter(role => role.role !== "other role");
+        setAllUniformRoles(updatedRoles)
+      })
+
       .catch((er) => console.log(er));
   }, []);
 
   useEffect(() => {
     fetchUser(userInfo._id)
-      .then((data) =>{ 
+      .then((data) => {
         setUser(data);
-        setAbnNum(data.abn);      
+        setAbnNum(data.abn);
       })
       .catch((er) => console.log(er));
 
@@ -118,14 +118,14 @@ const UserProfilePageComponent = ({
           const updatedUserInfo = data.userUpdated;
 
           const currentUserInfo = JSON.parse(localStorage.getItem("userInfo"));
-  
+
           const newUserInfo = {
             ...currentUserInfo,
             siteSku: updatedUserInfo.siteSku,
             siteVerified: updatedUserInfo.siteVerified,
             location: updatedUserInfo.location,
           };
-  
+
           localStorage.setItem("userInfo", JSON.stringify(newUserInfo));
 
           reduxDispatch(
@@ -169,7 +169,7 @@ const UserProfilePageComponent = ({
     const newValue = e.target.value;
     setAbnNum(newValue);
   };
-  
+
   return (
     <Container className={styles.userProfilePageComponent}>
       <Row className="justify-content-md-center">
@@ -204,7 +204,7 @@ const UserProfilePageComponent = ({
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3" as={Col}  md="6" controlId="formBasicEmail">
+              <Form.Group className="mb-3" as={Col} md="6" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="text"
@@ -224,26 +224,26 @@ const UserProfilePageComponent = ({
                   // value={user.abn}
                 /> */}
                 <MaskedInput
-                mask={abnMask}
-                placeholder="ABN"
-                guide={false}
-                value={abnNum}
-                onChange={handleAbn}
-                // id="abn"
-                render={(ref, props) => <Form.Control
-                  required
-                  minLength={14}
-                  maxLength={14}
-                  type="text"
-                  name="abn"
-                  // pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
-                  ref={ref}
-                  {...props}
-                />} 
-               />
+                  mask={abnMask}
+                  placeholder="ABN"
+                  guide={false}
+                  value={abnNum}
+                  onChange={handleAbn}
+                  // id="abn"
+                  render={(ref, props) => <Form.Control
+                    required
+                    minLength={14}
+                    maxLength={14}
+                    type="text"
+                    name="abn"
+                    // pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
+                    ref={ref}
+                    {...props}
+                  />}
+                />
               </Form.Group>
 
-              
+
             </Row>
 
             <Row className="mb-3">
@@ -280,7 +280,7 @@ const UserProfilePageComponent = ({
                     deliverySites.map((site, idx) => {
                       return site.name !== "" ? (
                         user.location?.toLowerCase() ===
-                        site.name?.toLowerCase() ? (
+                          site.name?.toLowerCase() ? (
                           <option selected key={idx} value={site.name}>
                             {site.name}
                           </option>
@@ -344,42 +344,43 @@ const UserProfilePageComponent = ({
               </Form.Group>
             </Row>
             <Row>
-            <Form.Group as={Col} md="6" controlId="formBasicRole">
-            <Form.Label>Role</Form.Label>
-                  <Form.Select
-                      required
-                      name="role"
-                      onChange={handleChangeRole}
-                    >
-                      <option>{user.role}</option>
-                      {
-                        allUniformRoles.map((role, idx) => (
-                          <option key={idx} value={role.role} >
-                            {role.role}
-                          </option>))
-                      }
-                      <option key="other role">
-                            other role
-                        </option>
-                    </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    Please Select your Role.{" "}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicOtherRole" className="mt-2">
+              <Form.Group as={Col} md="6" controlId="formBasicRole">
+                <Form.Label>Role</Form.Label>
+                <Form.Select
+                  required
+                  name="role"
+                  onChange={handleChangeRole}
+                  disabled
+                >
+                  <option>{user.role}</option>
+                  {
+                    allUniformRoles.map((role, idx) => (
+                      <option key={idx} value={role.role} >
+                        {role.role}
+                      </option>))
+                  }
+                  <option key="other role">
+                    other role
+                  </option>
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Please Select your Role.{" "}
+                </Form.Control.Feedback>
+              </Form.Group>
+              {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicOtherRole" className="mt-2">
                 <Form.Label></Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    name="otherRole"
-                    placeholder="Job Title"
-                    onChange={handleOtherRole}
-                    value={otherRole}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please mention your Job Title.{" "}
-                  </Form.Control.Feedback>
-                </Form.Group>}
+                <Form.Control
+                  required
+                  type="text"
+                  name="otherRole"
+                  placeholder="Job Title"
+                  onChange={handleOtherRole}
+                  value={otherRole}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please mention your Job Title.{" "}
+                </Form.Control.Feedback>
+              </Form.Group>}
             </Row>
 
             <Row className="mt-4 ms-1 justify-content-md-left">
@@ -405,6 +406,7 @@ const UserProfilePageComponent = ({
               >
                 User updated
               </Alert>
+              <span>*All disabled fields can only be updated by an Administrator</span>
             </Row>
           </Form>
         </Col>

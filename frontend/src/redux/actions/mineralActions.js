@@ -29,12 +29,14 @@ export const getStockPrices = () => async (dispatch) => {
 
 export const getWeathers = (location) => async (dispatch) => {
   try {
-    const { data } = await axios.get(`/api/weather/weather/${location}`);
-    dispatch({
-      type: actionTypes.FETCH_WEATHERS,
-      payload: data,
-    });
-    localStorage.setItem("weathers", JSON.stringify(data));
+    if (location !== "No Site" && location !== "NO SITE") {
+      const { data } = await axios.get(`/api/weather/weather/${location}`);
+      dispatch({
+        type: actionTypes.FETCH_WEATHERS,
+        payload: data,
+      });
+      localStorage.setItem("weathers", JSON.stringify(data));
+    }
   } catch (error) {
     console.log(error);
   }

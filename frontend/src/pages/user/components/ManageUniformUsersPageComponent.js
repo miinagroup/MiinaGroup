@@ -1,4 +1,4 @@
-import { Row, Col, Modal, Button, Card, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Row, Col, Modal, Button, Card, Tooltip, Form, OverlayTrigger } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,8 +16,11 @@ const ManageUniformUsersPageComponent = ({
   addToCartReduxAction,
   reduxDispatch,
   updateUniformCart,
+  getAllUniformRole,
+  bulkUpdateUsers,
+  bulkUpdateUserRoles
 }) => {
-
+  const [uniformRoles, setUniformRoles] = useState()
   const [userUniforms, setUserUniforms] = useState([])
   const [uniformCategories, setUniformCategories] = useState([])
   const [headers, setHeaders] = useState([])
@@ -33,9 +36,10 @@ const ManageUniformUsersPageComponent = ({
   const [selectedUserId, setSelectedUserId] = useState()
   const [selectedUserCart, setSelectedUserCart] = useState([])
   const [show, setShow] = useState(false);
-  // const headers = [
-  //   { name: "Name", field: "name", sortable: true }
-  // ];
+  const [showAlert, setShowAlert] = useState(false);
+  const [enableEdit, setEnableEdit] = useState(false)
+  const [updatedRoles, setUpdatedRoles] = useState({});
+  const [roleUpdated, setRoleUpdated] = useState(false)
 
   useEffect(() => {
     getUniformCategories()
@@ -44,7 +48,9 @@ const ManageUniformUsersPageComponent = ({
       .then((userUniforms) => { setUserUniforms(userUniforms) })
     setTotalItems(userUniforms.length)
     setUserCompany(userInfo.company)
-  }, [show, addToCartReduxAction]);
+    getAllUniformRole()
+      .then((uniformRole) => { setUniformRoles(uniformRole) })
+  }, [show, addToCartReduxAction, roleUpdated]);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
 
@@ -61,7 +67,29 @@ const ManageUniformUsersPageComponent = ({
     );
     var headings = [
       { name: "No:", field: "", sortable: true },
-      { name: "Name", field: "name", sortable: true }
+      { name: "Name", field: "name", sortable: true },
+      {
+        name: (
+          <>
+            Roles
+            <button
+              className="btn btn-primary  p-0 pe-1 ps-1"
+              onClick={() => { setEnableEdit(true); setShowAlert(true); }}
+              style={{ marginLeft: "10px" }}
+              disabled={enableEdit}
+            >
+              Edit
+            </button>
+            <button
+              className="btn btn-primary  p-0 pe-1 ps-1"
+              onClick={() => handleSaveRoles()}
+              style={{ marginLeft: "5px" }}
+            >
+              Save
+            </button>
+          </>
+        ), field: "role", sortable: false
+      }
     ]
     uniformCategories?.map((category) => {
       if (category.display) {
@@ -70,15 +98,10 @@ const ManageUniformUsersPageComponent = ({
       }
     })
     setHeaders(headings)
-  }, [uniformCategories])
-
-  //console.log(uniformCategories);
+  }, [uniformCategories, updatedRoles])
 
   const getUniformStyle = (uniform) => ({
-    cursor: "pointer",
-    //color: order.user === order.storeId ? order.secondOwnerId !== " " ? "green" : "blue" : order.secondOwnerId !== " " ? "black" : "blue",
-    //fontWeight: uniform.backOrder ? "bold" : "normal",
-
+    cursor: "pointer"
   });
 
   const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -103,10 +126,61 @@ const ManageUniformUsersPageComponent = ({
   const handleClose = () => {
     setShow(false);
   };
+
+  const handleAlertConfirm = () => {
+    setShowAlert(false)
+  }
   const handleShow = (userId, userUniform) => {
     setSelectedUserCart(userUniform)
     setSelectedUserId(userId)
     setShow(true);
+  };
+
+  // Handle dropdown change
+  const handleDropdownChange = (idx, value) => {
+    setRoleUpdated(false)
+    setUpdatedRoles((prev) => ({
+      ...prev,
+      [idx]: value, // Update the selected value for the specific row
+    }));
+  };
+
+  // Handle save button click
+  const handleSaveRoles = () => {
+    const updatedUniformUsers = userUniforms
+      .map((uniform, idx) => ({
+        ...uniform,
+        updatedRole: updatedRoles[idx], // Temporarily store the updated role
+        idx, // Keep the original index
+      }))
+      .filter(({ userRole, updatedRole }) => updatedRole && updatedRole !== userRole) // Filter only updated items
+      .map(({ updatedRole, ...rest }) => ({
+        ...rest,
+        userRole: updatedRole, // Replace `userRole` with the updated value
+      }));
+
+    //Update the updated data to the database
+    if (updatedUniformUsers.length > 0) {
+      bulkUpdateUsers(updatedUniformUsers)
+        .then((result) => {
+          if (result.message === "success") {
+            bulkUpdateUserRoles(updatedUniformUsers)
+              .then((result) => {
+                if (result.data.message === "Success") {
+                  setRoleUpdated(true)
+                  setEnableEdit(false)
+                }
+              })
+          } else {
+            console.error("Bulk update failed:", result?.message || "Unknown error");
+          }
+        })
+        .catch((error) => {
+          console.error("An error occurred during the bulk update:", error.message);
+        });
+    } else {
+      setEnableEdit(false)
+    }
   };
 
   return (
@@ -147,6 +221,23 @@ const ManageUniformUsersPageComponent = ({
                   <td style={getUniformStyle(uniform)}>{idx + 1} </td>
                   <td>
                     {uniform?.userName}
+                  </td>
+                  <td>
+                    <Form.Select
+                      required
+                      name="role"
+                      disabled={!enableEdit}
+                      value={updatedRoles[idx] || uniform?.userRole} // Use updated value or default
+                      onChange={(e) => handleDropdownChange(idx, e.target.value)}
+                    >
+                      <option>{uniform?.userRole}</option>
+                      {
+                        uniformRoles?.map((role, roleIdx) => (
+                          <option key={roleIdx} value={role.role} >
+                            {role.role}
+                          </option>))
+                      }
+                    </Form.Select>
                   </td>
 
                   {
@@ -232,6 +323,16 @@ const ManageUniformUsersPageComponent = ({
           addToCartReduxAction={addToCartReduxAction}
           updateUniformCart={updateUniformCart} />
 
+      </Modal>
+      <Modal show={showAlert} onHide={handleAlertConfirm} centered className="order_preview_items_uniform">
+        <Modal.Body>
+          <p> Changing the user role will clear all cart items associated with the user.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleAlertConfirm}>
+            OK
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );

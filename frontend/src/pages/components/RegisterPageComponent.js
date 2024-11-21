@@ -53,9 +53,9 @@ const RegisterPageComponent = ({
   const [userRole, setUserRole] = useState("")
   const [selectedSites, setSelectedSites] = useState({})
   const [abnNum, setAbnNum] = useState("")
-  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
+  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
   const [allUniformRoles, setAllUniformRoles] = useState([]);
-  const [deliveryBookData, setDeliveryBookData ] = useState();
+  const [deliveryBookData, setDeliveryBookData] = useState();
   const [userSites, setUserSites] = useState([])
 
   const handleConfirmPassword = (e) => {
@@ -64,7 +64,7 @@ const RegisterPageComponent = ({
     setPasswordsMatch(value === password);
   };
 
-    useEffect(() => {
+  useEffect(() => {
     getAlldeliveryBooks().then((data) => {
       setDeliveryBookData(data);
       const userSitesData = data.map(company => ({
@@ -81,35 +81,35 @@ const RegisterPageComponent = ({
   useEffect(() => {
     getAllUniformRole()
       .then((data) => {
-       const updatedRoles = data.filter(role => role.role !== "other role");
-       setAllUniformRoles(updatedRoles)
-     })
- 
+        const updatedRoles = data.filter(role => role.role !== "other role");
+        setAllUniformRoles(updatedRoles)
+      })
+
       .catch((er) => console.log(er));
   }, []);
 
   const isValidEmail = (email) => {
     const emailDomain = email.split('@')[1];
-  
+
     const isAllowedEmail = userSites.some((site) => {
       const allowedDomains = site.emailHost.split('/');
-      
+
       return allowedDomains.some(domain => emailDomain.endsWith(domain));
     });
-  
+
     return !isAllowedEmail
   };
-  
+
 
   const setUserDetails = (emailHost) => {
     const emailDomain = emailHost.toLowerCase();
-  
+
     const userCompany = userSites.find((site) => {
       const allowedDomains = site.emailHost.toLowerCase().split('/');
-  
+
       return allowedDomains.some((domain) => emailDomain.endsWith(domain));
     });
-  
+
     if (userCompany) {
       setUserCompany(userCompany.company);
       setSelectedSites(userCompany);
@@ -125,7 +125,7 @@ const RegisterPageComponent = ({
       setAbnNum("No abn");
     }
   };
-  
+
 
   // submit form
   const handleSubmit = (event) => {
@@ -252,8 +252,8 @@ const RegisterPageComponent = ({
   /* **************** Show Password **************** */
   const [showPassword, setShowPassword] = useState(false);
 
-  const [ show, setShow ] = useState(false);
-  const [ showAbn, setShowAbn ] = useState(false);
+  const [show, setShow] = useState(false);
+  const [showAbn, setShowAbn] = useState(false);
   const handleClose = () => {
     setShow(false);
   };
@@ -309,10 +309,10 @@ const RegisterPageComponent = ({
     setUserCompany(e.target.value)
   }
 
-  const [ otherRole, setOtherRole ] = useState();
+  const [otherRole, setOtherRole] = useState();
 
   const handleOtherRole = (e) => {
-     setOtherRole(e.target.value);
+    setOtherRole(e.target.value);
   }
   const handleChangeRole = (e) => {
     setUserRole(e.target.value)
@@ -356,7 +356,7 @@ const RegisterPageComponent = ({
               </Form.Group>
             </Row>
             <Row>
-            <Form.Group as={Col} md="6" controlId="formBasicEmail">
+              <Form.Group as={Col} md="6" controlId="formBasicEmail">
                 <InputGroup hasValidation>
                   {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
                   <Form.Control
@@ -562,7 +562,7 @@ const RegisterPageComponent = ({
                   </Form.Group>
 
                   <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
-                  <Form.Select
+                    <Form.Select
                       required
                       name="role"
                       onChange={handleChangeRole}
@@ -574,27 +574,27 @@ const RegisterPageComponent = ({
                             {role.role}
                           </option>))
                       }
-                          <option key="other role">
-                            other role
-                        </option>
+                      <option key="other role">
+                        other role
+                      </option>
                     </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    Please Select your Role.{" "}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                {userRole === "other role" &&<Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
-                  <Form.Control
-                    required
-                    type="text"
-                    name="otherRole"
-                    placeholder="Job Title"
-                    onChange={handleOtherRole}
-                    value={otherRole}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please mention your Job Title.{" "}
-                  </Form.Control.Feedback>
-                </Form.Group>}
+                    <Form.Control.Feedback type="invalid">
+                      Please Select your Role.{" "}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
+                    <Form.Control
+                      required
+                      type="text"
+                      name="otherRole"
+                      placeholder="Job Title"
+                      onChange={handleOtherRole}
+                      value={otherRole}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please mention your Job Title.{" "}
+                    </Form.Control.Feedback>
+                  </Form.Group>}
                 </Row>
               </>
             ) : showLocation ? (
@@ -638,29 +638,29 @@ const RegisterPageComponent = ({
             ) : ("")}
 
             {showAbn ? (
-           <Form.Group as={Col} md="6" controlId="formBasicAbn">
-           <MaskedInput
-             mask={abnMask}
-             placeholder="ABN"
-             guide={false}
-             value={abnNum}
-             onChange={handleAbn}
-            //  id="abn"
-             render={(ref, props) => <Form.Control
-               required
-               minLength={14}
-               maxLength={14}
-               type="text"
-               name="abn"
-              //  pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
-               ref={ref}
-               {...props}
-             /> } 
-            />
-           <Form.Control.Feedback type="invalid">
-             Please enter ABN.
-           </Form.Control.Feedback>
-         </Form.Group>
+              <Form.Group as={Col} md="6" controlId="formBasicAbn">
+                <MaskedInput
+                  mask={abnMask}
+                  placeholder="ABN"
+                  guide={false}
+                  value={abnNum}
+                  onChange={handleAbn}
+                  //  id="abn"
+                  render={(ref, props) => <Form.Control
+                    required
+                    minLength={14}
+                    maxLength={14}
+                    type="text"
+                    name="abn"
+                    //  pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
+                    ref={ref}
+                    {...props}
+                  />}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter ABN.
+                </Form.Control.Feedback>
+              </Form.Group>
 
             ) : ("")}
 
