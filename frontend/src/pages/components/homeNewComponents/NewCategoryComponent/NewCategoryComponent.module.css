@@ -240,10 +240,17 @@ a .category_grid__title {
 
 @media (max-width: 500px) {
     .category_grid__single:hover {
-        height: 400px;
+        height: 350px;
+    }
+
+    .category_grid__menu {
+        overflow: scroll;
+        height: 250px;
     }
 
     .category_grid__menu_wrap {
         height: fit-content;
     }
+
+
 }
