@@ -71,7 +71,8 @@ const ExpiredQuotesPageComponent = ({
     { name: "Quoted Name", field: "quoteName", sortable: true },
     { name: "Name", field: "product.name", sortable: true },
     { name: "Price", field: "price", sortable: false },
-    { name: "Expires in", field: "submittedAt", sortable: true },
+    { name: "Submitted at", field: "submittedAt", sortable: true },
+    { name: "Expires in", field: "expireDate", sortable: true },
     { name: "Action", field: "activity", sortable: false },
     { name: "", field: "delete", sortable: false },
 
@@ -212,7 +213,6 @@ const ExpiredQuotesPageComponent = ({
     setCurrentPage(1);
   }, [actionFilter, clientFilter]);
 
-
   return (
     <>
       <div className="d-flex justify-content-between m-1 me-3" style={{ float: "right" }}>
@@ -290,6 +290,12 @@ const ExpiredQuotesPageComponent = ({
                   quoteItem.product.displayPrice !== 0
                   ? `$ ${quoteItem.product.stock[0]?.price.toFixed(2)}`
                   : ""}
+              </td>
+              <td
+                onClick={() => handleShow(quoteItem._id)}
+                style={{ cursor: "pointer" }}
+              >
+                {quoteItem.submittedAt?.substring(0, 10)}
               </td>
               <td
                 onClick={() => handleShow(quoteItem._id)}
