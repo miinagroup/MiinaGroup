@@ -64,6 +64,7 @@ const DeliveryBookComponent = ({ fetchDeliveryBooks, deleteDeliveryBook }) => {
               <th width="25%">Billing Email</th>
               <th width="25%">Company Account</th>
               <th width="25%">Sites</th>
+              <th width="15%">Uniform</th>
               <th width="10%">Edit/Delete</th>
             </tr>
           </thead>
@@ -79,6 +80,13 @@ const DeliveryBookComponent = ({ fetchDeliveryBooks, deleteDeliveryBook }) => {
                     <p key={site.id || i}>{site.name}</p>
                   ))}
                 </td>
+                {book.hasUniform && book.hasUniform === true ? (
+                  <>
+                    <td>YES</td></>
+                ) : (
+                  <>
+                    <td>NO</td></>
+                )}
                 <td>
                   <LinkContainer to={`/admin/edit-deliveryBook/${book._id}`}>
                     <Button className="btn-sm btn-light">

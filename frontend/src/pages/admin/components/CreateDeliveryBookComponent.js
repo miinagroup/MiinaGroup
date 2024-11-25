@@ -18,13 +18,14 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
   const [validated, setValidated] = useState(false);
   const [textDueDays, setTextDueDays] = useState("7")
   const [textQBCustomerId, setTextQBCustomerId] = useState("124")
+  const [hasUniform, setHasUniform] = useState(false);
   const [createDeliveryBookResponseState, setCreateDeliveryBookResponseState] =
     useState({
       message: "",
       error: "",
     });
-    const [abnNum, setAbnNum] = useState("")
-    const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
+  const [abnNum, setAbnNum] = useState("")
+  const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
 
   const [rowCount, setRowCount] = useState(1);
   const handleNewDeliveryBook = () => {
@@ -71,7 +72,8 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
       dueDays: form.dueDays.value,
       quickBooksCutomerId: form.quickBooksCustomerId.value,
       sites: sites,
-      abn: form.abn.value
+      abn: form.abn.value,
+      hasUniform: hasUniform
     };
 
     if (event.currentTarget.checkValidity() === true) {
@@ -97,6 +99,10 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
   const handleAbn = (e) => {
     const newValue = e.target.value;
     setAbnNum(newValue);
+  };
+
+  const handleToggle = (e) => {
+    setHasUniform(e.target.checked);
   };
 
   return (
@@ -132,33 +138,43 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
               <Form.Group className="mb-3" controlId="formBasicAbn">
                 <Form.Label>Company ABN</Form.Label>
                 <MaskedInput
-                                mask={abnMask}
-                                placeholder="ABN"
-                                guide={false}
-                                value={abnNum}
-                                onChange={handleAbn}
-                                render={(ref, props) => <Form.Control
-                                required
-                                minLength={14}
-                                maxLength={14}
-                                type="text"
-                                name="abn"
-                                ref={ref}
-                                {...props}
-                                /> } 
-                                />
+                  mask={abnMask}
+                  placeholder="ABN"
+                  guide={false}
+                  value={abnNum}
+                  onChange={handleAbn}
+                  render={(ref, props) => <Form.Control
+                    required
+                    minLength={14}
+                    maxLength={14}
+                    type="text"
+                    name="abn"
+                    ref={ref}
+                    {...props}
+                  />}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicCompanyAccount">
                 <Form.Label>Company Account</Form.Label>
                 <Form.Control name="companyAccount" required type="text" />
               </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicQuickBooksCustomerId">
+                <Form.Label>QuickBooks Customer Id</Form.Label>
+                <Form.Control name="quickBooksCustomerId" required type="text" value={textQBCustomerId} onChange={(e) => setTextQBCustomerId(e.target.value)} />
+              </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicDueDays">
                 <Form.Label>Due Days</Form.Label>
                 <Form.Control name="dueDays" required type="text" value={textDueDays} onChange={(e) => setTextDueDays(e.target.value)} />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicQuickBooksCustomerId">
-                <Form.Label>QuickBooks Customer Id</Form.Label>
-                <Form.Control name="quickBooksCustomerId" required type="text" value={textQBCustomerId} onChange={(e) => setTextQBCustomerId(e.target.value)} />
+              <Form.Group className="mb-3" controlId="formBasicHasUniform">
+                <Form.Label>Has Uniform</Form.Label>
+                <Form.Check
+                  type="switch"
+                  name="hasUniform"
+                  label=""
+                  checked={hasUniform}
+                  onChange={handleToggle}
+                />
               </Form.Group>
 
               {[...Array(rowCount)].map((_, index) => (

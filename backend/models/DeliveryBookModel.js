@@ -8,6 +8,10 @@ const deliveryBookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hasUniform: {
+    type: Boolean,
+    required: false,
+  },
   billingEmail: { type: String, required: true },
   companyAccount: { type: String, required: true },
   quickBooksCustomerId: { type: String, required: false },

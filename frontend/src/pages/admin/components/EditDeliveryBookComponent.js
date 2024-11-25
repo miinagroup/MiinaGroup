@@ -11,13 +11,14 @@ const EditDeliveryBookComponent = ({
 }) => {
     const [validated, setValidated] = useState(false);
     const [deliveryBook, setDeliveryBook] = useState([]);
+    const [hasUniform, setHasUniform] = useState(false);
     const [updateDeliveryBookResponseState, setUpdateDeliveryBookResponseState] =
         useState({
             message: "",
             error: "",
         });
     const [abnNum, setAbnNum] = useState("")
-    const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/]
+    const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -32,9 +33,10 @@ const EditDeliveryBookComponent = ({
     const handleAbn = (e) => {
         const newValue = e.target.value;
         setAbnNum(newValue);
-      };
+    };
 
     const handleSubmit = (event) => {
+
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
@@ -92,7 +94,8 @@ const EditDeliveryBookComponent = ({
             quickBooksCustomerId: form.quickBooksCustomerId.value,
             dueDays: form.dueDays.value,
             sites: [...sites, ...sitesNew],
-            abn: form.abn.value
+            abn: form.abn.value,
+            hasUniform: hasUniform
         };
 
         if (event.currentTarget.checkValidity() === true) {
@@ -123,6 +126,7 @@ const EditDeliveryBookComponent = ({
             .then((data) => {
                 setDeliveryBook(data);
                 setAbnNum(data.abn)
+                setHasUniform(data.hasUniform)
             })
             .catch((er) =>
                 console.log(
@@ -139,6 +143,10 @@ const EditDeliveryBookComponent = ({
 
     const handleRemoveNewSite = () => {
         setRowCount(rowCount - 1);
+    };
+
+    const handleToggle = (e) => {
+        setHasUniform(e.target.checked);
     };
 
     return (
@@ -194,15 +202,15 @@ const EditDeliveryBookComponent = ({
                                 value={abnNum}
                                 onChange={handleAbn}
                                 render={(ref, props) => <Form.Control
-                                required
-                                minLength={14}
-                                maxLength={14}
-                                type="text"
-                                name="abn"
-                                ref={ref}
-                                {...props}
-                                /> } 
-                                />
+                                    required
+                                    minLength={14}
+                                    maxLength={14}
+                                    type="text"
+                                    name="abn"
+                                    ref={ref}
+                                    {...props}
+                                />}
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicCompanyAccount">
                             <Form.Label>Company Account </Form.Label>
@@ -226,12 +234,22 @@ const EditDeliveryBookComponent = ({
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicDueDays">
-                            <Form.Label>dueDays</Form.Label>
+                            <Form.Label>DueDays</Form.Label>
                             <Form.Control
                                 name="dueDays"
                                 required
                                 type="number"
                                 defaultValue={deliveryBook.dueDays}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicHasUniform">
+                            <Form.Label>Has Uniform</Form.Label>
+                            <Form.Check
+                                type="switch"
+                                name="hasUniform"
+                                label=""
+                                checked={hasUniform}
+                                onChange={handleToggle}
                             />
                         </Form.Group>
 
