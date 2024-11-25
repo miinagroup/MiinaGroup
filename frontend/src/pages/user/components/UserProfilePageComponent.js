@@ -355,7 +355,7 @@ const UserProfilePageComponent = ({
                   <option>{user.role}</option>
                   {
                     allUniformRoles.map((role, idx) => (
-                      <option key={idx} value={role.role} >
+                      <option key={idx} value={role.role} style={{textTransform: "capitalize"}}>
                         {role.role}
                       </option>))
                   }

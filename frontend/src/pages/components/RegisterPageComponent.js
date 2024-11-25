@@ -570,12 +570,12 @@ const RegisterPageComponent = ({
                       <option>--Select Role--</option>
                       {
                         allUniformRoles.map((role, idx) => (
-                          < option key={idx} value={role.role} >
+                          <option key={idx} value={role.role} style={{textTransform: "capitalize"}}>
                             {role.role}
                           </option>))
                       }
                       <option key="other role">
-                        other role
+                        Other Role
                       </option>
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
