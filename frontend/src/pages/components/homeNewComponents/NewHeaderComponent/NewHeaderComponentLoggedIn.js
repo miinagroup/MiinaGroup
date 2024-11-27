@@ -304,7 +304,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                 id="rfq_button"
                 src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/red-search.png"
                 alt=""
-                className="red_search_img mobile"
+                className="red_search_img mobile-visibility"
                 style={{ cursor: "pointer" }}
                 onClick={toggleModal}
               ></img>
