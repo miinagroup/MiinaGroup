@@ -551,8 +551,8 @@ const RegisterPageComponent = ({
                       <option>--Select Site--</option>
                       {
                         selectedSites.sites?.map((site, idx) => (
-                          < option key={idx} value={site} >
-                            {site}
+                          < option key={idx} value={site} style={{textTransform: "capitalize"}}>
+                            {site.toLowerCase()}
                           </option>))
                       }
                     </Form.Select>

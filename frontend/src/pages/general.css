@@ -514,7 +514,8 @@
 
 @media only screen and (min-width: 1600px) {
   .product-block {
-    width: 16.6%;
+    width: 100%;
+        max-width: 210px;
   }
 }
 
@@ -638,7 +639,23 @@
 
 @media (max-width: 480px) {
   .product-block {
-    width: 50% !important;
+    /* max-width: 160px;
+    width: 100%;
+    margin: 0 auto; */
+  }
+
+  .product-list-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .product-block {
+    width: 100% !important;
+    max-width: 150px !important;
+  }
+
+  .product-block-title {
+    padding: 5px 0px;
   }
 
   .card-title {
@@ -717,5 +734,11 @@
   .bigbox_product_categories_col {
     width: 100%;
     max-width: 150px !important;
+    padding: 0px;
+    margin: 0px;
   }
+  
+ .bigbox_product_categories_col  .container {
+    padding: 0px;
+}
 }

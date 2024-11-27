@@ -27,7 +27,7 @@ margin: 0 auto;
     column-gap: 70px;
 }
 
-.newCardCategory {
+/* .newCardCategory {
     background-image: url("../../../../../public/images/background_card.png");
     background-repeat: no-repeat;
     background-size: cover;
@@ -36,7 +36,7 @@ margin: 0 auto;
     max-width: 490px;
     height: 300px;
     position: relative;
-}
+} */
 
 .newCategoryImg {
     width: 100%;

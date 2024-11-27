@@ -15,6 +15,14 @@
     animation: showingout 1s;
 }
 
+.mobile {
+    display: none;
+}
+
+.mobile-visibility {
+    display: none;
+}
+
 @keyframes showingout {
     0% {
         opacity: 0;
@@ -206,6 +214,10 @@
 }
 
 @media (max-width: 480px) {
+
+    .mobile-visibility {
+        display: block;
+    }
     .noQuotesFoundText {
         font-size: 14px !important;
     }

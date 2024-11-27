@@ -406,15 +406,15 @@ const ProductListPage = ({
                 <Col md={3}></Col>
                 <Col md={3}></Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col className="ms-4" md={5}>Search Results : 0 - {paginationLinksNumber * 24} products found, displayed across {paginationLinksNumber} pages</Col>
-              </Row>
+              </Row> */}
             </Form>
           ) : (
             ""
           )}
 
-          {!searchQuery ? <><Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={5}>
+          {!searchQuery ? <><Row className="m-2 product-list-wrapper" xs={1} md={2} lg={3} xl={4} xxl={5}>
             {loading ? (
               <img className="loading-spinner" src="./loading-gif.gif"></img>
             ) : productCategories.length > 1 ? (

@@ -14,10 +14,10 @@ const CartAddressesSectionComponent = ({
         <ListGroup.Item className="p-1 ps-2">
         <h4 className="m-0">Address</h4>
         <div style={{ display: 'flex', alignItems: "center", gap: "10px" }}>
-          <Button onClick={() => setIsOpenNewAddressModal(true)} className="p-1" style={{ width: '110px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Button onClick={() => setIsOpenNewAddressModal(true)} className="p-1" style={{ width: "100%",  maxWidth: '120px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
             Add New Address
           </Button>
-          <Button onClick={() => setIsOpenChangeAddressModal(true)} className="p-1" style={{ width: '110px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Button onClick={() => setIsOpenChangeAddressModal(true)} className="p-1" style={{ width: "100%",  maxWidth: '120px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
             Change Address
           </Button>
         </div>

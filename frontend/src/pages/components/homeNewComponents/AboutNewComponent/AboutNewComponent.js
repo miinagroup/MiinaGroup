@@ -45,7 +45,7 @@ const AboutNewComponent = ({setIsOpenModal}) => {
       const tlImages = gsap.timeline({
         scrollTrigger: {
           trigger: ".aboutNew",
-          start: "top 90%",
+          start: "top 80%",
           // end: "+=50%",
           scrub: 1,
         },
@@ -76,13 +76,18 @@ const AboutNewComponent = ({setIsOpenModal}) => {
               ></img>
             </div>
               <p className={styles.aboutNewText}>
-                CTL Australia has secured a preferred supplier agreement with a few large Western Australian mining companies, we are servicing all their sites, underground, open pit and processing plants throughout Western Australia. We are providing an online mining portal which has gone live for our existing clients and we would really appreciate the opportunity to stock and supply your products and accessories to our mining clients and for the companies to view online.
+              At CTL Australia, we are dedicated to redefining the standard in mining supply. Based in Western Australia, we are proud to deliver tailored, innovative solutions that empower mining operations to excel. Our mission is simple: to provide exceptional service, build lasting partnerships, and grow alongside our clients.
                 <br /> <br />
-                We are based in Perth and have been providing our clients with premium products in a swift time frame at some of the best prices in the industry, to ensure a streamlined ordering process from our end direct to the client we need to align ourselves with a company that can provide the same service and to secure a competitive sales and terms of trade agreement.
-              </p>
+                With a growing client base and an ever-expanding supplier network, CTL Australia collaborates with businesses that share our unwavering commitment to quality, reliability, and exceptional customer care. Every supplier we partner with is carefully selected to align with our core values, ensuring we consistently deliver the highest level of service and products to our clients.
+                <br /> <br />
+                Innovation and continuous improvement are at the heart of what we do. Whether its through our paperless uniform ordering systems, comprehensive PPE and glove matrix, or our streamlined ordering platform, we are always striving to be better than yesterday. Our goal is to simplify processes, enhance safety, and provide the tools and resources that mining companies need to thrive.
+                <br /> <br />
+                At CTL Australia, we dont just adapt to the demands of the industry — we anticipate them. We are committed to growing with your company, forging a partnership that evolves alongside your needs and drives success into the future.
+                Together, lets break boundaries, achieve more, and build a stronger future for the mining industry. CTL Australia — where service meets excellence.
+                </p>
         </div>
         <div className={styles.aboutNewRight} id="aboutSection">
-              <div id="first">
+              <div id="first" className={styles.aboutFirstSectionWrapper}>
                 <div className={styles.aboutNewFirstImg}><img src="/images/about_1_2.png"></img></div>
                 <div className={styles.aboutNewSecondBlock}>
                 <NewTextBlock  sign={"+"} title={""} number={200} subtitle="categories" description="available for order" />

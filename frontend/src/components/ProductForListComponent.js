@@ -237,9 +237,9 @@ const ProductForListComponent = ({
   })
   return (
     <>
-      <div className="product-block">
-        <div className="mb-2">
-          <div className="card mt-0">
+      {/* <div className="product-block"> */}
+        {/* <div className="mb-2"> */}
+          <div className="product-block card mt-0 mb-3 mx-2">
             <div
               className="bg-image hover-zoom ripple img_hovf"
               data-mdb-ripple-color="light"
@@ -426,8 +426,8 @@ const ProductForListComponent = ({
               </>
             )}</>}
           </div>
-        </div>
-      </div>
+        {/* </div> */}
+      {/* </div> */}
       <Modal
         show={showModal}
         onHide={toggleModal}

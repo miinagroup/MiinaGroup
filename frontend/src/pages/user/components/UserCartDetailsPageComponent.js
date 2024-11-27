@@ -705,7 +705,8 @@ const UserCartDetailsPageComponent = ({
               <Row className="mb-4 p-0" style={{ fontSize: "12px", width: "100%", maxWidth: "915px" }}>
                 <div className="d-flex justify-content-between cart_detail_btns" style={{ width: "100%" }}>
                   <div className="d-flex gap-5 cart_detail_btns_email_download">
-                    <div>
+                    <div className="d-flex justify-content-between">
+                      <div>
                       <PDFDownloadLink
                         document={
                           <CartPrint
@@ -726,6 +727,19 @@ const UserCartDetailsPageComponent = ({
                         </span>
                       </PDFDownloadLink>
                     </div>
+                    <div className="d-flex justify-content-end">
+                    <Button
+                      type="button"
+                      onClick={removeAllItems}
+                      variant="primary" size="sm"
+                      style={{ fontSize: "12px" }}
+                      className="mobile-visibility"
+                    >
+                      Empty Cart <i className="bi bi-trash" />
+                    </Button>
+                  </div>
+                    </div>
+                    
                     <div >
                       <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
 
@@ -760,7 +774,7 @@ const UserCartDetailsPageComponent = ({
                       </ListGroup>
                     </div>
                   </div>
-                  <div>
+                  <div className="desktop">
                     <Button
                       type="button"
                       onClick={removeAllItems}

@@ -298,7 +298,17 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
               onChange={(e) => setSearchQuery(e.target.value)} />
             <button className={styles.iconNew} onClick={submitHandler}><i class="bi bi-search fs-4"></i></button>
           </div>
-          {isShownQuoteBtn && <button className={styles.btnQuote} onClick={toggleModal} >GET A QUOTE</button>}
+          {isShownQuoteBtn && <>
+            <button className={`desktop ${styles.btnQuote}`} onClick={toggleModal} >GET A QUOTE</button>
+            <img
+                id="rfq_button"
+                src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/red-search.png"
+                alt=""
+                className="red_search_img mobile"
+                style={{ cursor: "pointer" }}
+                onClick={toggleModal}
+              ></img>
+          </>}
 
           <Modal
             show={showModal}
@@ -456,6 +466,15 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                             Orders
                           </a>
                         </li>
+                        <li>
+                          <a href={
+                    useIsAdmin === true
+                      ? "/admin/quotes?tab=processingQuotes&pageNum=1"
+                      : "/user/my-quotes?tab=completedQuotes&pageNum=1"
+                  } className="hd_c">
+                            Quotes
+                          </a>
+                        </li>
                         {deliveryBook && deliveryBook.hasUniform === true ? (
                           <li>
                             <a href="/user/my-uniforms" className="hd_c">
@@ -495,7 +514,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
             )}
 
             {/* *********** Quote *********** */}
-            <div>
+            <div className="desktop">
               <div className={`miningCart ${styles.miningCart}`}>
                 <a
                   className="hd_c"

@@ -46,10 +46,12 @@
 }
 
 .red_search_img {
-  width: 2.3rem;
-  height: 2.3rem;
-  margin-top: 1rem;
-  margin-left: 1rem;
+  /* width: 2.3rem;
+  height: 2.3rem; */
+  /* margin-top: 1rem;
+  margin-left: 1rem; */
+  width: 30px;
+  height: 30px;
 }
 
 .quote_product_modal .modal-content {
@@ -1074,4 +1076,22 @@ aside {
     bottom: 10%;
     right: 20px;
   }
+
+  .users_dropdown {
+    right: 0;
+  }
+  
+  .cart_dropdown:hover .cart_dropdown_box {
+    display: none;
+  }
+
+  .quote_product_modal .modal-content {
+    width: 100%;
+    max-width: 350px;
+
+    left: 0;
+    margin:  0 auto;
+  }
+  
+  
 }
