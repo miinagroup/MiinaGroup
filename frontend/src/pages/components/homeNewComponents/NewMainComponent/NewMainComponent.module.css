@@ -35,6 +35,10 @@
     opacity: 0.5;
 }
 
+.mobile {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .homeNew {
         height: calc(60vh - 90px);
@@ -45,5 +49,9 @@
     .homeNew {
         /* max-height: 50vh; */
         height: calc(100vh - 90px);
+    }
+
+    .mobile {
+        display: block;
     }
 }
