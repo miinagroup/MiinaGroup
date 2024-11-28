@@ -547,11 +547,12 @@ const RegisterPageComponent = ({
                       required
                       name="location"
                       onChange={handleChangeLocation}
+                      style={{textTransform: "capitalize"}}
                     >
                       <option>--Select Site--</option>
                       {
                         selectedSites.sites?.map((site, idx) => (
-                          < option key={idx} value={site} style={{textTransform: "capitalize"}}>
+                          <option key={idx} value={site} style={{textTransform: "capitalize"}}>
                             {site.toLowerCase()}
                           </option>))
                       }
@@ -566,6 +567,7 @@ const RegisterPageComponent = ({
                       required
                       name="role"
                       onChange={handleChangeRole}
+                      style={{textTransform: "capitalize"}}
                     >
                       <option>--Select Role--</option>
                       {
@@ -626,6 +628,7 @@ const RegisterPageComponent = ({
                         value={userLocation}
                         aria-describedby="inputGroupPrepend"
                         required
+                        style={{textTransform: "capitalize"}}
                       />
 
                       <Form.Control.Feedback type="invalid">

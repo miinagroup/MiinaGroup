@@ -95,10 +95,10 @@ const AboutNewComponent = ({setIsOpenModal}) => {
                 <img src="/images/about_2.png" className={styles.aboutNewSecondImg}></img>
                 </div>
               </div>
-              <div  className={styles.aboutNewThirdBlock} id="second">
+              {/* <div  className={styles.aboutNewThirdBlock} id="second">
               <NewTextBlock sign={"+"} title={"k"} number={400} subtitle="parts" description="available for order" />   
               <div><img src="/images/about_3.png" className={styles.aboutNewSecondImg} ></img></div>
-              </div>
+              </div> */}
         </div>
       </div>
     </div>

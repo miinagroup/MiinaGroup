@@ -2,14 +2,12 @@
     padding: 50px 50px 50px 50px;
     margin: 0 auto;
     position: relative;
-    /* height: 110vh; */
 }
 
 .aboutNewWrapper {
     display: flex;
     justify-content: center;
-    gap: 25px;
-    
+    gap: 100px;
 }
 
 .aboutNewFirstBlock {
@@ -44,8 +42,6 @@
 .aboutNewSecondBlock {
     display: flex;
     justify-content: space-between;
-    /* margin-top: 25px; */
-    gap: 50px;
     align-items: center;
 }
 
@@ -63,7 +59,7 @@
 
 .aboutNewSecondImg {
     width: 100%;
-    max-width: 500px;
+    max-width: 485px;
     border-radius: 15px
 }
 
@@ -168,6 +164,7 @@
 
     .aboutNewWrapper {
          flex-direction: column;
+         gap: 25px;
     }
 
     .aboutNew {
@@ -176,7 +173,10 @@
 
     .aboutNewFirstBlock {
         margin-right: 0px;
+    }
 
+    .aboutNewSecondBlock {
+        margin-top: 25px;
     }
 
     .aboutNewLogo {
