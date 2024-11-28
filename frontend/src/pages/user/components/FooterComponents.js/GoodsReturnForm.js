@@ -52,7 +52,7 @@ const GoodsReturnForm = () => {
         . Our team is here to support you every step of the way.
       </p>
       <a
-        href="/pdfpreview?CTLDocuments/Goods-Return-Form.pdf"
+        href="/pdfpreview?/Goods-Return-Form.pdf"
         target="_blank"
         rel="noopener noreferrer"
         className="btn btn-primary btn-block mt-4 CTL_btn p-1 ps-2 pe-2"
