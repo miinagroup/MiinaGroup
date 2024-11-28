@@ -325,7 +325,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
             transition={false}
             id="noanim-tab-example"
             className="mb-3">
-            <Tab eventKey="PRODUCTS" title="PRODUCT ORDERS">
+            <Tab eventKey="PRODUCTS" title="PRODUCTS ORDERS">
               <div className="row ">
                 <div className="col-md-9">
                   <Pagination
@@ -426,7 +426,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
                 </div>
               </div>
             </Tab>
-            <Tab eventKey="UNIFORMS" title="UNIFORMS">
+            <Tab eventKey="UNIFORMS" title="UNIFORMS ORDERS">
               <div className="row mb-2">
                 {
                   selectedIds.length > 0 && userInfo.isUniformManager ? (
@@ -640,92 +640,92 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
       </Modal>
 
       <div className={`${styles.userOrdersMobileWrapper} mobile`}>
-      <Col md={2} className={styles.userOrdersMobileMenu}>
+        <Col md={2} className={styles.userOrdersMobileMenu}>
           <UserLinksComponent />
         </Col>
         <h5>MY ORDERS</h5>
         <Tabs defaultActiveKey="PRODUCTS"
-            transition={false}
-            id="noanim-tab-example"
-            className={styles.userOrdersMobileTabs}
+          transition={false}
+          id="noanim-tab-example"
+          className={styles.userOrdersMobileTabs}
         >
           <Tab eventKey="PRODUCTS" title="PRODUCT ORDERS">
-                <div className={styles.userOrdersMobileSearch}>
-                <Search
-                    onSearch={(value) => {
-                      setUniformSearch(value);
-                      setCurrentPage(1);
-                    }}
-                  />
-                </div>
-          {productData && productData?.map((order, idx) => {
-            return (
-              <>
-              <div className={styles.userOrdersMobile}>
-                <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
-                <div className={styles.userOrdersMobileInfo}>
-                  <div>
-                   <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
-                    <div className={styles.userOrdersMobileStatus}>
-                    {order.isDelivered ? (
-                                <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
-                              ) : (
-                                <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
-                              )}
-                    </div> 
+            <div className={styles.userOrdersMobileSearch}>
+              <Search
+                onSearch={(value) => {
+                  setUniformSearch(value);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
+            {productData && productData?.map((order, idx) => {
+              return (
+                <>
+                  <div className={styles.userOrdersMobile}>
+                    <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
+                    <div className={styles.userOrdersMobileInfo}>
+                      <div>
+                        <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
+                        <div className={styles.userOrdersMobileStatus}>
+                          {order.isDelivered ? (
+                            <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
+                          ) : (
+                            <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
+                          )}
+                        </div>
+                      </div>
+                      <Link
+                        to={`/user/order-details/${order._id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles.userOrdersMobileStatusViewDetails}
+                      >
+                        VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
+                      </Link>
+                    </div>
                   </div>
-                  <Link
-                      to={`/user/order-details/${order._id}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.userOrdersMobileStatusViewDetails}
-                  >
-                  VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
-                  </Link>
-                </div>
-              </div>
-              <hr />
-              </>
-            )
-          })}
-          <div className={styles.userOrdersMobilePagination}>
-                  <Pagination
-                    total={totalProducts}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-          </div>
+                  <hr />
+                </>
+              )
+            })}
+            <div className={styles.userOrdersMobilePagination}>
+              <Pagination
+                total={totalProducts}
+                itemsPerPage={ITEMS_PER_PAGE}
+                currentPage={currentPage}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </div>
           </Tab>
           <Tab eventKey="UNIFORMS" title="UNIFORMS">
-          <div className={styles.userOrdersMobileSearch}>
-                  <Search
-                    onSearch={(value) => {
-                      setProductSearch(value);
-                      setCurrentPage(1);
-                    }}
-                  />
-                </div>
+            <div className={styles.userOrdersMobileSearch}>
+              <Search
+                onSearch={(value) => {
+                  setProductSearch(value);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
 
-                {uniformData && uniformData?.map((order, idx) => {
-            return (
-              <>
-              <div className={styles.userOrdersMobile}>
-                <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
-                <div className={styles.userOrdersMobileInfo}>
-                  <div>
-                   <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
-    
-                    <div className={styles.userOrdersMobileStatus}>
-                    {order.isDelivered ? (
-                                <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
-                              ) : (
-                                <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
-                              )}
-                    </div> 
-                  </div>
-                  <div className={styles.userOrdersMobilePoStatus}>
-                  {
+            {uniformData && uniformData?.map((order, idx) => {
+              return (
+                <>
+                  <div className={styles.userOrdersMobile}>
+                    <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
+                    <div className={styles.userOrdersMobileInfo}>
+                      <div>
+                        <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
+
+                        <div className={styles.userOrdersMobileStatus}>
+                          {order.isDelivered ? (
+                            <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
+                          ) : (
+                            <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
+                          )}
+                        </div>
+                      </div>
+                      <div className={styles.userOrdersMobilePoStatus}>
+                        {
                           order.approvedDate ? (
                             <>
                               <div
@@ -748,30 +748,30 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
                             </>
                           )
                         }
-                   <Link
-                      to={`/user/order-details/${order._id}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.userOrdersMobileStatusViewDetails}
-                  >
-                  VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
-                  </Link> 
+                        <Link
+                          to={`/user/order-details/${order._id}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={styles.userOrdersMobileStatusViewDetails}
+                        >
+                          VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
+                        </Link>
+                      </div>
+
+                    </div>
                   </div>
-                  
-                </div>
-              </div>
-              <hr />
-              <div className={styles.userOrdersMobilePagination}>
-              <Pagination
-                    total={totalUniforms}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
+                  <hr />
+                  <div className={styles.userOrdersMobilePagination}>
+                    <Pagination
+                      total={totalUniforms}
+                      itemsPerPage={ITEMS_PER_PAGE}
+                      currentPage={currentPage}
+                      onPageChange={(page) => setCurrentPage(page)}
+                    />
                   </div>
-              </>
-            )
-          })}
+                </>
+              )
+            })}
           </Tab>
         </Tabs>
       </div>

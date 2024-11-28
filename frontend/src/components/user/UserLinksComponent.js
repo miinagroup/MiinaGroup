@@ -1,17 +1,26 @@
 import { Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../../redux/actions/userActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import FetchAuthFromServer from "../FetchAuthFromServer";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const UserLinksComponent = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-
+  const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const isAuth = FetchAuthFromServer();
+  const [deliveryBook, setDeliveryBook] = useState()
+  //console.log(userInfo);
 
   const userLinks = [
+    {
+      title: "Uniforms",
+      link: "/user/my-uniforms",
+      access: "all",
+    },
     {
       title: "Orders",
       link: "/user/my-orders",
@@ -22,11 +31,7 @@ const UserLinksComponent = () => {
       link: "/user/my-quotes?tab=completedQuotes&pageNum=1",
       access: "all",
     },
-    {
-      title: "Uniforms",
-      link: "/user/my-uniforms",
-      access: "all",
-    },
+
     {
       title: "My Profile",
       link: "/user",
@@ -77,13 +82,36 @@ const UserLinksComponent = () => {
     return location.pathname.includes(path);
   };
 
+  const getdeliveryBooks = async (email) => {
+    const { data } = await axios.get("/api/deliveryBooks/deliveryBook/" + email);
+    return data;
+  };
+  useEffect(() => {
+    getdeliveryBooks(userInfo.email)
+      .then((data) => {
+        setDeliveryBook(data[0])
+      }).catch((err) => console.log(err));
+  }, [userInfo])
+
+  // console.log(deliveryBook);
+
   return (
     <>
       <Navbar className="user_side_navBar">
         <Nav className="flex-column user_side_nav">
           {userLinks.map((link) => {
             if (hasAccess(link.access)) {
-              if (link.title === "Quotes") {
+              if (link.title === "Uniforms") {
+                if (deliveryBook?.hasUniform === true) {
+                  return (
+                    <LinkContainer key={link.title} to={link.link}>
+                      <Nav.Link className="user_side_nav_options">
+                        {link.title}
+                      </Nav.Link>
+                    </LinkContainer>
+                  );
+                }
+              } else if (link.title === "Quotes") {
                 return (
                   <LinkContainer key={link.title} to={link.link} isActive={() => isPathActive('/user/my-quotes')}>
                     <Nav.Link className="user_side_nav_options">

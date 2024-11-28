@@ -31,6 +31,11 @@ const getUniformCategories = async () => {
   return data;
 }
 
+const getdeliveryBooks = async (email) => {
+  const { data } = await axios.get("/api/deliveryBooks/deliveryBook/" + email);
+  return data;
+};
+
 const UserUniformsPage = () => {
   return <UserUniformsPageComponent
     getUniformCart={getUniformCart}
@@ -39,6 +44,7 @@ const UserUniformsPage = () => {
     getAllUniformCart={getAllUniformCart}
     getAllUniformRole={getAllUniformRole}
     updateUniformCart={updateUniformCartLimit}
+    getdeliveryBooks={getdeliveryBooks}
   />;
 };
 

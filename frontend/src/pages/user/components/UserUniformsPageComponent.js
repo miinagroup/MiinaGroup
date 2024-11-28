@@ -11,7 +11,7 @@ import { TbColorPicker } from "react-icons/tb";
 
 import styles from "./UserProfilePageComponent.module.css";
 
-const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUniformCategories, getAllUniformCart, getAllUniformRole, updateUniformCart }) => {
+const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUniformCategories, getAllUniformCart, getAllUniformRole, updateUniformCart, getdeliveryBooks }) => {
   const [uniformCart, setUniformCart] = useState([]);
   const [uniformCategories, setUniformCategories] = useState([])
   const [uniformData, setUniformData] = useState([])
@@ -19,6 +19,7 @@ const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUn
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const [allUniformCarts, setAllUniformCarts] = useState([])
   const [allUniformRoles, setAllUniformRoles] = useState([])
+  const [deliveryBook, setDeliveryBook] = useState()
   /* sort table */
   // #region
   const [totalItems, setTotalItems] = useState(0);
@@ -48,7 +49,8 @@ const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUn
       .then((data) => setAllUniformCarts(data))
     getAllUniformRole()
       .then((data) => setAllUniformRoles(data))
-
+    getdeliveryBooks(userInfo.email)
+      .then((data) => setDeliveryBook(data[0]))
       .catch((er) => console.log(er));
   }, []);
 
@@ -106,120 +108,127 @@ const UserUniformsPageComponent = ({ getUniformCart, getUniformRoleByRole, getUn
         <Col md={2}>
           <UserLinksComponent />
         </Col>
-        <Col md={10}>
-          <h1>MY UNIFORMS</h1>
-          {userInfo.isUniformManager === true ? (
+        {
+          deliveryBook?.hasUniform === true ? (
             <>
-              <LinkContainer to="/manage-uniformBrands" className="me-3">
-                <Button >Manage Uniform Brands</Button>
-              </LinkContainer>
-              {/* <LinkContainer to="/manage-uniforms">
+              <Col md={10}>
+                <h1>MY UNIFORMS</h1>
+                {userInfo?.isUniformManager === true ? (
+                  <>
+                    <LinkContainer to="/manage-uniformBrands" className="me-3">
+                      <Button >Manage Uniform Brands</Button>
+                    </LinkContainer>
+                    {/* <LinkContainer to="/manage-uniforms">
                 <Button >Manage Uniform Users</Button>
               </LinkContainer> */}
-              <LinkContainer to="/manage-uniform-users">
-                <Button >Manage Uniform Users</Button>
-              </LinkContainer>
-            </>
+                    <LinkContainer to="/manage-uniform-users">
+                      <Button >Manage Uniform Users</Button>
+                    </LinkContainer>
+                  </>
 
-          ) : ""}
-          <div className="row">
-            <div className="col-md-6">
-              <Pagination
-                total={totalItems}
-                itemsPerPage={ITEMS_PER_PAGE}
-                currentPage={currentPage}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-            </div>
-            <div className="col-md-6 d-flex flex-row-reverse mb-2">
-              <Search
-                onSearch={(value) => {
-                  setSearch(value);
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
-          </div>
-          <table className={`table table-striped ${styles.userUniformsPageComponentTable}`}>
-            <TableHeader
-              headers={headers}
-              onSorting={(field, order) => setSorting({ field, order })}
-            />
-            <tbody>
-              {uniformFilter?.map((uniform, idx) => (
-                <tr key={idx}>
-                  <td style={getUniformStyle(uniform)}>{idx + 1} </td>
-                  {/* <td
+                ) : ""}
+                <div className="row">
+                  <div className="col-md-6">
+                    <Pagination
+                      total={totalItems}
+                      itemsPerPage={ITEMS_PER_PAGE}
+                      currentPage={currentPage}
+                      onPageChange={(page) => setCurrentPage(page)}
+                    />
+                  </div>
+                  <div className="col-md-6 d-flex flex-row-reverse mb-2">
+                    <Search
+                      onSearch={(value) => {
+                        setSearch(value);
+                        setCurrentPage(1);
+                      }}
+                    />
+                  </div>
+                </div>
+                <table className={`table table-striped ${styles.userUniformsPageComponentTable}`}>
+                  <TableHeader
+                    headers={headers}
+                    onSorting={(field, order) => setSorting({ field, order })}
+                  />
+                  <tbody>
+                    {uniformFilter?.map((uniform, idx) => (
+                      <tr key={idx}>
+                        <td style={getUniformStyle(uniform)}>{idx + 1} </td>
+                        {/* <td
                     onClick={() => handleShow(uniformCart?._id)}
                     style={getUniformStyle(uniform)}
                   >
                     {uniform?.purchaseDate?.substring(0, 10)}
                   </td> */}
-                  <td
-                    onClick={() => handleShow(uniformCart?._id)}
-                    style={getUniformStyle(uniform)}
-                  >
+                        <td
+                          onClick={() => handleShow(uniformCart?._id)}
+                          style={getUniformStyle(uniform)}
+                        >
 
-                    {uniform.itemName === "JACKETS" ? (
-                      uniform.itemName + " & VESTS"
-                    ) : uniform.itemName === "PANTS" ? (
-                      uniform.itemName + " & SHORTS"
-                    ) : (
-                      uniform.itemName
-                    )}
-                  </td>
-                  <td
-                    onClick={() => handleShow(uniformCart?._id)}
-                    style={getUniformStyle(uniform)}
-                  >
-                    {uniform?.purchaseLimit}
-                  </td>
+                          {uniform.itemName === "JACKETS" ? (
+                            uniform.itemName + " & VESTS"
+                          ) : uniform.itemName === "PANTS" ? (
+                            uniform.itemName + " & SHORTS"
+                          ) : (
+                            uniform.itemName
+                          )}
+                        </td>
+                        <td
+                          onClick={() => handleShow(uniformCart?._id)}
+                          style={getUniformStyle(uniform)}
+                        >
+                          {uniform?.purchaseLimit}
+                        </td>
 
-                  <td
-                    onClick={() => handleShow(uniformCart?._id)}
-                    style={getUniformStyle(uniform)}
-                  >
-                    {uniform?.purchaseCount}
-                  </td>
-                  {(uniform?.purchaseLimit - uniform?.purchaseCount > 0) ? (
-                    <td
-                      onClick={() => handleShow(uniformCart?._id)}
-                      style={getUniformStyle(uniform)}
-                    >
-                      {uniform?.purchaseLimit - uniform?.purchaseCount}
-                    </td>
-                  ) : (
-                    <td
-                      onClick={() => handleShow(uniformCart?._id)}
-                      style={getUniformStyle(uniform)}
-                      style={{ color: "red" }}
-                    >
-                      {uniform?.purchaseLimit - uniform?.purchaseCount}
-                    </td>
-                  )}
-                  <td>
-                    <Link
-                      to={`/uniform-list/?categoryName=UNIFORM&subCategoryName=${uniform?.itemName}`}
-                      rel="noreferrer"
-                    >
-                      Resume Purchase <i className="bi bi-box-arrow-in-right"></i>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="row">
-            <div className="col-md-6">
-              <Pagination
-                total={totalItems}
-                itemsPerPage={ITEMS_PER_PAGE}
-                currentPage={currentPage}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-            </div>
-          </div>
-        </Col>
+                        <td
+                          onClick={() => handleShow(uniformCart?._id)}
+                          style={getUniformStyle(uniform)}
+                        >
+                          {uniform?.purchaseCount}
+                        </td>
+                        {(uniform?.purchaseLimit - uniform?.purchaseCount > 0) ? (
+                          <td
+                            onClick={() => handleShow(uniformCart?._id)}
+                            style={getUniformStyle(uniform)}
+                          >
+                            {uniform?.purchaseLimit - uniform?.purchaseCount}
+                          </td>
+                        ) : (
+                          <td
+                            onClick={() => handleShow(uniformCart?._id)}
+                            style={getUniformStyle(uniform)}
+                            style={{ color: "red" }}
+                          >
+                            {uniform?.purchaseLimit - uniform?.purchaseCount}
+                          </td>
+                        )}
+                        <td>
+                          <Link
+                            to={`/uniform-list/?categoryName=UNIFORM&subCategoryName=${uniform?.itemName}`}
+                            rel="noreferrer"
+                          >
+                            Resume Purchase <i className="bi bi-box-arrow-in-right"></i>
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="row">
+                  <div className="col-md-6">
+                    <Pagination
+                      total={totalItems}
+                      itemsPerPage={ITEMS_PER_PAGE}
+                      currentPage={currentPage}
+                      onPageChange={(page) => setCurrentPage(page)}
+                    />
+                  </div>
+                </div>
+              </Col>
+            </>
+          ) : ("")
+        }
+
       </Row>
 
       {/* <Modal show={show} onHide={handleClose} className="order_preview_items">
