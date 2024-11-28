@@ -186,7 +186,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       <NewFooter />
       <ScrollButton />
       {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}
-      {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => {setIsOpenModalCatalogue(true); setShowSidebar(false)}}  isVisible={isVisible} />}
+      {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => {setIsOpenModalCatalogue(true); setShowSidebar(false); setStopAnimation(true)}}  isVisible={isVisible} />}
       </>
     );
     }
