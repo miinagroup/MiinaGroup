@@ -47,8 +47,8 @@
     url("../../public/images/DeepBlueBackground.png");
   background-size: cover;
   background-repeat: no-repeat;
+  margin-bottom: -226px;
   height: 100vh;
-  margin-bottom: -270px;
 
 }
 
