@@ -4,7 +4,8 @@ a {
 }
 
 .notActive {
-    pointer-events: none;
+    pointer-events: none !important;
+    touch-action: none !important;
     color: gray;
     text-decoration: none;
     cursor: not-allowed;

@@ -514,8 +514,7 @@
 
 @media only screen and (min-width: 1600px) {
   .product-block {
-    width: 100%;
-        max-width: 210px;
+    width: 15.5%;
   }
 }
 
@@ -638,12 +637,6 @@
 }
 
 @media (max-width: 480px) {
-  .product-block {
-    /* max-width: 160px;
-    width: 100%;
-    margin: 0 auto; */
-  }
-
   .product-list-wrapper {
     display: flex;
     justify-content: center;
@@ -652,6 +645,8 @@
   .product-block {
     width: 100% !important;
     max-width: 150px !important;
+    display: flex;
+    justify-content: space-between;
   }
 
   .product-block-title {

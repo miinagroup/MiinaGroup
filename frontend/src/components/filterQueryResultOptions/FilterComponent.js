@@ -8,6 +8,8 @@ import "./Filter.css";
 import { getCategories } from "../../redux/actions/categoryActions";
 
 const FilterComponent = () => {
+  const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
+
   const ColoredLine = (/* { color } */) => (
     <hr
       style={{
@@ -33,34 +35,42 @@ const FilterComponent = () => {
     {
       label: "PPE",
       link: "PPE",
+      disabled: false
     },
     {
       label: "SITE SAFETY",
       link: "SITE-SAFETY",
+      disabled: false
     },
     {
       label: "POWER/AIR",
       link: "POWER-AIR",
+      disabled: false
     },
     {
       label: "HAND TOOLS",
       link: "HAND-TOOLS",
+      disabled: false
     },
     {
       label: "INDUSTRIAL",
       link: "INDUSTRIAL",
+      disabled: false
     },
     {
       label: "MECHANICAL",
       link: "MECHANICAL",
+      disabled: false
     },
     {
       label: "ELECTRICAL",
       link: "ELECTRICAL",
+      disabled: false
     },
     {
       label: "MINING",
       link: "MINING",
+      disabled: true
     },
   ];
 
@@ -111,10 +121,11 @@ const FilterComponent = () => {
           <div className="accordion" key={main + idx}>
             <div className="accordion-header">
               <a
-                className="btn"
+                className={` ${main.disabled && Object.keys(userInfo).length === 0 ? "notActive" : ""} btn`}
                 data-bs-toggle="collapse"
                 href={`#collapse${idx}`}
                 aria-expanded="true"
+                
               >
                 {main.label}
               </a>

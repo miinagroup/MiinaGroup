@@ -105,7 +105,9 @@ return Object.keys(subcategories).map(name => {
     return <div className={styles.category_grid__single}>
         <img className={styles.category_grid__img} loading="lazy" src={card.image} alt={card.label} />
     <div className={styles.category_grid__text_wrap}>
-        <div className={styles.category_grid__text}>
+        <div  className={`${styles.category_grid__text} ${
+    card.disabled && Object.keys(userInfo).length === 0 ? styles.notActive : ""
+  }`}>
             <a className={`${card.disabled && Object.keys(userInfo).length === 0 ? styles.notActive : ""} `} href={`/product-list?categoryName=${card.link}`}><h2 className={styles.category_grid__title}>{card.label}</h2></a>
             <div className={styles.category_grid__menu}>
                 <div className={styles.category_grid__menu_wrap}>
