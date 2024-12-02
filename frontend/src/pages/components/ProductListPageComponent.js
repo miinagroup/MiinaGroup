@@ -2,7 +2,7 @@ import { Row, Col, Container, ListGroup, Form, Button } from "react-bootstrap";
 import PaginationComponent from "../../components/PaginationComponent";
 import ProductForListComponent from "../../components/ProductForListComponent";
 
-import { useCallback, useEffect, useState, useMemo , useRef, Suspense} from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import FilterComponent from "../../components/filterQueryResultOptions/FilterComponent";
@@ -14,6 +14,7 @@ import { useTrackEvents } from "../trackEvents/useTrackEvents";
 import QuoteSubmitComponent from "../user/components/QuoteSubmitComponent";
 import UserQuoteSubmitPage from "../user/UserQuoteSubmitPage";
 import InfiniteScroll from "react-infinite-scroll-component";
+import "./SharedPages.css";
 
 // import ReactGA from "react-ga";
 
@@ -455,7 +456,7 @@ const ProductListPage = ({
             )}
           </Row>
           {!loading && productCategories.length < 2 && products.length === 0 ? (
-            <div className="w-50 m-2 p-3 border rounded">
+            <div className="w-50 m-2 p-3 border rounded product-list-page-wrapper">
               <UserQuoteSubmitPage fromProductList={true} />
             </div>
           ) : null}
@@ -502,7 +503,7 @@ const ProductListPage = ({
             </Row>
           </InfiniteScroll>
     
-          {searchedData.length === 0 && !loadingTwo && <div className="w-50 m-2 p-3 border rounded">
+          {searchedData.length === 0 && !loadingTwo && <div className="w-50 m-2 p-3 border rounded product-list-page-wrapper">
               <UserQuoteSubmitPage fromProductList={true} />
             </div>} 
             </>
