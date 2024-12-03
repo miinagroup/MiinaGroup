@@ -25,7 +25,7 @@ const ImageRotator = ({ images }) => {
         let secondIndex;
         do {
           secondIndex = Math.floor(Math.random() * images?.length);
-        } while (secondIndex === firstIndex); // Ensure different images
+        } while (secondIndex === firstIndex);
   
         return [images[firstIndex], images[secondIndex]];
       };
@@ -34,7 +34,7 @@ const ImageRotator = ({ images }) => {
   
       const intervalId = setInterval(() => {
         setCurrentImages(getRandomImages());
-      }, 2000);
+      }, 20000);
   
   
       return () => clearInterval(intervalId);

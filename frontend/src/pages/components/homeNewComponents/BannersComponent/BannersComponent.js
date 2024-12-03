@@ -49,7 +49,7 @@ const BannersComponent = ({ banners, mobileBanners }) => {
         pagination={{ clickable: true }}
         loop={true}
         autoplay={{
-          delay: 2500,
+          delay: 7000,
           disableOnInteraction: false,
         }}
       >

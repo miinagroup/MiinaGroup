@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import {isMobile} from 'react-device-detect';
 
 import InfiniteLooper from '../helpers/infiniteLoopComponent';
 
@@ -16,19 +17,19 @@ const NewMineralsComponent = () => {
 
   return <div className={styles.container} >
    
-          {sortedMineralPrice.length > 0 && <InfiniteLooper speed="25" direction="right">
+          {sortedMineralPrice.length > 0 && <InfiniteLooper speed={isMobile ? "70" : "50"} direction="right">
             <div 
-    className={`line ${styles.wrapper}`}>
-      {sortedMineralPrice?.map((mineral, index) => (
-        <div key={index} className="mineralBlock" style={{ padding: "5px 10px", background: "rgba(89, 183, 228, 0.25)", borderRadius: "5px"}}>
-          <div style={{ fontWeight: "bold" }}>
-            <span id="minerals_price">{mineral.name}</span>
-            <span id="minerals_price" className="minerals_price" style={{ marginLeft: "5px" }}>${mineral.latestPrice}</span>
-          </div>
-        </div>
-      ))}
-      </div>
-    </InfiniteLooper>}
+              className={`line ${styles.wrapper}`}>
+                {sortedMineralPrice?.map((mineral, index) => (
+                  <div key={index} className="mineralBlock" style={{ padding: "5px 10px", background: "rgba(89, 183, 228, 0.25)", borderRadius: "5px"}}>
+                    <div style={{ fontWeight: "bold" }}>
+                      <span id="minerals_price">{mineral.name}</span>
+                      <span id="minerals_price" className="minerals_price" style={{ marginLeft: "5px" }}>${mineral.latestPrice}</span>
+                    </div>
+                  </div>
+                ))}
+                </div>
+              </InfiniteLooper>}
 </div>
 }
 

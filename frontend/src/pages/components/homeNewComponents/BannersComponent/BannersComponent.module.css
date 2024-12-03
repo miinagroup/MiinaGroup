@@ -10,12 +10,12 @@
 .fullWidth { 
   border: 25px;
   flex: 1;
-  transition: flex 0.4s ease;
+  transition: flex 0.8s ease;
 }
 
 .halfWidth { 
   flex: 0.05;
-  transition: flex 0.4s ease;
+  transition: flex 0.8s ease;
 }
 
 .fullWidth img { 

@@ -1,10 +1,11 @@
+import {isMobile} from 'react-device-detect';
 import InfiniteLooper from '../helpers/infiniteLoopComponent';
 
 import styles from "./NewStockComponent.module.css";
 
 const NewStockComponent = ({top50Companies}) => {
     return  <div>
-                {top50Companies.length > 0 && <InfiniteLooper speed="155" direction="right">
+                {top50Companies.length > 0 && <InfiniteLooper speed={isMobile ? "355" : "255"} direction="right">
                   <div 
                     className={`line ${styles.wrapper}`}
                     >
