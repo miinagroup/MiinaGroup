@@ -54,6 +54,7 @@ const ProductsPageComponent = ({
     { name: "No#", field: "index", sortable: false },
     { name: "Product Name", field: "name", sortable: true },
     { name: "Product Attrs", field: "attrs", sortable: true },
+    { name: "P.Price", field: "purchasePrice", sortable: true },
     { name: "Price", field: "price", sortable: true },
     { name: "Margin", field: "margin", sortable: true },
     { name: "Stock", field: "count", sortable: true },
@@ -401,6 +402,13 @@ const ProductsPageComponent = ({
                 <td>
                   {item.stock.map((stockItem) => (
                     <div key={stockItem.ctlsku}>{stockItem.attrs}</div>
+                  ))}
+                </td>
+                <td>
+                  {item.stock.map((stockItem) => (
+                    <div key={stockItem.ctlsku}>
+                      ${stockItem.purchaseprice?.toFixed(2)}
+                    </div>
                   ))}
                 </td>
                 <td>
