@@ -9,7 +9,22 @@
   background-repeat: no-repeat;
   margin-bottom: -270px;
   padding-bottom: 15rem;
+}
 
+.splashpagewrapper {
+  height: 100vh;
+  background-image:
+    url("../../public/images/DeepBlueBackground.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.loginRegWrapper {
+  width: 50%;
 }
 
 .loginReg {
