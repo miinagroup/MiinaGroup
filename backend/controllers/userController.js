@@ -83,17 +83,19 @@ const registerUser = async (req, res, next) => {
         abn
       });
 
-      // verify email address if end with slrltd.com
+      // verify email address if end with registered companies
       if (
         (email.endsWith("@slrltd.com") ||
           email.endsWith("@silverlakeresources.com.au") ||
           email.endsWith("@red5limited.com.au") ||
+          email.endsWith("@red5limited.com.au") ||
+          email.endsWith("@vaultminerals.com") ||
+          email.endsWith("@westgold.com.au") ||
           email.endsWith("@ctlservices.com.au") ||
           email.endsWith("@ctlaus.com") ||
           email.endsWith("@focusminerals.com.au") ||
           email.endsWith("@evolutionmining.com")) &&
-        email !== "Mekins@slrltd.com" &&
-        email !== "enzo@ctlservices.com.au"
+        email !== "Mekins@slrltd.com"
       ) {
         const token = await new Token({
           userId: user._id,
@@ -228,6 +230,8 @@ const VERIFICATION_EMAIL_DOMAINS = new Set([
   "@ctlaus.com",
   "@focusminerals.com.au",
   "@evolutionmining.com",
+  "@westgold.com.au",
+  "@vaultminerals.com"
 ]);
 
 function requiresVerification(email) {

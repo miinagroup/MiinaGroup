@@ -301,13 +301,13 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
           {isShownQuoteBtn && <>
             <button className={`desktop ${styles.btnQuote}`} onClick={toggleModal} >GET A QUOTE</button>
             <img
-                id="rfq_button"
-                src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/red-search.png"
-                alt=""
-                className="red_search_img mobile-visibility"
-                style={{ cursor: "pointer" }}
-                onClick={toggleModal}
-              ></img>
+              id="rfq_button"
+              src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/red-search.png"
+              alt=""
+              className="red_search_img mobile-visibility"
+              style={{ cursor: "pointer" }}
+              onClick={toggleModal}
+            ></img>
           </>}
 
           <Modal
@@ -396,6 +396,15 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                             );
                           }
                         })}
+                        {userInfo.isUniformManager ? (
+                          <>
+                            <li>
+                              <a href="/user/my-uniforms" className="hd_c">
+                                Uniform
+                              </a>
+                            </li>
+                          </>
+                        ) : ("")}
                         <li>
                           <a href="/admin/products" className="hd_c">
                             Products
@@ -468,10 +477,10 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                         </li>
                         <li>
                           <a href={
-                    useIsAdmin === true
-                      ? "/admin/quotes?tab=processingQuotes&pageNum=1"
-                      : "/user/my-quotes?tab=completedQuotes&pageNum=1"
-                  } className="hd_c">
+                            useIsAdmin === true
+                              ? "/admin/quotes?tab=processingQuotes&pageNum=1"
+                              : "/user/my-quotes?tab=completedQuotes&pageNum=1"
+                          } className="hd_c">
                             Quotes
                           </a>
                         </li>

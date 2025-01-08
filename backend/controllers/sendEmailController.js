@@ -883,7 +883,7 @@ const newUserNoticeToJosh = async ({
                                       <b>
                                           Kind Regards,
                                           <br />
-                                          Enzo He
+                                          TechTeam
                                           <br />
                                           <br />
                                       </b>

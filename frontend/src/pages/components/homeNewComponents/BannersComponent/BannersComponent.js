@@ -19,7 +19,7 @@ const BannersComponent = ({ banners, mobileBanners }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % banners.detail.length;
+        const nextIndex = (prevIndex + 1) % banners?.detail.length;
         return nextIndex;
       });
     }, 10000);
@@ -31,18 +31,18 @@ const BannersComponent = ({ banners, mobileBanners }) => {
     setCurrentIndex(index)
   }
 
-    return <div className={styles.newPromotionBannersWrapper} id="promotion">
-        <div className={`${styles.newBannerBlock} ${styles.desktop}`}>
-              {banners?.detail.map((banner, index) => {
-                if(banner.redirectURL != "") {
-                  return <div key={`banner-${banner._id}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><a href={banner.redirectURL}><img src={banner.image} /></a></div>
-                }
-                return <div key={`banner-${banner._id}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><img src={banner.image} /></div>
-              }
-            )}
-      </div>
+  return <div className={styles.newPromotionBannersWrapper} id="promotion">
+    <div className={`${styles.newBannerBlock} ${styles.desktop}`}>
+      {banners?.detail.map((banner, index) => {
+        if (banner.redirectURL != "") {
+          return <div key={`banner-${banner._id}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><a href={banner.redirectURL}><img src={banner.image} /></a></div>
+        }
+        return <div key={`banner-${banner._id}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><img src={banner.image} /></div>
+      }
+      )}
+    </div>
 
-      <div className={`${styles.newBannerBlock} ${styles.mobile}`}>
+    <div className={`${styles.newBannerBlock} ${styles.mobile}`}>
       <Swiper
         modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
         slidesPerView={1}
@@ -53,16 +53,16 @@ const BannersComponent = ({ banners, mobileBanners }) => {
           disableOnInteraction: false,
         }}
       >
-            {mobileBanners?.detail.map((banner, index) => {
-                if(banner.redirectURL != "") {
-                  return <SwiperSlide key={index}><div key={`banner-${index}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><a href={banner.redirectURL}><img src={banner.image} /></a></div></SwiperSlide>
-                }
-                return <SwiperSlide key={index}><div key={`banner-${index}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><img src={banner.image} /></div></SwiperSlide>
-              }
-            )}
-    </Swiper>
-      </div>
+        {mobileBanners?.detail.map((banner, index) => {
+          if (banner.redirectURL != "") {
+            return <SwiperSlide key={index}><div key={`banner-${index}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><a href={banner.redirectURL}><img src={banner.image} /></a></div></SwiperSlide>
+          }
+          return <SwiperSlide key={index}><div key={`banner-${index}`} onClick={() => changeIndex(index)} className={`${styles.banner} ${currentIndex === index ? styles.fullWidth : styles.halfWidth}`} ref={(el) => setRef(el, index)}><img src={banner.image} /></div></SwiperSlide>
+        }
+        )}
+      </Swiper>
     </div>
+  </div>
 }
 
 export default BannersComponent;

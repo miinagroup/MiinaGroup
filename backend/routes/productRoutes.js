@@ -29,7 +29,8 @@ const {
   getProductsVisitor,
   searchProductsForVisitor,
   adminBulkUpdateClientSkus,
-  lazyLoadingData
+  adminUpdateTags,
+  adminFindDuplicateCTLSKU
 } = require("../controllers/productController");
 const {
   getClientSkuNamesList
@@ -80,5 +81,7 @@ router.post("/admin/hobson", adminCreateHobsonProduct);
 router.put("/admin/hobsonUpdate", adminUpdateHobsonProduct);
 router.get("/admin/checkStockCount", checkStockCount);
 router.get("/admin/productsCheck", productsCheck);
+router.put("/admin/updateTags", adminUpdateTags);
+router.get("/admin/findDuplicateSKU", adminFindDuplicateCTLSKU)
 
 module.exports = router;

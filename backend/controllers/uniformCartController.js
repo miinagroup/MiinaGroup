@@ -298,22 +298,24 @@ const adminCreateBulkUniformCart = async (req, res, next) => {
             //console.log("Processing role with userId:", role.userId, role.stock);
             bulk.find({
                 userId: role.userId
-            }).updateOne(
-                {
-                    $set: {
-                        userId: role.userId,
-                        userName: role.userName,
-                        userCompany: role.userCompany,
-                        userRole: role.userRole,
-                        stock: role.stock
+            }).upsert()
+                .updateOne(
+                    {
+                        $set: {
+                            userId: role.userId,
+                            userName: role.userName,
+                            userCompany: role.userCompany,
+                            userRole: role.userRole,
+                            stock: role.stock
+                        }
                     }
-                },
-                { upsert: true }
-            );
+                    // { upsert: true }
+                );
         })
 
         // Execute bulk operation if there are pending operations
-        if (bulk.s && bulk.s.currentBatch) {
+        // if (bulk.s && bulk.s.currentBatch) {
+        if (bulk.length > 0) {
             const result = await bulk.execute();
             console.log("Bulk operation success:", result);
             return res.status(200).json({ message: "Bulk operation succeeded.", result });

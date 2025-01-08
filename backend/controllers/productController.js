@@ -606,6 +606,29 @@ const adminGetProducts = async (req, res, next) => {
   }
 };
 
+const adminFindDuplicateCTLSKU = async (req, res, next) => {
+  try {
+    const duplicates = await Product.aggregate([
+      {
+        $group: {
+          _id: "$stock.ctlsku", // Group by the field to check
+          count: { $sum: 1 }, // Count occurrences
+        },
+      },
+      {
+        $match: {
+          count: { $gt: 1 }, // Filter only duplicates
+        },
+      },
+    ]);
+
+    res.json(duplicates);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+}
+
 const adminGetCTLSKU = async (req, res, next) => {
   try {
     const products = await Product.find({})
@@ -862,7 +885,7 @@ const scheduledHobsonStockUpdate = async (req, res, next) => {
 };
 
 //Auto Update Hobson Stock Every Day 12am
-cron.schedule("0 16 * * *", scheduledHobsonStockUpdate, {
+cron.schedule("0 0 * * *", scheduledHobsonStockUpdate, {
   scheduled: true,
   timezone: "UTC",
 });
@@ -937,7 +960,7 @@ const scheduledHobsonPriceUpdate = async (res, req, next) => {
 };
 
 //Auto Update Hobson Pricing Every Monday 12am
-cron.schedule("0 16 * * 0", scheduledHobsonPriceUpdate, {
+cron.schedule("0 0 * * 1", scheduledHobsonPriceUpdate, {
   scheduled: true,
   timezone: "UTC",
 });
@@ -1484,7 +1507,7 @@ const adminUpdateCategory = async (req, res, next) => {
   try {
     const product = await Product.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: { category: req.body.selectedCategory }, },
+      { $set: { category: req.body.selectedCategory } },
       { new: true }
     );
 
@@ -2868,6 +2891,7 @@ module.exports = {
   getProductsVisitor,
   searchProductsForVisitor,
   adminBulkUpdateClientSkus,
-  adminUpdateTags
+  adminUpdateTags,
+  adminFindDuplicateCTLSKU
 };
 

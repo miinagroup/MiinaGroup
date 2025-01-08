@@ -32,6 +32,8 @@ const AdminCheckPage = () => {
   const [categoryChecked, setCategoryChecked] = useState(false);
   const [userFormatted, setUserFormatted] = useState(false);
   const [ctlskuChecked, setCtlskuChecked] = useState(false)
+  const [duplicateCTLSKU, setDuplicateCTLSKU] = useState([])
+  const [productDuplicateChecked, setProductDuplicateChecked] = useState(false);
 
 
   //Hobson API integration
@@ -62,6 +64,101 @@ const AdminCheckPage = () => {
   const [completeFilteredCategories, setCompleteFilteredCategories] = useState([])
 
 
+  const handleUserCart = async () => {
+    try {
+      const roleResponse = await axios.get("/api/uniformRoles/");
+      console.log(roleResponse.data);
+      const response = await axios.get("/api/users/");
+      const allUsers = response
+      let userData = []
+      let roleData = []
+      let flag = 0
+      console.log(allUsers.data);
+      allUsers.data?.map((user) => {
+        console.log(user.role, user.name);
+
+        flag = 0
+        //userData = []
+        roleData = []
+        if (roleResponse.data.map((role) => {
+          if (role.role.toUpperCase() === user.role.toUpperCase()) {
+            if (role.stock) {
+              role.stock?.map((sRole) => {
+                roleData.push({
+                  "_id": sRole._id,
+                  "itemName": sRole.itemName,
+                  "cartCount": 0,
+                  "purchaseCount": 0,
+                  "purchaseLimit": sRole.itemLimit
+                })
+              })
+            }
+            userData.push({
+              "userId": user._id,
+              "userName": user.name + " " + user.lastName,
+              "userCompany": user.company,
+              "userRole": user.role,
+              "stock": roleData
+            })
+            flag++
+          }
+        }))
+          if (flag === 0) {
+            roleData = [{
+              "_id": "6620a0445e581b7b980b107a",
+              "itemName": "SHIRTS",
+              "cartCount": 0,
+              "purchaseCount": 0,
+              "purchaseLimit": 5
+            },
+            {
+              "_id": "6620a0585e581b7b980b1083",
+              "itemName": "JACKETS",
+              "cartCount": 0,
+              "purchaseCount": 0,
+              "purchaseLimit": 5
+            },
+            {
+              "_id": "6620a0685e581b7b980b108c",
+              "itemName": "PANTS",
+              "cartCount": 0,
+              "purchaseCount": 0,
+              "purchaseLimit": 5
+            },
+            {
+              "_id": "6620a0805e581b7b980b1095",
+              "itemName": "OVERALLS",
+              "cartCount": 0,
+              "purchaseCount": 0,
+              "purchaseLimit": 5
+            },
+            {
+              "_id": "6620a0925e581b7b980b109e",
+              "itemName": "BOOTS",
+              "cartCount": 0,
+              "purchaseCount": 0,
+              "purchaseLimit": 5
+            }]
+            userData.push({
+              "userId": user._id,
+              "userName": user.name + " " + user.lastName,
+              "userCompany": user.company,
+              "userRole": user.role,
+              "stock": roleData
+            })
+          }
+      })
+
+      console.log("userData", userData);
+      const updateResponse = await axios.post("/api/uniformCarts/admin/bulk", { userData });
+      console.log(updateResponse);
+
+
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+    console.log("finished");
+  }
   /*************Handle Image Path Change********* */
   const handleImagePathChange = async () => {
 
@@ -104,6 +201,84 @@ const AdminCheckPage = () => {
       console.error("Error fetching data", error);
     }
     console.log("finished");
+  }
+
+  const handleSubcategoryNumbers = async () => {
+    try {
+      console.log("Started");
+      const response = await axios.get("/api/products/admin");
+      const allProducts = response.data
+      let flag = 0
+      let catProducts = []
+      allProducts?.map((product) => {
+        if (product.category !== null || product.category !== "") {
+          if (product.category.split("/").length > 6) {
+            console.log(product._id, product.category);
+            catProducts.push(product)
+          }
+        }
+      })
+      console.log(catProducts.length);
+
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+    console.log("finished");
+  }
+
+  const handleTagsCreate = async () => {
+    console.log("creating tags");
+
+    try {
+      const response = await axios.get("/api/products/admin");
+      const allProducts = response.data
+      let flag = 0
+      let categoryKeysArray = []
+      let nameKeysArray = []
+      let supplierKeysArray = []
+      let completeArray = [{}]
+
+      //console.log(allProducts);
+      allProducts?.map((product) => {
+        const id = product._id
+        if (product.category !== "" || product.category !== null) {
+          categoryKeysArray = product.category?.split(/[\/\-_]/)
+          nameKeysArray = product.name?.split(/[\/\-_ ]/)
+          supplierKeysArray = product.supplier?.split(/[\/\-_ ]/)
+          const combinedArray = categoryKeysArray.concat(nameKeysArray, supplierKeysArray)
+          //const cleanedKeywordsSymbols = combinedArray.filter(word => /^[a-zA-Z0-9]+$/.test(word));
+          const tagsRaw = combinedArray.toString().replaceAll(",", " ")
+          const tags = tagsRaw.replace(/\s+/g, ' ')
+          completeArray.push({ "id": id, "tags": tags })
+          //console.log(tags);
+        }
+      })
+      try {
+        const iresponse = axios.put(
+          `/api/products/admin/updateTags`,
+          { completeArray: completeArray }
+        );
+        console.log(iresponse);
+      } catch (err) {
+        console.error("Error fetching data", err);
+      }
+
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+    console.log("finished");
+  }
+
+  const handleDuplicateCTLSKU = async () => {
+    setIsChecking(true);
+    try {
+      const response = await axios.get("/api/products/admin/findDuplicateSKU")
+      setDuplicateCTLSKU(response.data)
+      setProductDuplicateChecked(true)
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+    setIsChecking(false);
   }
 
   const handleCTLSKURange = async () => {
@@ -1045,6 +1220,7 @@ const AdminCheckPage = () => {
     setTimeout(() => { setBtnNewHobsonProducts("Process Products") }, 1000);
   }
 
+
   return (
     <>
       <Row className="m-5">
@@ -1061,8 +1237,15 @@ const AdminCheckPage = () => {
               {/* ********** check product missing count ********** */}
               <div>
                 <Button
-                  onClick={handleImagePathChange}>Change Image Path
+                  onClick={handleTagsCreate}>Tags
                 </Button>
+
+                {/*<Button
+                  onClick={handleSubcategoryNumbers}>Subcategories
+                </Button> */}
+                {/* <Button
+                  onClick={handleOrdersPurchasePrice}>Order Purchase Price
+                </Button> */}
               </div>
               {/* <div>
                 <Button
@@ -1074,6 +1257,11 @@ const AdminCheckPage = () => {
                 <h4>Missing CTLSKUs</h4>
                 <button onClick={handleCTLSKURange} disabled={isChecking}>
                   {isChecking ? "Checking..." : "Check Missing CTLSKUs"}
+                </button>
+
+                <h4>Duplicate CTLSKUs</h4>
+                <button onClick={handleDuplicateCTLSKU} disabled={isChecking}>
+                  {isChecking ? "Checking..." : "Check Duplicate CTLSKUs"}
                 </button>
 
                 <h4>Check Product Missing Count</h4>
@@ -1096,6 +1284,11 @@ const AdminCheckPage = () => {
                   {isChecking ? "Formatting..." : "Format Users"}
                 </button>
 
+                <h4>User Cart</h4>
+                <button onClick={handleUserCart} disabled={isChecking}>
+                  {isChecking ? "Formatting..." : "User Cart"}
+                </button>
+
                 <h4>Fetch GPS</h4>
                 <button onClick={getGPSInfo} disabled={isChecking}>
                   {isChecking ? "Fetching..." : "Get GPS Info"}
@@ -1106,6 +1299,21 @@ const AdminCheckPage = () => {
                   {isChecking ? "Fetching..." : "Fetch Quotes"}
                 </button>
                 <br />----------------------------------------------------------------------<br />
+
+                {duplicateCTLSKU.length === 0 ? null : (
+                  <div className="mt-3" hidden={productDuplicateChecked === false}>
+                    <p className="fw-bold">
+                      Check the following: {duplicateCTLSKU?.length}{" "}
+
+                    </p>
+                    {duplicateCTLSKU?.map((item, index) => (
+                      <p key={index}>
+                        <span className="me-2">{index + 1}.</span>
+                        {item._id[0]}
+                      </p>
+                    ))}
+                  </div>
+                )}
 
                 {productsMissingStockFields.length === 0 ? null : (
                   <div className="mt-3" hidden={productChecked === false}>
