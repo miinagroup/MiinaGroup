@@ -27,6 +27,7 @@ import NewMineralsComponent from "../pages/components/homeNewComponents/NewMiner
 import AcknowledgementOfCountryComponent from "../pages/components/AcknowledgementOfCountryComponent.js";
 
 import { getMineralPrices } from '../redux/actions/mineralActions.js';
+import Header from "./Header/Header.js";
 
 const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   const [isAuth, setIsAuth] = useState(undefined);
@@ -160,16 +161,17 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     return (
       <>
       <div 
-      style={{paddingBottom: "226px"}}
+      // style={{paddingBottom: "226px"}}
       >
-        <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} stopAnimation={stopAnimation} setStopAnimation={setStopAnimation} /> 
-        {location.pathname !== "/" && <NewMineralsComponent />}
+        {/* <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} stopAnimation={stopAnimation} setStopAnimation={setStopAnimation} /> 
+        {location.pathname !== "/" && <NewMineralsComponent />} */}
+        <Header />
         <Outlet />
       </div>
-        <NewFooter />
-        <ScrollButton />
-        {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}
-        {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => onClickBtn()} isVisible={isVisible} />}
+        {/* <NewFooter /> */}
+        {/* <ScrollButton /> */}
+        {/* {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>} */}
+        {/* {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => onClickBtn()} isVisible={isVisible} />} */}
       </>
     );
   } else {
@@ -178,7 +180,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     } else {
     return (
       <>
-      <div style={{paddingBottom: "226px"}}>
+      {/* <div style={{paddingBottom: "226px"}}>
         <NewHeaderComponentLoggedIn setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} /> 
         {location.pathname !== "/" && <NewMineralsComponent />}
           <Outlet />
@@ -186,7 +188,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       <NewFooter />
       <ScrollButton />
       {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}
-      {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => {setIsOpenModalCatalogue(true); setShowSidebar(false); setStopAnimation(true)}}  isVisible={isVisible} />}
+      {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => {setIsOpenModalCatalogue(true); setShowSidebar(false); setStopAnimation(true)}}  isVisible={isVisible} />} */}
       </>
     );
     }

@@ -6,7 +6,6 @@ import RegisterPageComponent from "./components/RegisterPageComponent";
 import { Container, Card, Tabs, Tab } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
-//这是个login的东西，但是同时用在register里面，如果register了，就直接login了
 
 const LoginRegisterPage = ({ modalType }) => {
   const [selectedTab, setSelectedTab] = useState(modalType);

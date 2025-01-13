@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 
+//fonts
+import "./fonts/GloriaHallelujahRegular.ttf";
+import "./fonts/HelveticaNeueRoman.otf";
+
 
 // publicly available pages:
 import HomePage from "./pages/HomePage";
@@ -99,6 +103,7 @@ import AdminPurchaseOrdersComponentCopy from "./pages/admin/components/AdminPurc
 
 //mobile
 import HomePageForVisitorMobile from "./pages/mobile/HomePageForVisitorMobile.js";
+
 
 function App() {
   return (

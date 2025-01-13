@@ -1,0 +1,22 @@
+.footer {
+    background-color: #DBA162;
+    font-family: "GloriaHallelujah";
+    font-size: 20px;
+    position: relative;
+    padding: 25px 0px 25px 400px;
+
+}
+
+.logoPlant {
+    width: 100%;
+    max-width: 415px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.footerLinks {
+     display: flex;
+     gap: 70px;
+}
+

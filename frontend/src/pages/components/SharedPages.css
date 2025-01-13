@@ -163,6 +163,23 @@
   font-size: 17px;
 }
 
+.loginBtn {
+   background-color: #521712;
+   border: none;
+}
+
+.reminderBtn {
+   border: none;
+   color: #483F55;
+   background-color: rgba(72, 63, 85, 0.2);
+   padding: 5px 10px;
+}
+
+.reminderBtn:hover {
+  background-color: #483F55;
+  color: white;
+}
+
 @media (max-width: 1440px) {
   .btnLogin button {
     font-size: 14px;

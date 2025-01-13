@@ -1,0 +1,99 @@
+.team {
+    background-color: rgba(219, 161, 98, 0.25);
+    padding: 50px 70px 100px 70px;
+    font-family: "GloriaHallelujah";
+}
+
+.title {
+    color: #521712;
+    margin-bottom: 55px;
+    padding-top: 50px;
+}
+
+.teamInfo {
+     display: flex;
+     justify-content: center;
+     gap: 125px;
+}
+
+.card {
+    background-color: rgba(219, 161, 98, 0.2);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 815px;
+    padding: 25px 25px;
+    position: relative;
+    overflow: hidden;
+    height: fit-content;
+}
+
+.emblem {
+    position: absolute;
+    top: 0;
+    right: -125px;
+    width: 250px;
+    opacity: 50%;
+}
+
+.name {
+     font-size: 24px;
+     color: #521712;
+}
+
+.role {
+     font-family: "HelveticaNeue";
+     font-size: 20px;
+     margin-bottom: 10px;
+}
+
+.info {
+    display: flex;
+    gap: 50px;
+    font-family: "HelveticaNeue";
+
+}
+
+.infoWrapper {
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+}
+
+.photo{
+    width: 100%;
+    max-width: 250px;
+}
+
+.biographyItems {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: "HelveticaNeue";
+}
+
+.biographyItem {
+    font-size: 16px;
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    max-width: 325px;
+}
+
+.logoTag {
+    width: 25px;
+    height: 25px;
+}
+
+.icon {
+    width: 30px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.contactEmail {
+     padding-bottom: 10px;
+}
+
+.card:nth-of-type(2) {
+    margin-top: 150px;
+}

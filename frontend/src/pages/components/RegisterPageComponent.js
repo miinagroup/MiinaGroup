@@ -9,7 +9,6 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
 const RegisterPageComponent = ({
@@ -19,30 +18,13 @@ const RegisterPageComponent = ({
   getAllUniformRole,
   getAlldeliveryBooks
 }) => {
-  //去react bootstrap里面找，form => validation 抄一个
   const [validated, setValidated] = useState(false);
   const [registerUserResponseState, setRegisterUserResponseState] = useState({
-    /* 这个是spinner，如果是loading：false了，那就不显示spinner */
     success: "",
     error: "",
     loading: false,
     userCreated: null
   });
-
-  /*   const [passwordsMatchState, setPasswordsMatchState] = useState(true);
-
-  //const一个function去检测，确认密码是否匹配原始密码
-  const onChange = () => {
-    const password = document.querySelector("input[name=password]");
-    const confirmPassword = document.querySelector(
-      "input[name=confirmPassword]"
-    );
-    if (confirmPassword.value === password.value) {
-      setPasswordsMatchState(true);
-    } else {
-      setPasswordsMatchState(false);
-    }
-  }; */
 
   // confirm password validation
   const [password, setPassword] = useState("");
@@ -327,7 +309,7 @@ const RegisterPageComponent = ({
         {registerUserResponseState.userCreated === null || registerUserResponseState.error === "user exists" ?
 
           <Col md={6} className="w-100">
-            <h2>Register</h2>
+            {/* <h2>Register</h2> */}
             <Form
               noValidate
               validated={validated}
@@ -336,6 +318,7 @@ const RegisterPageComponent = ({
             >
               <Row className="mb-3">
                 <Form.Group as={Col} md="6" controlId="validationCustom01">
+                <Form.Label>First name</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -349,6 +332,7 @@ const RegisterPageComponent = ({
                 </Form.Group>
 
                 <Form.Group as={Col} md="6" controlId="formBasicLastName">
+                <Form.Label>Last name</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -362,6 +346,8 @@ const RegisterPageComponent = ({
               </Row>
               <Row>
                 <Form.Group as={Col} md="6" controlId="formBasicEmail">
+                <Form.Label>Email</Form.Label>
+
                   <InputGroup hasValidation>
                     {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
                     <Form.Control
@@ -477,6 +463,7 @@ const RegisterPageComponent = ({
               </Row>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
                 <Form.Control
                   name="password"
                   required
@@ -494,6 +481,7 @@ const RegisterPageComponent = ({
                 </Form.Text>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPasswordRepeat">
+              <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   name="confirmPassword"
                   required
@@ -523,6 +511,7 @@ const RegisterPageComponent = ({
                 <>
                   <Row className="mb-3" >
                     <Form.Group as={Col} md="6" controlId="formBasicCompany">
+                    <Form.Label>Company</Form.Label>
                       <InputGroup hasValidation>
                         <Form.Control
                           type="text"
@@ -540,14 +529,7 @@ const RegisterPageComponent = ({
                     </Form.Group>
 
                     <Form.Group as={Col} md="6" controlId="formBasicLocation">
-                      {/* <Form.Control
-                        type="text"
-                        name="location"
-                        placeholder="Site"
-                        aria-describedby="inputGroupPrepend"
-                        required
-                      />  */}
-
+                    <Form.Label>Location</Form.Label>
                       <Form.Select
                         required
                         name="location"
@@ -562,12 +544,10 @@ const RegisterPageComponent = ({
                             </option>))
                         }
                       </Form.Select>
-                      {/* <Form.Control.Feedback type="invalid">
-                        Please enter site location.{" "}
-                      </Form.Control.Feedback> */}
                     </Form.Group>
 
                     <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
+                    <Form.Label>Role</Form.Label>
                       <Form.Select
                         required
                         name="role"
@@ -608,6 +588,7 @@ const RegisterPageComponent = ({
                 <>
                   <Row className="mb-3" >
                     <Form.Group as={Col} md="6" controlId="formBasicCompany">
+                      
                       <InputGroup hasValidation>
                         <Form.Control
                           type="text"
@@ -646,6 +627,8 @@ const RegisterPageComponent = ({
               ) : ("")}
 
               {showAbn ? (
+                <>
+                 <Form.Label>ABN</Form.Label>
                 <Form.Group as={Col} md="6" controlId="formBasicAbn">
                   <MaskedInput
                     mask={abnMask}
@@ -653,14 +636,12 @@ const RegisterPageComponent = ({
                     guide={false}
                     value={abnNum}
                     onChange={handleAbn}
-                    //  id="abn"
                     render={(ref, props) => <Form.Control
                       required
                       minLength={14}
                       maxLength={14}
                       type="text"
                       name="abn"
-                      //  pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
                       ref={ref}
                       {...props}
                     />}
@@ -669,29 +650,12 @@ const RegisterPageComponent = ({
                     Please enter ABN.
                   </Form.Control.Feedback>
                 </Form.Group>
-
+                </>
               ) : ("")}
 
-              {/* <Form.Group className="mb-3">
-              <Form.Check
-                required
-                label="Agree to terms and conditions"
-                name="tc"
-                feedback="You must agree before submitting."
-                feedbackType="invalid"
-              />
-            </Form.Group>
-
-            <Row className="pb-2">
-              <Col>
-                {" "}
-                Do you have an account already?
-                <Link to={"/login"}> Login </Link>
-              </Col>
-            </Row> */}
-
+    
               <br />
-              <Button type="submit" className="mb-3">
+              <Button type="submit" className="mb-3 loginBtn ">
                 {registerUserResponseState &&
                   registerUserResponseState.loading === true ? (
                   <Spinner
@@ -706,7 +670,6 @@ const RegisterPageComponent = ({
                 )}
                 Submit
               </Button>
-              {/* 在user controller里面handle了user exists 以及 user created */}
               <Alert
                 show={
                   registerUserResponseState &&
@@ -717,18 +680,7 @@ const RegisterPageComponent = ({
                 User with that email already exists!
               </Alert>
 
-              {/* <Alert
-              show={
-                registerUserResponseState &&
-                registerUserResponseState.success === "User created"
-              }
-              variant="info"
-            // hidden={emailSent === false}
-            >
-              A verification email has been sent to your registered email
-              address. Please make sure to check your junk/spam folder as well.
-              Be aware that it might take a few minutes for the email to arrive.
-            </Alert> */}
+             
             </Form>
           </Col>
 
@@ -740,7 +692,7 @@ const RegisterPageComponent = ({
               registerUserResponseState.success === "User created"
             }
             variant="info"
-          // hidden={emailSent === false}
+  
           >
             A verification email has been sent to your registered email
             address. Please make sure to check your junk/spam folder as well.

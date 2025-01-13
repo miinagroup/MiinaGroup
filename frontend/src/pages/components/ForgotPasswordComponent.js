@@ -60,9 +60,10 @@ function ForgotPasswordComponent() {
 
   return (
     <>
-      <div className="secondary">
+      <div>
         <button
-          className="action remind border-0"
+          // className="action remind border-0"
+          className="reminderBtn"
           id="customer-popup-forgot"
           onClick={handleShow}
         >

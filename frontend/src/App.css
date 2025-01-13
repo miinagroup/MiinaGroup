@@ -1,3 +1,23 @@
+@font-face {
+  font-family: "GloriaHallelujah";
+  src: local("GloriaHallelujah"), url("./fonts/GloriaHallelujahRegular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "HelveticaNeue";
+  src: local("HelveticaNeue"),  url("./fonts/HelveticaNeueRoman.otf") format("truetype");
+}
+
+.swiper-button-prev, .swiper-button-next {
+   color: #483F55 !important;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: #DBA162 !important;
+}
+
+
 a {
   text-decoration: none;
 }
@@ -72,9 +92,12 @@ a {
 /* *************    Login/Register     ***************** */
  .LoginRegPage {
   z-index: 1000;
-  margin-top: -3.5%;
-  margin-bottom: 1.2%;
+  margin-top: -5.5%;
+  /* margin-bottom: 1.2%; */
+  padding: 0px 0px !important;
+  
 }
+
 .LoginReg{
   border-width: 0;
 }
@@ -99,6 +122,7 @@ a {
 .card{
   margin-top:50px;
   display:flex;
+  background-color: #999A47;
   
 }
 
@@ -140,4 +164,10 @@ li:hover {
 /* ********** Print Layout ********** */
 @media print {
   @page { size: landscape; }
+}
+
+.nav-link {
+   background-color: #999A47 !important;
+   border-bottom: 1px solid white !important;
+   color: #483F55 !important;
 }

@@ -220,7 +220,7 @@ const LoginPageComponent = ({
                 />
               </Form.Group>
 
-              <Button className="mb-3" variant="primary" type="submit">
+              <Button className="mb-3 loginBtn" type="submit">
                 {loginUserResponseState &&
                   loginUserResponseState.loading === true ? (
                   <Spinner

@@ -19,6 +19,12 @@ import NewRequestFormComponent from "./components/NewRequestComponent/newRequest
 import AcknowledgementOfCountryComponent from "./components/AcknowledgementOfCountryComponent.js"; 
 
 import styles from "./homeStyles.module.css";
+import Header from "../components/Header/Header.js";
+import MainSection from "../components/MainSection/MainSection.js";
+import AboutSection from "../components/AboutSection/AboutSection.js";
+import TeamSection from "../components/TeamSection/TeamSection.js";
+import Footer from "../components/Footer/Footer.js";
+import ContactSection from "../components/ContactSection/ContactSection.js";
 
 const HomePageForVisitorNew = () => {
     const [perthTime, setPerthTime] = useState("");
@@ -85,7 +91,13 @@ const HomePageForVisitorNew = () => {
       const top50Companies = sortedstockPrice.slice(10, 60);
       
 return (<>
-    <NewMainComponent />
+{/* <Header /> */}
+<MainSection />
+<AboutSection />
+<TeamSection />
+<ContactSection />
+<Footer />
+    {/* <NewMainComponent />
     <div className={styles.promotionNew}>
       <NewMineralsComponent sortedMineralPrice={sortedMineralPrice} />
       <BannersComponent banners={banners} mobileBanners={mobileBanners} />
@@ -95,7 +107,7 @@ return (<>
     <AboutNewComponent />
     <div className={styles.image_cont} id="content"></div>
     <NewRequestFormComponent />
-    <AcknowledgementOfCountryComponent />
+    <AcknowledgementOfCountryComponent /> */}
   </>)
 }
 
