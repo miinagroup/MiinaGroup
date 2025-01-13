@@ -12,7 +12,6 @@ const {
   updateUserProfile,
   updateUserPassword,
   getUserProfile,
-  wantWeather,
   getStoreUser,
   getUsersList,
   getUser,
@@ -37,7 +36,6 @@ router.put("/resetPassword", resetPassword);
 router.use(verifyIsLoggedIn);
 router.put("/profile", updateUserProfile);
 router.put("/password", updateUserPassword);
-router.put("/wantWeather", wantWeather);
 router.get("/profile/:id", getUserProfile);
 router.get("/store/:email", getStoreUser);
 router.get("/list/:company", getUsersList)

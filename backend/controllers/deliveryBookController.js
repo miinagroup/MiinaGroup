@@ -101,7 +101,7 @@ const adminUpdateDeliveryBook = async (req, res, next) => {
 
     const deliveryBook = await DeliveryBook.findById(req.params.id).orFail();
 
-    if (isAdmin && !isSuperAdmin) {
+    if (!isAdmin) {
       const editHistoryEntry = {
         operator: email,
         editedAt: new Date(),

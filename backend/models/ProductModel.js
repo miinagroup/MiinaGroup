@@ -8,10 +8,10 @@ const pdfSchema = mongoose.Schema({
   path: { type: String, required: false },
 });
 
-const clientSkuSchema = new mongoose.Schema({
-  name: { type: String, required: false, unique: true },
-  number: { type: String, required: false }
-});
+// const clientSkuSchema = new mongoose.Schema({
+//   name: { type: String, required: false, unique: true },
+//   number: { type: String, required: false }
+// });
 
 const productSchema = mongoose.Schema(
   {
@@ -66,8 +66,8 @@ const productSchema = mongoose.Schema(
           type: String,
           required: false,
         },
-        slrsku: { type: String, required: false },
-        clientsSku: { type: [clientSkuSchema], required: false }
+        // slrsku: { type: String, required: false },
+        // clientsSku: { type: [clientSkuSchema], required: false }
       },
     ],
     availability: [{
@@ -166,7 +166,7 @@ productSchema.index(
   {
     name: "text",
     // description: "text",
-    "stock.slrsku": "text",
+    // "stock.slrsku": "text",
     "stock.ctlsku": "text",
     "stock.suppliersku": "text",
   },
@@ -176,7 +176,7 @@ productSchema.index(
     weights: {
       name: 5,
       // description: 2,
-      "stock.slrsku": 1,
+      // "stock.slrsku": 1,
       "stock.ctlsku": 1,
       "stock.suppliersku": 1,
     },

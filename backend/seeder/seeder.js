@@ -6,7 +6,7 @@ const categoryData = require("./categories")
 const productData = require("./products");
 const userData = require("./users")
 const orderData = require("./orders")
-const MineralSharePricingData = require("./stocks")
+// const MineralSharePricingData = require("./stocks")
 const PromotionData = require("./promotion")
 const QuoteData = require("./quotes")
 
@@ -17,7 +17,7 @@ const Product = require("../models/ProductModel");
 
 const User = require("../models/UserModel")
 const Order = require("../models/OrderModel")
-const MineralSharePricing = require("../models/MineralSharePricingModel")
+// const MineralSharePricing = require("../models/MineralSharePricingModel")
 const Promotion = require("../models/PromotionModel")
 const Quote = require("../models/QuoteModel")
 
@@ -42,10 +42,10 @@ const importData = async () => {
         if (process.argv[2] !== "-d") {
             // await Category.collection.dropIndexes()
             // await Product.collection.dropIndexes()
-    
+
             // await Category.collection.deleteMany({})
             // await Product.collection.deleteMany({})
-    
+
             // await Category.insertMany(categoryData)
             // await Product.insertMany(productData)
             // await User.insertMany(userData)

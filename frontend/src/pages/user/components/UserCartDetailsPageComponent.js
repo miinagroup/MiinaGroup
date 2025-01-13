@@ -8,10 +8,6 @@ import { pdf } from "@react-pdf/renderer";
 import CartPrint from "../../../components/Pdfs/CartPrint";
 import axios from "axios";
 import "./invoicePDF.css";
-import {
-  saveTrackEvents,
-  useTrackEvents,
-} from "../../trackEvents/useTrackEvents";
 import VerifySiteComponent from "../../components/VerifySiteComponent";
 import AddNewAddressModalComponent from "./AddNewAddressModalComponent";
 import ChangeAddressModalComponent from "./ChangeAddressModalComponent";
@@ -141,8 +137,6 @@ const UserCartDetailsPageComponent = ({
     });
   }, [chosenDeliverySite]);
 
-  //Tracking user Interactions
-  useTrackEvents();
   useEffect(() => {
     let total = 0;
     if (cartItems) {
@@ -381,7 +375,7 @@ const UserCartDetailsPageComponent = ({
         }
       })
       .catch((err) => console.log(err));
-    saveTrackEvents();
+
   };
 
   /* 修改支付方式的vale */
@@ -707,39 +701,39 @@ const UserCartDetailsPageComponent = ({
                   <div className="d-flex gap-5 cart_detail_btns_email_download">
                     <div className="d-flex justify-content-between">
                       <div>
-                      <PDFDownloadLink
-                        document={
-                          <CartPrint
-                            cartItems={cartItems}
-                            userInfo={userInfo}
-                            userAddress={userAddress}
-                            purchaseNumber={purchaseNumber}
-                            cartSubtotal={cartSubtotal}
-                            taxAmount={taxAmount}
-                          />
-                        }
-                        fileName={userInfo.name + "'s Cart"}
-                        className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
-                        style={{ width: "100%", maxWidth: "200px", fontSize: "12px" }}
-                      >
-                        <span>
-                          Download Cart <i className="bi bi-file-earmark-pdf"></i>
-                        </span>
-                      </PDFDownloadLink>
+                        <PDFDownloadLink
+                          document={
+                            <CartPrint
+                              cartItems={cartItems}
+                              userInfo={userInfo}
+                              userAddress={userAddress}
+                              purchaseNumber={purchaseNumber}
+                              cartSubtotal={cartSubtotal}
+                              taxAmount={taxAmount}
+                            />
+                          }
+                          fileName={userInfo.name + "'s Cart"}
+                          className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
+                          style={{ width: "100%", maxWidth: "200px", fontSize: "12px" }}
+                        >
+                          <span>
+                            Download Cart <i className="bi bi-file-earmark-pdf"></i>
+                          </span>
+                        </PDFDownloadLink>
+                      </div>
+                      <div className="d-flex justify-content-end">
+                        <Button
+                          type="button"
+                          onClick={removeAllItems}
+                          variant="primary" size="sm"
+                          style={{ fontSize: "12px" }}
+                          className="mobile-visibility"
+                        >
+                          Empty Cart <i className="bi bi-trash" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-end">
-                    <Button
-                      type="button"
-                      onClick={removeAllItems}
-                      variant="primary" size="sm"
-                      style={{ fontSize: "12px" }}
-                      className="mobile-visibility"
-                    >
-                      Empty Cart <i className="bi bi-trash" />
-                    </Button>
-                  </div>
-                    </div>
-                    
+
                     <div >
                       <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
 

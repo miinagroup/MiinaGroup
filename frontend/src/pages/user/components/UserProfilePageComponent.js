@@ -114,11 +114,8 @@ const UserProfilePageComponent = ({
       )
         .then((data) => {
           setUpdateUserResponseState({ success: data.success, error: "" });
-
           const updatedUserInfo = data.userUpdated;
-
           const currentUserInfo = JSON.parse(localStorage.getItem("userInfo"));
-
           const newUserInfo = {
             ...currentUserInfo,
             siteSku: updatedUserInfo.siteSku,
@@ -174,7 +171,7 @@ const UserProfilePageComponent = ({
     <Container className={styles.userProfilePageComponent}>
       <Row className="justify-content-md-center">
         <Col md={6} className="w-75">
-          <h1>Change your profile</h1>
+          <h1>EDIT PROFILE</h1>
 
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Row className="mb-3">
@@ -216,27 +213,19 @@ const UserProfilePageComponent = ({
 
               <Form.Group className="mb-3" as={Col} md="6" controlId="formBasicAbn">
                 <Form.Label>ABN</Form.Label>
-                {/* <Form.Control
-                required
-                  type="text"
-                  name="abn"
-                  defaultValue={user.abn}
-                  // value={user.abn}
-                /> */}
                 <MaskedInput
                   mask={abnMask}
                   placeholder="ABN"
+                  disabled
                   guide={false}
                   value={abnNum}
                   onChange={handleAbn}
-                  // id="abn"
                   render={(ref, props) => <Form.Control
                     required
                     minLength={14}
                     maxLength={14}
                     type="text"
                     name="abn"
-                    // pattern="/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/"
                     ref={ref}
                     {...props}
                   />}
@@ -350,12 +339,11 @@ const UserProfilePageComponent = ({
                   required
                   name="role"
                   onChange={handleChangeRole}
-                  disabled
                 >
                   <option>{user.role}</option>
                   {
                     allUniformRoles.map((role, idx) => (
-                      <option key={idx} value={role.role} style={{textTransform: "capitalize"}}>
+                      <option key={idx} value={role.role} style={{ textTransform: "capitalize" }}>
                         {role.role}
                       </option>))
                   }

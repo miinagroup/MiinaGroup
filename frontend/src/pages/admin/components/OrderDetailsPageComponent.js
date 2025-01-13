@@ -10,7 +10,7 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import CartItemForOrderComponent from "../../../components/CartItemForOrderComponent";
-import { getClientsSkuList } from "../../../redux/actions/productsActions";
+// import { getClientsSkuList } from "../../../redux/actions/productsActions";
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
@@ -84,7 +84,7 @@ const OrderDetailsPageComponent = ({
   const [orderData, setOrderData] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editInvoiceNumber, setEditInvoiceNumber] = useState(false);
-  const [enterClientSKU, setEnterClientSKU] = useState(false);
+  // const [enterClientSKU, setEnterClientSKU] = useState(false);
   const [removed, setRemoved] = useState(false);
   const [selectedDeliverySite, setSelectedDeliverySite] = useState();
   const [editLocation, setEditLocation] = useState(false);
@@ -98,62 +98,62 @@ const OrderDetailsPageComponent = ({
   const [btnMarkAsPaid, setBtnMarkAsPaid] = useState(false)
   const dispatch = useDispatch();
 
-  const { clientsSkuList } = useSelector((state) => state.products);
-  const [currentClientSkuName, setCurrentClientSkuName] = useState();
-  const [newClientSkus, setNewClientSkus] = useState([]);
+  // const { clientsSkuList } = useSelector((state) => state.products);
+  // const [currentClientSkuName, setCurrentClientSkuName] = useState();
+  // const [newClientSkus, setNewClientSkus] = useState([]);
 
-  const [isCancelClientSku, setIsCancelClientSku] = useState(false);
-  const [isUpdatedClientSku, setIsUpdatedClientSku] = useState(false);
+  // const [isCancelClientSku, setIsCancelClientSku] = useState(false);
+  // const [isUpdatedClientSku, setIsUpdatedClientSku] = useState(false);
 
-  useEffect(() => {
-    dispatch(getClientsSkuList());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getClientsSkuList());
+  // }, [dispatch]);
 
-  const handleNewClientSkusChange = (newClientSku, ctlSku, cartItemId) => {
-    const existingProduct = newClientSkus.find(product => product.ctlSku === ctlSku);
+  // const handleNewClientSkusChange = (newClientSku, ctlSku, cartItemId) => {
+  //   const existingProduct = newClientSkus.find(product => product.ctlSku === ctlSku);
 
-    if (existingProduct) {
-      setNewClientSkus((prevProducts) =>
-        prevProducts.map((product) =>
-          product.ctlSku === ctlSku
-            ? { ...product, newClientSku: { name: currentClientSkuName, number: newClientSku.number } }
-            : product
-        )
-      );
-    } else {
+  //   if (existingProduct) {
+  //     setNewClientSkus((prevProducts) =>
+  //       prevProducts.map((product) =>
+  //         product.ctlSku === ctlSku
+  //           ? { ...product, newClientSku: { name: currentClientSkuName, number: newClientSku.number } }
+  //           : product
+  //       )
+  //     );
+  //   } else {
 
-      setNewClientSkus((prevProducts) => [
-        ...prevProducts,
-        { newClientSku: { name: currentClientSkuName, number: newClientSku.number }, ctlSku, cartItemId }
-      ]);
-    }
-  };
+  //     setNewClientSkus((prevProducts) => [
+  //       ...prevProducts,
+  //       { newClientSku: { name: currentClientSkuName, number: newClientSku.number }, ctlSku, cartItemId }
+  //     ]);
+  //   }
+  // };
 
-  const changeClientSkuBulk = async (newClientSkusSku) => {
-    try {
-      const { data } = await axios.put(
-        `/api/products/admin/updateSKUBulk`, newClientSkusSku
+  // const changeClientSkuBulk = async (newClientSkusSku) => {
+  //   try {
+  //     const { data } = await axios.put(
+  //       `/api/products/admin/updateSKUBulk`, newClientSkusSku
 
-      );
-      return data;
-    } catch (error) {
-      console.log("Failed to change sku", error);
-    }
-  };
+  //     );
+  //     return data;
+  //   } catch (error) {
+  //     console.log("Failed to change sku", error);
+  //   }
+  // };
 
-  const handleSaveClientSku = async () => {
-    try {
-      const data = await changeClientSkuBulk(newClientSkus)
-      const order = await axios.put(
-        `/api/orders/admin/bulkUpdateClientSkus/${id}`, newClientSkus
-      );
-      console.log("Client SKU updated successfully");
-      setIsUpdatedClientSku(true)
-      handleClientSKU()
-    } catch (error) {
-      console.error("Failed to save client SKU", error);
-    }
-  };
+  // const handleSaveClientSku = async () => {
+  //   try {
+  //     const data = await changeClientSkuBulk(newClientSkus)
+  //     const order = await axios.put(
+  //       `/api/orders/admin/bulkUpdateClientSkus/${id}`, newClientSkus
+  //     );
+  //     console.log("Client SKU updated successfully");
+  //     setIsUpdatedClientSku(true)
+  //     handleClientSKU()
+  //   } catch (error) {
+  //     console.error("Failed to save client SKU", error);
+  //   }
+  // };
 
   useEffect(() => {
     getUser()
@@ -163,22 +163,22 @@ const OrderDetailsPageComponent = ({
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    clientsSkuList && order && clientsSkuList.map(sku => {
-      const noSpacesDeliverySite = order.deliverySite.toLowerCase().replace(/\s+/g, '');
-      if (sku.sku.toLowerCase().includes(noSpacesDeliverySite)) {
-        setCurrentClientSkuName(sku.sku)
-      }
-    })
+  // useEffect(() => {
+  //   clientsSkuList && order && clientsSkuList.map(sku => {
+  //     const noSpacesDeliverySite = order.deliverySite.toLowerCase().replace(/\s+/g, '');
+  //     if (sku.sku.toLowerCase().includes(noSpacesDeliverySite)) {
+  //       setCurrentClientSkuName(sku.sku)
+  //     }
+  //   })
 
-  }, [clientsSkuList, order]);
+  // }, [clientsSkuList, order]);
 
 
 
   useEffect(() => {
     getOrder(id)
       .then((order) => {
-        updateClientSku(order.cartItems, order.deliverySite);
+        // updateClientSku(order.cartItems, order.deliverySite);
         setOrder(order);
         setUserInfo(order.user);
         setBackOrderStatus(order.backOrder);
@@ -229,66 +229,66 @@ const OrderDetailsPageComponent = ({
       );
   }, [isDelivered, invoiceSent, id, edit, removed, editLocation, refreshOrder]);
 
-  const updateClientSku = async (data, site) => {
-    try {
-      const emptyClientSku = {
-        name: "",
-        number: ""
-      }
+  // const updateClientSku = async (data, site) => {
+  //   try {
+  //     const emptyClientSku = {
+  //       name: "",
+  //       number: ""
+  //     }
 
-      const newCartItems = await Promise.all(data.map(async (item) => {
+  //     const newCartItems = await Promise.all(data.map(async (item) => {
 
-        const differentDeiverySite = item.cartProducts[0].currentClientSku?.name.toLowerCase().includes(site.replace(/\s+/g, '').toLowerCase());
-        const noCurrentClientSku = item.cartProducts[0].currentClientSku;
-        const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku?.number === "";
+  //       const differentDeiverySite = item.cartProducts[0].currentClientSku?.name.toLowerCase().includes(site.replace(/\s+/g, '').toLowerCase());
+  //       const noCurrentClientSku = item.cartProducts[0].currentClientSku;
+  //       const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku?.number === "";
 
-        if (!noCurrentClientSku || currentClientSkuNumberEmpty || !differentDeiverySite) {
-          const res = await fetchProduct(item.productId);
-          const stockItem = res.stock.find(st => st.ctlsku === item.cartProducts[0].ctlsku);
-          const matchingClientSku = stockItem.clientsSku?.find(sku =>
-            sku.name?.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(site.toLowerCase())
-          );
+  //       if (!noCurrentClientSku || currentClientSkuNumberEmpty || !differentDeiverySite) {
+  //         const res = await fetchProduct(item.productId);
+  //         const stockItem = res.stock.find(st => st.ctlsku === item.cartProducts[0].ctlsku);
+  //         const matchingClientSku = stockItem.clientsSku?.find(sku =>
+  //           sku.name?.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(site.toLowerCase())
+  //         );
 
-          if (matchingClientSku) {
-            await updateOrderClientCurrentSku(id, matchingClientSku, item.cartProducts[0].ctlsku, item._id);
-            return {
-              ...item,
-              cartProducts: item.cartProducts.map((product, productIdx) => {
-                if (productIdx === 0) {
-                  return {
-                    ...product,
-                    currentClientSku: matchingClientSku,
-                  };
-                }
-                return product;
-              }),
-            };
-          } else {
-            await updateOrderClientCurrentSku(id, emptyClientSku, item.cartProducts[0].ctlsku, item._id);
-            return {
-              ...item,
-              cartProducts: item.cartProducts.map((product, productIdx) => {
-                if (productIdx === 0) {
-                  return {
-                    ...product,
-                    currentClientSku: emptyClientSku
-                  };
-                }
-                return product;
-              }),
-            };
-          }
-        }
+  //         if (matchingClientSku) {
+  //           await updateOrderClientCurrentSku(id, matchingClientSku, item.cartProducts[0].ctlsku, item._id);
+  //           return {
+  //             ...item,
+  //             cartProducts: item.cartProducts.map((product, productIdx) => {
+  //               if (productIdx === 0) {
+  //                 return {
+  //                   ...product,
+  //                   currentClientSku: matchingClientSku,
+  //                 };
+  //               }
+  //               return product;
+  //             }),
+  //           };
+  //         } else {
+  //           await updateOrderClientCurrentSku(id, emptyClientSku, item.cartProducts[0].ctlsku, item._id);
+  //           return {
+  //             ...item,
+  //             cartProducts: item.cartProducts.map((product, productIdx) => {
+  //               if (productIdx === 0) {
+  //                 return {
+  //                   ...product,
+  //                   currentClientSku: emptyClientSku
+  //                 };
+  //               }
+  //               return product;
+  //             }),
+  //           };
+  //         }
+  //       }
 
-        return item;
-      }));
+  //       return item;
+  //     }));
 
-      setCartItems(newCartItems)
+  //     setCartItems(newCartItems)
 
-    } catch (error) {
-      console.error("Error updating client SKU:", error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Error updating client SKU:", error);
+  //   }
+  // };
 
   useEffect(() => {
     if (userInfo?.email) {
@@ -367,12 +367,12 @@ const OrderDetailsPageComponent = ({
     setEmailAddress(email);
   };
   // edit client sku
-  const handleClientSKU = () => setEnterClientSKU(!enterClientSKU);
-  const saveClientSKU = () => {
-    setTimeout(() => {
-      setEnterClientSKU(false);
-    }, 500);
-  };
+  // const handleClientSKU = () => setEnterClientSKU(!enterClientSKU);
+  // const saveClientSKU = () => {
+  //   setTimeout(() => {
+  //     setEnterClientSKU(false);
+  //   }, 500);
+  // };
   const changeCount = (orderId, itemId, price, suppliedQty) => {
     updateBackOrder(orderId, itemId, price, suppliedQty);
   };
@@ -405,7 +405,7 @@ const OrderDetailsPageComponent = ({
 
   const saveEditLocation = () => {
     adminUpdateDeliverySite(id, selectedDeliverySite?.name);
-    updateClientSku(cartItems, selectedDeliverySite?.name);
+    // updateClientSku(cartItems, selectedDeliverySite?.name);
     setTimeout(() => {
       setEditLocation(false);
     }, 500);
@@ -882,7 +882,7 @@ const OrderDetailsPageComponent = ({
               suppliedQty: item.cartProducts[0].backOrder,
               backOrder: 0,
               sales: item.cartProducts[0].sales ?? null,
-              slrsku: item.cartProducts[0].slrsku,
+              // slrsku: item.cartProducts[0].slrsku,
               suppliersku: item.cartProducts[0].suppliersku,
               _id: item.cartProducts[0]._id,
             },
@@ -996,10 +996,10 @@ const OrderDetailsPageComponent = ({
 
   const isPaidDateString = formatDateString(paidAt);
 
-  const handleSkuUpdateSuccess = () => {
-    setEnterClientSKU(false);
-    setRefreshOrder(!refreshOrder);
-  };
+  // const handleSkuUpdateSuccess = () => {
+  //   setEnterClientSKU(false);
+  //   setRefreshOrder(!refreshOrder);
+  // };
 
   const handleShowProformaInvoice = () => {
     setShowProformaInvoice(!showProformaInvoice)
@@ -1188,7 +1188,7 @@ const OrderDetailsPageComponent = ({
                 <tr>
                   <th style={{ width: "6%" }}></th>
                   <th style={{ width: "22%" }}>Product</th>
-                  <th style={{ width: "8%" }}>
+                  {/* <th style={{ width: "8%" }}>
                     Client SKU
                     {enterClientSKU === false ? (
                       <>
@@ -1220,7 +1220,7 @@ const OrderDetailsPageComponent = ({
                       >
                         <small>Cancel</small>
                       </button></>}
-                  </th>
+                  </th> */}
                   <th style={{ width: "8%" }}>CTLSKU</th>
                   <th style={{ width: "7%" }}>Unit Price</th>
                   <th style={{ width: "7%" }}>Order Qty</th>
@@ -1237,22 +1237,22 @@ const OrderDetailsPageComponent = ({
                   item={item}
                   orderCreated={true}
                   edit={edit}
-                  enterClientSKU={enterClientSKU}
-                  setEnterClientSKU={setEnterClientSKU}
+                  // enterClientSKU={enterClientSKU}
+                  // setEnterClientSKU={setEnterClientSKU}
                   changeCount={changeCount}
                   changePrice={changePrice}
                   removeFromOrderHandler={removeFromOrderHandler}
                   id={id}
                   backOrderStatus={backOrderStatus}
                   userInfo={userInfo}
-                  onSkuUpdateSuccess={handleSkuUpdateSuccess}
-                  currentClientSkuName={currentClientSkuName}
+                  // onSkuUpdateSuccess={handleSkuUpdateSuccess}
+                  // currentClientSkuName={currentClientSkuName}
                   selectedDeliverySite={setSelectedDeliverySite}
                   editingIndex={editingIndex}
                   setEditingIndex={setEditingIndex}
-                  handleNewClientSkusChange={handleNewClientSkusChange}
-                  isCancel={isCancelClientSku}
-                  isUpdated={isUpdatedClientSku}
+                // handleNewClientSkusChange={handleNewClientSkusChange}
+                // isCancel={isCancelClientSku}
+                // isUpdated={isUpdatedClientSku}
                 />)
               })}
             </table>

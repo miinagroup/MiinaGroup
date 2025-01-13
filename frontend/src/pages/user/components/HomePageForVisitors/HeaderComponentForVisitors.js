@@ -11,10 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getMineralPrices,
-  getStockPrices,
-} from "../../../../redux/actions/mineralActions";
 import { getT1Categories } from "../../../../redux/actions/categoryActions"
 
 import "./HomePageForVistors.css";
@@ -22,12 +18,9 @@ import axios from "axios";
 import LoginRegisterPage from "../../../LoginRegisterPage";
 
 const HeaderComponentForVisitors = () => {
-  //const dispatch = useDispatch();
   const reduxDispatch = useDispatch();
 
   useEffect(() => {
-    reduxDispatch(getMineralPrices());
-    reduxDispatch(getStockPrices());
     reduxDispatch(getT1Categories());
   }, []);
 
@@ -53,7 +46,6 @@ const HeaderComponentForVisitors = () => {
       axios
         .put(newUrl)
         .then((response) => {
-          // console.log("Visitor tracked:", response.data);
         })
         .catch((error) => {
           console.error("Error tracking visitor:", error);
@@ -61,7 +53,6 @@ const HeaderComponentForVisitors = () => {
 
       localStorage.setItem("lastVisitTime", now);
     } else {
-      // console.log("Visit not tracked due to threshold limit");
     }
   };
 
@@ -208,8 +199,6 @@ const HeaderComponentForVisitors = () => {
       <Modal show={show} onHide={handleClose} className="login_preview_items">
         <LoginRegisterPage />
       </Modal>
-
-      {/* <PleaseRegister show={show} handleClose={handleClose} handleShow={handleShow} /> */}
     </>
   );
 };

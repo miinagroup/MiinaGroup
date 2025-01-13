@@ -1,3 +1,0 @@
-export const FETCH_MINERALS = 'FETCH_MINERALS';
-export const FETCH_STOCKS = 'FETCH_STOCKS';
-export const FETCH_WEATHERS = 'FETCH_WEATHERS';

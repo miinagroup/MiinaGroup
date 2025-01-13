@@ -4,10 +4,8 @@ import { useIdleTimer } from "react-idle-timer";
 import { useEffect, useState } from "react";
 import "./page.css";
 import "./promotion.css";
-import StockPrice from "./StockPrice";
 import OurProductComponent from "./OurProductComponent";
 import axios from "axios";
-import { useTrackEvents } from "../pages/trackEvents/useTrackEvents";
 import { useSelector, useDispatch } from "react-redux";
 
 
@@ -17,7 +15,6 @@ const ProductsPromotionComponent = ({ blocks }) => {
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
 
   //Tracking user Interactions
-  useTrackEvents();
   //var trackData = localStorage.getItem("trackData")
   //console.log("trackData", trackData);
   //   console.log('====================================');
@@ -153,7 +150,6 @@ const ProductsPromotionComponent = ({ blocks }) => {
           <Row className="blocks_row">
             {fixedBlocksData?.map(renderFixedBlocksData)}
           </Row>
-          <StockPrice />
           <OurProductComponent />
           {/*         <img
               src="/loading-gif.gif"
@@ -166,7 +162,6 @@ const ProductsPromotionComponent = ({ blocks }) => {
           <div className="mt-3 mb-3">
             <Row className="blocks_row">{renderBlocks(topBlocks)}</Row>
             <div className="mt-4 mb-4">
-              <StockPrice />
             </div>
 
             <Row className="blocks_row_bottom">{renderBlocks(bottomBlocks)}</Row>

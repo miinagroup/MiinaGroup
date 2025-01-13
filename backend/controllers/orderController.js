@@ -1,6 +1,6 @@
 const Order = require("../models/OrderModel");
 const Product = require("../models/ProductModel");
-const Quote = require("../models/QuoteModel");
+//const Quote = require("../models/QuoteModel");
 const ObjectId = require("mongodb").ObjectId;
 const mongoose = require("mongoose");
 const Decimal = require('decimal.js');
@@ -106,14 +106,14 @@ const createOrder = async (req, res, next) => {
     });
     const createdOrder = await order.save();
 
-    await Promise.all(cartItems.map(async (item) => {
-      if (item.quoteId) {
-        await Quote.updateOne(
-          { _id: item.quoteId },
-          { $set: { purchased: true } }
-        );
-      }
-    }));
+    // await Promise.all(cartItems.map(async (item) => {
+    //   if (item.quoteId) {
+    //     await Quote.updateOne(
+    //       { _id: item.quoteId },
+    //       { $set: { purchased: true } }
+    //     );
+    //   }
+    // }));
 
     res.status(201).send(createdOrder);
   } catch (err) {
@@ -682,149 +682,149 @@ const getSupplier = async (req, res) => {
   }
 };
 
-const adminUpdateOrderClientSku = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const clientSkuName = req.body['clientSku']?.name;
-    const clientSkuNumber = req.body['clientSku']?.number;
-    const ctlsku = req.body['ctlsku'];
-    const cartItemId = req.body['cartItemId'];
+// const adminUpdateOrderClientSku = async (req, res, next) => {
+//   try {
+//     const id = req.params.id;
+//     const clientSkuName = req.body['clientSku']?.name;
+//     const clientSkuNumber = req.body['clientSku']?.number;
+//     const ctlsku = req.body['ctlsku'];
+//     const cartItemId = req.body['cartItemId'];
 
-    if (!id) {
-      return res.status(400).json({ error: "Order ID is required" });
-    }
+//     if (!id) {
+//       return res.status(400).json({ error: "Order ID is required" });
+//     }
 
-    let order = await Order.findOne({ _id: id });
-    const stockItem = order.cartItems.find(item => item._id.toString() === cartItemId);
-    const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === ctlsku);
+//     let order = await Order.findOne({ _id: id });
+//     const stockItem = order.cartItems.find(item => item._id.toString() === cartItemId);
+//     const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === ctlsku);
 
-    if (cartProduct.currentClientSku) {
-      order = await Order.findOneAndUpdate(
-        {
-          _id: id,
-          'cartItems.cartProducts.ctlsku': ctlsku,
-          'cartItems._id': cartItemId,
-        },
-        {
-          $set: {
-            'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': clientSkuNumber,
-            'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': clientSkuName,
+//     if (cartProduct.currentClientSku) {
+//       order = await Order.findOneAndUpdate(
+//         {
+//           _id: id,
+//           'cartItems.cartProducts.ctlsku': ctlsku,
+//           'cartItems._id': cartItemId,
+//         },
+//         {
+//           $set: {
+//             'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': clientSkuNumber,
+//             'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': clientSkuName,
 
-          },
-        },
-        {
-          arrayFilters: [
-            { 'cartItem._id': cartItemId },
-            { 'cartProduct.ctlsku': ctlsku },
-          ],
-          new: true,
-        }
-      );
-    } else {
-      order = await Order.findOneAndUpdate(
-        {
-          _id: id,
-          'cartItems.cartProducts.ctlsku': ctlsku,
-          'cartItems._id': cartItemId,
-        },
-        {
-          $push: {
-            "cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku": {
-              number: clientSkuNumber,
-              name: clientSkuName,
-            }
-          },
-        },
-        {
-          arrayFilters: [
-            { 'cartItem._id': cartItemId },
-            { "cartProduct.ctlsku": ctlsku }
-          ],
-          new: true,
-        },
-      );
-    }
+//           },
+//         },
+//         {
+//           arrayFilters: [
+//             { 'cartItem._id': cartItemId },
+//             { 'cartProduct.ctlsku': ctlsku },
+//           ],
+//           new: true,
+//         }
+//       );
+//     } else {
+//       order = await Order.findOneAndUpdate(
+//         {
+//           _id: id,
+//           'cartItems.cartProducts.ctlsku': ctlsku,
+//           'cartItems._id': cartItemId,
+//         },
+//         {
+//           $push: {
+//             "cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku": {
+//               number: clientSkuNumber,
+//               name: clientSkuName,
+//             }
+//           },
+//         },
+//         {
+//           arrayFilters: [
+//             { 'cartItem._id': cartItemId },
+//             { "cartProduct.ctlsku": ctlsku }
+//           ],
+//           new: true,
+//         },
+//       );
+//     }
 
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
+//     if (!order) {
+//       return res.status(404).json({ error: "Order not found" });
+//     }
 
-    return res.status(200).json(order);
-  } catch (err) {
-    next(err);
-  }
-};
+//     return res.status(200).json(order);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-const adminBulkUpdateClientSkus = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const clientSkuArray = req.body;
-    let order = await Order.findOne({ _id: id });
+// const adminBulkUpdateClientSkus = async (req, res, next) => {
+//   try {
+//     const id = req.params.id;
+//     const clientSkuArray = req.body;
+//     let order = await Order.findOne({ _id: id });
 
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
+//     if (!order) {
+//       return res.status(404).json({ error: "Order not found" });
+//     }
 
-    const updatePromises = clientSkuArray.map(async (product) => {
-      const stockItem = order.cartItems.find(item => item._id.toString() === product.cartItemId);
-      const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === product.ctlSku);
+//     const updatePromises = clientSkuArray.map(async (product) => {
+//       const stockItem = order.cartItems.find(item => item._id.toString() === product.cartItemId);
+//       const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === product.ctlSku);
 
-      if (cartProduct && cartProduct.currentClientSku) {
-        return Order.findOneAndUpdate(
-          {
-            _id: id,
-            'cartItems._id': product.cartItemId,
-            'cartItems.cartProducts.ctlsku': product.ctlSku,
-          },
-          {
-            $set: {
-              'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': product.newClientSku.number,
-              'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': product.newClientSku.name,
-            },
-          },
-          {
-            arrayFilters: [
-              { 'cartItem._id': product.cartItemId },
-              { 'cartProduct.ctlsku': product.ctlSku },
-            ],
-            new: true,
-          }
-        );
-      } else if (cartProduct) {
-        return Order.findOneAndUpdate(
-          {
-            _id: id,
-            'cartItems._id': product.cartItemId,
-            'cartItems.cartProducts.ctlsku': product.ctlSku,
-          },
-          {
-            $push: {
-              "cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku": {
-                number: product.newClientSku.number,
-                name: product.newClientSku.name,
-              }
-            },
-          },
-          {
-            arrayFilters: [
-              { 'cartItem._id': product.cartItemId },
-              { "cartProduct.ctlsku": product.ctlSku }
-            ],
-            new: true,
-          }
-        );
-      }
-    });
+//       if (cartProduct && cartProduct.currentClientSku) {
+//         return Order.findOneAndUpdate(
+//           {
+//             _id: id,
+//             'cartItems._id': product.cartItemId,
+//             'cartItems.cartProducts.ctlsku': product.ctlSku,
+//           },
+//           {
+//             $set: {
+//               'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': product.newClientSku.number,
+//               'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': product.newClientSku.name,
+//             },
+//           },
+//           {
+//             arrayFilters: [
+//               { 'cartItem._id': product.cartItemId },
+//               { 'cartProduct.ctlsku': product.ctlSku },
+//             ],
+//             new: true,
+//           }
+//         );
+//       } else if (cartProduct) {
+//         return Order.findOneAndUpdate(
+//           {
+//             _id: id,
+//             'cartItems._id': product.cartItemId,
+//             'cartItems.cartProducts.ctlsku': product.ctlSku,
+//           },
+//           {
+//             $push: {
+//               "cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku": {
+//                 number: product.newClientSku.number,
+//                 name: product.newClientSku.name,
+//               }
+//             },
+//           },
+//           {
+//             arrayFilters: [
+//               { 'cartItem._id': product.cartItemId },
+//               { "cartProduct.ctlsku": product.ctlSku }
+//             ],
+//             new: true,
+//           }
+//         );
+//       }
+//     });
 
-    await Promise.all(updatePromises);
+//     await Promise.all(updatePromises);
 
-    order = await Order.findOne({ _id: id });
+//     order = await Order.findOne({ _id: id });
 
-    return res.status(200).json(order);
-  } catch (error) {
-    next(error);
-  }
-};
+//     return res.status(200).json(order);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 const scheduledEmailNotificationForOverdueOrders = async () => {
   try {
@@ -893,6 +893,6 @@ module.exports = {
   orderSalesToProduct,
   getSupplier,
   updateApprovedPO,
-  adminUpdateOrderClientSku,
-  adminBulkUpdateClientSkus
+  // adminUpdateOrderClientSku,
+  // adminBulkUpdateClientSkus
 };

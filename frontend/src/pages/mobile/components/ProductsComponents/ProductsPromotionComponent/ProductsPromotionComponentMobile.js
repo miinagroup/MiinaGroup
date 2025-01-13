@@ -1,10 +1,6 @@
 import { useSelector } from "react-redux";
 import { Row, Col, Card, Carousel } from "react-bootstrap";
 import ReactPlayer from "react-player";
-
-import StockPrice from "../../StockPrices/StockPrice";
-import { useTrackEvents } from "../../../../trackEvents/useTrackEvents";
-
 import styles from "./ProductsPromotionComponentMobile.module.css"
 import { useState } from "react";
 
@@ -14,12 +10,12 @@ const ProductsPromotionComponentMobile = ({ blocks }) => {
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
 
   const [index, setIndex] = useState(0);
-  const [ isControl, setIsControl ] = useState(false)
+  const [isControl, setIsControl] = useState(false)
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex)
   }
-  
+
   const handleEnded = () => {
     const nextIndex = (index + 1) % topBlocks.length;
     setIndex(nextIndex)
@@ -33,8 +29,6 @@ const ProductsPromotionComponentMobile = ({ blocks }) => {
     setIsControl(false)
   }
 
-  useTrackEvents();
-
   const correctOrder = [
     "video-1",
     "video-2",
@@ -46,7 +40,7 @@ const ProductsPromotionComponentMobile = ({ blocks }) => {
     //These items come from data, they are used in desktop version but in mobile they are not used
     "upper-1",
     "upper-2",
-    
+
   ];
 
   const orderedBlocks = promotionBlocks?.sort(
@@ -166,33 +160,31 @@ const ProductsPromotionComponentMobile = ({ blocks }) => {
           <Row className={styles.blocks_row}>
             {fixedBlocksData?.map(renderFixedBlocksData)}
           </Row>
-          <StockPrice />
         </>
       ) : (
         <>
-            <div className={styles.top_block}  >
-                <Carousel className={styles.carousel} touch activeIndex={index} onSelect={handleSelect} indicators={false}>
-                        {topBlocks.map((block, idx) => {
-                           const updatedImageURL = updateImageUrl(block.image);
-                          return <Carousel.Item key={idx} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
-                            <ReactPlayer
-                              url={updatedImageURL}
-                              width="100%"
-                              pip={true}
-                              controls={isControl}
-                              muted
-                              playing={index === idx}
-                              onEnded={handleEnded}
-                              className={styles.promotional_video}
-                              playsinline
-                            />
+          <div className={styles.top_block}  >
+            <Carousel className={styles.carousel} touch activeIndex={index} onSelect={handleSelect} indicators={false}>
+              {topBlocks.map((block, idx) => {
+                const updatedImageURL = updateImageUrl(block.image);
+                return <Carousel.Item key={idx} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+                  <ReactPlayer
+                    url={updatedImageURL}
+                    width="100%"
+                    pip={true}
+                    controls={isControl}
+                    muted
+                    playing={index === idx}
+                    onEnded={handleEnded}
+                    className={styles.promotional_video}
+                    playsinline
+                  />
 
-                          </Carousel.Item>
-                        })}
-                </Carousel>
-            </div>
-            <StockPrice />
-            <Row className={styles.blocks_row}>{renderBlocks(bottomBlocks)}</Row>
+                </Carousel.Item>
+              })}
+            </Carousel>
+          </div>
+          <Row className={styles.blocks_row}>{renderBlocks(bottomBlocks)}</Row>
         </>
       )}
     </>

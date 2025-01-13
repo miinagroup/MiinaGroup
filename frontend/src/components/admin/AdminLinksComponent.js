@@ -21,130 +21,96 @@ const AdminLinksComponent = () => {
     }
   }, [isAuth]);
 
-  const [openMarketing, setOpenMarketing] = useState(false);
-  const [openDevelopers, setOpenDevelopers] = useState(false);
+  // const [openMarketing, setOpenMarketing] = useState(false);
+  // const [openDevelopers, setOpenDevelopers] = useState(false);
   const [openClientVersion, setOpenClientVersion] = useState(false);
 
   const adminLinks = [
     {
       title: "Orders",
       link: "/admin/orders",
-      access: "isSuperAdmin, accounts, isSales",
-    },
-    {
-      title: "Invoices",
-      link: "/admin/invoices",
-      access: "isSuperAdmin, accounts",
-    },
-    {
-      title: "Quotes",
-      link: "/admin/quotes?tab=processingQuotes&pageNum=1",
-      access: "all",
+      access: "isAdmin",
     },
     {
       title: "Products",
       link: "/admin/products",
-      access: "all",
+      access: "isAdmin",
     },
     {
       title: "Users",
       link: "/admin/users",
-      access: "all",
-    },
-    {
-      title: "Promotions",
-      link: "/admin/promotions",
-      access: "all",
+      access: "isAdmin",
     },
     {
       title: "Delivery Books",
       link: "/admin/deliveryBooks",
-      access: "all",
-    },
-    {
-      title: "Suppliers",
-      link: "/admin/suppliers",
-      access: "all",
-    },
-    {
-      title: "PO Cart",
-      link: "/admin/poCart-details",
-      access: "isSuperAdmin, accounts, isSales",
-    },
-    {
-      title: "Purchase Order",
-      link: "/admin/purchaseOrders",
-      access: "isSuperAdmin, accounts, isSales",
+      access: "isAdmin",
     },
     {
       title: "Checks",
       link: "/admin/checks",
-      access: "isSuperAdmin, accounts, isSales",
+      access: "isSuperAdmin",
     },
-    {
-      title: "QBook Connect",
-      link: "/admin/qbConnect",
-      access: "isSalesAdmin",
-    },
+
   ];
 
-  const marketingLinks = [
-    {
-      title: "Analytics",
-      link: "/user/analytics",
-      access: "all",
-    },
-    {
-      title: "Posts Track",
-      link: "/user/postsTrack",
-      access: "all",
-    },
-    {
-      title: "User Interactions",
-      link: "/user/userInteractions",
-      access: "all",
-    },
-  ];
+  // const marketingLinks = [
+  //   {
+  //     title: "Analytics",
+  //     link: "/user/analytics",
+  //     access: "isSuperAdmin",
+  //   },
+  //   {
+  //     title: "Posts Track",
+  //     link: "/user/postsTrack",
+  //     access: "isSuperAdmin",
+  //   },
+  //   {
+  //     title: "User Interactions",
+  //     link: "/user/userInteractions",
+  //     access: "isSuperAdmin",
+  //   },
+  // ];
 
-  const developerLinks = [
-    {
-      title: "Uniforms",
-      link: "/admin/uniforms",
-      access: "all",
-    },
-    {
-      title: "UniformCart",
-      link: "/admin/UniformCart",
-      access: "all",
-    },
-    {
-      title: "Return Calculator",
-      link: "/return-calculator",
-      access: "all",
-    },
-    {
-      title: "Weather",
-      link: "/admin/weathers",
-      access: "all",
-    },
-    {
-      title: "Test",
-      link: "/admin/test",
-      access: "all",
-    },
-  ];
+  // const developerLinks = [
+  //   {
+  //     title: "Uniforms",
+  //     link: "/admin/uniforms",
+  //     access: "all",
+  //   },
+  //   {
+  //     title: "UniformCart",
+  //     link: "/admin/UniformCart",
+  //     access: "all",
+  //   },
+  //   {
+  //     title: "Return Calculator",
+  //     link: "/return-calculator",
+  //     access: "all",
+  //   },
+  //   {
+  //     title: "Weather",
+  //     link: "/admin/weathers",
+  //     access: "all",
+  //   },
+  //   {
+  //     title: "Test",
+  //     link: "/admin/test",
+  //     access: "all",
+  //   },
+  // ];
 
   const myselfLinks = [
-    {
-      title: "Orders",
-      link: "/user/my-orders",
-      access: "all",
-    },
-    {
-      title: "Quotes",
-      link: "/user/my-quotes?tab=completedQuotes&pageNum=1",
-      access: "all",
-    },
+    // {
+    //   title: "Orders",
+    //   link: "/user/my-orders",
+    //   access: "all",
+    // },
+    // {
+    //   title: "Quotes",
+    //   link: "/user/my-quotes?tab=completedQuotes&pageNum=1",
+    //   access: "all",
+    // },
     {
       title: "Profile",
       link: "/user",
@@ -167,8 +133,8 @@ const AdminLinksComponent = () => {
     links.some((link) => location.pathname === link.link);
 
   useEffect(() => {
-    setOpenMarketing(isPathInLinks(marketingLinks));
-    setOpenDevelopers(isPathInLinks(developerLinks));
+    // setOpenMarketing(isPathInLinks(marketingLinks));
+    // setOpenDevelopers(isPathInLinks(developerLinks));
     setOpenClientVersion(isPathInLinks(myselfLinks));
   }, [location]);
 
@@ -219,7 +185,7 @@ const AdminLinksComponent = () => {
         </Nav>
       </Navbar>
       <br />
-      <Navbar
+      {/* <Navbar
         className="user_side_navBar"
         onClick={() => setOpenMarketing(!openMarketing)}
         style={{ cursor: "pointer" }}
@@ -242,8 +208,8 @@ const AdminLinksComponent = () => {
             })}
           </div>
         </Nav>
-      </Navbar>
-      <br hidden={!isAuth.isDeveloper} />
+      </Navbar> */}
+      {/* <br hidden={!isAuth.isDeveloper} />
       <Navbar
         className="user_side_navBar"
         onClick={() => setOpenDevelopers(!openDevelopers)}
@@ -267,7 +233,7 @@ const AdminLinksComponent = () => {
             })}
           </div>
         </Nav>
-      </Navbar>
+      </Navbar> */}
       <br />
       <Navbar
         className="user_side_navBar"
@@ -276,7 +242,7 @@ const AdminLinksComponent = () => {
       >
         <Nav className="flex-column user_side_nav">
           <Nav.Link style={{ color: "black" }} disabled>
-            Client Version:
+            My Profile:
           </Nav.Link>
 
           <div hidden={!openClientVersion}>

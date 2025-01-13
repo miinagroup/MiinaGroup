@@ -29,7 +29,7 @@ const CreateProductPageComponent = ({
   uploadPdfApiRequest,
   uploadPdfCloudinaryApiRequest,
   categories,
-  clientsSkuList,
+  // clientsSkuList,
   reduxDispatch,
   newCategory,
   deleteCategory,
@@ -62,9 +62,9 @@ const CreateProductPageComponent = ({
 
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [clientsSkus, setClientsSku] = useState([]);
-  const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
-  const [skuClientNumebr, setSkuClientNumber] = useState({});
+  // const [clientsSkus, setClientsSku] = useState([]);
+  // const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
+  // const [skuClientNumebr, setSkuClientNumber] = useState({});
   const [rowCount, setRowCount] = useState(1);
 
   useEffect(() => {
@@ -175,10 +175,10 @@ const CreateProductPageComponent = ({
       const uom = document.getElementsByName(`uom-${i}`)[0].value;
       const barcode = document.getElementsByName(`barcode-${i}`)[0].value;
       const ctlsku = document.getElementsByName(`ctlsku-${i}`)[0].value;
-      const slrsku = document.getElementsByName(`slrsku-${i}`)[0].value;
+      // const slrsku = document.getElementsByName(`slrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
-      const clientsSku = clientsSkus[i];
+      // const clientsSku = clientsSkus[i];
 
       stock.push({
         count,
@@ -188,9 +188,9 @@ const CreateProductPageComponent = ({
         uom,
         barcode,
         ctlsku,
-        slrsku,
+        // ,slrsku
         suppliersku,
-        clientsSku
+        // clientsSku
       });
     }
 
@@ -362,41 +362,41 @@ const CreateProductPageComponent = ({
     );
   };
 
-  const handleSelect = (e, index) => {
-    setSelectedClientSkuName({ ...selectedClientSkuName, [index]: e.target.value });
-  }
+  // const handleSelect = (e, index) => {
+  //   setSelectedClientSkuName({ ...selectedClientSkuName, [index]: e.target.value });
+  // }
 
-  const handleInputChange = (e, index) => {
-    setSkuClientNumber({ ...skuClientNumebr, [index]: e.target.value });
-  };
+  // const handleInputChange = (e, index) => {
+  //   setSkuClientNumber({ ...skuClientNumebr, [index]: e.target.value });
+  // };
 
 
-  const addNewClientSku = (e, index) => {
-    const isSkuName = clientsSkus[index]?.some(el => el.name === selectedClientSkuName[index]);
-    if (selectedClientSkuName[index] && skuClientNumebr[index]) {
-      if (isSkuName) {
-        alert('This SKU name already exists for this item in stock.');
-        return;
-      }
-      const updatedClientsSkus = [...clientsSkus];
-      if (updatedClientsSkus[index]) {
-        updatedClientsSkus[index].push({ name: selectedClientSkuName[index], number: skuClientNumebr[index] });
-      } else {
-        updatedClientsSkus[index] = [{ name: selectedClientSkuName[index], number: skuClientNumebr[index] }];
-      }
-      setClientsSku(updatedClientsSkus);
-      setSelectedClientSkuName({ ...selectedClientSkuName, [index]: "" });
-      setSkuClientNumber({ ...skuClientNumebr, [index]: "" });
-    } else {
-      alert('Please select a SKU and enter a number.');
-    }
-  };
+  // const addNewClientSku = (e, index) => {
+  //   const isSkuName = clientsSkus[index]?.some(el => el.name === selectedClientSkuName[index]);
+  //   if (selectedClientSkuName[index] && skuClientNumebr[index]) {
+  //     if (isSkuName) {
+  //       alert('This SKU name already exists for this item in stock.');
+  //       return;
+  //     }
+  //     const updatedClientsSkus = [...clientsSkus];
+  //     if (updatedClientsSkus[index]) {
+  //       updatedClientsSkus[index].push({ name: selectedClientSkuName[index], number: skuClientNumebr[index] });
+  //     } else {
+  //       updatedClientsSkus[index] = [{ name: selectedClientSkuName[index], number: skuClientNumebr[index] }];
+  //     }
+  //     setClientsSku(updatedClientsSkus);
+  //     setSelectedClientSkuName({ ...selectedClientSkuName, [index]: "" });
+  //     setSkuClientNumber({ ...skuClientNumebr, [index]: "" });
+  //   } else {
+  //     alert('Please select a SKU and enter a number.');
+  //   }
+  // };
 
-  const removeClientSku = (index, i) => {
-    const updatedClientsSkus = [...clientsSkus];
-    updatedClientsSkus[index] = updatedClientsSkus[index].filter((_, index) => index !== i);
-    setClientsSku(updatedClientsSkus);
-  };
+  // const removeClientSku = (index, i) => {
+  //   const updatedClientsSkus = [...clientsSkus];
+  //   updatedClientsSkus[index] = updatedClientsSkus[index].filter((_, index) => index !== i);
+  //   setClientsSku(updatedClientsSkus);
+  // };
 
 
 
@@ -612,7 +612,7 @@ const CreateProductPageComponent = ({
                       />
                     </Form.Group>
 
-                    <Form.Group
+                    {/* <Form.Group
                       as={Col}
                       md="3"
                       className="mb-3"
@@ -624,9 +624,9 @@ const CreateProductPageComponent = ({
                         name={`slrsku-${index}`}
                         type="text"
                       />
-                    </Form.Group>
+                    </Form.Group> */}
 
-                    <Form.Group>
+                    {/* <Form.Group>
                       <Form.Label>Client Sku</Form.Label>
                       <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
                         <Form.Select value={selectedClientSkuName[index]} onChange={(e) => handleSelect(e, index)}>
@@ -667,7 +667,7 @@ const CreateProductPageComponent = ({
                           })}
                         </tbody>
                       </Table>
-                    </Form.Group>
+                    </Form.Group> */}
 
 
                   </React.Fragment>

@@ -70,7 +70,8 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
       billingEmail: form.billingEmail.value,
       companyAccount: form.companyAccount.value,
       dueDays: form.dueDays.value,
-      quickBooksCutomerId: form.quickBooksCustomerId.value,
+      // quickBooksCutomerId: form.quickBooksCustomerId.value,
+      quickBooksCustomerId: 1,
       sites: sites,
       abn: form.abn.value,
       hasUniform: hasUniform
@@ -158,15 +159,15 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
                 <Form.Label>Company Account</Form.Label>
                 <Form.Control name="companyAccount" required type="text" />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicQuickBooksCustomerId">
+              {/* <Form.Group className="mb-3" controlId="formBasicQuickBooksCustomerId">
                 <Form.Label>QuickBooks Customer Id</Form.Label>
                 <Form.Control name="quickBooksCustomerId" required type="text" value={textQBCustomerId} onChange={(e) => setTextQBCustomerId(e.target.value)} />
-              </Form.Group>
+              </Form.Group> */}
               <Form.Group className="mb-3" controlId="formBasicDueDays">
                 <Form.Label>Due Days</Form.Label>
                 <Form.Control name="dueDays" required type="text" value={textDueDays} onChange={(e) => setTextDueDays(e.target.value)} />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicHasUniform">
+              {/* <Form.Group className="mb-3" controlId="formBasicHasUniform">
                 <Form.Label>Has Uniform</Form.Label>
                 <Form.Check
                   type="switch"
@@ -175,7 +176,7 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
                   checked={hasUniform}
                   onChange={handleToggle}
                 />
-              </Form.Group>
+              </Form.Group> */}
 
               {[...Array(rowCount)].map((_, index) => (
                 <>
@@ -248,60 +249,6 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
                     </React.Fragment>
                   </Row>
 
-                  {/* <Row>
-                                        <React.Fragment key={index}>
-                                            <Form.Group
-                                                as={Col}
-                                                md="3"
-                                                className="mb-3"
-                                                controlId={`formBasicName-${index}`}
-                                            >
-                                                <Form.Label>Name</Form.Label>
-                                                <Form.Control
-                                                    name={`name-${index}`}
-                                                    required
-                                                    type="text"
-                                                />
-                                            </Form.Group>
-
-                                            <Form.Group
-                                                as={Col}
-                                                md="4"
-                                                className="mb-3"
-                                                controlId={`formBasicBillingAddress-${index}`}
-                                            >
-                                                <Form.Label>Billing Address </Form.Label>
-                                                <Form.Control
-                                                    name={`billingAddress-${index}`}
-                                                    required
-                                                    type="text"
-                                                />
-                                            </Form.Group>
-
-                                            <Form.Group
-                                                as={Col}
-                                                md="4"
-                                                className="mb-3"
-                                                controlId={`formBasicDeliveryAddress-${index}`}
-                                            >
-                                                <Form.Label>Delivery Address </Form.Label>
-                                                <Form.Control
-                                                    name={`deliveryAddress-${index}`}
-                                                    required
-                                                    type="text"
-                                                />
-                                            </Form.Group>
-                                            <Form.Group as={Col} md="1" className="mb-3">
-                                                <i
-                                                    className="bi bi-trash mt-3"
-                                                    onClick={handleRemoveDeliveryBook}
-                                                    style={{
-                                                        cursor: "pointer",
-                                                    }}
-                                                ></i>
-                                            </Form.Group>
-                                        </React.Fragment>
-                                    </Row> */}
                 </>
               ))}
               <hr />

@@ -17,12 +17,9 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
   const [locations, setLocations] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showUnverified, setShowUnverified] = useState(false);
-
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
-
   const isAuth = FetchAuthFromServer();
-
-  const accessRoles = ["isSuperAdmin"];
+  const accessRoles = ["isAdmin"];
 
   const hasAnyRole = (userInfo, accessRoles) => {
     return accessRoles.some((role) => {
@@ -145,16 +142,10 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
       </Col>
       <Col md={10}>
         <h1>
-          User List:{" "}
-          <Button
-            onClick={resetFilters}
-            variant="success"
-            className="m-0 p-0 pe-1 ps-1"
-          >
-            Reset Filters
-          </Button>
+          USERS{" "}
+
         </h1>
-        <Form className="m-2">
+        <Form >
           <Row>
             <Col>
               <Form.Select
@@ -214,13 +205,22 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
               </InputGroup>
             </Col>
             <Col md={1}>
-              <Form.Check
-                type="checkbox"
-                label="Unverified"
-                onChange={(e) => setShowUnverified(e.target.checked)}
-                checked={showUnverified}
-              />
+              <Button
+                onClick={resetFilters}
+                variant="success"
+                className="m-0 p-0 pe-1 ps-1"
+              >
+                Reset Filters
+              </Button>
             </Col>
+          </Row>
+          <Row className="m-1">
+            <Form.Check
+              type="checkbox"
+              label="Unverified"
+              onChange={(e) => setShowUnverified(e.target.checked)}
+              checked={showUnverified}
+            />
           </Row>
         </Form>
 

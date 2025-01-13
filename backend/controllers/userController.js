@@ -427,9 +427,9 @@ const loginUserResponse = async (res, user, { doNotLogout }) => {
     user.isSalesAdmin,
     user.accounts,
     user.isMarketing,
-    user.isDeveloper,
-    user.isUniformManager,
-    user.isDeveloper
+    // user.isDeveloper,
+    // user.isUniformManager,
+    // user.isDeveloper
   );
 
   return res.cookie("access_token", token, cookieParams).json({
@@ -454,11 +454,11 @@ const loginUserResponse = async (res, user, { doNotLogout }) => {
       isSales: user.isSales,
       isSalesAdmin: user.isSalesAdmin,
       isMarketing: user.isMarketing,
-      wantWeather: user.wantWeather,
+
       doNotLogout,
       mobileLogin: true,
-      isUniformManager: user.isUniformManager,
-      isDeveloper: user.isDeveloper
+
+      // isDeveloper: user.isDeveloper
     },
   });
 };
@@ -658,25 +658,25 @@ const updateUserPassword = async (req, res, next) => {
   }
 };
 
-const wantWeather = async (req, res, next) => {
-  try {
-    // console.log("I am here to want weather");
-    const wantWeather = req.body.wantWeather;
-    const user = await User.findById(req.user._id).orFail();
+// const wantWeather = async (req, res, next) => {
+//   try {
+//     // console.log("I am here to want weather");
+//     const wantWeather = req.body.wantWeather;
+//     const user = await User.findById(req.user._id).orFail();
 
-    user.wantWeather = wantWeather;
-    // console.log(user.wantWeather);
-    await user.save();
-    res.json({
-      success: "wantWeather updated",
-      userUpdated: {
-        wantWeather: user.wantWeather,
-      },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+//     user.wantWeather = wantWeather;
+//     // console.log(user.wantWeather);
+//     await user.save();
+//     res.json({
+//       success: "wantWeather updated",
+//       userUpdated: {
+//         wantWeather: user.wantWeather,
+//       },
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 const getUserProfile = async (req, res, next) => {
   try {
@@ -716,7 +716,7 @@ const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id)
       .select(
-        "name lastName email role phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isDeveloper isSuperAdmin wantWeather isVIP isCreditVerified abn"
+        "name lastName email role phone mobile ipAddress isAdmin verified isPD isSiteManager isSitePerson location company accounts isSales isMarketing isSuperAdmin isVIP isCreditVerified abn"
       )
       .orFail();
     return res.send(user);
@@ -731,7 +731,7 @@ const updateUser = async (req, res, next) => {
 
     const user = await User.findById(req.params.id).orFail();
 
-    if (isAdmin && !isSuperAdmin) {
+    if (!isAdmin) {
       const editHistoryEntry = {
         operator: email,
         editedAt: new Date(),
@@ -769,10 +769,10 @@ const updateUser = async (req, res, next) => {
     user.isSitePerson = req.body.isSitePerson;
     user.isSales = req.body.isSales;
     user.isMarketing = req.body.isMarketing;
-    user.isDeveloper = req.body.isDeveloper;
-    user.isSuperAdmin = req.body.isSuperAdmin;
-    user.isVIP = req.body.isVIP;
-    user.isCreditVerified = req.body.isCreditVerified;
+    // user.isDeveloper = req.body.isDeveloper;
+    // user.isSuperAdmin = req.body.isSuperAdmin;
+    // user.isVIP = req.body.isVIP;
+    // user.isCreditVerified = req.body.isCreditVerified;
     user.accounts = req.body.accounts;
     user.abn = req.body.abn;
     user.role = req.body.role;
@@ -819,7 +819,7 @@ const deleteUser = async (req, res, next) => {
 
     const user = await User.findById(req.params.id).orFail();
 
-    if (isAdmin && !isSuperAdmin && !isSales) {
+    if (!isAdmin) {
       const editHistoryEntry = {
         operator: email,
         editedAt: new Date(),
@@ -940,7 +940,6 @@ module.exports = {
   updateUserPassword,
   getUsersList,
   getUserProfile,
-  wantWeather,
   getStoreUser,
   getUser,
   updateUser,

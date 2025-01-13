@@ -14,18 +14,18 @@ const fetchProduct = async (productId) => {
   return data;
 };
 
-const updateOrderClientCurrentSku = async (id, matchingClientSku, ctlsku, itemId) => {
-  const { data } = await axios.put(
-    `/api/orders/admin/updateClientSku/${id}`,
-    {
-      "clientSku": matchingClientSku,
-      "ctlsku": ctlsku,
-      "cartItemId": itemId
-    }
-  );
+// const updateOrderClientCurrentSku = async (id, matchingClientSku, ctlsku, itemId) => {
+//   const { data } = await axios.put(
+//     `/api/orders/admin/updateClientSku/${id}`,
+//     {
+//       "clientSku": matchingClientSku,
+//       "ctlsku": ctlsku,
+//       "cartItemId": itemId
+//     }
+//   );
 
-  return data;
-}
+//   return data;
+// }
 
 const markAsDelivered = async (id, trackLink) => {
   const { data } = await axios.put("/api/orders/delivered/" + id, {
@@ -151,7 +151,7 @@ const AdminOrderDetailsPage = () => {
       updateAdminNote={updateAdminNote}
       adminCreateOrder={adminCreateOrder}
       fetchProduct={fetchProduct}
-      updateOrderClientCurrentSku={updateOrderClientCurrentSku}
+    // updateOrderClientCurrentSku={updateOrderClientCurrentSku}
     />
   );
 };

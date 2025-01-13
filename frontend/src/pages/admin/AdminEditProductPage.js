@@ -9,7 +9,7 @@ import {
   uploadPdfApiRequest,
   uploadPdfCloudinaryApiRequest,
 } from "./utils/utils";
-import { getClientsSkuList } from "../../redux/actions/productsActions";
+// import { getClientsSkuList } from "../../redux/actions/productsActions";
 import EditProductPageComponent from "./components/EditProductPageComponent";
 
 const fetchProduct = async (productId) => {
@@ -30,11 +30,11 @@ const AdminEditProductPage = () => {
 
   useEffect(() => {
     dispatch(getCategories());
-    dispatch(getClientsSkuList());
+    // dispatch(getClientsSkuList());
   }, [dispatch]);
 
   const { categories } = useSelector((state) => state.getCategories);
-  const { clientsSkuList } = useSelector((state) => state.products);
+  // const { clientsSkuList } = useSelector((state) => state.products);
 
   const imageDeleteHandler = async (imagePath, productId) => {
     // 在productController的 adminDeleteProductImage 里面 已经decode了url，所以这里要encode
@@ -66,7 +66,7 @@ const AdminEditProductPage = () => {
   return (
     <EditProductPageComponent
       categories={categories}
-      clientsSkuList={clientsSkuList}
+      // clientsSkuList={clientsSkuList}
       fetchProduct={fetchProduct}
       updateProductApiRequest={updateProductApiRequest}
       reduxDispatch={dispatch}
