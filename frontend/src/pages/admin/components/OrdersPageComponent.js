@@ -8,8 +8,6 @@ import OrderItemForOrderPageComponent from "./OrderItemForOrderPageComponent";
 import "./invoicePDF.css";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
-//import { Tooltip } from '@mui/material';
-import { useTrackEvents } from "../../trackEvents/useTrackEvents";
 import { useDispatch, useSelector } from "react-redux";
 
 const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
@@ -19,15 +17,12 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   const [monthTotal, setMothTotal] = useState(0);
   const [monthProfitMargin, setMonthProfitMargin] = useState(0)
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
-  // orders.push("cartSubtotal", orders.orderTotal.cartSubtotal);
-  // orders.push("username", orders.user.name + orders.user.lastName);
 
   /* sort table */
   // #region
   const [totalItems, setTotalItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
-  // const [sorting, setSorting] = useState({ field: "", order: "" });
   const [sorting, setSorting] = useState({ field: "createdAt", order: "desc" });
 
   const ITEMS_PER_PAGE = 40;
@@ -47,14 +42,9 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     { name: "Delete", field: "", sortable: false },
   ];
 
-  //Tracking user Interactions
-  useTrackEvents();
-  // var trackData = localStorage.getItem("trackData")
-  // console.log("trackData", trackData);
 
   const ordersData = useMemo(() => {
     let computedOrders = orders;
-    //console.log("örders", computedOrders);
     if (filterValue === "undispatched") {
       computedOrders = computedOrders.filter((order) => !order.isDelivered);
     } else if (filterValue === "backOrder") {
@@ -147,8 +137,6 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     );
   }, [orders, currentPage, search, sorting, filterValue]);
 
-  // console.log("ordersData", ordersData);
-
   // #endregion
 
   useEffect(() => {
@@ -183,8 +171,6 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   };
 
   const [selectedOrderId, setSelectedOrderId] = useState(null);
-
-  // console.log(selectedOrderId);
 
   const getOrderStyle = (order) => ({
     cursor: "pointer",
@@ -268,9 +254,8 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
               <h1>ORDERS </h1>
             </div>
             <div className="col-md-5" style={{ width: "33%" }}>
-
             </div>
-            <div className="col-md-5" style={{ width: "33%", textAlign: "left", paddingLeft: "13%" }}>
+            <div className="col-md-3">
               This Month's Order Total =  <b>${new Intl.NumberFormat('en-US').format(monthTotal)}</b><br />
               {userInfo.isSalesAdmin === true ? (
                 <>
@@ -278,10 +263,9 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
                 </>
               ) : ("")}
             </div>
-
           </div>
 
-          <div className="row">
+          <div className="row mb-2">
             <div className="col-md-5">
               <Pagination
                 total={totalItems}
@@ -296,9 +280,10 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
                 onClick={(e) => exportToExcel(fileName)}
                 style={{ cursor: "pointer", fontSize: 14 }}
               >
-                Excel Export All Products
+                Excel Export Orders
               </Button>
             </div>
+
             {/* filter and search */}
             <div className="col-md-4 d-flex justify-content-between">
               <select
@@ -310,7 +295,7 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
                 <option value="undispatched">Undispatched</option>
                 <option value="backOrder">Back Order</option>
                 <option value="invNotSent">Inv Not Sent</option>
-                <option value="uniforms">Uniforms</option>
+                {/* <option value="uniforms">Uniforms</option> */}
               </select>
               <Search
                 onSearch={(value) => {

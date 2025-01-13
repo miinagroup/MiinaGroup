@@ -7,75 +7,66 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import SplashPage from "../pages/SplashPage";
 import ScrollButton from "./ScrollButton ";
-import MineralPrice from "./MineralPrice";
-import StockPrice from "./StockPrice";
 import HomePageForVisitor from "../pages/HomePageForVisitor";
 import HeaderComponentForVisitors from "../pages/user/components/HomePageForVisitors/HeaderComponentForVisitors";
 import NavbComponentForVisitors from "../pages/user/components/HomePageForVisitors/NavbComponentForVisitors";
-import { useSelector, useDispatch
- } from "react-redux";
+import {
+  useSelector, useDispatch
+} from "react-redux";
 
- import { getSubcategories } from "../redux/actions/categoryActions.js";
-
+import { getSubcategories } from "../redux/actions/categoryActions.js";
 import NewFooter from "../pages/components/homeNewComponents/NewFooter/NewFooter";
 import NewHeaderComponent from "../pages/components/homeNewComponents/NewHeaderComponent/NewHeaderComponent";
 import NewHeaderComponentLoggedIn from "../pages/components/homeNewComponents/NewHeaderComponent/NewHeaderComponentLoggedIn";
 import NewCategoryComponent from "../pages/components/homeNewComponents/NewCategoryComponent/NewCategoryComponent";
 import NewModalWindow from "../pages/components/NewModalWindow/NewModalWindow";
 import NewButton from "../pages/components/homeNewComponents/NewButton/NewButton";
-import NewMineralsComponent from "../pages/components/homeNewComponents/NewMineralsComponent/NewMineralsComponent.js";
 import AcknowledgementOfCountryComponent from "../pages/components/AcknowledgementOfCountryComponent.js";
 
 import { getMineralPrices } from '../redux/actions/mineralActions.js';
 import Header from "./Header/Header.js";
+
 
 const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   const [isAuth, setIsAuth] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [userLoggedin, setUerLoggedin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [ isOpenModalCatalogue, setIsOpenModalCatalogue ] = useState(false);
+  const [isOpenModalCatalogue, setIsOpenModalCatalogue] = useState(false);
   const [stopAnimation, setStopAnimation] = useState(false);
-  
   const [showSidebar, setShowSidebar] = useState(false);
 
   const toggleShowSidebar = () => {
     setShowSidebar(!showSidebar)
   }
-
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
-
   const dispatch = useDispatch();
   const location = useLocation();
 
-  useEffect(() => {
-    dispatch(getMineralPrices());
-  }, []);
-
   const goToAboutSection = () => {
     setShowSidebar(false);
-    document.getElementById("about").scrollIntoView({behavior: 'smooth'})
+    document.getElementById("about").scrollIntoView({ behavior: 'smooth' })
   };
   const goToPromotionSection = () => {
     setShowSidebar(false);
-    document.getElementById("promotion").scrollIntoView({behavior: 'smooth'})
+    document.getElementById("promotion").scrollIntoView({ behavior: 'smooth' })
   };
   const goToContactSection = () => {
     setShowSidebar(false);
-    document.getElementById("request").scrollIntoView({behavior: 'smooth'})
+    document.getElementById("request").scrollIntoView({ behavior: 'smooth' })
   };
 
   const onClickBtn = () => {
     setStopAnimation(true)
     setShowSidebar(false);
-    setIsOpenModalCatalogue(true); 
+    setIsOpenModalCatalogue(true);
   }
 
   const [isVisible, setIsVisible] = useState(true);
 
   const handleScroll = () => {
     const aboutSection = document.getElementById('about');
-    
+
     if (aboutSection) {
       const rect = aboutSection.getBoundingClientRect();
       const isPastSection = rect.bottom <= window.innerHeight;
@@ -113,7 +104,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     dispatch(getSubcategories());
   }, []);
 
-  
+
   const subcategories = useSelector((state) => state.getCategories.subcategories);
 
   useEffect(() => {
@@ -145,21 +136,18 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     return (
       <div>
         <img
-        className="loading-spinner"
+          className="loading-spinner"
           src="/loading-gif.gif"
           alt="Loading"
-          style={{ display: "block", margin: "auto", width: "200px", marginTop:"10%" }}
+          style={{ display: "block", margin: "auto", width: "200px", marginTop: "10%" }}
         />{" "}
       </div>
     );
-  } 
-  //else if (isOnOpenRoute === false && userLoggedin === false) {
-    // return <SplashPage />;
-    //return <Navigate to="/" replace />;
-  //} 
+  }
   else if (isAuth === undefined || !isAuth) {
     return (
       <>
+
       <div 
       // style={{paddingBottom: "226px"}}
       >
@@ -172,6 +160,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
         {/* <ScrollButton /> */}
         {/* {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>} */}
         {/* {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => onClickBtn()} isVisible={isVisible} />} */}
+
       </>
     );
   } else {

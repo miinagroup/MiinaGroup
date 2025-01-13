@@ -12,13 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
-
 import "./page.css";
-
 import { LinkContainer } from "react-router-bootstrap";
 import { GiMineWagon } from "react-icons/gi";
 import { TbNotes } from "react-icons/tb";
-
 import {
   addToCart,
   removeFromCart,
@@ -26,39 +23,18 @@ import {
 } from "../redux/actions/cartActions";
 import axios from "axios";
 import { fetchCartItemsLogin } from "../redux/actions/cartActions";
-import {
-  getMineralPrices,
-  getStockPrices,
-  getWeathers,
-} from "../redux/actions/mineralActions";
 import { getCategories, getSubcategories } from "../redux/actions/categoryActions";
-import QuoteComponentHeader from "./SendEmail/QuoteComponentHeader";
 import CartDropDown from "../pages/user/components/CartDropDown";
-import ForecastChart from "./ForecastChart";
-import ForecastWeathers from "./ForecastWeathers";
-import QuoteSubmitComponent from "../pages/user/components/QuoteSubmitComponent";
-import UserQuoteSubmitPage from "../pages/user/UserQuoteSubmitPage";
-import {
-  useTrackEvents,
-  clearTrackEvents,
-  saveTrackEvents,
-} from "../pages/trackEvents/useTrackEvents";
 import HeaderComponentForVisitors from "../pages/user/components/HomePageForVisitors/HeaderComponentForVisitors";
 import FetchAuthFromServer from "./FetchAuthFromServer";
 
 const HeaderComponent = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
-  // const weathers = useSelector((state) => state.weathers[0]);
   const itemsCount = useSelector((state) => state.cart.itemsCount);
   const cartSubtotal = useSelector((state) => state.cart.cartSubtotal);
   const [productItem, setProductItem] = useState(null);
-  // console.log("userInfouserInfo",userInfo);
-  // const { categories } = useSelector((state) => state.getCategories);
-
-  // const [searchCategoryToggle, setSearchCategoryToggle] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-
   const navigate = useNavigate();
 
   const submitHandler = (e) => {
@@ -70,41 +46,18 @@ const HeaderComponent = () => {
   };
   const cartItems = useSelector((state) => state.cart.cartItems);
   const reduxDispatch = useDispatch();
-
-  //console.log("cartItems", cartItems);
-  /* 获取用户购物车信息 */
   const getCart = async () => {
     const { data } = await axios.get("/api/cart");
     return data;
   };
 
-  // const getUniformRole = async () => {
-  //   const { data } = await axios.get("/api/uniformRoles");
-  //   return data;
-  // };
-  // const [userUniformRole, setUserUniformRole] = useState({})
-  // useEffect(() => {
-  //   getUniformRole().then((data) => {
-  //     // console.log("data", data);
-  //     // console.log("userInfo", userInfo);
-  //     data.map((role) => {
-  //       if (role.role === userInfo.role) {
-  //         setUserUniformRole(role)
-  //       }
-  //     })
-  //   })
-  // }, [])
-
   const [userCart, setUserCart] = useState([]);
   const [useIsAdmin, setUseIsAdmin] = useState(false);
 
   useEffect(() => {
-    reduxDispatch(getMineralPrices());
     reduxDispatch(getCategories());
     reduxDispatch(getSubcategories());
-    reduxDispatch(getStockPrices());
     reduxDispatch(fetchCartItemsLogin());
-    reduxDispatch(getWeathers(userInfo?.location?.toUpperCase()));
     setUseIsAdmin(userInfo.isAdmin);
     getCart()
       .then((cart) => setUserCart(cart.data.cart))
@@ -138,10 +91,6 @@ const HeaderComponent = () => {
     }
   }, [weathers]);
 
-  // console.log("weathers", weathers);
-  // console.log("iconPath", iconPath);
-  // console.log("user cart", userCart);
-
   const [highestTem, setHighestTem] = useState(50);
   const [lowestTem, setLowestTem] = useState(0);
 
@@ -154,52 +103,51 @@ const HeaderComponent = () => {
     }
   }, [forecastData]);
 
-  const [wantWeather, setWantWeather] = useState(false);
+  // const [wantWeather, setWantWeather] = useState(false);
 
-  useEffect(() => {
-    if (userInfo && userInfo.wantWeather !== undefined) {
-      setWantWeather(userInfo.wantWeather);
-    }
-  }, [userInfo]);
+  // useEffect(() => {
+  //   if (userInfo && userInfo.wantWeather !== undefined) {
+  //     setWantWeather(userInfo.wantWeather);
+  //   }
+  // }, [userInfo]);
 
-  const handleToggle = async (event) => {
-    const newWantWeather = event.target.checked;
-    setWantWeather(newWantWeather);
+  // const handleToggle = async (event) => {
+  //   const newWantWeather = event.target.checked;
+  //   setWantWeather(newWantWeather);
 
-    try {
-      const response = await axios.put("/api/users/wantWeather", {
-        wantWeather: newWantWeather,
-      });
+  //   try {
+  //     const response = await axios.put("/api/users/wantWeather", {
+  //       wantWeather: newWantWeather,
+  //     });
 
-      if (response.data.success === "wantWeather updated") {
-        userInfo.wantWeather = newWantWeather;
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        window.location.reload();
-      } else {
-        console.error("Unexpected response from the backend:", response.data);
-      }
-    } catch (error) {
-      setWantWeather(!newWantWeather);
-      console.error("Error updating weather preference:", error);
-    }
-  };
+  //     if (response.data.success === "wantWeather updated") {
+  //       userInfo.wantWeather = newWantWeather;
+  //       localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  //       window.location.reload();
+  //     } else {
+  //       console.error("Unexpected response from the backend:", response.data);
+  //     }
+  //   } catch (error) {
+  //     setWantWeather(!newWantWeather);
+  //     console.error("Error updating weather preference:", error);
+  //   }
+  // };
 
   /* ********* User Logout ******** */
   const logOutUser = () => {
-    saveTrackEvents();
     dispatch(logout());
   };
 
   /* ********* User Quotes ******** */
-  const adminGetQuotes = async () => {
-    const { data } = await axios.get("/api/quotes/admin");
-    return data;
-  };
+  // const adminGetQuotes = async () => {
+  //   const { data } = await axios.get("/api/quotes/admin");
+  //   return data;
+  // };
 
-  const userGetQuotes = async () => {
-    const { data } = await axios.get("/api/quotes/user/");
-    return data;
-  };
+  // const userGetQuotes = async () => {
+  //   const { data } = await axios.get("/api/quotes/user/");
+  //   return data;
+  // };
 
   const startOfDay = (date) => {
     const newDate = new Date(date);
@@ -207,40 +155,36 @@ const HeaderComponent = () => {
     return newDate;
   };
 
-  const [adminProcessingQuotes, setAdminProcessingQuotes] = useState([]);
-  const [userCompletedQuotes, setUserCompletedQuotes] = useState([]);
+  // const [adminProcessingQuotes, setAdminProcessingQuotes] = useState([]);
+  // const [userCompletedQuotes, setUserCompletedQuotes] = useState([]);
 
-  useEffect(() => {
-    if (userInfo.isAdmin) {
-      adminGetQuotes().then((quotes) => {
-        setAdminProcessingQuotes(
-          quotes.filter((quote) => quote.status !== "Completed")
-        );
-      });
-    } else if (!userInfo.isAdmin) {
-      userGetQuotes().then((quotes) => {
-        const currentDateTime = startOfDay(new Date());
+  // useEffect(() => {
+  //   if (userInfo.isAdmin) {
+  //     adminGetQuotes().then((quotes) => {
+  //       setAdminProcessingQuotes(
+  //         quotes.filter((quote) => quote.status !== "Completed")
+  //       );
+  //     });
+  //   } else if (!userInfo.isAdmin) {
+  //     userGetQuotes().then((quotes) => {
+  //       const currentDateTime = startOfDay(new Date());
 
-        const filteredQuotes = quotes.filter(
-          (quote) =>
-            quote.expireDate &&
-            startOfDay(new Date(quote.expireDate)) >= currentDateTime
-        );
+  //       const filteredQuotes = quotes.filter(
+  //         (quote) =>
+  //           quote.expireDate &&
+  //           startOfDay(new Date(quote.expireDate)) >= currentDateTime
+  //       );
 
-        setUserCompletedQuotes(
-          filteredQuotes.filter(
-            (quote) => quote.status === "Completed" && !("accepted" in quote)
-          )
-        );
-      });
-    }
-  }, [userInfo]);
-
-  // console.log("adminProcessingQuotes", adminProcessingQuotes);
-  // console.log("userCompletedQuotes", userCompletedQuotes);
+  //       setUserCompletedQuotes(
+  //         filteredQuotes.filter(
+  //           (quote) => quote.status === "Completed" && !("accepted" in quote)
+  //         )
+  //       );
+  //     });
+  //   }
+  // }, [userInfo]);
 
   const isAuth = FetchAuthFromServer();
-
   const adminLinks = [
     {
       title: "Orders",
@@ -270,19 +214,6 @@ const HeaderComponent = () => {
     const { data } = await axios.put(`/api/uniformCarts/updateOnEmptyCart/${id}`, { purchaseData });
     return data;
   };
-
-  // const handleUpdateUniformCart = async (id, qty, price, item) => {
-  //   setProductItem(item);
-  //   console.log("item", item);
-  // }
-
-  // useEffect(() => {
-  //   if (productItem !== null) {
-  //     updateUniformCart().then((data) => {
-  //       console.log("UniformCart", data);
-  //     })
-  //   }
-  // }, [productItem])
 
   return (
     <>
@@ -353,20 +284,13 @@ const HeaderComponent = () => {
                   REQUEST FOR QUOTE
                 </Modal.Title>
               </Modal.Header>
-
-              <Modal.Body>
-                <UserQuoteSubmitPage userInfo={userInfo} />
-              </Modal.Body>
             </Modal>
 
             {/* ************   User and Carts  ***************  */}
-            {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav"> */}
-            {/* 折叠区间 */}
 
             <Nav className="user_cart">
               {/* *********** Weathers *********** */}
-              {userInfo?.wantWeather ? (
+              {/* {userInfo?.wantWeather ? (
                 <div className="weather_dropdown p-0 m-0">
                   <div
                     className="miningCart"
@@ -405,7 +329,7 @@ const HeaderComponent = () => {
                     </div>
                   </div>
                 </div>
-              ) : null}
+              ) : null} */}
 
               {/* *********** User Icon *********** */}
               {userInfo.isAdmin ? (
@@ -442,7 +366,7 @@ const HeaderComponent = () => {
                               Users
                             </a>
                           </li>
-                          <li style={{ display: "flex", alignItems: "center" }}>
+                          {/* <li style={{ display: "flex", alignItems: "center" }}>
                             <span
                               className="hd_c"
                               style={{ marginRight: "10px" }}
@@ -457,11 +381,10 @@ const HeaderComponent = () => {
                                 onChange={handleToggle}
                               />
                             </Form>
-                          </li>
+                          </li> */}
                           <li
                             className="hd_c"
                             onClick={() => dispatch(logout())}
-                            //onClick={() => logOutUser()}
                             style={{ cursor: "pointer" }}
                           >
                             Log out
@@ -497,23 +420,12 @@ const HeaderComponent = () => {
                               Orders
                             </a>
                           </li>
-                          {/* {
-                            userInfo.isUniformManager ? (
-                              <>
-                                <li>
-                                  <a href="/user/my-uniforms" className="hd_c">
-                                    Uniform
-                                  </a>
-                                </li>
-                              </>
-                            ) : ("")
-                          } */}
-                          <li>
+                          {/* <li>
                             <a href="/user/my-uniforms" className="hd_c">
                               Uniform
                             </a>
-                          </li>
-                          <li style={{ display: "flex", alignItems: "center" }}>
+                          </li> */}
+                          {/* <li style={{ display: "flex", alignItems: "center" }}>
                             <span
                               className="hd_c"
                               style={{ marginRight: "10px" }}
@@ -528,11 +440,10 @@ const HeaderComponent = () => {
                                 onChange={handleToggle}
                               />
                             </Form>
-                          </li>
+                          </li> */}
 
                           <li
                             className="hd_c"
-                            //onClick={() => dispatch(logout())}
                             onClick={() => logOutUser()}
                             style={{ cursor: "pointer" }}
                           >
@@ -546,7 +457,7 @@ const HeaderComponent = () => {
               )}
 
               {/* *********** Quote *********** */}
-              <div className="quote_dropdown">
+              {/* <div className="quote_dropdown">
                 <div className="miningCart">
                   <a
                     className="hd_c mining_cart"
@@ -573,7 +484,7 @@ const HeaderComponent = () => {
                     </Badge>
                   </a>
                 </div>
-              </div>
+              </div> */}
 
               {/* *********** Cart and Dropdown *********** */}
               <div className="cart_dropdown">
@@ -614,14 +525,11 @@ const HeaderComponent = () => {
                       cartSubtotal={cartSubtotal}
                       reduxDispatch={reduxDispatch}
                       useIsAdmin={useIsAdmin}
-                    // userUniformRole={userUniformRole}
                     />
                   </div>
                 )}
               </div>
             </Nav>
-
-            {/* </Navbar.Collapse> */}
           </Container>
         </Navbar>
       ) : (

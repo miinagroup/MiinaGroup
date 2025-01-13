@@ -10,28 +10,16 @@ import {
   Modal
 } from "react-bootstrap";
 import axios from "axios";
-
 import { logout } from "../../../../redux/actions/userActions";
 import { fetchCartItemsLogin } from "../../../../redux/actions/cartActions";
-import {
-  getWeathers,
-} from "../../../../redux/actions/mineralActions";
 import {
   addToCart,
   removeFromCart,
   editQuantity,
 } from "../../../../redux/actions/cartActions";
-
-import {
-  saveTrackEvents,
-} from "../../../../pages/trackEvents/useTrackEvents";
 import CartDropDown from "../../../../pages/user/components/CartDropDown";
-import UserQuoteSubmitPage from "../../../../pages/user/UserQuoteSubmitPage";
-
-import ForecastChart from "../../../../components/ForecastChart";
 import FetchAuthFromServer from "../../../../components/FetchAuthFromServer";
 import HamburgerMenu from "../../../mobile/components/HeaderComponent/HamburgerMenu";
-
 import styles from "./NewHeaderComponent.module.css";
 import "../../../../components/page.css";
 
@@ -45,7 +33,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
   const itemsCount = useSelector((state) => state.cart.itemsCount);
   const cartSubtotal = useSelector((state) => state.cart.cartSubtotal);
   const [showModal, setShowModal] = useState(false);
-  const mineralPrice = useSelector((state) => state.minerals.minerals);
+  // const mineralPrice = useSelector((state) => state.minerals.minerals);
   const [isShownQuoteBtn, setIsShownQuoteBtn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -82,7 +70,6 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
 
   useEffect(() => {
     reduxDispatch(fetchCartItemsLogin());
-    reduxDispatch(getWeathers(userInfo?.location?.toUpperCase()));
     setUseIsAdmin(userInfo.isAdmin);
     getCart()
       .then((cart) => setUserCart(cart.data.cart))
@@ -94,13 +81,13 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
   };
 
 
-  let sortedMineralPrice = [];
-  let updateDate;
+  // let sortedMineralPrice = [];
+  // let updateDate;
 
-  if (mineralPrice && Array.isArray(mineralPrice) && mineralPrice.length > 0) {
-    sortedMineralPrice = [...mineralPrice].sort((a, b) => b.latestPrice - a.latestPrice);
-    updateDate = sortedMineralPrice[0].updateDate;
-  }
+  // if (mineralPrice && Array.isArray(mineralPrice) && mineralPrice.length > 0) {
+  //   sortedMineralPrice = [...mineralPrice].sort((a, b) => b.latestPrice - a.latestPrice);
+  //   updateDate = sortedMineralPrice[0].updateDate;
+  // }
 
   /* ********* Weather ******** */
   const [forecastData, setForecastData] = useState([]);
@@ -134,39 +121,38 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
     }
   }, [forecastData]);
 
-  const [wantWeather, setWantWeather] = useState(false);
+  // const [wantWeather, setWantWeather] = useState(false);
 
-  useEffect(() => {
-    if (userInfo && userInfo.wantWeather !== undefined) {
-      setWantWeather(userInfo.wantWeather);
-    }
-  }, [userInfo]);
+  // useEffect(() => {
+  //   if (userInfo && userInfo.wantWeather !== undefined) {
+  //     setWantWeather(userInfo.wantWeather);
+  //   }
+  // }, [userInfo]);
 
-  const handleToggle = async (event) => {
-    const newWantWeather = event.target.checked;
-    setWantWeather(newWantWeather);
+  // const handleToggle = async (event) => {
+  //   const newWantWeather = event.target.checked;
+  //   setWantWeather(newWantWeather);
 
-    try {
-      const response = await axios.put("/api/users/wantWeather", {
-        wantWeather: newWantWeather,
-      });
+  //   try {
+  //     const response = await axios.put("/api/users/wantWeather", {
+  //       wantWeather: newWantWeather,
+  //     });
 
-      if (response.data.success === "wantWeather updated") {
-        userInfo.wantWeather = newWantWeather;
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        window.location.reload();
-      } else {
-        console.error("Unexpected response from the backend:", response.data);
-      }
-    } catch (error) {
-      setWantWeather(!newWantWeather);
-      console.error("Error updating weather preference:", error);
-    }
-  };
+  //     if (response.data.success === "wantWeather updated") {
+  //       userInfo.wantWeather = newWantWeather;
+  //       localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  //       window.location.reload();
+  //     } else {
+  //       console.error("Unexpected response from the backend:", response.data);
+  //     }
+  //   } catch (error) {
+  //     setWantWeather(!newWantWeather);
+  //     console.error("Error updating weather preference:", error);
+  //   }
+  // };
 
   /* ********* User Logout ******** */
   const logOutUser = () => {
-    saveTrackEvents();
     dispatch(logout());
   };
 
@@ -176,15 +162,15 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
   };
 
   /* ********* User Quotes ******** */
-  const adminGetQuotes = async () => {
-    const { data } = await axios.get("/api/quotes/admin");
-    return data;
-  };
+  // const adminGetQuotes = async () => {
+  //   const { data } = await axios.get("/api/quotes/admin");
+  //   return data;
+  // };
 
-  const userGetQuotes = async () => {
-    const { data } = await axios.get("/api/quotes/user/");
-    return data;
-  };
+  // const userGetQuotes = async () => {
+  //   const { data } = await axios.get("/api/quotes/user/");
+  //   return data;
+  // };
 
   const startOfDay = (date) => {
     const newDate = new Date(date);
@@ -192,40 +178,40 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
     return newDate;
   };
 
-  const [adminProcessingQuotes, setAdminProcessingQuotes] = useState([]);
-  const [userCompletedQuotes, setUserCompletedQuotes] = useState([]);
+  // const [adminProcessingQuotes, setAdminProcessingQuotes] = useState([]);
+  // const [userCompletedQuotes, setUserCompletedQuotes] = useState([]);
   const [deliveryBook, setDeliveryBook] = useState()
 
-  useEffect(() => {
-    if (userInfo.isAdmin) {
-      adminGetQuotes().then((quotes) => {
-        setAdminProcessingQuotes(
-          quotes.filter((quote) => quote.status !== "Completed")
-        );
-      });
-    } else if (!userInfo.isAdmin) {
-      userGetQuotes().then((quotes) => {
-        const currentDateTime = startOfDay(new Date());
+  // useEffect(() => {
+  //   if (userInfo.isAdmin) {
+  //     adminGetQuotes().then((quotes) => {
+  //       setAdminProcessingQuotes(
+  //         quotes.filter((quote) => quote.status !== "Completed")
+  //       );
+  //     });
+  //   } else if (!userInfo.isAdmin) {
+  //     userGetQuotes().then((quotes) => {
+  //       const currentDateTime = startOfDay(new Date());
 
-        const filteredQuotes = quotes.filter(
-          (quote) =>
-            quote.expireDate &&
-            startOfDay(new Date(quote.expireDate)) >= currentDateTime
-        );
+  //       const filteredQuotes = quotes.filter(
+  //         (quote) =>
+  //           quote.expireDate &&
+  //           startOfDay(new Date(quote.expireDate)) >= currentDateTime
+  //       );
 
-        setUserCompletedQuotes(
-          filteredQuotes.filter(
-            (quote) => quote.status === "Completed" && !("accepted" in quote)
-          )
-        );
-      });
-      if (userInfo.email) {
-        getdeliveryBooks(userInfo.email).then((books) => {
-          setDeliveryBook(books[0])
-        })
-      }
-    }
-  }, [userInfo]);
+  //       setUserCompletedQuotes(
+  //         filteredQuotes.filter(
+  //           (quote) => quote.status === "Completed" && !("accepted" in quote)
+  //         )
+  //       );
+  //     });
+  //     if (userInfo.email) {
+  //       getdeliveryBooks(userInfo.email).then((books) => {
+  //         setDeliveryBook(books[0])
+  //       })
+  //     }
+  //   }
+  // }, [userInfo]);
 
   const isAuth = FetchAuthFromServer();
 
@@ -298,79 +284,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
               onChange={(e) => setSearchQuery(e.target.value)} />
             <button className={styles.iconNew} onClick={submitHandler}><i class="bi bi-search fs-4"></i></button>
           </div>
-          {isShownQuoteBtn && <>
-            <button className={`desktop ${styles.btnQuote}`} onClick={toggleModal} >GET A QUOTE</button>
-            <img
-              id="rfq_button"
-              src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/red-search.png"
-              alt=""
-              className="red_search_img mobile-visibility"
-              style={{ cursor: "pointer" }}
-              onClick={toggleModal}
-            ></img>
-          </>}
-
-          <Modal
-            show={showModal}
-            onHide={toggleModal}
-            className="quote_product_modal"
-          >
-            <Modal.Header className="m-0 p-2" closeButton>
-              <Modal.Title
-                style={{ textAlign: "center", width: "100%" }}
-                className="m-0 p-0"
-              >
-                REQUEST FOR QUOTE
-              </Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <UserQuoteSubmitPage userInfo={userInfo} />
-            </Modal.Body>
-          </Modal>
           <Nav className={styles.user_cart}>
-            {/* *********** Weathers *********** */}
-            {userInfo?.wantWeather ? (
-              <div className="weather_dropdown p-0 m-0">
-                <div
-                  className={`${styles.miningCart} miningCart`}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <img
-                    src={iconPath}
-                    alt=""
-                    className="p-0 m-0"
-                    style={{ width: "65%" }}
-                  />
-                </div>
-                <div className="weather_dropdown_box">
-                  <div
-                    style={{ display: "flex", flexDirection: "row" }}
-                    className="ps-2"
-                  >
-                    {forecastData &&
-                      forecastData.map((item, index) => (
-                        <div key={index} style={{ flex: 1 }}>
-                          <ForecastChart
-                            maxTemp={item.maxtemp_c}
-                            minTemp={item.mintemp_c}
-                            date={item.date}
-                            icon={item.condition[0].icon}
-                            highestTem={highestTem}
-                            lowestTem={lowestTem}
-                            isAdmin={userInfo.isAdmin}
-                          />
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
             {/* *********** User Icon *********** */}
             {userInfo.isAdmin ? (
               <>
@@ -396,7 +310,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                             );
                           }
                         })}
-                        {userInfo.isUniformManager ? (
+                        {/* {userInfo.isUniformManager ? (
                           <>
                             <li>
                               <a href="/user/my-uniforms" className="hd_c">
@@ -404,23 +318,23 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                               </a>
                             </li>
                           </>
-                        ) : ("")}
+                        ) : ("")} */}
                         <li>
                           <a href="/admin/products" className="hd_c">
                             Products
                           </a>
                         </li>
-                        <li>
+                        {/* <li>
                           <a href="/product-list?categoryName=QUOTE" className="hd_c">
                             Quote
                           </a>
-                        </li>
+                        </li> */}
                         <li>
                           <a href="/admin/users" className="hd_c">
                             Users
                           </a>
                         </li>
-                        <li style={{ display: "flex", alignItems: "center" }}>
+                        {/* <li style={{ display: "flex", alignItems: "center" }}>
                           <span
                             className="hd_c"
                             style={{ marginRight: "10px" }}
@@ -435,11 +349,10 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                               onChange={handleToggle}
                             />
                           </Form>
-                        </li>
+                        </li> */}
                         <li
                           className="hd_c"
                           onClick={() => dispatch(logout())}
-                          //onClick={() => logOutUser()}
                           style={{ cursor: "pointer" }}
                         >
                           Log out
@@ -475,7 +388,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                             Orders
                           </a>
                         </li>
-                        <li>
+                        {/* <li>
                           <a href={
                             useIsAdmin === true
                               ? "/admin/quotes?tab=processingQuotes&pageNum=1"
@@ -483,15 +396,15 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                           } className="hd_c">
                             Quotes
                           </a>
-                        </li>
-                        {deliveryBook && deliveryBook.hasUniform === true ? (
+                        </li> */}
+                        {/* {deliveryBook && deliveryBook.hasUniform === true ? (
                           <li>
                             <a href="/user/my-uniforms" className="hd_c">
                               Uniform
                             </a>
                           </li>
-                        ) : ("")}
-                        <li style={{ display: "flex", alignItems: "center" }}>
+                        ) : ("")} */}
+                        {/* <li style={{ display: "flex", alignItems: "center" }}>
                           <span
                             className="hd_c"
                             style={{ marginRight: "10px" }}
@@ -506,7 +419,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                               onChange={handleToggle}
                             />
                           </Form>
-                        </li>
+                        </li> */}
 
                         <li
                           className="hd_c"
@@ -523,7 +436,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
             )}
 
             {/* *********** Quote *********** */}
-            <div className="desktop">
+            {/* <div className="desktop">
               <div className={`miningCart ${styles.miningCart}`}>
                 <a
                   className="hd_c"
@@ -550,7 +463,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToProm
                   </Badge>
                 </a>
               </div>
-            </div>
+            </div> */}
 
             {/* *********** Cart and Dropdown *********** */}
             <div className="cart_dropdown">

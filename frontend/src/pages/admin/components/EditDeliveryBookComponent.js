@@ -91,7 +91,8 @@ const EditDeliveryBookComponent = ({
             emailHost: form.emailHost.value,
             billingEmail: form.billingEmail.value,
             companyAccount: form.companyAccount.value,
-            quickBooksCustomerId: form.quickBooksCustomerId.value,
+            // quickBooksCustomerId: form.quickBooksCustomerId.value,
+            quickBooksCustomerId: 1,
             dueDays: form.dueDays.value,
             sites: [...sites, ...sitesNew],
             abn: form.abn.value,
@@ -159,7 +160,7 @@ const EditDeliveryBookComponent = ({
                     <GoBackButton />
                 </Col>
                 <Col md={8}>
-                    <h1>Edit Delivery Book</h1>
+                    <h1>EDIT COMPANY BOOK</h1>
                     <Form
                         noValidate
                         validated={validated}
@@ -221,7 +222,7 @@ const EditDeliveryBookComponent = ({
                                 defaultValue={deliveryBook.companyAccount}
                             />
                         </Form.Group>
-                        <Form.Group
+                        {/* <Form.Group
                             className="mb-3"
                             controlId="formBasicQuickBooksCustomerId"
                         >
@@ -232,7 +233,7 @@ const EditDeliveryBookComponent = ({
                                 type="text"
                                 defaultValue={deliveryBook.quickBooksCustomerId}
                             />
-                        </Form.Group>
+                        </Form.Group> */}
                         <Form.Group className="mb-3" controlId="formBasicDueDays">
                             <Form.Label>DueDays</Form.Label>
                             <Form.Control
@@ -242,7 +243,7 @@ const EditDeliveryBookComponent = ({
                                 defaultValue={deliveryBook.dueDays}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicHasUniform">
+                        {/* <Form.Group className="mb-3" controlId="formBasicHasUniform">
                             <Form.Label>Has Uniform</Form.Label>
                             <Form.Check
                                 type="switch"
@@ -251,7 +252,7 @@ const EditDeliveryBookComponent = ({
                                 checked={hasUniform}
                                 onChange={handleToggle}
                             />
-                        </Form.Group>
+                        </Form.Group> */}
 
                         <hr
                             style={{
@@ -353,63 +354,6 @@ const EditDeliveryBookComponent = ({
                                                 </Form.Group>
                                             </React.Fragment>
                                         </Row>
-
-                                        {/* <Row>
-                                            <React.Fragment>
-                                                <Form.Group
-                                                    as={Col}
-                                                    md="3"
-                                                    className="mb-3"
-                                                    controlId={`formBasicName-${index}`}
-                                                >
-                                                    <Form.Label>Name</Form.Label>
-                                                    <Form.Control
-                                                        name={`name-${index}`}
-                                                        required
-                                                        type="text"
-                                                        defaultValue={book.name}
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group
-                                                    as={Col}
-                                                    md="4"
-                                                    className="mb-3"
-                                                    controlId={`formBasicBillingAddress-${index}`}
-                                                >
-                                                    <Form.Label>Billing Address</Form.Label>
-                                                    <Form.Control
-                                                        name={`billingAddress-${index}`}
-                                                        required
-                                                        type="text"
-                                                        defaultValue={book.billingAddress}
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group
-                                                    as={Col}
-                                                    md="4"
-                                                    className="mb-3"
-                                                    controlId={`formBasicDeliveryAddress-${index}`}
-                                                >
-                                                    <Form.Label>Delivery Address</Form.Label>
-                                                    <Form.Control
-                                                        name={`deliveryAddress-${index}`}
-                                                        required
-                                                        type="text"
-                                                        defaultValue={book.deliveryAddress}
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group as={Col} md="1" className="mb-3">
-                                                    <i
-                                                        className="bi bi-trash mt-3"
-                                                        // onClick={() => setSelectedStock(item)}
-                                                        onClick={() => handleRemoveSites(index)}
-                                                        style={{
-                                                            cursor: "pointer",
-                                                        }}
-                                                    ></i>
-                                                </Form.Group>
-                                            </React.Fragment>
-                                        </Row> */}
                                     </>
                                 </div>
                             ))}
@@ -499,58 +443,6 @@ const EditDeliveryBookComponent = ({
                                     </React.Fragment>
                                 </Row>
 
-                                {/* <Row>
-                                    <React.Fragment key={index}>
-                                        <Form.Group
-                                            as={Col}
-                                            md="3"
-                                            className="mb-3"
-                                            controlId={`formBasicNewName-${index}`}
-                                        >
-                                            <Form.Label>Name</Form.Label>
-                                            <Form.Control
-                                                name={`newName-${index}`}
-                                                required
-                                                type="text"
-                                            />
-                                        </Form.Group>
-                                        <Form.Group
-                                            as={Col}
-                                            md="4"
-                                            className="mb-3"
-                                            controlId={`formBasicNewBillingAddress-${index}`}
-                                        >
-                                            <Form.Label>Billing Address </Form.Label>
-                                            <Form.Control
-                                                name={`newBillingAddress-${index}`}
-                                                required
-                                                type="text"
-                                            />
-                                        </Form.Group>
-                                        <Form.Group
-                                            as={Col}
-                                            md="4"
-                                            className="mb-3"
-                                            controlId={`formBasicNewDeliveryAddress-${index}`}
-                                        >
-                                            <Form.Label>Delivery Address </Form.Label>
-                                            <Form.Control
-                                                name={`newDeliveryAddress-${index}`}
-                                                required
-                                                type="text"
-                                            />
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="1" className="mb-3">
-                                            <i
-                                                className="bi bi-trash mt-3"
-                                                onClick={handleRemoveNewSite}
-                                                style={{
-                                                    cursor: "pointer",
-                                                }}
-                                            ></i>
-                                        </Form.Group>
-                                    </React.Fragment>
-                                </Row> */}
                             </>
                         ))}
                         <hr />

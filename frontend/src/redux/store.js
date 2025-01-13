@@ -1,25 +1,16 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-
 import { cartReducer } from "./reducers/cartReducers";
-import {
-  mineralReducer,
-  stockReducer,
-  weatherReducer,
-} from "./reducers/mineralReducer";
 import { userRegisterLoginReducer } from "./reducers/userReducers";
 import { getCategoriesReducer } from "./reducers/categoryReducers";
-import { productsReducer } from "./reducers/productsReducer";
+// import { productsReducer } from "./reducers/productsReducer";
 
 const reducer = combineReducers({
   cart: cartReducer,
   userRegisterLogin: userRegisterLoginReducer,
   getCategories: getCategoriesReducer,
-  minerals: mineralReducer,
-  stocks: stockReducer,
-  weathers: weatherReducer,
-  products: productsReducer
+  // products: productsReducer
 });
 
 const cartItemsInLocalStorage = localStorage.getItem("cart")
@@ -28,7 +19,7 @@ const cartItemsInLocalStorage = localStorage.getItem("cart")
 const categoriesInLocalStorage = localStorage.getItem("categories")
   ? JSON.parse(localStorage.getItem("categories"))
   : [];
-  const subcategoriesInLocalStorage = localStorage.getItem("subcategories")
+const subcategoriesInLocalStorage = localStorage.getItem("subcategories")
   ? JSON.parse(localStorage.getItem("subcategories"))
   : [];
 const userInfoInLocalStorage = localStorage.getItem("userInfo")
@@ -36,18 +27,6 @@ const userInfoInLocalStorage = localStorage.getItem("userInfo")
   : sessionStorage.getItem("userInfo")
     ? JSON.parse(sessionStorage.getItem("userInfo"))
     : {};
-
-const mineralsInLocalStorage = localStorage.getItem("minerals")
-  ? JSON.parse(localStorage.getItem("minerals"))
-  : [];
-
-const stocksInLocalStorage = localStorage.getItem("stocks")
-  ? JSON.parse(localStorage.getItem("stocks"))
-  : [];
-
-const weathersInLocalStorage = localStorage.getItem("weathers")
-  ? JSON.parse(localStorage.getItem("weathers"))
-  : [];
 
 const productsInLocalStorage = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
@@ -94,9 +73,6 @@ const INITIAL_STATE = {
 
   },
   userRegisterLogin: { userInfo: userInfoInLocalStorage },
-  minerals: mineralsInLocalStorage,
-  stocks: stocksInLocalStorage,
-  weathers: weathersInLocalStorage,
   getCategories: {
     categories: categoriesInLocalStorage,
     subcategories: subcategoriesInLocalStorage,

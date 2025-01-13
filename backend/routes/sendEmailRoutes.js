@@ -10,7 +10,7 @@ const {
   deliveryNotice,
   quoteCompletedNotice,
   sendQuotePDF,
-  sendPOPDF,
+  // sendPOPDF,
   sendRequest,
   sendNotification
 } = require("../controllers/sendEmailController");
@@ -27,7 +27,7 @@ router.post("/newOrderRemind", newOrderRemind);
 router.post("/emailInv", sendInvoice);
 router.post("/emailNotification", sendNotification);
 router.post("/emailProformaInv", sendProformaInvoice);
-router.post("/emailPO", sendPOPDF);
+// router.post("/emailPO", sendPOPDF);
 router.post("/emailShipping", deliveryNotice);
 router.post("/emailQuote", quoteCompletedNotice);
 router.post("/emailDownloadedQuote", sendQuotePDF);

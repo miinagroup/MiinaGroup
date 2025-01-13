@@ -1,22 +1,15 @@
 import { Row, Col, Container, ListGroup, Form, Button } from "react-bootstrap";
 import PaginationComponent from "../../components/PaginationComponent";
 import ProductForListComponent from "../../components/ProductForListComponent";
-
 import { useCallback, useEffect, useState, useMemo, useRef, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import FilterComponent from "../../components/filterQueryResultOptions/FilterComponent";
 import BreadcrumbComponent from "../../components/filterQueryResultOptions/BreadcrumbComponent";
-import QuoteComponent from "../../components/SendEmail/QuoteComponent";
 import ProductCategoriesComponent from "../../components/ProductCategoriesComponent";
 import axios from "axios";
-import { useTrackEvents } from "../trackEvents/useTrackEvents";
-import QuoteSubmitComponent from "../user/components/QuoteSubmitComponent";
-import UserQuoteSubmitPage from "../user/UserQuoteSubmitPage";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./SharedPages.css";
-
-// import ReactGA from "react-ga";
 
 const ProductListPage = ({
   getProducts,
@@ -100,8 +93,6 @@ const ProductListPage = ({
   //   ReactGA.pageview(window.location)
   // }, [])
 
-  //Tracking user Interactions
-  useTrackEvents();
   // var trackData = localStorage.getItem("trackData")
   // console.log("trackData", trackData);
 
@@ -441,7 +432,6 @@ const ProductListPage = ({
                     name={product.name}
                     price={product.displayPrice}
                     productId={product._id}
-                    slrsku={product.slrsku}
                     saleunit={product.saleunit}
                     stock={product.stock}
                     reduxDispatch={dispatch}
@@ -455,11 +445,11 @@ const ProductListPage = ({
               })
             )}
           </Row>
-            {!loading && productCategories.length < 2 && products.length === 0 ? (
+            {/* {!loading && productCategories.length < 2 && products.length === 0 ? (
               <div className="w-50 m-2 p-3 border rounded product-list-page-wrapper">
                 <UserQuoteSubmitPage fromProductList={true} />
               </div>
-            ) : null}
+            ) : null} */}
 
             {paginationLinksNumber > 1 ? (
               <PaginationComponent
@@ -488,7 +478,6 @@ const ProductListPage = ({
                         name={product.name}
                         price={product.displayPrice}
                         productId={product._id}
-                        slrsku={product.slrsku}
                         saleunit={product.saleunit}
                         stock={product.stock}
                         reduxDispatch={dispatch}
@@ -503,9 +492,9 @@ const ProductListPage = ({
                 </Row>
               </InfiniteScroll>
 
-              {searchedData.length === 0 && !loadingTwo && <div className="w-50 m-2 p-3 border rounded product-list-page-wrapper">
+              {/* {searchedData.length === 0 && !loadingTwo && <div className="w-50 m-2 p-3 border rounded product-list-page-wrapper">
                 <UserQuoteSubmitPage fromProductList={true} />
-              </div>}
+              </div>} */}
             </>
           }
         </Col>

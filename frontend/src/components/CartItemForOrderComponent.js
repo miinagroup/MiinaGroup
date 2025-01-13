@@ -13,24 +13,24 @@ const CartItemForOrderComponent = ({
   changeCount = false,
   changePrice = false,
   edit,
-  enterClientSKU,
+  // enterClientSKU,
   backOrderStatus,
   userInfo,
   onSkuUpdateSuccess,
-  setEnterClientSKU,
-  currentClientSkuName,
+  // setEnterClientSKU,
+  // currentClientSkuName,
   selectedDeliverySite,
   editingIndex,
   setEditingIndex,
   index,
-  handleNewClientSkusChange,
+  // handleNewClientSkusChange,
   isCancel,
   isUpdated
 }) => {
   const [qty, setQty] = useState(item.cartProducts[0].suppliedQty);
   const [price, setPrice] = useState(item.cartProducts[0].price);
-  const [clientSKU, setClientSKU] = useState(item.cartProducts[0].currentClientSku);
-  const [previousClientSkuValue, setPreviousClientSkuValue] = useState();
+  // const [clientSKU, setClientSKU] = useState(item.cartProducts[0].currentClientSku);
+  // const [previousClientSkuValue, setPreviousClientSkuValue] = useState();
 
   const [ctlsku, setCtlsku] = useState(item.cartProducts[0].ctlsku);
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
@@ -38,20 +38,20 @@ const CartItemForOrderComponent = ({
 
   const [clientsSku, setClientsSku] = useState(item.cartProducts[0].clientsSku);
 
-  useEffect(() => {
-    setClientSKU(item.cartProducts[0].currentClientSku)
-    setPreviousClientSkuValue(item.cartProducts[0].currentClientSku?.number)
-  }, [item]);
+  // useEffect(() => {
+  //   setClientSKU(item.cartProducts[0].currentClientSku)
+  //   setPreviousClientSkuValue(item.cartProducts[0].currentClientSku?.number)
+  // }, [item]);
 
-  useEffect(() => {
-    isCancel && setClientSKU(clientSKU => ({
-      ...clientSKU,
-      number: previousClientSkuValue
-    }));
+  // useEffect(() => {
+  //   isCancel && setClientSKU(clientSKU => ({
+  //     ...clientSKU,
+  //     number: previousClientSkuValue
+  //   }));
 
-    isUpdated && setPreviousClientSkuValue(clientSKU.number)
-  }, [isCancel, previousClientSkuValue, isUpdated])
-  
+  //   isUpdated && setPreviousClientSkuValue(clientSKU.number)
+  // }, [isCancel, previousClientSkuValue, isUpdated])
+
 
   useEffect(() => {
     if (item.saleunit) {
@@ -89,27 +89,27 @@ const CartItemForOrderComponent = ({
     }
   };
 
-  const hanldeSkuChange = (e) => {
-    let updatedCientSku = {}
-    setEditingIndex(index);
-    
-    updatedCientSku = {number: e.target.value};
-    if(!clientSKU?.name) {
-      let clientSkuname = {name: currentClientSkuName};
-      setClientSKU(clientSKU => ({
-        ...clientSKU,
-        ...clientSkuname,
-        ...updatedCientSku
-      }));
-    } else {
-      setClientSKU(clientSKU => ({
-      ...clientSKU,
-      ...updatedCientSku
-    }));
-    }
-    handleNewClientSkusChange(updatedCientSku, ctlsku, item._id)
-    setIsSaveEnabled(true);
-  };
+  // const hanldeSkuChange = (e) => {
+  //   let updatedCientSku = {}
+  //   setEditingIndex(index);
+
+  //   updatedCientSku = {number: e.target.value};
+  //   if(!clientSKU?.name) {
+  //     let clientSkuname = {name: currentClientSkuName};
+  //     setClientSKU(clientSKU => ({
+  //       ...clientSKU,
+  //       ...clientSkuname,
+  //       ...updatedCientSku
+  //     }));
+  //   } else {
+  //     setClientSKU(clientSKU => ({
+  //     ...clientSKU,
+  //     ...updatedCientSku
+  //   }));
+  //   }
+  //   handleNewClientSkusChange(updatedCientSku, ctlsku, item._id)
+  //   setIsSaveEnabled(true);
+  // };
 
 
   const backOrderQuantity = item.cartProducts[0].quantity - qty;
@@ -143,7 +143,7 @@ const CartItemForOrderComponent = ({
               </strong>
             </a>
           </td>
-          <td style={{ width: "10%" }}>
+          {/* <td style={{ width: "10%" }}>
             {enterClientSKU === false ? (
               <p className="m-0">{clientSKU?.number}</p>
             ) : (
@@ -157,7 +157,7 @@ const CartItemForOrderComponent = ({
                
               </>
             )}
-          </td>
+          </td> */}
 
           <td style={{ width: "10%" }}>
             <p className="m-0">{item.cartProducts[0].ctlsku}</p>

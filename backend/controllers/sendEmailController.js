@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const Order = require("../models/OrderModel");
-const PurchaseOrder = require("../models/PurchaseOrderModel");
+//const PurchaseOrder = require("../models/PurchaseOrderModel");
 
 // Nodemailer configuration
 /* const transporter = nodemailer.createTransport({
@@ -933,63 +933,63 @@ const newUserNoticeToJosh = async ({
   }
 };
 
-const sendPOPDF = async (req, res, next) => {
-  try {
-    let { totalPrice, supplierSalesEmail, poNumber, supplier, base64data, poID } =
-      req.body;
+// const sendPOPDF = async (req, res, next) => {
+//   try {
+//     let { totalPrice, supplierSalesEmail, poNumber, supplier, base64data, poID } =
+//       req.body;
 
 
-    const base64prefix = "data:application/pdf;base64,";
-    if (base64data.startsWith(base64prefix)) {
-      base64data = base64data.slice(base64prefix.length);
-    }
+//     const base64prefix = "data:application/pdf;base64,";
+//     if (base64data.startsWith(base64prefix)) {
+//       base64data = base64data.slice(base64prefix.length);
+//     }
 
-    const message = {
-      from: `"CTL Purchase Order" <${process.env.CTLSALESEMAIL}>`,
-      to: `${supplierSalesEmail}`,
-      subject: `Purchase Order ${poNumber} from CTL AUSTRALIA`,
-      text: `
-  Hi ${supplier} Team,
+//     const message = {
+//       from: `"CTL Purchase Order" <${process.env.CTLSALESEMAIL}>`,
+//       to: `${supplierSalesEmail}`,
+//       subject: `Purchase Order ${poNumber} from CTL AUSTRALIA`,
+//       text: `
+//   Hi ${supplier} Team,
 
-  Please find the attached purchase order for $${totalPrice} from CTL AUSTRALIA, with the P/O#: ${poNumber}.
-      
-  If you have any inquiries, please do not hesitate to contact us at: sales@ctlaus.com
-      
-  Kind Regards,
-  The CTL Australia Team
-    `,
+//   Please find the attached purchase order for $${totalPrice} from CTL AUSTRALIA, with the P/O#: ${poNumber}.
 
-      attachments: [
-        {
-          filename: `${poNumber}.pdf`,
-          content: Buffer.from(base64data, "base64"),
-          contentType: "application/pdf",
-        },
-      ],
-    };
+//   If you have any inquiries, please do not hesitate to contact us at: sales@ctlaus.com
 
-    await ctlSales.sendMail(message);
+//   Kind Regards,
+//   The CTL Australia Team
+//     `,
 
-    const purchaseOrder = await PurchaseOrder.findById(poID);
-    if (!purchaseOrder) {
-      return res.status(404).json({ message: "Purchase Order not found" });
-    }
+//       attachments: [
+//         {
+//           filename: `${poNumber}.pdf`,
+//           content: Buffer.from(base64data, "base64"),
+//           contentType: "application/pdf",
+//         },
+//       ],
+//     };
 
-    if (!purchaseOrder.poHasSent) purchaseOrder.poHasSent = 0;
-    purchaseOrder.poHasSent++;
+//     await ctlSales.sendMail(message);
 
-    if (purchaseOrder.poSent !== true) {
-      purchaseOrder.poSent = true;
-      purchaseOrder.poSentAt = Date.now();
-    }
+//     const purchaseOrder = await PurchaseOrder.findById(poID);
+//     if (!purchaseOrder) {
+//       return res.status(404).json({ message: "Purchase Order not found" });
+//     }
 
-    await purchaseOrder.save();
+//     if (!purchaseOrder.poHasSent) purchaseOrder.poHasSent = 0;
+//     purchaseOrder.poHasSent++;
 
-    res.status(200).json({ message: "Email sent successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
+//     if (purchaseOrder.poSent !== true) {
+//       purchaseOrder.poSent = true;
+//       purchaseOrder.poSentAt = Date.now();
+//     }
+
+//     await purchaseOrder.save();
+
+//     res.status(200).json({ message: "Email sent successfully" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 const sendRequest = async (req, res, next) => {
   try {
@@ -1085,7 +1085,6 @@ module.exports = {
   quoteCompletedNotice,
   sendQuotePDF,
   newUserNoticeToJosh,
-  sendPOPDF,
   sendRequest,
   sendNotification
 };

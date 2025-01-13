@@ -28,7 +28,6 @@ import BreadcrumbComponent from "../../components/filterQueryResultOptions/Bread
 import { getCategories } from "../../redux/actions/categoryActions";
 import QuotePriceComponent from "../../components/SendEmail/QuotePriceComponent";
 import EditProductShortInforComponent from "../admin/components/EditProductShortInforComponent";
-import { useTrackEvents } from "../trackEvents/useTrackEvents";
 import ReturnProfitCalculator from "../ReturnProfitCalculator";
 import LoginRegisterPage from "../LoginRegisterPage";
 
@@ -40,9 +39,9 @@ const ProductDetailsPageComponent = ({
   getProductDetails,
   getUser,
   createQuote,
-  clientUpdateSku,
+  // clientUpdateSku,
   addToPOCartHandler,
-  clientsSkuList
+  // clientsSkuList
 }) => {
   const { id } = useParams();
   const [showCartMessage, setShowCartMessage] = useState(false);
@@ -56,16 +55,16 @@ const ProductDetailsPageComponent = ({
   const [userData, setUserData] = useState([]);
   const [quoteData, setQuoteData] = useState();
   const [edit, setEdit] = useState(false);
-  const [changedClientSKU, setChangedClientSKU] = useState("");
+  // const [changedClientSKU, setChangedClientSKU] = useState("");
   const [brandSearch, setBrandSearch] = useState("");
   const navigate = useNavigate();
 
-  const [clientSKU, setClientSKU] = useState('');
+  // const [clientSKU, setClientSKU] = useState('');
   const [stockPrice, setStockPrice] = useState('');
   const [stockCode, setstockCode] = useState('');
   const [supplierCode, setsupplierCode] = useState('');
   const [stockLevel, setStockLevel] = useState(0)
-  const [clientSkuName, setClientSkuName] = useState('');
+  // const [clientSkuName, setClientSkuName] = useState('');
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const [isUserInfo, setIsUserInfo] = useState(Object.keys(userInfo).length === 0);
   const [modalType, setModalType] = useState("LoginForm")
@@ -121,8 +120,6 @@ const ProductDetailsPageComponent = ({
     "TECHNICAL DETAILS",
   ];
 
-  //Tracking user Interactions
-  useTrackEvents();
   // var trackData = localStorage.getItem("trackData")
   // console.log("trackData", trackData);
 
@@ -195,8 +192,7 @@ const ProductDetailsPageComponent = ({
               key === "ctlsku" ||
               key === "sales" ||
               key === "QuickBooksItemID" ||
-              key === siteSku ||
-              key === "clientsSku"
+              key === siteSku
             ) {
               acc[key] = stockItem[key];
             }
@@ -230,20 +226,20 @@ const ProductDetailsPageComponent = ({
       //   clientSku = selectedStock[clientSiteSku];
       // }
 
-      clientsSkuList && clientsSkuList.map(skuName => {
-        if (skuName.sku.toLowerCase().includes(userData.location?.replace(/\s+/g, '').toLowerCase())) {
-          setClientSkuName(skuName.sku);
-        }
-      })
+      // clientsSkuList && clientsSkuList.map(skuName => {
+      //   if (skuName.sku.toLowerCase().includes(userData.location?.replace(/\s+/g, '').toLowerCase())) {
+      //     setClientSkuName(skuName.sku);
+      //   }
+      // })
 
-      if (selectedStock.clientsSku?.length > 0) {
-        const matchedSku = selectedStock.clientsSku.find(sku =>
-          sku.name?.toLowerCase() === clientSkuName.toLowerCase()
-        );
-        return matchedSku ? setClientSKU(matchedSku.number) : setClientSKU('');
-      } else {
-        setClientSKU('')
-      }
+      // if (selectedStock.clientsSku?.length > 0) {
+      //   const matchedSku = selectedStock.clientsSku.find(sku =>
+      //     sku.name?.toLowerCase() === clientSkuName.toLowerCase()
+      //   );
+      //   return matchedSku ? setClientSKU(matchedSku.number) : setClientSKU('');
+      // } else {
+      //   setClientSKU('')
+      // }
 
     }
   }, [selectedStock, selectedProduct]);
@@ -559,40 +555,40 @@ const ProductDetailsPageComponent = ({
 
   const execustionDate = new Date("2024-1-15 11:30:00");
 
-  const handleEdit = () => setEdit(true);
+  // const handleEdit = () => setEdit(true);
 
-  const handleSaveClientSku = async () => {
-    try {
-      // if (!clientSKU) {
-      //   setEdit(false);
-      //   return;
-      // }
-      await clientUpdateSku(stockCode, clientSKU, clientSkuName);
-      console.log("Client SKU updated successfully");
+  // const handleSaveClientSku = async () => {
+  //   try {
+  //     // if (!clientSKU) {
+  //     //   setEdit(false);
+  //     //   return;
+  //     // }
+  //     await clientUpdateSku(stockCode, clientSKU, clientSkuName);
+  //     console.log("Client SKU updated successfully");
 
-      const updatedProduct = await fetchProduct(id);
-      setProduct(updatedProduct);
+  //     const updatedProduct = await fetchProduct(id);
+  //     setProduct(updatedProduct);
 
-      const updatedStockItem = updatedProduct.stock.find(
-        (item) => item.ctlsku === stockCode
-      );
-      if (updatedStockItem) {
-        setSelectedStock(updatedStockItem);
-      }
+  //     const updatedStockItem = updatedProduct.stock.find(
+  //       (item) => item.ctlsku === stockCode
+  //     );
+  //     if (updatedStockItem) {
+  //       setSelectedStock(updatedStockItem);
+  //     }
 
-      setEdit(false);
-      setChangedClientSKU("");
-      setClientSKU('')
-    } catch (error) {
-      console.error("Failed to save client SKU", error);
-    }
-  };
+  //     setEdit(false);
+  //     setChangedClientSKU("");
+  //     setClientSKU('')
+  //   } catch (error) {
+  //     console.error("Failed to save client SKU", error);
+  //   }
+  // };
 
 
-  const hanldeSkuChange = (e) => {
-    setClientSKU(e.target.value)
-    setEdit(true);
-  };
+  // const hanldeSkuChange = (e) => {
+  //   setClientSKU(e.target.value)
+  //   setEdit(true);
+  // };
 
   const brandSearchHandler = () => {
     if (brandSearch) {
@@ -657,11 +653,9 @@ const ProductDetailsPageComponent = ({
       return;
     }
     setPoCartBtnText("Adding...");
-    console.log("poCartItems", poCartItems);
 
     addToPOCartHandler(poCartItems)
       .then((data) => {
-        console.log("data", data);
         setPoCartBtnText("Added!");
         setTimeout(() => setPoCartBtnText("Add to PO cart"), 1000);
       })
@@ -845,42 +839,12 @@ const ProductDetailsPageComponent = ({
                         </select>
                       </div>
 
-                      {/* {stockCount !== null && (
-                        <>
-                          <p className="mb-0">
-                            WA Stock:{" "}
-                            {stockCount > 19 ? (
-                              <i className="bi bi-circle-fill fw-bold text-success">
-                                {" "}
-                                in stock
-                              </i>
-                            ) : (
-                              <i className="bi bi-circle-fill fw-bold text-warning">
-                                {" "}
-                                low stock
-                              </i>
-                            )}
-                          </p>
-                          <p>
-                            
-                            {product.displayPrice === 0 ? null : (
-                              <>
-                              Status:{" "}
-                              <i className="bi bi-circle-fill fw-bold text-success">
-                                {" "}
-                                in stock
-                              </i>
-                              </>
-                            )}
-                          </p>
-                        </>
-                      )} */}
                     </div>
                     <br />
                     <Row hidden={selectedProduct === "Please-Select"} className="product-details-page-description">
                       <Col>
                         <h6>Product Code: {stockCode}</h6>
-                        {!isUserInfo && <h6 hidden={userData?.isAdmin === true}>
+                        {/* {!isUserInfo && <h6 hidden={userData?.isAdmin === true}>
                           Client Code:{" "}
                           {userData?.isSitePerson === true ? (
                             <>
@@ -934,7 +898,7 @@ const ProductDetailsPageComponent = ({
                               )}
                             </>
                           ) : (!clientSKU ? "N/A" : clientSKU)}
-                        </h6>}
+                        </h6>} */}
 
                         {!isUserInfo && <h6>
                           {userData.isAdmin === true ||
@@ -1139,11 +1103,11 @@ const ProductDetailsPageComponent = ({
                         </>
                       )}
                     </Row>
-                      }
+                    }
                   </ListGroup.Item>
                 </ListGroup>
               </Row>
-            
+
 
               {/* ************   Product details with download pdf  ***************  */}
               <Row>

@@ -90,9 +90,6 @@ const ProductsPageComponent = ({
       );
     }
 
-    /* const newCount = products.map((product) => product.slrsku);
-    console.log(newCount); */
-
     setTotalItems(computedProducts.length);
 
     //Sorting products
@@ -167,53 +164,6 @@ const ProductsPageComponent = ({
   }, [productDeleted])
 
   const [productsCount, setProductsCount] = useState([])
-  // useEffect(() => {
-  //   if (products) {
-  //     productsCount.length = 0
-  //     let productsWithoutPrice = []
-  //     let productsWithPrice = []
-  //     let productsWithoutImage = []
-  //     let productsWithoutDownloads = []
-  //     products?.map((product) => {
-  //       if (product.displayPrice === 0 || product.displayPrice === null) {
-  //         productsWithoutPrice.push(product)
-  //       } else {
-  //         productsWithPrice.push(product)
-  //       }
-  //       if (product.images) {
-  //         product.images.map((image) => {
-  //           if (image.path.includes("Image_Coming_Soon.jpg")) {
-  //             productsWithoutImage.push(product)
-  //           }
-  //         })
-  //       }
-  //       if (!product.pdfs || product.pdfs.length === 0) {
-  //         productsWithoutDownloads.push(product)
-  //       }
-  //     })
-  //     console.log(productsWithoutDownloads.length);
-
-  //     let productsWithoutImageInOrders = []
-  //     productsWithoutImage?.map((product) => {
-  //       orders?.map((order) => {
-  //         order.cartItems?.map((cartItem) => {
-  //           if (cartItem.productId === product._id)
-  //             productsWithoutImageInOrders.push(product)
-  //         })
-  //       })
-  //     })
-  //     //console.log("productsWithoutImageInOrders", productsWithoutImageInOrders);
-
-  //     setProductsCount([...productsCount,
-  //     {
-  //       totalProductsCount: products.length,
-  //       productsWithPriceCount: productsWithPrice.length,
-  //       productsWithoutPriceCount: productsWithoutPrice.length,
-  //       productsWithoutImage: productsWithoutImage.length,
-  //       productsWithoutImageInOrders: productsWithoutImageInOrders.length
-  //     }])
-  //   }
-  // }, [products])
 
   useEffect(() => {
     if (products) {
@@ -319,61 +269,55 @@ const ProductsPageComponent = ({
         <AdminLinksComponent />
       </Col>
       <Col md={10}>
-        <div className="priceRange">
+        {/* <div className="priceRange">
           <div className="priceRange_item">Total Products : <label style={{ fontWeight: "bold" }}> {productsCount[0]?.totalProductsCount}</label> </div>
           <div className="priceRange_item">Products With Pricing : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithPriceCount}</label></div>
           <div className="priceRange_item">Products Without Pricing : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutPriceCount}</label></div>
           <div className="priceRange_item">Products Without Images : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImage}</label></div>
           <div className="priceRange_item">Products Without Images in Orders : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImageInOrders}</label></div>
           <div className="priceRange_item">Products Without Downloads : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutDownloads}</label></div>
-        </div>
+        </div> */}
         <h1>
-          Product List{" "}
-          <LinkContainer to="/admin/create-new-product">
+          PRODUCTS
+          {/* <LinkContainer to="/admin/create-new-product">
             <Button
               variant="success"
               className="m-0 me-4 ms-4 p-0 pe-1 ps-1"
               size="lg"
             >
-              Create New
+              New
             </Button>
-          </LinkContainer>
-          <ProductsPageReplenishment
+          </LinkContainer> */}
+          {/* <ProductsPageReplenishment
             productReplenishment={productReplenishment}
           />
-          <ProductsPageStockTake productStockTake={productStockTake} />
-          <select
-            className="ms-4 mt-1 fs-6"
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-          >
-            {ITEMS_PER_PAGE_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option} per page
-              </option>
-            ))}
-          </select>
+          <ProductsPageStockTake productStockTake={productStockTake} /> */}
+
         </h1>
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <Pagination
               total={totalItems}
               itemsPerPage={ITEMS_PER_PAGE}
               currentPage={currentPage}
               onPageChange={(page) => setCurrentPage(page)}
             />
-          </div>
 
-          <div className="col-md-6 d-flex justify-content-between mb-1">
+          </div>
+          <div className="col-md-4">
             <select
-              value={filterValue}
-              onChange={(e) => setFilterValue(e.target.value)}
-              className="form-select me-3"
+              className="ms-4 mt-1 fs-6"
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
             >
-              <option value="">All Products</option>
-              <option value="withNoPricing">With No Pricing</option>
-              <option value="withPricing">With Pricing</option>
+              {ITEMS_PER_PAGE_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option} per page
+                </option>
+              ))}
             </select>
+          </div>
+          <div className="col-md-3 mb-2" style={{ marginLeft: "auto", display: "flex", justifyContent: "flex-end" }}>
             <Search
               onSearch={(value) => {
                 setSearch(value);
@@ -490,7 +434,7 @@ const ProductsPageComponent = ({
           </div>
         </div>
       </Col>
-    </Row>
+    </Row >
   );
 };
 

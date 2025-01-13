@@ -1,8 +1,8 @@
 import ProductCarouselComponent from "../components/ProductCarouselComponent";
 import ProductsPromotionComponent from "../components/ProductsPromotionComponent";
 import React, { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
-import {isMobile, isTablet} from 'react-device-detect';
+import { useNavigate } from "react-router-dom";
+import { isMobile, isTablet } from 'react-device-detect';
 import axios from "axios";
 import moment from "moment-timezone";
 import {
@@ -26,7 +26,7 @@ const HomePageForVisitor = () => {
   const [blocks, setBlocks] = useState([]);
   const [error, setError] = useState(false);
 
-  
+
 
   const navigate = useNavigate()
   useEffect(() => {
@@ -66,31 +66,31 @@ const HomePageForVisitor = () => {
     setPerthTime(moment().tz("Australia/Perth").format("YYYY-MM-DD HH:mm:ss"));
   }, []);
 
-  const getBanners = async (perthTime) => {
-    const { data } = await axios.get(`/api/promotion/promotion/${perthTime}`);
-    return data;
-  };
+  // const getBanners = async (perthTime) => {
+  //   const { data } = await axios.get(`/api/promotion/promotion/${perthTime}`);
+  //   return data;
+  // };
 
 
 
-  useEffect(() => {
-    if (perthTime) {
-      getBanners(perthTime)
-        .then((data) => {
-          const banners = data.filter((item) => item.category === "banners");
-          const blocks = data.filter((item) => item.category === "blocks");
-          setBanners(banners);
-          setBlocks(blocks);
-        })
-        .catch((er) =>
-          setError(
-            er.response.data.message
-              ? er.response.data.message
-              : er.response.data
-          )
-        );
-    }
-  }, [perthTime]);
+  // useEffect(() => {
+  //   if (perthTime) {
+  //     getBanners(perthTime)
+  //       .then((data) => {
+  //         const banners = data.filter((item) => item.category === "banners");
+  //         const blocks = data.filter((item) => item.category === "blocks");
+  //         setBanners(banners);
+  //         setBlocks(blocks);
+  //       })
+  //       .catch((er) =>
+  //         setError(
+  //           er.response.data.message
+  //             ? er.response.data.message
+  //             : er.response.data
+  //         )
+  //       );
+  //   }
+  // }, [perthTime]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -106,17 +106,17 @@ const HomePageForVisitor = () => {
       {/* <MineralPrice /> */}
       {/* <NavbComponentForVisitors /> */}
       {/* ************   Carousel  ***************  */}
-      <ProductCarouselComponent banners={banners} />
+      {/* <ProductCarouselComponent banners={banners} /> */}
 
       {/* ************   daily deal top3  ***************  */}
-      <ProductsPromotionComponent blocks={blocks} />
+      {/* <ProductsPromotionComponent blocks={blocks} /> */}
 
       {/* ************   Stocks Price  ***************  */}
       {/* <FooterComponent /> */}
       {/* <ScrollButton /> */}
 
-      <AcknowledgementOfCountryComponent />
-      
+      {/* <AcknowledgementOfCountryComponent /> */}
+
       <Modal show={show} onHide={handleClose} className="login_preview_items">
         <LoginRegisterPage />
       </Modal>

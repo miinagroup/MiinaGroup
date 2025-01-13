@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
-import {isMobile, isTablet} from 'react-device-detect';
+import { useNavigate } from "react-router-dom";
+import { isMobile, isTablet } from 'react-device-detect';
 import axios from "axios";
 import moment from "moment-timezone";
 import { Modal } from "react-bootstrap";
@@ -26,12 +26,12 @@ const HomePageForVisitorMobile = () => {
 
   const navigate = useNavigate()
   useEffect(() => {
-    if(isMobile && isTablet) {
-      navigate("/") 
+    if (isMobile && isTablet) {
+      navigate("/")
     } else if (!isMobile) {
-      navigate("/") 
-    } 
-}, [])
+      navigate("/")
+    }
+  }, [])
 
   // const isAuth = FetchAuthFromServer();
   useEffect(() => {
@@ -47,31 +47,31 @@ const HomePageForVisitorMobile = () => {
     setPerthTime(moment().tz("Australia/Perth").format("YYYY-MM-DD HH:mm:ss"));
   }, []);
 
-  const getBanners = async (perthTime) => {
-    const { data } = await axios.get(`/api/promotion/promotion/${perthTime}`);
-    return data;
-  };
+  // const getBanners = async (perthTime) => {
+  //   const { data } = await axios.get(`/api/promotion/promotion/${perthTime}`);
+  //   return data;
+  // };
 
 
 
-  useEffect(() => {
-    if (perthTime) {
-      getBanners(perthTime)
-        .then((data) => {
-          const mobileBanners = data.filter((item) => item.category === "mobile-banners");
-          const blocks = data.filter((item) => item.category === "blocks");
-          setMobileBanners(mobileBanners);
-          setBlocks(blocks);
-        })
-        .catch((er) =>
-          setError(
-            er.response.data.message
-              ? er.response.data.message
-              : er.response.data
-          )
-        );
-    }
-  }, [perthTime]);
+  // useEffect(() => {
+  //   if (perthTime) {
+  //     getBanners(perthTime)
+  //       .then((data) => {
+  //         const mobileBanners = data.filter((item) => item.category === "mobile-banners");
+  //         const blocks = data.filter((item) => item.category === "blocks");
+  //         setMobileBanners(mobileBanners);
+  //         setBlocks(blocks);
+  //       })
+  //       .catch((er) =>
+  //         setError(
+  //           er.response.data.message
+  //             ? er.response.data.message
+  //             : er.response.data
+  //         )
+  //       );
+  //   }
+  // }, [perthTime]);
 
   const [show, setShow] = useState(false);
   const [stopAnimation, setStopAnimation] = useState(false);
@@ -96,16 +96,16 @@ const HomePageForVisitorMobile = () => {
   return (
     <>
 
-      <HeaderComponentForVisitorsMobile 
+      <HeaderComponentForVisitorsMobile
         handleShow={handleShow}
-        stopAnimation={stopAnimation} 
+        stopAnimation={stopAnimation}
         setStopAnimation={setStopAnimation}
         toggleShowSidebar={toggleShowSidebar}
         showSidebar={showSidebar}
       />
-      
+
       {/* ************   Carousel  ***************  */}
-      <ProductCarouselComponentMobile banners={mobileBanners}/>
+      <ProductCarouselComponentMobile banners={mobileBanners} />
 
       <MineralPriceMobile />
 
@@ -113,17 +113,17 @@ const HomePageForVisitorMobile = () => {
       <ProductsPromotionComponentMobile blocks={blocks} />
 
       <AcknowledgementOfCountryComponent />
-      
+
       <FooterComponentMobile />
       <ScrollButton />
 
       <Modal show={show} onHide={handleClose} dialogClassName={styles.modal_wrapper} backdrop={"static"}>
-          <Modal.Header closeButton><Modal.Title>Register</Modal.Title></Modal.Header>
+        <Modal.Header closeButton><Modal.Title>Register</Modal.Title></Modal.Header>
         <LoginRegisterPageMobile />
       </Modal>
 
-      <CategorySideBar show={showSidebar} toggleShow={toggleShowSidebar} onOpenModal={handleShow } />
-      
+      <CategorySideBar show={showSidebar} toggleShow={toggleShowSidebar} onOpenModal={handleShow} />
+
     </>
   );
 };

@@ -8,11 +8,8 @@ import {
   Button,
 } from "react-bootstrap";
 import CartItemComponent from "../../../components/CartItemComponent";
-
 import { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import QuoeteManagementApproval from "../../../components/SendEmail/QuoeteManagementApproval";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { pdf } from "@react-pdf/renderer";
@@ -126,23 +123,23 @@ const AdminCartDetailsPageComponent = ({
       );
   }, [userInfo._id]);
 
-  function updateCurrentClientSku(clientsSku) {
-    const matchingClientSku = clientsSku.find(sku =>
-      sku.name.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(adminSelectedDeliverySite.toLowerCase())
-    );
+  // function updateCurrentClientSku(clientsSku) {
+  //   const matchingClientSku = clientsSku.find(sku =>
+  //     sku.name.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(adminSelectedDeliverySite.toLowerCase())
+  //   );
 
-    if (matchingClientSku) {
-      return {
-        name: matchingClientSku.name,
-        number: matchingClientSku.number
-      };
-    }
+  //   if (matchingClientSku) {
+  //     return {
+  //       name: matchingClientSku.name,
+  //       number: matchingClientSku.number
+  //     };
+  //   }
 
-    return {
-      name: "",
-      number: ""
-    };
-  }
+  //   return {
+  //     name: "",
+  //     number: ""
+  //   };
+  // }
 
 
   useEffect(() => {
@@ -299,7 +296,7 @@ const AdminCartDetailsPageComponent = ({
         taxAmount: taxAmount,
       },
       cartItems: cartItems.map((item) => {
-        const currentClientSku = updateCurrentClientSku(item.cartProducts[0].clientsSku)
+        //const currentClientSku = updateCurrentClientSku(item.cartProducts[0].clientsSku)
         return {
           productId: item.productId,
           name: item.name,
@@ -317,10 +314,10 @@ const AdminCartDetailsPageComponent = ({
               suppliedQty: item.cartProducts[0].quantity,
               backOrder: 0,
               sales: item.cartProducts[0].sales ?? null,
-              slrsku: item.cartProducts[0].slrsku,
+              // slrsku: item.cartProducts[0].slrsku,
               suppliersku: item.cartProducts[0].suppliersku,
-              clientsSku: item.cartProducts[0].clientsSku,
-              currentClientSku: currentClientSku,
+              // clientsSku: item.cartProducts[0].clientsSku,
+              // currentClientSku: currentClientSku,
               _id: item.cartProducts[0]._id,
             },
           ],

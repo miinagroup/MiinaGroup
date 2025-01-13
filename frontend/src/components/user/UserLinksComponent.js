@@ -16,21 +16,26 @@ const UserLinksComponent = () => {
   //console.log(userInfo);
 
   const userLinks = [
+    // {
+    //   title: "Uniforms",
+    //   link: "/user/my-uniforms",
+    //   access: "all",
+    // },
     {
-      title: "Uniforms",
-      link: "/user/my-uniforms",
-      access: "all",
+      title: "BACK TO ADMIN",
+      link: "/admin/orders",
+      access: "isSuperAdmin, accounts, isSales, isAdmin",
     },
     {
       title: "Orders",
       link: "/user/my-orders",
       access: "all",
     },
-    {
-      title: "Quotes",
-      link: "/user/my-quotes?tab=completedQuotes&pageNum=1",
-      access: "all",
-    },
+    // {
+    //   title: "Quotes",
+    //   link: "/user/my-quotes?tab=completedQuotes&pageNum=1",
+    //   access: "all",
+    // },
 
     {
       title: "My Profile",
@@ -135,7 +140,7 @@ const UserLinksComponent = () => {
         </Nav>
       </Navbar>
       <br />
-      <Navbar className="user_side_navBar">
+      {/* <Navbar className="user_side_navBar">
         <Nav className="flex-column user_side_nav">
           {marketingLinks.map((link) => {
             if (hasAccess(link.access)) {
@@ -163,7 +168,7 @@ const UserLinksComponent = () => {
             return null;
           })}
         </Nav>
-      </Navbar>
+      </Navbar> */}
     </>
   );
 };

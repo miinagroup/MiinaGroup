@@ -3,30 +3,30 @@ import { useState, useEffect } from "react";
 import React from "react";
 
 const CartItemForOrderPreviewComponent = ({ item, backOrderStatus }) => {
-  const [clientSKU, setClientSKU] = useState();
+  // const [clientSKU, setClientSKU] = useState();
   const [ctlsku, setCtlsku] = useState(item.cartProducts[0].ctlsku);
 
-  const getSLRSKUByCTLSKU = async (ctlsku) => {
-    try {
-      const response = await fetch(
-        `/api/products/getClientSKU/${ctlsku}`
-      );
-      const data = await response.json();
-      return data.slrsku;
-    } catch (error) {
-      console.error("Failed to fetch slrsku:", error);
-      return null;
-    }
-  }; 
+  // const getSLRSKUByCTLSKU = async (ctlsku) => {
+  //   try {
+  //     const response = await fetch(
+  //       `/api/products/getClientSKU/${ctlsku}`
+  //     );
+  //     const data = await response.json();
+  //     return data.slrsku;
+  //   } catch (error) {
+  //     console.error("Failed to fetch slrsku:", error);
+  //     return null;
+  //   }
+  // }; 
 
-  useEffect(() => {
-    const fetchSLRSKU = async () => {
-      const fetchedSLRSKU = await getSLRSKUByCTLSKU(ctlsku);
-      setClientSKU(fetchedSLRSKU);
-    };
+  // useEffect(() => {
+  //   const fetchSLRSKU = async () => {
+  //     const fetchedSLRSKU = await getSLRSKUByCTLSKU(ctlsku);
+  //     setClientSKU(fetchedSLRSKU);
+  //   };
 
-    fetchSLRSKU();
-  }, [ctlsku]);
+  //   fetchSLRSKU();
+  // }, [ctlsku]);
 
   return (
     <>
@@ -45,7 +45,7 @@ const CartItemForOrderPreviewComponent = ({ item, backOrderStatus }) => {
               <strong
                 className="text-uppercase"
                 style={{
-                  color: item.cartProducts[0].backOrder > 0  && backOrderStatus === true ? "red" : "#1E4881",
+                  color: item.cartProducts[0].backOrder > 0 && backOrderStatus === true ? "red" : "#1E4881",
                 }}
               >
                 {item.name} - ({item.cartProducts[0].attrs})

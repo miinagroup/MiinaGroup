@@ -8,12 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getMineralPrices,
-  getStockPrices,
-} from "../../../../redux/actions/mineralActions";
 import { getT1Categories } from "../../../../redux/actions/categoryActions"
-
 import styles from "../../HomePageForVistorsMobile.module.css";
 import axios from "axios";
 import HamburgerMenu from "./HamburgerMenu";
@@ -54,17 +49,12 @@ const mainCategory = [
 ];
 
 const HeaderComponentForVisitorsMobile = ({ handleShow, stopAnimation, setStopAnimation, toggleShowSidebar, showSidebar }) => {
-  //const dispatch = useDispatch();
   const reduxDispatch = useDispatch();
-
   const [menuCategories, setMenuCategories] = useState({})
   const categories = useSelector((state) => state.getCategories.categories);
-
   const mainLinks = mainCategory.map((category) => category.link);
 
   useEffect(() => {
-    reduxDispatch(getMineralPrices());
-    reduxDispatch(getStockPrices());
     reduxDispatch(getT1Categories());
   }, []);
 
@@ -113,7 +103,6 @@ const HeaderComponentForVisitorsMobile = ({ handleShow, stopAnimation, setStopAn
       axios
         .put(newUrl)
         .then((response) => {
-          // console.log("Visitor tracked:", response.data);
         })
         .catch((error) => {
           console.error("Error tracking visitor:", error);
@@ -121,7 +110,6 @@ const HeaderComponentForVisitorsMobile = ({ handleShow, stopAnimation, setStopAn
 
       localStorage.setItem("lastVisitTime", now);
     } else {
-      // console.log("Visit not tracked due to threshold limit");
     }
   };
 
@@ -150,7 +138,6 @@ const HeaderComponentForVisitorsMobile = ({ handleShow, stopAnimation, setStopAn
               ></img>
               <img
                 id="home_name"
-                // src="/images/CTL-hextext.png"
                 src="/images/CTL_HEADING_3.png"
                 alt="CTL AUSTRALIA"
                 styels={"width: 70% "}
@@ -159,10 +146,6 @@ const HeaderComponentForVisitorsMobile = ({ handleShow, stopAnimation, setStopAn
             </div>
             <div className={styles.login_register_mobile}>
               <div>
-                {/* <a onClick={() => handleShow()} className="hd_c">
-                  Login
-                </a>{" "}
-                /{" "} */}
                 <a onClick={() => handleShow()} className={styles.hd_c}>
                   REGISTER
                 </a>
@@ -201,14 +184,11 @@ const HeaderComponentForVisitorsMobile = ({ handleShow, stopAnimation, setStopAn
                 alt=""
                 className="red_search_img_visitor"
                 style={{ cursor: "pointer" }}
-              // onClick={() => handleShow()}
               ></img>
             </div>
           </div>
         </Container>
       </Navbar>
-
-
     </>
   );
 };

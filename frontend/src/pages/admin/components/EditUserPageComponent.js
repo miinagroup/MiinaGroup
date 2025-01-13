@@ -17,12 +17,12 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
   const [verified, setVerified] = useState(false);
   const [isSales, setIsSales] = useState(false);
   const [isMarketing, setIsMarketing] = useState(false);
-  const [isDeveloper, setIsDeveloper] = useState(false);
+  // const [isDeveloper, setIsDeveloper] = useState(false);
   const [accounts, setAccounts] = useState(false);
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [isVIP, setIsVIP] = useState(false);
+  // const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  // const [isVIP, setIsVIP] = useState(false);
   const [abn, setAbn] = useState();
-  const [isCreditVerified, setIsCreditVerified] = useState(false);
+  // const [isCreditVerified, setIsCreditVerified] = useState(false);
   const [updateUserResponseState, setUpdateUserResponseState] = useState({
     message: "",
     error: "",
@@ -77,10 +77,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
     const isSitePerson = form.isSitePerson.checked;
     const isSales = form.isSales.checked;
     const isMarketing = form.isMarketing.checked;
-    const isDeveloper = form.isDeveloper.checked;
-    const isSuperAdmin = form.isSuperAdmin.checked;
-    const isVIP = form.isVIP.checked;
-    const isCreditVerified = form.isCreditVerified.checked;
     const accounts = form.accounts.checked;
     const abn = form.abn.value;
     const role = userRole === "other role" ? otherRole : userRole;
@@ -108,17 +104,12 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
         location,
         isSales,
         isMarketing,
-        isDeveloper,
-        isSuperAdmin,
-        isVIP,
-        isCreditVerified,
         accounts,
         abn,
         role
       )
         .then((data) => {
           if (data === "user updated") {
-            // console.log(verified);
             navigate("/admin/users");
           }
         })
@@ -146,10 +137,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
         setAccounts(data.accounts);
         setIsSales(data.isSales);
         setIsMarketing(data.isMarketing);
-        setIsDeveloper(data.isDeveloper);
-        setIsSuperAdmin(data.isSuperAdmin);
-        setIsVIP(data.isVIP);
-        setIsCreditVerified(data.isCreditVerified);
+        setUserRole(data.role);
         setAbn(data.abn)
       })
       .catch((er) =>
@@ -164,13 +152,10 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
     <Container>
       <Row className="justify-content-md-center mt-5 content-container">
         <Col md={1}>
-          {/* <Link to="/admin/users" className="btn btn-info my-3">
-            Go Back
-          </Link> */}
           <GoBackButton />
         </Col>
         <Col md={6}>
-          <h1>Edit user</h1>
+          <h1>EDIT USER</h1>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicFirstName">
               <Form.Label>First name</Form.Label>
@@ -199,19 +184,9 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 required
                 type="email"
                 defaultValue={user.email}
-                disabled
+
               />
             </Form.Group>
-            {/* <Form.Group className="mb-3" controlId="formBasicRole">
-              <Form.Label>Role</Form.Label>
-              <Form.Control
-                name="role"
-                required
-                type="text"
-                defaultValue={user.role}
-              />
-            </Form.Group> */}
-
             <Form.Group className="mb-3" controlId="formBasicRole">
               <Form.Label>Role</Form.Label>
               <Form.Select
@@ -222,7 +197,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 <option>{user.role}</option>
                 {
                   allUniformRoles.map((role, idx) => (
-                    <option key={idx} value={role.role} style={{textTransform: "capitalize"}}>
+                    <option key={idx} value={role.role} style={{ textTransform: "capitalize" }}>
                       {role.role}
                     </option>))
                 }
@@ -248,15 +223,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 Please mention your Job Title.{" "}
               </Form.Control.Feedback>
             </Form.Group>}
-
             <Form.Group className="mb-3" controlId="formBasicAbn">
               <Form.Label>ABN</Form.Label>
-              {/* <Form.Control
-                name="abn"
-                required
-                type="text"
-                defaultValue={abn}
-              /> */}
               <MaskedInput
                 mask={abnMask}
                 placeholder="ABN"
@@ -274,7 +242,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 />}
               />
             </Form.Group>
-
             <Form.Group className="mb-2" controlId="formBasicPhone">
               <Form.Label>Phone</Form.Label>
               <Form.Control
@@ -293,7 +260,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 defaultValue={user.mobile}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicDeliveryCompany">
               <Form.Label>Company</Form.Label>
               <Form.Control
@@ -303,7 +269,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 defaultValue={user.company}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicBillLocation">
               <Form.Label>Location</Form.Label>
               <Form.Control
@@ -313,7 +278,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 defaultValue={user.location}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicipAddress">
               <Form.Label>
                 IP Address (enter 'remove' to remove IP address)
@@ -322,10 +286,10 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 name="ipAddress"
                 required
                 type="text"
-                defaultValue={user.ipAddress}
+                placeholder="remove"
+                defaultValue={user.ipAddress !== "" ? user.ipAddress : "remove"}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicIsAdmin">
               <Row>
                 <Col md={2}>
@@ -377,81 +341,33 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
               <Row>
                 <Col md={2}>
                   <Form.Check
-                    name="isVIP"
+                    name="isSales"
                     type="checkbox"
-                    label="isVIP"
-                    checked={isVIP}
-                    onChange={(e) => setIsVIP(e.target.checked)}
+                    label="Sales"
+                    checked={isSales}
+                    onChange={(e) => setIsSales(e.target.checked)}
                   />
                 </Col>
                 <Col md={2}>
                   <Form.Check
-                    name="isCreditVerified"
+                    name="accounts"
                     type="checkbox"
-                    label="isCreditVerified"
-                    checked={isCreditVerified}
-                    onChange={(e) => setIsCreditVerified(e.target.checked)}
+                    label="Accounts"
+                    checked={accounts}
+                    onChange={(e) => setAccounts(e.target.checked)}
+                  />
+                </Col>
+                <Col md={3}>
+                  <Form.Check
+                    name="isMarketing"
+                    type="checkbox"
+                    label="Marketing"
+                    checked={isMarketing}
+                    onChange={(e) => setIsMarketing(e.target.checked)}
                   />
                 </Col>
               </Row>
             </Form.Group>
-
-            {isAuth?.isDeveloper ? (
-              <Form.Group className="mb-3" controlId="formBasicAdminAccess">
-                <Row>
-                  <Col md={2}>
-                    <Form.Check
-                      name="isSales"
-                      type="checkbox"
-                      label="Sales"
-                      checked={isSales}
-                      onChange={(e) => setIsSales(e.target.checked)}
-                    />
-                  </Col>
-                  <Col md={2}>
-                    <Form.Check
-                      name="accounts"
-                      type="checkbox"
-                      label="Accounts"
-                      checked={accounts}
-                      onChange={(e) => setAccounts(e.target.checked)}
-                    />
-                  </Col>
-                  <Col md={2}>
-                    <Form.Check
-                      name="isDeveloper"
-                      type="checkbox"
-                      label="Developer"
-                      checked={isDeveloper}
-                      onChange={(e) => setIsDeveloper(e.target.checked)}
-                    />
-                  </Col>
-                  <Col md={3}>
-                    <Form.Check
-                      name="isMarketing"
-                      type="checkbox"
-                      label="Marketing"
-                      checked={isMarketing}
-                      onChange={(e) => setIsMarketing(e.target.checked)}
-                    />
-                  </Col>
-                  <Col md={3}>
-                    <Form.Check
-                      name="isSuperAdmin"
-                      type="checkbox"
-                      label="Super Admin"
-                      checked={isSuperAdmin}
-                      onChange={(e) => setIsSuperAdmin(e.target.checked)}
-                    />
-                  </Col>
-                </Row>
-              </Form.Group>
-            ) : null}
-
-            {/* <Form.Group className="mb-3" controlId="formBasicVerified">
-              
-            </Form.Group> */}
-
             <Button variant="primary" type="submit">
               UPDATE
             </Button>

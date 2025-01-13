@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 //我们需要usermodel，因为我们需要知道谁下的订单
 const User = require("./UserModel");
 
-const clientSkuSchema = new mongoose.Schema({
-  name: { type: String, required: false, unique: true },
-  number: { type: String, required: false }
-});
+// const clientSkuSchema = new mongoose.Schema({
+//   name: { type: String, required: false, unique: true },
+//   number: { type: String, required: false }
+// });
 
 const orderSchema = mongoose.Schema(
   {
@@ -68,15 +68,15 @@ const orderSchema = mongoose.Schema(
             suppliersku: { type: String, required: false },
             attrs: { type: String, required: true },
             QuickBooksItemID: { type: String, required: false },
-            slrsku: { type: String, required: false },
+            // slrsku: { type: String, required: false },
             color: { type: String, required: false },
             size: { type: String, required: false },
             // ID: { type: String, required: false },
-            clientsSku: { type: [clientSkuSchema], required: false },
-            currentClientSku: {
-              name: { type: String, required: false, unique: true },
-              number: { type: String, required: false }
-            }
+            // clientsSku: { type: [clientSkuSchema], required: false },
+            // currentClientSku: {
+            //   name: { type: String, required: false, unique: true },
+            //   number: { type: String, required: false }
+            // }
           },
         ],
         image: { type: String, required: true },

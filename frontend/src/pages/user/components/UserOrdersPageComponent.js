@@ -162,11 +162,6 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
           order.secondOwnerSite?.toUpperCase() ===
           userInfo.location?.toUpperCase()
       );
-    } else if (userInfo.isUniformManager) {
-      computedOrders = ordersByCompany.filter(
-        (order) =>
-          order.orderNote?.includes("Uniform")
-      );
     } else {
       computedOrders = orders;
     }
@@ -320,318 +315,105 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
         </Col>
         <Col md={10}>
           <h1>MY ORDERS</h1>
-          <Tabs
-            defaultActiveKey="PRODUCTS"
-            transition={false}
-            id="noanim-tab-example"
-            className="mb-3">
-            <Tab eventKey="PRODUCTS" title="PRODUCTS ORDERS">
-              <div className="row ">
-                <div className="col-md-9">
-                  <Pagination
-                    total={totalProducts}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-                </div>
-                <div className="col-md-2 ms-5">
-                  <Search
-                    onSearch={(value) => {
-                      setProductSearch(value);
-                      setCurrentPage(1);
-                    }}
-                  />
-                </div>
-              </div>
-              <table className="table table-striped">
-                <TableHeader
-                  headers={productHeaders}
-                  onSorting={(field, order) => setSorting({ field, order })}
-                />
-                <tbody>
-                  {productData ? (
-                    productData?.map((order, idx) => (
-                      <tr key={idx}>
-                        <td style={getOrderStyle(order)}>{idx + 1} </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.createdAt?.substring(0, 10)}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          ${order.orderTotal?.cartSubtotal}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.purchaseNumber}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.invoiceNumber}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.orderNote}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.userName?.split("(")[0]}
-                          {" ( " + order.deliverySite.toUpperCase() + " ) "}
-                        </td>
+          <div className="row ">
+            <div className="col-md-9">
+              <Pagination
+                total={totalProducts}
+                itemsPerPage={ITEMS_PER_PAGE}
+                currentPage={currentPage}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </div>
+            <div className="col-md-2 ms-5">
+              <Search
+                onSearch={(value) => {
+                  setProductSearch(value);
+                  setCurrentPage(1);
+                }}
+              />
+            </div>
+          </div>
+          <table className="table table-striped">
+            <TableHeader
+              headers={productHeaders}
+              onSorting={(field, order) => setSorting({ field, order })}
+            />
+            <tbody>
+              {productData ? (
+                productData?.map((order, idx) => (
+                  <tr key={idx}>
+                    <td style={getOrderStyle(order)}>{idx + 1} </td>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      {order.createdAt?.substring(0, 10)}
+                    </td>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      ${order.orderTotal?.cartSubtotal}
+                    </td>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      {order.purchaseNumber}
+                    </td>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      {order.invoiceNumber}
+                    </td>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      {order.orderNote}
+                    </td>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      {order.userName?.split("(")[0]}
+                      {" ( " + order.deliverySite.toUpperCase() + " ) "}
+                    </td>
 
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.isDelivered ? (
-                            <i className="bi bi-truck text-success"></i>
-                          ) : (
-                            <i className="bi bi-x-lg text-danger"></i>
-                          )}
-                        </td>
-                        <td>
-                          <Link
-                            to={`/user/order-details/${order._id}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Go to Order <i className="bi bi-box-arrow-in-right"></i>
-                          </Link>
-                        </td>
-                      </tr>
-                    ))) : ""}
-                </tbody>
-              </table>
-              <div className="row">
-                <div className="col-md-6">
-                  <Pagination
-                    total={totalProducts}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-                </div>
-              </div>
-            </Tab>
-            <Tab eventKey="UNIFORMS" title="UNIFORMS ORDERS">
-              <div className="row mb-2">
-                {
-                  selectedIds.length > 0 && userInfo.isUniformManager ? (
-                    <>
-                      <div className="col-md-2">
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter PO Number"
-                          onChange={handleTextChange}
-                          disabled={filterValue === "approved"}
-                        />
-                      </div>
-                      <div className="col-md-1">
-                        <Button
-                          onClick={handleSubmit}
-                          disabled={poNumber.length === 0 || filterValue === "approved"}
-                        >{approve}</Button>
-                      </div>
-                      <div className="col-md-2"></div>
-                    </>
-                  ) : (
-                    userInfo.isUniformManager ? (
-                      <>
-                        <div className="col-md-2">
-                          <Form.Control
-                            type="text"
-                            placeholder="Select Orders"
-                            onChange={handleTextChange}
-                            disabled
-                          />
-                        </div>
-                        <div className="col-md-1">
-                          <Button
-                            onClick={handleSubmit}
-                            disabled
-                          >Approve</Button>
-                        </div>
-                        <div className="col-md-2"></div>
-                      </>
-
-                    ) : (
-                      <>
-                        <div className="col-md-5"></div>
-                      </>
-                    )
-                  )
-                }
-                {
-                  userInfo.isUniformManager ? (
-                    <>
-                      <div className="col-md-2 ">
-                        <select
-                          value={filterValue}
-                          onChange={(e) => setFilterValue(e.target.value)}
-                          className="form-select me-3"
-                        >
-                          <option value="">All Uniform Orders</option>
-                          <option value="approved">Approved Orders</option>
-                          <option value="nonApproved">Non-Approved</option>
-                        </select>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="col-md-2 "></div>
-                  )
-                }
-                <div className="col-md-2 "></div>
-                <div className="col-md-2 ms-5">
-                  <Search
-                    onSearch={(value) => {
-                      setUniformSearch(value);
-                      setCurrentPage(1);
-                    }}
-                  />
-                </div>
-              </div>
-              {/* {
-                userInfo.isUniformManager ? (
-                  <Button
-                    id="selectAllCheckbox"
-                    size="sm"
-                    variant="outline-primary"
-                    style={{ position: "absolute", marginTop: "4px" }}>
-                    <i class="bi bi-check-all fa-lg"></i>
-                  </Button>
-                ) : ("")
-              } */}
-
-              <table className="table table-striped">
-                <TableHeader
-                  headers={uniformHeaders}
-                  onSorting={(field, order) => setSorting({ field, order })}
-                />
-                <tbody>
-                  {uniformData ? (
-                    uniformData?.map((order, idx) => (
-                      <tr key={idx}>
-                        {
-                          userInfo.isUniformManager ? (
-                            <>
-                              <td>
-                                <input
-                                  type="checkbox"
-                                  value={order._id}
-                                  class="checkboxes"
-                                  checked={selectedIds.includes(order._id)}
-                                  onChange={handleCheckboxChange}
-                                  disabled={order.approvedPONumber}
-                                />
-                              </td>
-                            </>
-                          ) : (
-                            <td></td>
-                          )
-                        }
-                        <td style={getOrderStyle(order)}>{idx + 1} </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.createdAt?.substring(0, 10)}
-                        </td>
-                        {
-                          order.approvedDate ? (
-                            <>
-                              <td
-                                onClick={() => handleShow(order._id)}
-                                style={getOrderStyle(order)}
-                              >
-                                {order.approvedDate?.substring(0, 10)}
-                              </td>
-                            </>
-                          ) : (
-                            <>
-                              <td
-                                onClick={() => handleShow(order._id)}
-                                style={getOrderStyle(order)}
-                              >
-                                Waiting for Approval
-                              </td>
-                            </>
-                          )
-                        }
-
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.purchaseNumber}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.invoiceNumber}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.orderNote}
-                        </td>
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.userName?.split("(")[0]}
-                          {" ( " + order.deliverySite.toUpperCase() + " ) "}
-                        </td>
-
-                        <td
-                          onClick={() => handleShow(order._id)}
-                          style={getOrderStyle(order)}
-                        >
-                          {order.isDelivered ? (
-                            <i className="bi bi-truck text-success"></i>
-                          ) : (
-                            <i className="bi bi-x-lg text-danger"></i>
-                          )}
-                        </td>
-                        <td>
-                          <Link
-                            to={`/user/order-details/${order._id}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Go to Order <i className="bi bi-box-arrow-in-right"></i>
-                          </Link>
-                        </td>
-                      </tr>
-                    ))) : ""}
-                </tbody>
-              </table>
-              <div className="row">
-                <div className="col-md-6">
-                  <Pagination
-                    total={totalUniforms}
-                    itemsPerPage={ITEMS_PER_PAGE}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-                </div>
-              </div>
-            </Tab>
-          </Tabs>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      {order.isDelivered ? (
+                        <i className="bi bi-truck text-success"></i>
+                      ) : (
+                        <i className="bi bi-x-lg text-danger"></i>
+                      )}
+                    </td>
+                    <td>
+                      <Link
+                        to={`/user/order-details/${order._id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Go to Order <i className="bi bi-box-arrow-in-right"></i>
+                      </Link>
+                    </td>
+                  </tr>
+                ))) : ""}
+            </tbody>
+          </table>
+          <div className="row">
+            <div className="col-md-6">
+              <Pagination
+                total={totalProducts}
+                itemsPerPage={ITEMS_PER_PAGE}
+                currentPage={currentPage}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </div>
+          </div>
         </Col>
       </Row>
 
