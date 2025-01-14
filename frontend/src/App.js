@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 
@@ -8,7 +8,6 @@ import "./fonts/HelveticaNeueRoman.otf";
 
 
 // publicly available pages:
-import HomePage from "./pages/HomePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import ProductListPage from "./pages/ProductListPage";
 import Unfortunately from "./pages/unfortunately";
@@ -23,9 +22,6 @@ import PrivacyPolicy from "./pages/user/components/FooterComponents.js/privacypo
 import GoodsReturnForm from "./pages/user/components/FooterComponents.js/GoodsReturnForm.js";
 import ReturnProfitCalculator from "./pages/ReturnProfitCalculator.js";
 import ProtectedRoutesComponent from "./components/ProtectedRoutesComponent";
-
-//user components:
-import RoutesWithHeaderFtNavb from "./components/user/RoutesWithHeaderFtNavb";
 
 // protected user pages:
 import UserProfilePage from "./pages/user/UserProfilePage";
@@ -88,7 +84,6 @@ function App() {
 
           {/* publicly available routes: */}
           <Route element={<ProtectedRoutesComponent role="user" />}>
-            {/* <Route path="/home" element={<HomePage />} /> */}
             <Route path="/" element={<HomePageForVisitorNew />} />
             <Route path="/product-list" element={<ProductListPage />} />
             <Route path="/product-details/:id" element={<ProductDetailsPage />} />

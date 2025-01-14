@@ -23,7 +23,6 @@ import { useParams } from "react-router-dom";
 import "react-medium-image-zoom/dist/styles.css";
 import FilterComponent from "./filterQueryResultOptions/FilterComponent";
 import BreadcrumbComponent from "./filterQueryResultOptions/BreadcrumbComponent";
-import QuotePriceComponent from "./SendEmail/QuotePriceComponent";
 import "../pages/components/SharedPages.css";
 
 const ProductForStockPreviewComponent = ({

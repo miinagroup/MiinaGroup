@@ -5,13 +5,6 @@
     position: relative;
 }
 
-.aboutImageBckgrd {
-    position: absolute;
-    top: -280px;
-    left: -100px;
-    overflow: hidden;
-}
-
 .aboutImageText {
     position: absolute;
     top: -110px;

@@ -1,35 +1,6 @@
-import { useState, useEffect } from "react";
-
 import React from "react";
 
 const CartItemForUserPreviewComponent = ({ item }) => {
-  // const [clientSKU, setClientSKU] = useState("");
-  const [ctlsku, setCtlsku] = useState(item.cartProducts[0].ctlsku);
-
-  // const getSLRSKUByCTLSKU = async (ctlsku) => {
-  //   try {
-  //     const response = await fetch(
-  //       `/api/products/getClientSKU/${ctlsku}`
-  //     );
-  //     const data = await response.json();
-  //     return data.slrsku;
-  //   } catch (error) {
-  //     console.error("Failed to fetch slrsku:", error);
-  //     return null;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!item.cartProducts[0].attrs.includes("UNIFORM")) {
-  //     const fetchSLRSKU = async () => {
-  //       const fetchedSLRSKU = await getSLRSKUByCTLSKU(ctlsku);
-  //       setClientSKU(fetchedSLRSKU);
-  //     };
-
-  //     fetchSLRSKU();
-  //   }
-
-  // }, [ctlsku]);
 
   return (
     <>
@@ -55,8 +26,6 @@ const CartItemForUserPreviewComponent = ({ item }) => {
               </strong>
             </a>
           </td>
-          {/* <td style={{ width: "10%" }}>{clientSKU}</td> */}
-
           <td style={{ width: "10%" }}>
             <p className="m-0">{item.cartProducts[0].ctlsku}</p>
           </td>

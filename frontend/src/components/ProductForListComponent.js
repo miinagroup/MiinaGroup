@@ -14,7 +14,6 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/actions/cartActions";
 import "../pages/general.css";
-import QuotePriceComponent from "./SendEmail/QuotePriceComponent";
 import LoginRegisterPage from "../pages/LoginRegisterPage";
 
 const ProductForListComponent = ({
@@ -58,9 +57,7 @@ const ProductForListComponent = ({
     setModalType(type);
   };
 
-  // useEffect(() => {
-  //   ReactGA.pageview(window.location)
-  // }, [])
+ 
 
   //check for uniform content in cart
   useEffect(() => {
@@ -77,18 +74,6 @@ const ProductForListComponent = ({
     }
   }, [product]);
 
-  // useEffect(() => {
-  //   categoryList.length = 0
-  //   var categoryItem = categories[0];
-  //   categories.map((category) => {
-  //     category.name.includes(categoryItem.name) ? (
-  //       categoryItem = category
-  //     ) : (
-  //       categoryList.push(categoryItem)
-  //     )
-  //     categoryItem = category
-  //   })
-  // });
 
   useEffect(() => {
     const uniqueCategories = categories?.reduce((unique, category) => {
@@ -114,17 +99,6 @@ const ProductForListComponent = ({
     if (attrs !== "choose-product") {
       const stockItem = stock.find((item) => item.attrs === attrs);
 
-      // const clientSku = stockItem.clientsSku.filter(sku => {
-      //   const newClientSku = sku.name.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase();
-      //   return newClientSku === userInfo.location.toLowerCase();
-      // });
-
-      // if (clientSku.length > 0) {
-      //   stockItem.currentClientSku = clientSku[0];
-      // } else {
-      //   stockItem.currentClientSku = { number: '', name: '' };
-      // }
-
       addToCartHandler(stockItem);
     } else {
       setSelectedStock(null);
@@ -139,12 +113,6 @@ const ProductForListComponent = ({
       setTimeout(() => setButtonText("Add"), 1000);
       setQty(saleunit);
 
-      // ReactGA.event({
-      //   category: selectedItem.name,
-      //   action: "add to cart",
-      //   label: "cart",
-      //   value: selectedItem.value,
-      // });
     } catch (error) {
       // handle error case
       setButtonText("Add");
@@ -358,14 +326,7 @@ const ProductForListComponent = ({
           ) : ("")
         }
 
-        {!isUserInfo && <>{price === 0 ? (
-          <QuotePriceComponent
-            quotePriceData={quotePriceData}
-            createQuote={createQuote}
-            quoteData={quoteData}
-            mini={true}
-          />
-        ) : (
+        {!isUserInfo && 
           <>
             <div className="container">
               <div className="row btn-group justify-content-center">
@@ -423,7 +384,7 @@ const ProductForListComponent = ({
               </div>
             </div>
           </>
-        )}</>}
+  }
       </div>
       {/* </div> */}
       {/* </div> */}

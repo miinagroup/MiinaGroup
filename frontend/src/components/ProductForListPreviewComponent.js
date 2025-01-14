@@ -24,7 +24,6 @@ import { useSelector } from "react-redux";
 import "react-medium-image-zoom/dist/styles.css";
 import FilterComponent from "./filterQueryResultOptions/FilterComponent";
 import BreadcrumbComponent from "./filterQueryResultOptions/BreadcrumbComponent";
-import QuotePriceComponent from "./SendEmail/QuotePriceComponent";
 import "../pages/components/SharedPages.css";
 
 const ProductForListPreviewComponent = ({
@@ -77,23 +76,13 @@ const ProductForListPreviewComponent = ({
     stockCode = selectedStock.ctlsku;
   }
 
-  // console.log("selectedStock", selectedStock);
 
-  // console.log(product);
-
-  const addToCartHandler = () => {
-    reduxDispatch(addToCartReduxAction(product._id, qty, selectedStock));
-    setShowCartMessage(true);
-  };
-
-  // 新的尺寸价格库存
   const price = stockPrice;
   const formattedPrice = price?.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  //react-image-lightbox -starts here
   const [images, setImages] = useState([]);
   useEffect(() => {
     async function handleImages() {
@@ -149,13 +138,6 @@ const ProductForListPreviewComponent = ({
       .catch((err) => console.log(err));
   }, []);
 
-  const quotePriceData = {
-    ...userNameEmail,
-    productName: product?.name,
-    productId: product?._id,
-  };
-  // console.log("quotePriceDataquotePriceDataquotePriceData", quotePriceData);
-
   // table first letter capitalized
   function capitalizeFirstLetter(string) {
     return string
@@ -172,21 +154,6 @@ const ProductForListPreviewComponent = ({
       <Row className="">
         <Col lg={6} className="my-gallery">
           <ImageGallery items={images} />
-          {/*           <Carousel
-            className={
-              product?.images.length > 1 ? "preview_carousel p-0" : "p-0"
-            }
-          >
-            {product?.images.map((image, index) => (
-              <Carousel.Item key={index}>
-                <img
-                  className="d-block w-100"
-                  src={image.path}
-                  alt={`Slide ${index}`}
-                />
-              </Carousel.Item>
-            ))}
-          </Carousel> */}
         </Col>
 
         {/* ************   Product Details  ***************  */}

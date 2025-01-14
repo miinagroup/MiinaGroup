@@ -71,118 +71,12 @@ const HeaderComponent = () => {
     setShowModal(!showModal);
   };
 
-  /* ********* Weather ******** */
-  const [forecastData, setForecastData] = useState([]);
-  const [iconPath, setIconPath] = useState();
 
-  const [weathers, setWeathers] = useState([]);
-
-  useEffect(() => {
-    const storedWeathers = localStorage.getItem("weathers");
-    if (storedWeathers) {
-      setWeathers(JSON.parse(storedWeathers));
-    }
-  }, [userCart]);
-
-  useEffect(() => {
-    if (weathers) {
-      setForecastData(weathers[0]?.forecast);
-      setIconPath(weathers[0]?.forecast[0].condition[0].icon);
-    }
-  }, [weathers]);
-
-  const [highestTem, setHighestTem] = useState(50);
-  const [lowestTem, setLowestTem] = useState(0);
-
-  useEffect(() => {
-    if (forecastData) {
-      const maxTemps = forecastData.map((item) => item.maxtemp_c);
-      setHighestTem(Math.max(...maxTemps));
-      const minTemps = forecastData.map((temp) => temp.mintemp_c);
-      setLowestTem(Math.min(...minTemps));
-    }
-  }, [forecastData]);
-
-  // const [wantWeather, setWantWeather] = useState(false);
-
-  // useEffect(() => {
-  //   if (userInfo && userInfo.wantWeather !== undefined) {
-  //     setWantWeather(userInfo.wantWeather);
-  //   }
-  // }, [userInfo]);
-
-  // const handleToggle = async (event) => {
-  //   const newWantWeather = event.target.checked;
-  //   setWantWeather(newWantWeather);
-
-  //   try {
-  //     const response = await axios.put("/api/users/wantWeather", {
-  //       wantWeather: newWantWeather,
-  //     });
-
-  //     if (response.data.success === "wantWeather updated") {
-  //       userInfo.wantWeather = newWantWeather;
-  //       localStorage.setItem("userInfo", JSON.stringify(userInfo));
-  //       window.location.reload();
-  //     } else {
-  //       console.error("Unexpected response from the backend:", response.data);
-  //     }
-  //   } catch (error) {
-  //     setWantWeather(!newWantWeather);
-  //     console.error("Error updating weather preference:", error);
-  //   }
-  // };
 
   /* ********* User Logout ******** */
   const logOutUser = () => {
     dispatch(logout());
   };
-
-  /* ********* User Quotes ******** */
-  // const adminGetQuotes = async () => {
-  //   const { data } = await axios.get("/api/quotes/admin");
-  //   return data;
-  // };
-
-  // const userGetQuotes = async () => {
-  //   const { data } = await axios.get("/api/quotes/user/");
-  //   return data;
-  // };
-
-  const startOfDay = (date) => {
-    const newDate = new Date(date);
-    newDate.setHours(0, 0, 0, 0);
-    return newDate;
-  };
-
-  // const [adminProcessingQuotes, setAdminProcessingQuotes] = useState([]);
-  // const [userCompletedQuotes, setUserCompletedQuotes] = useState([]);
-
-  // useEffect(() => {
-  //   if (userInfo.isAdmin) {
-  //     adminGetQuotes().then((quotes) => {
-  //       setAdminProcessingQuotes(
-  //         quotes.filter((quote) => quote.status !== "Completed")
-  //       );
-  //     });
-  //   } else if (!userInfo.isAdmin) {
-  //     userGetQuotes().then((quotes) => {
-  //       const currentDateTime = startOfDay(new Date());
-
-  //       const filteredQuotes = quotes.filter(
-  //         (quote) =>
-  //           quote.expireDate &&
-  //           startOfDay(new Date(quote.expireDate)) >= currentDateTime
-  //       );
-
-  //       setUserCompletedQuotes(
-  //         filteredQuotes.filter(
-  //           (quote) => quote.status === "Completed" && !("accepted" in quote)
-  //         )
-  //       );
-  //     });
-  //   }
-  // }, [userInfo]);
 
   const isAuth = FetchAuthFromServer();
   const adminLinks = [
@@ -287,50 +181,7 @@ const HeaderComponent = () => {
             </Modal>
 
             {/* ************   User and Carts  ***************  */}
-
             <Nav className="user_cart">
-              {/* *********** Weathers *********** */}
-              {/* {userInfo?.wantWeather ? (
-                <div className="weather_dropdown p-0 m-0">
-                  <div
-                    className="miningCart"
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src={iconPath}
-                      alt=""
-                      className="p-0 m-0"
-                      style={{ width: "65%" }}
-                    />
-                  </div>
-                  <div className="weather_dropdown_box">
-                    <div
-                      style={{ display: "flex", flexDirection: "row" }}
-                      className="ps-2"
-                    >
-                      {forecastData &&
-                        forecastData.map((item, index) => (
-                          <div key={index} style={{ flex: 1 }}>
-                            <ForecastChart
-                              maxTemp={item.maxtemp_c}
-                              minTemp={item.mintemp_c}
-                              date={item.date}
-                              icon={item.condition[0].icon}
-                              highestTem={highestTem}
-                              lowestTem={lowestTem}
-                              isAdmin={userInfo.isAdmin}
-                            />
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-              ) : null} */}
-
               {/* *********** User Icon *********** */}
               {userInfo.isAdmin ? (
                 <>
@@ -366,22 +217,6 @@ const HeaderComponent = () => {
                               Users
                             </a>
                           </li>
-                          {/* <li style={{ display: "flex", alignItems: "center" }}>
-                            <span
-                              className="hd_c"
-                              style={{ marginRight: "10px" }}
-                            >
-                              Weather
-                            </span>
-                            <Form inline>
-                              <Form.Check
-                                type="switch"
-                                id="weatherSwitch"
-                                checked={wantWeather}
-                                onChange={handleToggle}
-                              />
-                            </Form>
-                          </li> */}
                           <li
                             className="hd_c"
                             onClick={() => dispatch(logout())}
@@ -420,28 +255,6 @@ const HeaderComponent = () => {
                               Orders
                             </a>
                           </li>
-                          {/* <li>
-                            <a href="/user/my-uniforms" className="hd_c">
-                              Uniform
-                            </a>
-                          </li> */}
-                          {/* <li style={{ display: "flex", alignItems: "center" }}>
-                            <span
-                              className="hd_c"
-                              style={{ marginRight: "10px" }}
-                            >
-                              Weather
-                            </span>
-                            <Form inline>
-                              <Form.Check
-                                type="switch"
-                                id="weatherSwitch"
-                                checked={wantWeather}
-                                onChange={handleToggle}
-                              />
-                            </Form>
-                          </li> */}
-
                           <li
                             className="hd_c"
                             onClick={() => logOutUser()}
@@ -456,35 +269,7 @@ const HeaderComponent = () => {
                 </>
               )}
 
-              {/* *********** Quote *********** */}
-              {/* <div className="quote_dropdown">
-                <div className="miningCart">
-                  <a
-                    className="hd_c mining_cart"
-                    href={
-                      useIsAdmin === true
-                        ? "/admin/quotes?tab=processingQuotes&pageNum=1"
-                        : "/user/my-quotes?tab=completedQuotes&pageNum=1"
-                    }
-                  >
-                    <TbNotes
-                      className="mt-1"
-                      style={{ fontSize: "2rem", color: "#1e4881" }}
-                    />
-                    <Badge
-                      className="badge_quote pill bg-danger"
-                      pill
-                      bg="danger"
-                    >
-                      {useIsAdmin
-                        ? adminProcessingQuotes?.length
-                        : userCompletedQuotes.length === 0
-                          ? ""
-                          : userCompletedQuotes?.length}
-                    </Badge>
-                  </a>
-                </div>
-              </div> */}
+      
 
               {/* *********** Cart and Dropdown *********** */}
               <div className="cart_dropdown">

@@ -3,31 +3,6 @@ import { useState, useEffect } from "react";
 import React from "react";
 
 const CartItemForOrderPreviewComponent = ({ item, backOrderStatus }) => {
-  // const [clientSKU, setClientSKU] = useState();
-  const [ctlsku, setCtlsku] = useState(item.cartProducts[0].ctlsku);
-
-  // const getSLRSKUByCTLSKU = async (ctlsku) => {
-  //   try {
-  //     const response = await fetch(
-  //       `/api/products/getClientSKU/${ctlsku}`
-  //     );
-  //     const data = await response.json();
-  //     return data.slrsku;
-  //   } catch (error) {
-  //     console.error("Failed to fetch slrsku:", error);
-  //     return null;
-  //   }
-  // }; 
-
-  // useEffect(() => {
-  //   const fetchSLRSKU = async () => {
-  //     const fetchedSLRSKU = await getSLRSKUByCTLSKU(ctlsku);
-  //     setClientSKU(fetchedSLRSKU);
-  //   };
-
-  //   fetchSLRSKU();
-  // }, [ctlsku]);
-
   return (
     <>
       <tbody>
@@ -52,7 +27,6 @@ const CartItemForOrderPreviewComponent = ({ item, backOrderStatus }) => {
               </strong>
             </a>
           </td>
-          {/* <td style={{ width: "10%" }}>{item.cartProducts[0].currentClientSku.number}</td> */}
 
           <td style={{ width: "10%" }}>
             <p className="m-0">{item.cartProducts[0].ctlsku}</p>

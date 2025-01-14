@@ -1,29 +1,18 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import HeaderComponent from "./HeaderComponent";
-import Navb from "./Navb";
-import FooterComponent from "./FooterComponent";
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
-import SplashPage from "../pages/SplashPage";
-import ScrollButton from "./ScrollButton ";
-import HomePageForVisitor from "../pages/HomePageForVisitor";
-import HeaderComponentForVisitors from "../pages/user/components/HomePageForVisitors/HeaderComponentForVisitors";
-import NavbComponentForVisitors from "../pages/user/components/HomePageForVisitors/NavbComponentForVisitors";
+import React, { useEffect, useState } from "react";
 import {
   useSelector, useDispatch
 } from "react-redux";
 
 import { getSubcategories } from "../redux/actions/categoryActions.js";
-import NewFooter from "../pages/components/homeNewComponents/NewFooter/NewFooter";
-import NewHeaderComponent from "../pages/components/homeNewComponents/NewHeaderComponent/NewHeaderComponent";
-import NewHeaderComponentLoggedIn from "../pages/components/homeNewComponents/NewHeaderComponent/NewHeaderComponentLoggedIn";
-import NewCategoryComponent from "../pages/components/homeNewComponents/NewCategoryComponent/NewCategoryComponent";
-import NewModalWindow from "../pages/components/NewModalWindow/NewModalWindow";
-import NewButton from "../pages/components/homeNewComponents/NewButton/NewButton";
-import AcknowledgementOfCountryComponent from "../pages/components/AcknowledgementOfCountryComponent.js";
+
 
 import Header from "./Header/Header.js";
+import Footer from "./Footer/Footer.js";
+
+import NewHeaderComponentLoggedIn from "./Header/NewHeaderComponentLoggedIn.js";
 
 
 const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
@@ -148,13 +137,14 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       <>
 
       <div 
-      // style={{paddingBottom: "226px"}}
+      style={{paddingBottom: "110px"}}
       >
         {/* <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} stopAnimation={stopAnimation} setStopAnimation={setStopAnimation} /> 
         {location.pathname !== "/" && <NewMineralsComponent />} */}
         <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
         <Outlet />
       </div>
+      <Footer />
         {/* <NewFooter /> */}
         {/* <ScrollButton /> */}
         {/* {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>} */}
@@ -168,6 +158,17 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     } else {
     return (
       <>
+      <NewHeaderComponentLoggedIn 
+        setIsOpenModal={setIsOpenModalCatalogue}
+        goToAboutSection={goToAboutSection}
+        goToPromotionSection={goToTeamSection}
+        goToContactSection={goToContactSection}
+        showSidebar={showSidebar}
+        toggleShowSidebar={toggleShowSidebar}
+        onClickBtn={onClickBtn} />
+
+      {/* <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} /> */}
+      <Outlet />
       {/* <div style={{paddingBottom: "226px"}}>
         <NewHeaderComponentLoggedIn setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} /> 
         {location.pathname !== "/" && <NewMineralsComponent />}

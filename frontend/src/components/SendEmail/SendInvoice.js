@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Quotes.css";
 
 const SendInvoice = (invDate) => {
   const [formData, setFormData] = useState({
@@ -35,7 +34,6 @@ const SendInvoice = (invDate) => {
     return () => clearInterval(interval);
   }, [isSending]);
 
-// console.log("Inv Email Date", invDate.invDate?.billingEmail);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const config = {
@@ -91,9 +89,6 @@ const SendInvoice = (invDate) => {
               disabled={
                 isSending ||
                 successMessage
-                /* 
-                invDate.invDate.sentInvButtonDisabled === true
-                 */
               }
             >
               {isSending ? `Sending${dots}` : "sent invoice to client"}

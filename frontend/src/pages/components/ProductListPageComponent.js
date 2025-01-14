@@ -34,35 +34,15 @@ const ProductListPage = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [attrsFilter, setAttrsFilter] = useState([]);
-  const [attrsFromFilter, setAttrsFromFilter] = useState([]);
-  const [showResetFiltersButton, setShowResetFiltersButton] = useState(false);
 
-  const [filters, setFilters] = useState({});
   const [categoriesFromFilter, setCategoriesFromFilter] = useState({});
-  const [sortOption, setSortOption] = useState("");
   const [paginationLinksNumber, setPaginationLinksNumber] = useState(null);
   const [pageNum, setPageNum] = useState(null);
   const [userNameEmail, setUserNameEmail] = useState();
   const [isAdmin, setIsAdmin] = useState();
-  const [categoryList, setCategoryList] = useState([]);
 
-  // const [materialList, setMaterialList] = useState([]);
-  // const [lengthList, setLengthList] = useState([]);
-  // const [widthList, setWidthList] = useState([]);
-  // const [thicknessList, setThicknessList] = useState([]);
-  // const [materialFilter, setMaterialFilter] = useState("");
-  // const [lengthFilter, setLengthFilter] = useState("");
-  // const [widthFilter, setWidthFilter] = useState("");
-  // const [thicknessFilter, setThicknessFilter] = useState("");
-  const sortList = [
-    { id: "1", text: "Length (Low To High)" },
-    { id: "-1", text: "Length (High To Low)" },
-    { id: "1", text: "Width (Low To High)" },
-    { id: "-1", text: "Width (High to Low)" },
-    { id: "1", text: "Thickness (Low to High)" },
-    { id: "-1", text: "Thickness (High To Low)" },
-  ];
-  const [sortFilter, setSortFilter] = useState();
+
+
   var [params] = useSearchParams();
   var categoryName = params.get("categoryName") || "";
   var pageNumParam = params.get("pageNum") || 1;
@@ -70,31 +50,7 @@ const ProductListPage = ({
   var brandName = params.get("brandName") || "";
   var sortOrder = params.get("sortOrder") || 1;
 
-  // const location = useLocation();
-  // const navigate = useNavigate();
-  /*   useEffect(() => {
-      categoryList.length = 0
-      //var categoryItem = "ELECTRICAL/BORE-PUMPS";
-      var categoryItem = categories && categories[0];
-      categories?.map((category) => {
-        category.name.includes(categoryItem.name) ? (
-          categoryItem = category
-        ) : (
-          categoryList.push(categoryItem)
-        )
-        categoryItem = category
-      })
-    }); */
-
-  // console.log("categoryList", categoryList);
-  // console.log("categories", categories);
-
-  // useEffect(() => {
-  //   ReactGA.pageview(window.location)
-  // }, [])
-
-  // var trackData = localStorage.getItem("trackData")
-  // console.log("trackData", trackData);
+  
 
   useEffect(() => {
     if (categoryName) {
@@ -164,17 +120,10 @@ const ProductListPage = ({
             setProducts(products.products);
             setPaginationLinksNumber(products.paginationLinksNumber);
             setPageNum(products.pageNum);
-            //console.log("products", products);
           }
         } else if (searchQuery.length > 0) {
-          //   console.log(searchQuery);
-          // fetchData()
-
-          //   const res = await getProductsBySearch(offset, limit, searchQuery);
-          // console.log(res);
-          //   setSearchedData(res.data.products)
+          
         } else {
-          //console.log("Am I here, brandName", brandName);
           const products = await getProducts(
             categoryName,
             pageNumParam,
@@ -216,9 +165,6 @@ const ProductListPage = ({
     searchQuery,
   ]);
 
-  // console.log('====================================');
-  // console.log(products);
-  // console.log('====================================');
 
   const [filteredCategories, setFilteredCategories] = useState([]);
   useEffect(() => {
@@ -245,47 +191,7 @@ const ProductListPage = ({
   }, [productCategories, categoryName, subCat, childCat, fourCat, fiveCat, sixCat, sevenCat]);
 
 
-  // console.log("products ", products);
-  // function removeDuplicates(arr) {
-  //   return arr.filter((item,
-  //     index) => arr.indexOf(item) === index);
-  // }
-
-  // useEffect(() => {
-  //   if (products && products.length > 0) {
-
-  //     const materialList = [
-  //       ...new Set(
-  //         products.map((product) => product.material !== "NONE" ? product.material.toUpperCase() : "")
-  //       ),
-  //     ].sort();
-  //     setMaterialList(materialList);
-  //     const lengthList = [
-  //       ...new Set(
-  //         products.map((product) => product.length !== 0 ? product.length : "")
-  //       ),
-  //     ].sort();
-  //     setLengthList(lengthList);
-  //     const widthList = [
-  //       ...new Set(
-  //         products.map((product) => product.width !== 0 ? product.width : "")
-  //       ),
-  //     ].sort();
-  //     setWidthList(widthList);
-  //     const thicknessList = [
-  //       ...new Set(
-  //         products.map((product) => product.thickness !== 0 ? product.thickness : "")
-  //       ),
-  //     ].sort();
-  //     setThicknessList(thicknessList);
-  //   }
-  // }, [products]);
-
-  // console.log("material list", materialList)
-  // console.log("lengthList", lengthList)
-  // console.log("widthList", widthList)
-  // console.log("thicknessList", thicknessList)
-
+  
   useEffect(() => {
     getUser()
       .then((data) => {
@@ -295,12 +201,6 @@ const ProductListPage = ({
       .catch((err) => console.log(err));
   }, []);
 
-  // const resetFilters = () => {
-  //   setMaterialFilter("");
-  //   setLengthFilter("");
-  //   setWidthFilter("");
-  //   setThicknessFilter("");
-  // };
 
   const [loadingTwo, setLoadingTwo] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -314,7 +214,6 @@ const ProductListPage = ({
     try {
       let response;
       if (searchQuery !== previousQuery) {
-        //  setSearchedData([]);
         if (Object.keys(userInfo).length === 0) {
           response = await getProductsBySearchForVisitor(0, limit, searchQuery);
         } else {
@@ -364,6 +263,7 @@ const ProductListPage = ({
 
   return (
     <Container className="content-container" fluid>
+      "hello"
       <BreadcrumbComponent />
       <Row>
         <Col xxl={2} xl={3} lg={3} md={3}>
@@ -398,9 +298,6 @@ const ProductListPage = ({
                 <Col md={3}></Col>
                 <Col md={3}></Col>
               </Row>
-              {/* <Row>
-                <Col className="ms-4" md={5}>Search Results : 0 - {paginationLinksNumber * 24} products found, displayed across {paginationLinksNumber} pages</Col>
-              </Row> */}
             </Form>
           ) : (
             ""
@@ -445,12 +342,7 @@ const ProductListPage = ({
               })
             )}
           </Row>
-            {/* {!loading && productCategories.length < 2 && products.length === 0 ? (
-              <div className="w-50 m-2 p-3 border rounded product-list-page-wrapper">
-                <UserQuoteSubmitPage fromProductList={true} />
-              </div>
-            ) : null} */}
-
+     
             {paginationLinksNumber > 1 ? (
               <PaginationComponent
                 categoryName={categoryName}
@@ -491,10 +383,6 @@ const ProductListPage = ({
                   }
                 </Row>
               </InfiniteScroll>
-
-              {/* {searchedData.length === 0 && !loadingTwo && <div className="w-50 m-2 p-3 border rounded product-list-page-wrapper">
-                <UserQuoteSubmitPage fromProductList={true} />
-              </div>} */}
             </>
           }
         </Col>

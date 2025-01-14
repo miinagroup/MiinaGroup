@@ -10,11 +10,11 @@ import { getCategories } from "../../redux/actions/categoryActions";
 const FilterComponent = () => {
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
 
-  const ColoredLine = (/* { color } */) => (
+  const ColoredLine = () => (
     <hr
       style={{
-        color: "grey",
-        backgroundColor: "grey",
+        color: "#999A47",
+        backgroundColor: "#999A47",
         height: 0.1,
         margin: 0,
       }}
@@ -26,52 +26,25 @@ const FilterComponent = () => {
     dispatch(getCategories())
   }, [])
 
-  // const { categories } = useSelector((state) => state.getCategories);
   const categories = useSelector((state) => state.getCategories.categories);
-
-  // console.log("categories", categories);
 
   const mainCategory = [
     {
       label: "PPE",
       link: "PPE",
-      disabled: false
     },
     {
       label: "SITE SAFETY",
       link: "SITE-SAFETY",
-      disabled: false
     },
     {
-      label: "POWER/AIR",
-      link: "POWER-AIR",
-      disabled: false
+      label: "MERCHANDISING",
+      link: "MERCHANDISING",
     },
     {
-      label: "HAND TOOLS",
-      link: "HAND-TOOLS",
-      disabled: false
-    },
-    {
-      label: "INDUSTRIAL",
-      link: "INDUSTRIAL",
-      disabled: false
-    },
-    {
-      label: "MECHANICAL",
-      link: "MECHANICAL",
-      disabled: false
-    },
-    {
-      label: "ELECTRICAL",
-      link: "ELECTRICAL",
-      disabled: false
-    },
-    {
-      label: "MINING",
-      link: "MINING",
-      disabled: true
-    },
+      label: "TRAVEL",
+      link: "TRAVEL",
+    }
   ];
 
   const [subCategory, setSubCategory] = useState({});
@@ -105,14 +78,8 @@ const FilterComponent = () => {
     setSubCategory(subCategories);
   }, [categories]);
 
-  // console.log("mainCategory", mainCategory);
-  // console.log("subCategory", subCategory);
-
   const location = useLocation();
   const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-  // console.log("query.subCategoryName", query.subCategoryName);
-  // console.log("query", query);
-
 
   return (
     <div className="accordion_container">

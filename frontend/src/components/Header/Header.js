@@ -89,7 +89,8 @@ const Header = ({goToAboutSection, goToTeamSection, goToContactSection}) => {
                                               key={index}
                                               className={styles.subcategoryItem}
                                           >
-                                              <img src="/images/SubmarkPurple.png" alt="Miina Group Logo" className={styles.logoTag} />
+                                              {/* <img src="/images/SubmarkPurple.png" alt="Miina Group Logo" className={styles.logoTag} /> */}
+                                              <img src="/svg/SubmarkPurple.svg" alt="Miina Group Logo" className={styles.logoTag} />
                                               {subcategory}
                                           </a>
                                       ))}

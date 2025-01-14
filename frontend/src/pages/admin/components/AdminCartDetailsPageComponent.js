@@ -10,7 +10,6 @@ import {
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import QuoeteManagementApproval from "../../../components/SendEmail/QuoeteManagementApproval";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { pdf } from "@react-pdf/renderer";
 import CartPrint from "../../../components/Pdfs/CartPrint";

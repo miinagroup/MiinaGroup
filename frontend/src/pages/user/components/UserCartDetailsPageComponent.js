@@ -2,7 +2,6 @@ import { Container, Col, Form, ListGroup, InputGroup, Button, Row } from "react-
 import CartItemComponent from "../../../components/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import QuoeteManagementApproval from "../../../components/SendEmail/QuoeteManagementApproval";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { pdf } from "@react-pdf/renderer";
 import CartPrint from "../../../components/Pdfs/CartPrint";
@@ -762,9 +761,7 @@ const UserCartDetailsPageComponent = ({
                           </Form.Control.Feedback>
                         </ListGroup.Item>
 
-                        <div className="d-grid gap-2">
-                          <QuoeteManagementApproval quotePriceData={quotePriceData} />
-                        </div>
+                       
                       </ListGroup>
                     </div>
                   </div>

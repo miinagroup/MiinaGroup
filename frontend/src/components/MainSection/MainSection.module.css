@@ -45,8 +45,7 @@
   .categoryItem:hover img {
     opacity: 1;
   }
-
-li:hover {
+  .categoryItem:hover {
     color: #999A47;
     cursor: pointer;
     background-color: rgba(219, 161, 98, 0.45);

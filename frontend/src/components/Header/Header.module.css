@@ -254,3 +254,17 @@ button {
      gap: 5px;
      align-items: center;
 }
+
+
+.headerNewBtns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+    align-items: center;
+    width: 100%;
+    max-width: 200px;
+} 
+
+.user_cart {
+     gap: 25px;
+}

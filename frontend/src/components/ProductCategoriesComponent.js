@@ -67,14 +67,10 @@ const ProductCategoriesComponent = ({
     <Col className="bigbox_product_categories_col">
       <Container className="bigbox_product_categories">
         <LinkContainer style={onHover} to={`/product-list?${baseCategory}`} className="bigbox_product_categories_item">
-          <div className="box_product_categories">
-            <div className="box1_product_categories">
-              <div className="box2_product_categories">
-                <div className="box3_product_categories">
-                  <p className="hexagon_product_categories">{displayCategory}</p>
-                </div>
-              </div>
-            </div>
+          <div className="subcategoryWrapper">
+            <img src="/svg/SubmarkWhite.svg" alt="Miina Plant" className="logoPlant" />
+            
+          {displayCategory}
           </div>
         </LinkContainer>
       </Container>

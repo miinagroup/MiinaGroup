@@ -180,6 +180,7 @@
   color: white;
 }
 
+
 @media (max-width: 1440px) {
   .btnLogin button {
     font-size: 14px;

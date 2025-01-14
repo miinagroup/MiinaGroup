@@ -13,14 +13,9 @@ const UserLinksComponent = () => {
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const isAuth = FetchAuthFromServer();
   const [deliveryBook, setDeliveryBook] = useState()
-  //console.log(userInfo);
 
   const userLinks = [
-    // {
-    //   title: "Uniforms",
-    //   link: "/user/my-uniforms",
-    //   access: "all",
-    // },
+
     {
       title: "BACK TO ADMIN",
       link: "/admin/orders",
@@ -31,12 +26,6 @@ const UserLinksComponent = () => {
       link: "/user/my-orders",
       access: "all",
     },
-    // {
-    //   title: "Quotes",
-    //   link: "/user/my-quotes?tab=completedQuotes&pageNum=1",
-    //   access: "all",
-    // },
-
     {
       title: "My Profile",
       link: "/user",
@@ -97,8 +86,6 @@ const UserLinksComponent = () => {
         setDeliveryBook(data[0])
       }).catch((err) => console.log(err));
   }, [userInfo])
-
-  // console.log(deliveryBook);
 
   return (
     <>

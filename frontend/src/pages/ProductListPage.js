@@ -1,6 +1,6 @@
 import ProductListPageComponent from "./components/ProductListPageComponent";
 import axios from "axios";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const getProducts = async (
@@ -31,13 +31,10 @@ const getProducts = async (
     } else {
       var { data } = await axios.get(url);
     }
-    // console.log('Data received:', data);
   } catch (error) {
     console.error("Error fetching data:", error);
     return null;
   }
-  // console.log('我是data,ProductListPage', data);
-  // console.log('search', categoryName);
 
   return data;
 };
@@ -54,8 +51,6 @@ const getProductCategories = async (
   const category = categoryName ? `categoryBlocks/${categoryName}/` : "";
   const url = `/api/categories/${category}?subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}`;
   var { data } = await axios.get(url);
-  // console.log('我是data,ProductListPage', data);
-  // console.log('search', categoryName);
   return data;
 };
 
@@ -71,7 +66,6 @@ const ProductListPage = () => {
 
   var brandName = params.get("brandName") || "";
 
-  // console.log(brandName);
 
   const { categories } = useSelector((state) => state.getCategories);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);

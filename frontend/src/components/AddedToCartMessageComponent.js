@@ -25,8 +25,6 @@ const AddedToCartMessageComponent = ({
       <Alert
         show={show}
         variant="success"
-        /* onClose={() => setShow(false)}
-        dismissible */
         className={`added-to-cart-message ${show ? "show" : ""}`}
       >
         <Alert.Heading className="fs-6">Item Added!</Alert.Heading>

@@ -26,7 +26,6 @@ import moment from "moment-timezone";
 import FilterComponent from "../../components/filterQueryResultOptions/FilterComponent";
 import BreadcrumbComponent from "../../components/filterQueryResultOptions/BreadcrumbComponent";
 import { getCategories } from "../../redux/actions/categoryActions";
-import QuotePriceComponent from "../../components/SendEmail/QuotePriceComponent";
 import EditProductShortInforComponent from "../admin/components/EditProductShortInforComponent";
 import ReturnProfitCalculator from "../ReturnProfitCalculator";
 import LoginRegisterPage from "../LoginRegisterPage";
@@ -212,35 +211,10 @@ const ProductDetailsPageComponent = ({
 
   useEffect(() => {
     if (selectedProduct !== "Please-Select" && selectedStock) {
-      // stockCount = selectedStock.count;
-      // stockPrice = selectedStock.price;
-      // stockCode = selectedStock.ctlsku;
-      // supplierCode = selectedStock.suppliersku;
-
       setStockPrice(selectedStock.price);
       setstockCode(selectedStock.ctlsku);
       setsupplierCode(selectedStock.suppliersku);
       setStockLevel(selectedStock.count);
-
-      // if (clientSiteSku && selectedStock[clientSiteSku] !== undefined) {
-      //   clientSku = selectedStock[clientSiteSku];
-      // }
-
-      // clientsSkuList && clientsSkuList.map(skuName => {
-      //   if (skuName.sku.toLowerCase().includes(userData.location?.replace(/\s+/g, '').toLowerCase())) {
-      //     setClientSkuName(skuName.sku);
-      //   }
-      // })
-
-      // if (selectedStock.clientsSku?.length > 0) {
-      //   const matchedSku = selectedStock.clientsSku.find(sku =>
-      //     sku.name?.toLowerCase() === clientSkuName.toLowerCase()
-      //   );
-      //   return matchedSku ? setClientSKU(matchedSku.number) : setClientSKU('');
-      // } else {
-      //   setClientSKU('')
-      // }
-
     }
   }, [selectedStock, selectedProduct]);
 
@@ -366,8 +340,6 @@ const ProductDetailsPageComponent = ({
       );
     }
   }
-  //console.log("pdfs", pdfs);
-
 
   // quote price using -
   useEffect(() => {
@@ -399,25 +371,7 @@ const ProductDetailsPageComponent = ({
     }
   }, [id, selectedStock]);
 
-  // TODO uncomment this when quote price is ready
-  /*   const handleQuotePrice = async () => {
-      try {
-        const response = await createQuote(quoteData);
-        console.log(response);
-        if (response.message === "Product already in quotelist") {
-          setButtonText("Product already in quotelist!");
-          setTimeout(() => setButtonText("Add to cart"), 1000);
-        }
-        setButtonText("Quote Sent!");
-        setTimeout(() => setButtonText("Add to cart"), 1000);
-      } catch (error) {
-        setButtonText("Error!, Please Refresh Page");
-      }
-    } */
 
-  // console.log(quoteData);
-
-  // next function
   const handleBlur = (e) => {
     const newValue =
       Math.round(e.target.value / product.saleunit) * product.saleunit;
@@ -462,23 +416,6 @@ const ProductDetailsPageComponent = ({
   const currentDate = moment.tz("Australia/Perth");
   const diff = dateCalculation.diff(currentDate, "days");
 
-  /*   async function downloadPDF(pdfURL, pdfName) {
-      const response = await fetch(pdfURL);
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const blob = await response.blob();
-      const blobURL = window.URL.createObjectURL(blob);
-      const tempLink = document.createElement("a");
-      tempLink.style.display = "none";
-      tempLink.href = blobURL;
-      tempLink.setAttribute("download", pdfName);
-      document.body.appendChild(tempLink);
-      tempLink.click();
-      document.body.removeChild(tempLink);
-    } */
   async function downloadPDF(pdfURL, pdfName) {
     if (pdfURL.includes("http:")) {
       pdfURL = pdfURL.replace("http:", "https:");
@@ -554,41 +491,6 @@ const ProductDetailsPageComponent = ({
   }, [refresh]);
 
   const execustionDate = new Date("2024-1-15 11:30:00");
-
-  // const handleEdit = () => setEdit(true);
-
-  // const handleSaveClientSku = async () => {
-  //   try {
-  //     // if (!clientSKU) {
-  //     //   setEdit(false);
-  //     //   return;
-  //     // }
-  //     await clientUpdateSku(stockCode, clientSKU, clientSkuName);
-  //     console.log("Client SKU updated successfully");
-
-  //     const updatedProduct = await fetchProduct(id);
-  //     setProduct(updatedProduct);
-
-  //     const updatedStockItem = updatedProduct.stock.find(
-  //       (item) => item.ctlsku === stockCode
-  //     );
-  //     if (updatedStockItem) {
-  //       setSelectedStock(updatedStockItem);
-  //     }
-
-  //     setEdit(false);
-  //     setChangedClientSKU("");
-  //     setClientSKU('')
-  //   } catch (error) {
-  //     console.error("Failed to save client SKU", error);
-  //   }
-  // };
-
-
-  // const hanldeSkuChange = (e) => {
-  //   setClientSKU(e.target.value)
-  //   setEdit(true);
-  // };
 
   const brandSearchHandler = () => {
     if (brandSearch) {
@@ -844,62 +746,6 @@ const ProductDetailsPageComponent = ({
                     <Row hidden={selectedProduct === "Please-Select"} className="product-details-page-description">
                       <Col>
                         <h6>Product Code: {stockCode}</h6>
-                        {/* {!isUserInfo && <h6 hidden={userData?.isAdmin === true}>
-                          Client Code:{" "}
-                          {userData?.isSitePerson === true ? (
-                            <>
-                              {edit === false ? (
-                                <div
-                                  style={{ display: "inline" }}
-                                  className="ms-1"
-                                >
-                                  {clientSKU ? clientSKU : "N/A"}
-                                  <i
-                                    onClick={handleEdit}
-                                    className="bi bi-pencil-square"
-                                    style={{
-                                      cursor: "pointer",
-                                      marginLeft: "5px",
-                                    }}
-                                  ></i>
-                                </div>
-                              ) : (
-                                <div
-                                  style={{ display: "inline" }}
-                                  className="ms-1"
-                                >
-                                  <Form.Control
-                                    type="text"
-                                    className="form-control d-inline-block p-0 pe-1 ps-1"
-                                    style={{
-                                      width: "auto",
-                                      verticalAlign: "middle",
-                                    }}
-                                    onChange={hanldeSkuChange}
-                                    value={clientSKU}
-                                  />
-                                  <button
-                                    className="btn btn-success p-0 pe-1 ps-1 ms-1 d-inline-block"
-                                    onClick={handleSaveClientSku}
-                                    disabled={!edit}
-                                  >
-                                    save
-                                  </button>
-                                  <button
-                                    className="btn btn-light p-0 pe-1 ps-1 ms-1 d-inline-block"
-                                    onClick={() => {
-                                      setEdit(false)
-                                    }}
-                                    disabled={!edit}
-                                  >
-                                    <i class="bi bi-x-circle"></i>
-                                  </button>
-                                </div>
-                              )}
-                            </>
-                          ) : (!clientSKU ? "N/A" : clientSKU)}
-                        </h6>} */}
-
                         {!isUserInfo && <h6>
                           {userData.isAdmin === true ||
                             userData.isMarketing === true ? (
@@ -983,8 +829,6 @@ const ProductDetailsPageComponent = ({
                         {isUserInfo && <div className="btnLogin btnLoginText btnLoginProductPage">
                           <div className="btnsLoginRegistrationProductPage">
                             <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
-                            {/* <div>or</div>
-                            <button className="btn_blue" onClick={(e) => handleShowLoginModal(e, "RegisterForm")}>Register</button> */}
                           </div>
                         </div>}
 
@@ -1038,13 +882,8 @@ const ProductDetailsPageComponent = ({
                           </Col>
                         </>
                       ) : product.displayPrice === 0 || diff < 0 ? (
-                        <QuotePriceComponent
-                          quotePriceData={quotePriceData}
-                          createQuote={createQuote}
-                          quoteData={quoteData}
-                        />
+                        <div></div>
                       ) : (
-                        // <button onClick={handleQuotePrice} className="btn btn-block btn-success">Quote</button>
                         <>
                           {product.displayPrice === 0 || diff < 0 ? null : (
                             <h6 hidden={selectedProduct === "Please-Select"}>
