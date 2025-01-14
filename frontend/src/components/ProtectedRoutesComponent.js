@@ -23,7 +23,6 @@ import NewModalWindow from "../pages/components/NewModalWindow/NewModalWindow";
 import NewButton from "../pages/components/homeNewComponents/NewButton/NewButton";
 import AcknowledgementOfCountryComponent from "../pages/components/AcknowledgementOfCountryComponent.js";
 
-import { getMineralPrices } from '../redux/actions/mineralActions.js';
 import Header from "./Header/Header.js";
 
 
@@ -47,9 +46,9 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     setShowSidebar(false);
     document.getElementById("about").scrollIntoView({ behavior: 'smooth' })
   };
-  const goToPromotionSection = () => {
+  const goToTeamSection = () => {
     setShowSidebar(false);
-    document.getElementById("promotion").scrollIntoView({ behavior: 'smooth' })
+    document.getElementById("team").scrollIntoView({ behavior: 'smooth' })
   };
   const goToContactSection = () => {
     setShowSidebar(false);
@@ -153,7 +152,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       >
         {/* <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} stopAnimation={stopAnimation} setStopAnimation={setStopAnimation} /> 
         {location.pathname !== "/" && <NewMineralsComponent />} */}
-        <Header />
+        <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
         <Outlet />
       </div>
         {/* <NewFooter /> */}

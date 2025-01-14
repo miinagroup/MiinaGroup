@@ -1,12 +1,12 @@
 import styles from "./AboutSection.module.css";
 
 const AboutSection = () => {
-    return <div className={styles.about}>
+    return <div className={styles.about} >
         <img className={styles.aboutImage} src="/svg/FamilyEmblemRed.svg" alt="Family Emblem Red" />
         <img className={styles.aboutImageArrow} src="/svg/arrow_narrow.svg" alt="Arrow" />
         <div className={styles.aboutImageText}>#Marni is a Family emblem is our symbol, our identity and our strong connection to Kuruma country, continuing and maintaining cultural practices is our responsibility to the Ngurra</div>
         <div className={styles.aboutWrapper}>
-            <div className={styles.aboutInfo}>
+            <div className={styles.aboutInfo} id="about">
                 <h1 className={styles.title}>WHO MIINA GROUP IS</h1>
                 <p className={styles.text}>
                     Founded in 2021, Miina Group was created to capitalize on opportunities within the Robe River Kuruma Native Title lands and Rio Tinto Operations at Mesa A and Mesa J. Led by Howard Lockyer and Sherena Bin Hitam, the company aims to become a trusted provider of <b>mining & construction safety supplies</b>, machinery, equipment and small-scale rehabilitation services in the West Pilbara, working alongside other Aboriginal suppliers to meet industry demand. <br /> <br />

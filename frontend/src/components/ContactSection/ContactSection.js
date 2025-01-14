@@ -5,7 +5,7 @@ const ContactSection = () => {
     const [ isSent, setIsSent ] = useState(false);
     const [ isSending, setIsSending ] = useState(false);
 
-    return <div className={styles.contacts}>
+    return <div className={styles.contacts} id="request">
         <img src="/images/FamilyEmblemCream.png" alt="Family Emblem" className={styles.backgroundEmblem} />
         <div className={styles.contactsAcknowledgement}>
             <div className={styles.logoTaglineWrapper}>

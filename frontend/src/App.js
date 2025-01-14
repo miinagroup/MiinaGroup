@@ -58,9 +58,6 @@ import CreditApplication from "./pages/user/components/FooterComponents.js/Credi
 import SupplieCodeOfConduct from "./pages/user/components/FooterComponents.js/SupplieCodeOfConduct.js";
 import ProtectedRoutesFilterComponent from "./components/ProtectedRoutesFilterComponent.js";
 
-//mobile
-import HomePageForVisitorMobile from "./pages/mobile/HomePageForVisitorMobile.js";
-
 
 function App() {
   return (
@@ -88,8 +85,6 @@ function App() {
             <Route path="/product-details/:id" element={<ProductDetailsPage />} />
           </Route>
 
-          {/* Mobile version for a visitor */}
-          <Route path="/m.home" element={<HomePageForVisitorMobile />} />
 
           {/* publicly available routes: */}
           <Route element={<ProtectedRoutesComponent role="user" />}>

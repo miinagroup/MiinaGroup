@@ -93,26 +93,26 @@
 }
 
 .box3:hover .img_ppe {
-  content: url("../../public/images/products/PPEW.png");
+  /* content: url("../../public/images/products/PPEW.png"); */
   animation: PPEchangeImage 2s infinite;
 }
 
 @keyframes PPEchangeImage {
   0% {
-    background-image: url("../../public/images/products/PPEW.png");
+    /* background-image: url("../../public/images/products/PPEW.png"); */
   }
 
   33% {
-    background-image: url("../../public/images/products/PPEWLine1.png");
+    /* background-image: url("../../public/images/products/PPEWLine1.png"); */
   }
 
   66% {
-    background-image: url("../../public/images/products/PPEWLine2.png");
+    /* background-image: url("../../public/images/products/PPEWLine2.png"); */
   }
 }
 
 .box3:hover .img_handtools {
-  content: url("../../public/images/products/handtoolsW.png");
+  /* content: url("../../public/images/products/handtoolsW.png"); */
   animation: handtools 2s forwards;
 }
 
@@ -127,7 +127,7 @@
 }
 
 .box3:hover .img_electrical {
-  content: url("../../public/images/products/electricalW.png");
+  /* content: url("../../public/images/products/electricalW.png"); */
   animation: electrical 3s forwards;
 }
 
@@ -142,34 +142,34 @@
 }
 
 .box3:hover .img_siteSafety {
-  content: url("../../public/images/products/siteSafetyWDrips1.png");
+  /* content: url("../../public/images/products/siteSafetyWDrips1.png"); */
   animation: changeImage 2s infinite;
 }
 
 @keyframes changeImage {
   /* 0% { background-image: url('../../public/images/products/siteSafety.png'); } */
   0% {
-    background-image: url("../../public/images/products/siteSafetyWDrips1.png");
+    /* background-image: url("../../public/images/products/siteSafetyWDrips1.png"); */
   }
 
   33% {
-    background-image: url("../../public/images/products/siteSafetyWDrips2.png");
+    /* background-image: url("../../public/images/products/siteSafetyWDrips2.png"); */
   }
 
   66% {
-    background-image: url("../../public/images/products/siteSafetyWDrips3.png");
+    /* background-image: url("../../public/images/products/siteSafetyWDrips3.png"); */
   }
 }
 
 .box3:hover .img_mechanical_up {
-  content: url("../../public/images/products/gearW.png");
+  /* content: url("../../public/images/products/gearW.png"); */
   transform: rotate(27deg);
   animation-name: rotationUP;
   animation-duration: 7s;
 }
 
 .box3:hover .img_mechanical_down {
-  content: url("../../public/images/products/gearW.png");
+  /* content: url("../../public/images/products/gearW.png"); */
   animation-name: rotationD;
   animation-duration: 7s;
 }

@@ -31,7 +31,7 @@ const teamData = [{
 ]
 
 const TeamSection = () => {
-     return <div className={styles.team}>
+     return <div className={styles.team} id="team">
           <h1 className={styles.title}>MIINA GROUP TEAM</h1>
           <div className={styles.teamInfo}>
                {

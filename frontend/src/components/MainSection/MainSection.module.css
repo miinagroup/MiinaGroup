@@ -68,7 +68,7 @@ li:hover {
 
 .categories{
      display: flex;
-     z-index: 100;
+     z-index: 0;
      position: relative;
 }
 
@@ -140,9 +140,9 @@ li:hover {
 }
 
 .swiper {
-    height: 100;
+    /* height: 100%; */
     max-height: 380px;
-    padding: 50px 50px 25px 75px;
+    padding: 50px 50px 25px 75px !important;
     margin:  0 auto;
     background-color: rgba(219, 161, 98, 0.45);
 }

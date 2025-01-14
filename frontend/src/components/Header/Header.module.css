@@ -1,3 +1,8 @@
+button {
+     border: none;
+     background-color: transparent;
+}
+
 .header {
     font-family: "GloriaHallelujah";
     font-size: 20px;
@@ -20,9 +25,10 @@
 
 .logoTaglineWrapper {
     display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .logo {
@@ -44,7 +50,7 @@
     position: relative;
 }
 
-.menuItem:hover {
+.menuItem span:hover {
     color: #DBA162
 }
 
@@ -110,12 +116,9 @@
     color: #483F55;
     margin-top: -10px;
 }
-#about {
-    position: relative;
-}
 
 .dropdown {
-    background-color: hsla(5, 63%, 20%, 0.2);
+    background-color: rgba(219, 161, 98, 0.25);
     padding: 15px 15px;
     border-radius: 5px;
     position: absolute;
@@ -130,10 +133,124 @@
     visibility: hidden;
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
 }
 
-#about:hover .dropdown {
+.aboutMenuItem:hover + .dropdown,
+.dropdown:hover,
+.catalogueMenuItem:hover + .catalogueDropdown,
+.catalogueDropdown:hover {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+.catalogueDropdown {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    background-color: rgba(219, 161, 98, 0.25);
+    padding: 15px 25px;
+    border-radius: 10px;
+    max-width: 350px;
+    width: 350px;
+    z-index: 10;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.logoTag {
+    width: 30px;
+}
+
+.category {
+     display: flex;
+     align-items: center;
+    justify-content: space-between;
+    padding: 5px 0px;
+    width: 100%;
+    max-width: 300px;
+    position: relative;
+}
+
+.categoryName {
+     display: flex;
+     gap: 5px;
+     align-items: center;
+}
+
+.category:hover {
+    background-color: #dba162;
+    border-radius: 5px;
+    color: white;
+}
+
+.category:hover .categoryName {
+    color: white;
+}
+
+.arrow {
+    fill: #483F55;
+}
+
+.subcategories {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    max-width: 350px;
+    width: 350px;
+   
+    background-color: #DBA162;
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.category:hover .subcategories {
+    display: block;
+}
+
+.category {
+    position: relative;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.categoryName {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.subcategories a {
+    color: #483F55;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.subcategories a:hover {
+    background-color: #dba162;
+    color: white;
+}
+
+.aboutMenu {
+     display: flex;
+     gap: 5px;
+     align-items: center;
+}
+
+.subcategoryItem {
+     display: flex;
+     gap: 5px;
+     align-items: center;
 }

@@ -64,7 +64,7 @@ const AboutNewComponent = ({setIsOpenModal}) => {
 }, [])
 
     return <>
-        <div className={`aboutNew ${styles.aboutNew}`} id="about">
+        <div className={`aboutNew ${styles.aboutNew}`}>
       <div className={styles.aboutNewWrapper} >
         <div className={styles.aboutNewFirstBlock}>
             <div className={styles.aboutNewLogo}>

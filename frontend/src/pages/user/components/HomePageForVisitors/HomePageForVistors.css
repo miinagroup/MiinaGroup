@@ -99,7 +99,7 @@
   }
 
   .hd_bgc_mobile {
-    background-image: url("../../../../../public/images/HeaderBackgroundImage_mobile.jpg");
+    /* background-image: url("../../../../../public/images/HeaderBackgroundImage_mobile.jpg"); */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

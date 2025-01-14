@@ -262,7 +262,7 @@
 
 /* *******  ******* */
 .hd_bgc {
-  background-image: url("../../public/images/headerBackground_5.jpg");
+  /* background-image: url("../../public/images/headerBackground_5.jpg"); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
