@@ -1,8 +1,36 @@
+.ordersWrapper { 
+    padding: 50px 150px;
+    font-family: "HelveticaNeue";
+    color:#483F55
+}
+
+.searchPaginationWrapper {
+    width: 100%; 
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 0px;
+}
+
 .title {
     font-family: "GloriaHallelujah";
     font-size: 40px;
     color: #483F55;
 }
+
+.ordersTable {
+     color: #483F55;
+}
+
+
+
+.orderRow:nth-child(odd) {
+    background-color: rgba(219, 161, 98, 0.25);
+  }
+  
+  .orderRow:nth-child(even) {
+    background-color: rgba(153, 154, 71, 0.25); 
+  }
+  
 
 .userOrdersMobileWrapper {
     margin-top: 15px;

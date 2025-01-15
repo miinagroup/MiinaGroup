@@ -10,11 +10,7 @@ const AdminCartDetailsPage = () => {
   const itemsCount = useSelector((state) => state.cart.itemsCount);
   const cartSubtotal = useSelector((state) => state.cart.cartSubtotal);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-
   const taxAmount = useSelector((state) => state.cart.taxAmount);
-
-  // console.log("admin cart mother", cartSubtotal);
-
   const reduxDispatch = useDispatch();
 
   const fetchUsers = async (abctrl) => {

@@ -21,8 +21,6 @@ const AdminLinksComponent = () => {
     }
   }, [isAuth]);
 
-  // const [openMarketing, setOpenMarketing] = useState(false);
-  // const [openDevelopers, setOpenDevelopers] = useState(false);
   const [openClientVersion, setOpenClientVersion] = useState(false);
 
   const adminLinks = [

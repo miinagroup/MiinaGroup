@@ -8,11 +8,10 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
 import ForgotPasswordComponent from "./ForgotPasswordComponent";
-import LoggedInVerifySiteComponent from "./LoggedInVerifySiteComponent";
 import axios from "axios";
 
 const LoginPageComponent = ({
@@ -38,13 +37,7 @@ const LoginPageComponent = ({
   const [shouldRenderVerifySiteModal, setShouldRenderVerifySiteModal] =
     useState(false);
 
-  const navigate = useNavigate();
-
   const currentUrl = window.location.href;
-  // if (currentUrl.includes("Register=true")) {
-  //   window.location.assign("/");
-  // }
-  //console.log("currentUrl", currentUrl);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -133,10 +126,8 @@ const LoginPageComponent = ({
     const checkAuth = async () => {
       try {
         const response = await axios.get("/api/get-token");
-        // console.log("Authorized");
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          // console.log("Unauthorized");
           localStorage.removeItem("userInfo");
         } else {
           console.error(error);
@@ -150,8 +141,6 @@ const LoginPageComponent = ({
 
   useEffect(() => {
     const verificationPending = localStorage.getItem("verificationPending");
-
-    // console.log(userInfo.siteVerified, verificationPending);
 
     if (userInfo.siteVerified) {
       localStorage.removeItem("verificationPending");
@@ -174,9 +163,7 @@ const LoginPageComponent = ({
 
   return (
     <>
-      <Container 
-      // className="login_desktop"
-      >
+      <Container >
         <Row className="mt-5 justify-content-md-center">
           <Col md={6} className="w-100">
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -251,21 +238,6 @@ const LoginPageComponent = ({
           </Col>
         </Row>
       </Container>
-
-      {/* <Container>
-        <div className="login_mobile">
-          𝙒𝙚 𝙖𝙥𝙤𝙡𝙤𝙜𝙞𝙨𝙚 𝙛𝙤𝙧 𝙩𝙝𝙚 𝙞𝙣𝙘𝙤𝙣𝙫𝙚𝙣𝙞𝙚𝙣𝙘𝙚, 𝙗𝙪𝙩 𝙤𝙪𝙧 𝙬𝙚𝙗𝙨𝙞𝙩𝙚 𝙞𝙨 𝙘𝙪𝙧𝙧𝙚𝙣𝙩𝙡𝙮 𝙤𝙥𝙩𝙞𝙢𝙞𝙨𝙚𝙙 𝙛𝙤𝙧 𝙙𝙚𝙨𝙠𝙩𝙤𝙥 𝙪𝙨𝙚𝙧𝙨 𝙤𝙣𝙡𝙮. 𝙁𝙤𝙧 𝙩𝙝𝙚 𝙗𝙚𝙨𝙩 𝙚𝙭𝙥𝙚𝙧𝙞𝙚𝙣𝙘𝙚, 𝙥𝙡𝙚𝙖𝙨𝙚 𝙖𝙘𝙘𝙚𝙨𝙨 𝙤𝙪𝙧 𝙨𝙞𝙩𝙚 𝙪𝙨𝙞𝙣𝙜 𝙖 𝙙𝙚𝙨𝙠𝙩𝙤𝙥 𝙘𝙤𝙢𝙥𝙪𝙩𝙚𝙧. 𝙒𝙚 𝙖𝙥𝙥𝙧𝙚𝙘𝙞𝙖𝙩𝙚 𝙮𝙤𝙪𝙧 𝙪𝙣𝙙𝙚𝙧𝙨𝙩𝙖𝙣𝙙𝙞𝙣𝙜 𝙖𝙣𝙙 𝙖𝙧𝙚 𝙬𝙤𝙧𝙠𝙞𝙣𝙜 𝙩𝙤 𝙨𝙪𝙥𝙥𝙤𝙧𝙩 𝙢𝙤𝙧𝙚 𝙙𝙚𝙫𝙞𝙘𝙚𝙨 𝙞𝙣 𝙩𝙝𝙚 𝙛𝙪𝙩𝙪𝙧𝙚.
-        </div>
-      </Container> */}
-      {/* {shouldRenderVerifySiteModal && (
-        <LoggedInVerifySiteComponent
-          show={showVerifySiteModal}
-          onHide={() => setShowVerifySiteModal(false)}
-          refreshUserInfo={refreshUserInfo}
-          getdeliveryBooks={getdeliveryBooks}
-          email={email}
-        />
-      )} */}
     </>
   );
 };

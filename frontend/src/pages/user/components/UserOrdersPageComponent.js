@@ -1,27 +1,22 @@
 import { Row, Col, Modal, Tab, Tabs, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UserLinksComponent from "../../../components/user/UserLinksComponent";
 import { TableHeader, Pagination, Search } from "../../../components/DataTable";
 import UserOrderItemForOrderPageComponent from "./UserOrderItemForOrderPageComponent";
-//import Order from "../../../../../backend/models/OrderModel";
 import styles from "./UserOrdersPageComponent.module.css"
 
 const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApprovedPOnumber }) => {
   const [orders, setOrders] = useState([]);
   const [ordersByCompany, setOrdersByCompany] = useState([]);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-  const [totalItems, setTotalItems] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [productSearch, setProductSearch] = useState("")
   const [filterValue, setFilterValue] = useState("");
   const [sorting, setSorting] = useState({ field: "createdAt", order: "desc" });
-  const [selectedIds, setSelectedIds] = useState([]);
-  const [poNumber, setPOnumber] = useState("")
-  const [approve, setApprove] = useState("Approve")
   const ITEMS_PER_PAGE = 20;
 
   const productHeaders = [
@@ -147,63 +142,29 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
     fontWeight: order.backOrder ? "bold" : "normal",
   });
 
-  const handleCheckboxChange = (event) => {
-    const checkedId = event.target.value;
-    if (event.target.checked) {
-      setSelectedIds([...selectedIds, checkedId])
-    } else {
-      setSelectedIds(selectedIds.filter(id => id !== checkedId))
-    }
-  }
-
-  const handleSubmit = (event) => {
-    setApprove("Approving...")
-    const date = new Date().toISOString()
-    if ((selectedIds.length > 0) && (poNumber !== "")) {
-      selectedIds?.map((id) => {
-        updateApprovedPOnumber(id, poNumber, date)
-      })
-      setSorting({ field: "updatedAt", order: "desc" });
-      setApprove("Approved!")
-      setFilterValue("approved")
-
-    }
-    setTimeout(() => setApprove("Approve"), 500);
-    setSelectedIds([])
-  }
-
-  const handleTextChange = (event) => {
-    setPOnumber(event.target.value)
-  }
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   return (
     <>
       <div>
-        <div>
           <UserLinksComponent />
-        </div>
-        <div>
+        <div className={styles.ordersWrapper}>
           <h1 className={styles.title}>MY ORDERS</h1>
-          <div className="row ">
-            <div className="col-md-9">
+          <div className={styles.searchPaginationWrapper}>
               <Pagination
                 total={totalProducts}
                 itemsPerPage={ITEMS_PER_PAGE}
                 currentPage={currentPage}
                 onPageChange={(page) => setCurrentPage(page)}
               />
-            </div>
-            <div className="col-md-2 ms-5">
               <Search
                 onSearch={(value) => {
                   setProductSearch(value);
                   setCurrentPage(1);
                 }}
               />
-            </div>
           </div>
-          <table className="table table-striped">
+          <table className={`table ${styles.ordersTable}`}>
               <TableHeader
               headers={productHeaders}
               onSorting={(field, order) => setSorting({ field, order })}
@@ -212,7 +173,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
             <tbody>
               {productData ? (
                 productData?.map((order, idx) => (
-                  <tr key={idx}>
+                  <tr key={idx} className={styles.orderRow}>
                     <td style={getOrderStyle(order)}>{idx + 1} </td>
                     <td
                       onClick={() => handleShow(order._id)}

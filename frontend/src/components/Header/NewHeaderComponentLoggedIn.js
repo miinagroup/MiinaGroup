@@ -12,7 +12,7 @@ import {
 } from "../../redux/actions/cartActions";
 import CartDropDown from "../../pages/user/components/CartDropDown";
 import FetchAuthFromServer from "../FetchAuthFromServer";
-import HamburgerMenu from "../../pages/mobile/components/HeaderComponent/HamburgerMenu";
+// import HamburgerMenu from "../../pages/mobile/components/HeaderComponent/HamburgerMenu";
 import styles from "./Header.module.css";
 
 const mainCategories = [

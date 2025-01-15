@@ -19,13 +19,11 @@ function ForgotPasswordComponent() {
 
     const email = form.email.value.toLowerCase();
 
-    // console.log(email);
     try {
       setSubmitting(true);
       setMessage("");
       setSuccessMessage("");
       const response = await axios.post("/api/users/forgotPassword", { email });
-      //   console.log(response);
       if (response.status === 200) {
         setSuccessMessage(response.data.message);
         setTimeout(() => {
@@ -62,7 +60,6 @@ function ForgotPasswordComponent() {
     <>
       <div>
         <button
-          // className="action remind border-0"
           className="reminderBtn"
           id="customer-popup-forgot"
           onClick={handleShow}

@@ -48,7 +48,7 @@ const UserLinksComponent = () => {
   };
 
   const isPathActive = (path) => {
-    return location.pathname.includes(path);
+    return location.pathname === path;
   };
 
   const getdeliveryBooks = async (email) => {

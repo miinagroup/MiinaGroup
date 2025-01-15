@@ -53,9 +53,6 @@ function LoggedInVerifySiteComponent({
     setSelectedSite(site);
   };
 
-  // console.log(userSites);
-  // console.log(selectedSite);
-
   const proceedAfterVerification = () => {
     setSuccessMessage("Your site has been set successfully. Redirecting...");
     refreshUserInfo();

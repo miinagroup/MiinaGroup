@@ -19,8 +19,6 @@ const CartPageComponent = ({
     }
   }
 
-  // console.log('cartItems', cartItems);
-
   const formattedPrice = cartSubtotal?.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
