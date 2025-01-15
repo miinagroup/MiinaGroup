@@ -14,36 +14,12 @@ const mainCategory = [
     link: "SITE-SAFETY",
   },
   {
-    label: "POWER/AIR",
-    link: "POWER-AIR",
+    label: "MERCHANDISING",
+    link: "MERCHANDISING",
   },
   {
-    label: "HAND TOOLS",
-    link: "HAND-TOOLS",
-  },
-  {
-    label: "INDUSTRIAL",
-    link: "INDUSTRIAL",
-  },
-  // {
-  //   label: "FABRICATION",
-  //   link: "FABRICATION",
-  // },
-  {
-    label: "MECHANICAL",
-    link: "MECHANICAL",
-  },
-  {
-    label: "ELECTRICAL",
-    link: "ELECTRICAL",
-  },
-  {
-    label: "MINING",
-    link: "MINING",
-  },
-  {
-    label: "QUOTE",
-    link: "QUOTE",
+    label: "TRAVEL",
+    link: "TRAVEL",
   },
 ];
 
@@ -59,11 +35,8 @@ const getCategories = async (req, res, next) => {
 const getSubcategoriesT2 = async (req, res, next) => {
   try {
     let subCategories = {};
-
     const categories = await Category.find({});
-
     const mainLinks = mainCategory.map((category) => category.link);
-
     categories?.forEach((category) => {
       if (!category.display) {
         return;
@@ -97,47 +70,6 @@ const getT1Categories = async (req, res, next) => {
     next(error);
   }
 };
-
-/* const categoriesForProductList = async (req, res, next) => {
-  try {
-    let categoryQueryCondition = {};
-    const categoryName = req.params.categoryName || "";
-    if (categoryName) {
-      queryCondition = true;
-      let a = categoryName.replace(/,/g, "/");
-      var regEx = null;
-      var subCategoryName = req.query.subCategoryName;
-      var childCategoryName = req.query.childCategoryName;
-      var fourCategoryName = req.query.fourCategoryName;
-      if (fourCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName
-        );
-      } else if (childCategoryName) {
-        regEx = new RegExp(
-          "^" + a + "/" + subCategoryName + "/" + childCategoryName
-        );
-      } else if (subCategoryName) {
-        regEx = new RegExp("^" + a + "/" + subCategoryName);
-      } else {
-        regEx = new RegExp("^" + a);
-      }
-      console.log("xxx:", regEx);
-      categoryQueryCondition = { name: regEx };
-    }
-    let categories = await Category.find(categoryQueryCondition)
-    res.json(categories);
-  } catch (error) {
-    next(error);
-  }
-}; */
 
 const categoriesForProductList = async (req, res, next) => {
   try {
@@ -275,19 +207,6 @@ const newHobsonCategory = async (req, res, next) => {
       attrs, } = req.body;
     console.log(name);
 
-
-    // if (!category) {
-    //   res.status(400).send("Category input is required");
-    // }
-    // const categoryExists = await Category.findOne({ name: category });
-    // if (categoryExists) {
-    //   res.status(400).send("Category already exists");
-    // } else {
-    //   const categoryCreated = await Category.create({
-    //     name: category,
-    //   });
-    //   res.status(201).send({ categoryCreated: categoryCreated });
-    // }
   } catch (err) {
     next(err);
   }
@@ -339,85 +258,6 @@ const saveAttr = async (req, res, next) => {
     next(err);
   }
 };
-
-/* const updateCategoryDisplay = async (req, res, next) => {
-  console.log("update category started!!!");
-  try {
-    const categories = await Category.find({});
-    let noProductCount = 0;
-    let categoriesWithoutProducts = [];
-
-    for (let category of categories) {
-      console.log("category", category.name);
-      const productExists = await Product.exists({ category: category.name });
-
-      if (!productExists) {
-        noProductCount++; 
-        console.log("No product in", category.name);
-        categoriesWithoutProducts.push(category.name);
-        // category.display = false; 
-      } else {
-        // category.display = true; 
-      }
-
-      // await category.save();
-    }
-
-    console.log("Total categories without products:", noProductCount);
-
-    res.status(200).json({ 
-      message: "Categories updated successfully!",
-      totalCategoriesWithoutProducts: noProductCount,
-      categories: categoriesWithoutProducts
-    });
-  } catch (error) {
-    console.log("Error while updating category display!!!");
-    next(error);
-  }
-}; */
-
-// check skip parent category
-/* const updateCategoryDisplay = async (req, res, next) => {
-  console.log("update category started!!!");
-  try {
-    const categories = await Category.find({}).sort({ name: 1 });
-    let noProductCount = 0;
-    let categoriesWithoutProducts = [];
-
-    for (let category of categories) {
-      console.log("category", category.name);
-      const isParentCategory = await Category.exists({ name: new RegExp("^" + category.name + "/") });
-
-      if (isParentCategory) {
-        continue; 
-      }
-
-      const productExists = await Product.exists({ category: category.name });
-
-      if (!productExists) {
-        noProductCount++; 
-        console.log("No product in", category.name);
-        categoriesWithoutProducts.push(category.name); 
-        // category.display = false; 
-      } else {
-        // category.display = true; 
-      }
-
-      // await category.save();
-    }
-
-    console.log("Total leaf categories without products:", noProductCount);
-
-    res.status(200).json({ 
-      message: "Categories updated successfully!",
-      totalCategoriesWithoutProducts: noProductCount,
-      categories: categoriesWithoutProducts
-    });
-  } catch (error) {
-    console.log("Error while updating category display!!!");
-    next(error);
-  }
-}; */
 
 
 const updateCategoryDisplay = async (req, res, next) => {
