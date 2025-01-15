@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Form, Container, Row, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import axios from "axios";
+
+import styles from "./UserPasswordPageComponent.module.css";
 
 const UserPasswordPageComponent = () => {
   const [message, setMessage] = useState("");
@@ -15,13 +17,11 @@ const UserPasswordPageComponent = () => {
 
     const email = userInfo.email.toLowerCase();
 
-    // console.log(email);
     try {
       setSubmitting(true);
       setMessage("");
       setSuccessMessage("");
       const response = await axios.post("/api/users/forgotPassword", { email });
-      //   console.log(response);
       if (response.status === 200) {
         setSuccessMessage("A password reset link has been sent to your email address. Please check your email inbox.");
         setTimeout(() => {
@@ -56,24 +56,17 @@ const UserPasswordPageComponent = () => {
 
   return (
     <>
-      <Container className="">
-        <Row className="justify-content-md-left">
-          <h2>Change your password?</h2>
-          <p className="fw-bold mt-2"> For security reasons, we need to confirm your identity.</p>
-          <p className="fw-bold"> A link will be sent to your email to reset your password.</p>
-
+      <div className={styles.passwordChangeWrapper}>
+        <img alt="Miina Group Family Emblem" src="/images/FamilyEmblemWhite.png" className={styles.emblem}/>
+        <div>
+          <h2 className={styles.title}>Change your password?</h2>
+          <p className={styles.text}>
+          For security reasons, we need to confirm your identity.
+          <br/><br />
+          A link will be sent to your email to reset your password.
+          </p>
           <Form noValidate onSubmit={handleSubmit} className="w-50">
-{/*             <Form.Group>
-              <Form.Label className="fw-bold">Email Address:</Form.Label>
-              <Form.Control
-                name="email"
-                required
-                type="email"
-                placeholder="Enter your registered email address"
-                className="mt-2"
-              />
-            </Form.Group> */}
-            <Button className="CTL_btn mt-2 p-1 pe-2 ps-2" type="submit">
+            <Button className={styles.changeBtn} type="submit">
               {submitting ? "Submitting..." : "Submit"}
             </Button>
           </Form>
@@ -83,8 +76,8 @@ const UserPasswordPageComponent = () => {
           {successMessage && (
             <p className="error-message mt-3 mb-0">{successMessage}</p>
           )}
-        </Row>
-      </Container>
+        </div>
+      </div>
     </>
   );
 };

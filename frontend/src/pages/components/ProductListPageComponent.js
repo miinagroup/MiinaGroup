@@ -262,8 +262,7 @@ const ProductListPage = ({
 
 
   return (
-    <Container className="content-container" fluid>
-      "hello"
+    <Container className="content-container products-list-component" fluid>
       <BreadcrumbComponent />
       <Row>
         <Col xxl={2} xl={3} lg={3} md={3}>

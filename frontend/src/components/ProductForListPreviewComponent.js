@@ -14,7 +14,6 @@ import {
 import { Link } from "react-router-dom";
 import AddedToCartMessageComponent from "./AddedToCartMessageComponent";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-// import { Carousel } from "react-responsive-carousel";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
@@ -161,7 +160,6 @@ const ProductForListPreviewComponent = ({
           <Row>
             <ListGroup variant="flush">
               <ListGroup.Item>
-
                 <div>
                   <label htmlFor="attrs">
                     Choose Product:&nbsp;&nbsp;&nbsp;{" "}
@@ -233,39 +231,7 @@ const ProductForListPreviewComponent = ({
                     }
                   </Col>
                 </Row>
-                {/* add to cart */}
-                {/*                 {price === 0 ? null : <h6>Quantity :</h6>}
-
-                <Row>
-                  {price === 0 ? (
-                    <QuotePriceComponent quotePriceData={quotePriceData} />
-                  ) : (
-                    <>
-                      <Col lg={3}>
-                        <div className="btn-group addToCartQty" role="group">
-                          <Form.Control
-                            type="number"
-                            min={1}
-                            className="form-control col-0"
-                            value={qty}
-                            onChange={(e) => setQty(e.target.value)}
-                          />
-                        </div>
-                      </Col>
-                      &nbsp;&nbsp;
-                      <Col lg={4}>
-                        <Button
-                          onClick={() => addToCartHandler(selectedStock)}
-                          className="btn_blue btn-ripple addToCartBtn"
-                          variant="success"
-                          disabled={selectedProduct === "choose-product"}
-                        >
-                          Add to cart
-                        </Button>
-                      </Col>
-                    </>
-                  )}
-                </Row> */}
+               
                 {/* ************   Product details  ***************  */}
                 <Row className="preview-product-row">
                   <Col className="mt-2 preview-product-row-col">
@@ -278,21 +244,21 @@ const ProductForListPreviewComponent = ({
                             whiteSpace: "pre-wrap",
                             textAlign: "justify",
                             overflowWrap: "break-word",
+                            maxWidth: "450px",
+                            width: "100%"
                           }}
                         >
                           {product && product.description
                             ? product.description
                               .split(">")
                               .map((item, index) => {
-                                // console.log("itemmmm", item)
-                                // Check if this item contains "^", which indicates it should be formatted as a table
                                 if (
                                   item.includes("^") &&
                                   item.includes(":")
                                 ) {
                                   const tableItems = item
                                     .split("^")
-                                    .filter(Boolean); // remove empty strings from the array
+                                    .filter(Boolean);
                                   return (
                                     <Table striped bordered hover>
                                       <tbody>

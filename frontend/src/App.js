@@ -20,7 +20,6 @@ import FaqPage from "./pages/FaqPage";
 import TermsConditions from "./pages/user/components/FooterComponents.js/TermsConditions.js";
 import PrivacyPolicy from "./pages/user/components/FooterComponents.js/privacypolicy.js";
 import GoodsReturnForm from "./pages/user/components/FooterComponents.js/GoodsReturnForm.js";
-import ReturnProfitCalculator from "./pages/ReturnProfitCalculator.js";
 import ProtectedRoutesComponent from "./components/ProtectedRoutesComponent";
 
 // protected user pages:
@@ -87,7 +86,6 @@ function App() {
             <Route path="/product-list" element={<ProductListPage />} />
             <Route path="/product-details/:id" element={<ProductDetailsPage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/return-calculator" element={<ReturnProfitCalculator />} />
             <Route path="*" element="Page not exists 404" />
           </Route>
 

@@ -5,6 +5,13 @@
 }
 
 /* ****************** product card ****************** */
+
+.product-block {
+   background-color: transparent;
+   display: flex;
+   border: 1px solid #521712;
+}
+
 .product_card_btn {
   background-color: #073474;
   color: white;
@@ -20,13 +27,16 @@
 .card-title {
   text-align: center;
   text-overflow: hidden;
-  color: #073474;
+  color: #521712;
+  font-family: "HelveticaNeue";
+  font-size: 14px;
   height: 3.8rem;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+
 }
 
 .card-title:hover {
@@ -220,6 +230,10 @@
   left: -25px;
   width: 110px;
   height: auto;
+}
+
+.preview-product-container {
+  font-family: "HelveticaNeue";
 }
 
 

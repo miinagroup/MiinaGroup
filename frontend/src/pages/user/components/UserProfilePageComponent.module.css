@@ -1,3 +1,99 @@
+.userProfilePageComponentWrapper {
+    padding-bottom: 110px;
+}
+
+.userProfilePageComponent {
+    background-color: #999B37;
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.imageBackground {
+     position: absolute;
+     width: 442px;
+     right: 0;
+    bottom: 0;
+     z-index: 0;
+}
+
+.userProfilePageComponentContent {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.title {
+    font-family: "GloriaHallelujah";
+    font-size: 40px;
+    color: #483F55;
+    margin-bottom: 50px;
+}
+
+.updateBtn {
+    background-color: #521712;
+    border: none;
+    width: 100%;
+    max-width: 100px;
+}
+
+.updateBtn:hover {
+    background-color: #483F55;
+}
+
+.notification {
+    font-family: "HelveticaNeue";
+    color: white;
+}
+
+.userProfilePageComponent  label {
+     color: #483F55;
+     font-family: "HelveticaNeue";
+}
+
+.disabledInput {
+    background-color: rgba(72, 63, 85, 0.5) !important;
+    border: none !important;
+}
+
+.userNavBarLinks {
+     background-color: transparent !important;
+     display: flex !important;
+    justify-content: center !important;
+    padding-top: 25px;
+}
+
+.userNavBarLinksWrapper {
+    width: 100% !important;
+    max-width: 1600px !important;
+    gap: 50px !important;
+}
+
+.navLink {
+     background-color: transparent !important;
+     color: #521712 !important;
+     font-family: "GloriaHallelujah" !important;
+     font-size: 24px !important;
+}
+
+.active {
+    color: #DBA162 !important;
+
+}
+
+.navLink:hover {
+     color: #DBA162 !important;
+}
+
+.tagImage {
+     width: 25px;
+     margin-right: 10px;
+}
+
 
 @media(max-width: 480px) {
     .userProfilePageComponentWrapper {

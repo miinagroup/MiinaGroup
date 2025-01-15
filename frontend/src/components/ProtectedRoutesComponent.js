@@ -11,6 +11,7 @@ import { getSubcategories } from "../redux/actions/categoryActions.js";
 
 import Header from "./Header/Header.js";
 import Footer from "./Footer/Footer.js";
+import ScrollButton from "./ScrollButton ";
 
 import NewHeaderComponentLoggedIn from "./Header/NewHeaderComponentLoggedIn.js";
 
@@ -135,20 +136,14 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   else if (isAuth === undefined || !isAuth) {
     return (
       <>
-
-        <div
-          style={{ paddingBottom: "110px" }}
-        >
-          {/* <NewHeaderComponent setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} stopAnimation={stopAnimation} setStopAnimation={setStopAnimation} /> 
-        {location.pathname !== "/" && <NewMineralsComponent />} */}
-          <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
-          <Outlet />
-        </div>
-        <Footer />
-        {/* <NewFooter /> */}
-        {/* <ScrollButton /> */}
-        {/* {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>} */}
-        {/* {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => onClickBtn()} isVisible={isVisible} />} */}
+      <div 
+      // style={{paddingBottom: "110px"}}
+      >
+        <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
+        <Outlet />
+      </div>
+      {/* <Footer /> */}
+      <ScrollButton />
 
       </>
     );
@@ -156,30 +151,25 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     if (userPrevent && isAdmin !== admin) {
       return <Navigate to="/user/my-orders" replace />;
     } else {
-      return (
-        <>
-          <NewHeaderComponentLoggedIn
-            setIsOpenModal={setIsOpenModalCatalogue}
-            goToAboutSection={goToAboutSection}
-            goToPromotionSection={goToTeamSection}
-            goToContactSection={goToContactSection}
-            showSidebar={showSidebar}
-            toggleShowSidebar={toggleShowSidebar}
-            onClickBtn={onClickBtn} />
-
-          {/* <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} /> */}
-          <Outlet />
-          {/* <div style={{paddingBottom: "226px"}}>
-        <NewHeaderComponentLoggedIn setIsOpenModal={setIsOpenModalCatalogue} goToAboutSection={goToAboutSection} goToPromotionSection={goToPromotionSection} goToContactSection={goToContactSection} showSidebar={showSidebar} toggleShowSidebar={toggleShowSidebar} onClickBtn={onClickBtn} /> 
-        {location.pathname !== "/" && <NewMineralsComponent />}
-          <Outlet />
+    return (
+      <>
+      <div 
+      // style={{paddingBottom: "110px" }}
+      >
+        <NewHeaderComponentLoggedIn 
+        setIsOpenModal={setIsOpenModalCatalogue}
+        goToAboutSection={goToAboutSection}
+        goToPromotionSection={goToTeamSection}
+        goToContactSection={goToContactSection}
+        showSidebar={showSidebar}
+        toggleShowSidebar={toggleShowSidebar}
+        onClickBtn={onClickBtn} />
+        <Outlet />
       </div>
-      <NewFooter />
-      <ScrollButton />
-      {isOpenModalCatalogue && <NewModalWindow title="Product Categories" onClose={setIsOpenModalCatalogue} isOpenModal={isOpenModalCatalogue} ><NewCategoryComponent subcategories={subcategories} /></NewModalWindow>}
-      {location.pathname === "/" && <NewButton title="CATEGORIES" onClick={() => {setIsOpenModalCatalogue(true); setShowSidebar(false); setStopAnimation(true)}}  isVisible={isVisible} />} */}
-        </>
-      );
+        {/* <Footer /> */}
+        <ScrollButton />
+      </>
+    );
     }
   }
 };

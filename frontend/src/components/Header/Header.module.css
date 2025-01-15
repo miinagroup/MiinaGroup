@@ -149,7 +149,7 @@ button {
     position: absolute;
     top: 35px;
     left: 0;
-    background-color: rgba(219, 161, 98, 0.25);
+    background-color: #dba162;
     padding: 15px 25px;
     border-radius: 10px;
     max-width: 350px;
@@ -166,6 +166,10 @@ button {
     width: 30px;
 }
 
+.logoTagSubcategory svg {
+    width: 50px;
+}
+
 .category {
      display: flex;
      align-items: center;
@@ -176,6 +180,10 @@ button {
     position: relative;
 }
 
+.category a {
+    color: #483F55
+}
+
 .categoryName {
      display: flex;
      gap: 5px;
@@ -183,7 +191,7 @@ button {
 }
 
 .category:hover {
-    background-color: #dba162;
+    background-color: rgba(82, 23, 18, 0.25);
     border-radius: 5px;
     color: white;
 }
@@ -201,7 +209,8 @@ button {
     position: absolute;
     left: 100%;
     top: 0;
-    max-width: 350px;
+    width: 100%;
+    min-width: 400px;
     width: 350px;
    
     background-color: #DBA162;
@@ -253,6 +262,10 @@ button {
      display: flex;
      gap: 5px;
      align-items: center;
+}
+
+.subcategoryItem:hover .subcategoryItem svg {
+    fill: white;
 }
 
 

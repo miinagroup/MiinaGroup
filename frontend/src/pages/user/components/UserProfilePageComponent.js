@@ -1,5 +1,4 @@
 import {
-  Container,
   Row,
   Col,
   Form,
@@ -77,10 +76,7 @@ const UserProfilePageComponent = ({
     const mobile = form.mobile.value;
     const company = form.company.value;
     const role = userRole === "other role" ? otherRole : userRole;
-    const deliveryAddress = form.deliveryAddress.value;
-    const state = form.state.value;
     const postCode = form.postCode.value;
-    const siteSku = form.siteSku;
     const location = form.location;
     const abn = form.abn.value;
 
@@ -94,10 +90,7 @@ const UserProfilePageComponent = ({
         location,
         company,
         role,
-        deliveryAddress,
-        state,
         postCode,
-        siteSku,
         abn
       )
         .then((data) => {
@@ -156,14 +149,14 @@ const UserProfilePageComponent = ({
   };
 
   return (
-    <Container className={styles.userProfilePageComponent}>
-      <Row className="justify-content-md-center">
-        <Col md={6} className="w-75">
-          <h1>EDIT PROFILE</h1>
-
+    <div className={styles.userProfilePageComponent}>
+      <img src="./images/FamilyEmblemCream.png" alt="Family Emblem" className={styles.imageBackground} />
+      <div className={styles.userProfilePageComponentContent}>
+        <div>
+          <h1 className={styles.title}>EDIT YOUR PROFILE</h1>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Row className="mb-3">
-              <Form.Group className="mb-3" as={Col} md="6" controlId="validationCustom01">
+              <Form.Group className="mb-3" as={Col} md="4" controlId="validationCustom01">
                 <Form.Label>Your name</Form.Label>
                 <Form.Control
                   required
@@ -176,7 +169,7 @@ const UserProfilePageComponent = ({
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3" as={Col} md="6" controlId="formBasicLastName">
+              <Form.Group className="mb-3" as={Col} md="4" controlId="formBasicLastName">
                 <Form.Label>Your last name</Form.Label>
                 <Form.Control
                   required
@@ -189,38 +182,16 @@ const UserProfilePageComponent = ({
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3" as={Col} md="6" controlId="formBasicEmail">
+              <Form.Group className="mb-3" as={Col} md="4" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="text"
                   name="email"
                   disabled
                   value={user.email}
+                  className={styles.disabledInput}
                 />
               </Form.Group>
-
-              <Form.Group className="mb-3" as={Col} md="6" controlId="formBasicAbn">
-                <Form.Label>ABN</Form.Label>
-                <MaskedInput
-                  mask={abnMask}
-                  placeholder="ABN"
-                  disabled
-                  guide={false}
-                  value={abnNum}
-                  onChange={handleAbn}
-                  render={(ref, props) => <Form.Control
-                    required
-                    minLength={14}
-                    maxLength={14}
-                    type="text"
-                    name="abn"
-                    ref={ref}
-                    {...props}
-                  />}
-                />
-              </Form.Group>
-
-
             </Row>
 
             <Row className="mb-3">
@@ -244,6 +215,55 @@ const UserProfilePageComponent = ({
                   defaultValue={user.mobile}
                 />
               </Form.Group>
+
+              <Form.Group as={Col} md="4" controlId="formBasicPostCode">
+                <Form.Label>Postcode</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="postCode"
+                  placeholder="Postcode"
+                  defaultValue={user.postCode}
+                />
+              </Form.Group>
+            </Row>
+
+
+            <Row className="mb-3">
+            <Form.Group className="mb-3" as={Col} md="4" controlId="formBasicAbn">
+                <Form.Label>ABN</Form.Label>
+                <MaskedInput
+                  mask={abnMask}
+                  placeholder="ABN"
+                  disabled
+                  guide={false}
+                  value={abnNum}
+                  onChange={handleAbn}
+                  render={(ref, props) => <Form.Control
+                    required
+                    minLength={14}
+                    maxLength={14}
+                    type="text"
+                    name="abn"
+                    ref={ref}
+                    {...props}
+                  />}
+                  className={styles.disabledInput}
+                />
+              </Form.Group>
+            </Row>
+
+            <Row>
+            <Form.Group as={Col} md="4" controlId="formBasicCompany">
+                <Form.Label>Company</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="company"
+                  disabled
+                  value={user.company}
+                  className={styles.disabledInput}
+                />
+              </Form.Group>
+
               <Form.Group as={Col} md="4" controlId="formBasicLocation">
                 <Form.Label>Delivery Site:</Form.Label>
                 <Form.Select
@@ -252,6 +272,7 @@ const UserProfilePageComponent = ({
                   aria-label="Default select example"
                   onChange={handleSiteChange}
                   disabled
+                  className={styles.disabledInput}
                 >
                   {deliverySites &&
                     deliverySites.map((site, idx) => {
@@ -274,54 +295,47 @@ const UserProfilePageComponent = ({
                     })}
                 </Form.Select>
               </Form.Group>
+
+              <Form.Group as={Col} md="4" controlId="formBasicRole">
+                <Form.Label>Role</Form.Label>
+                {/* <Form.Select
+                  required
+                  name="role"
+                  onChange={handleChangeRole}
+                >
+                  <option>{user.role}</option>
+                  {
+                    allUniformRoles.map((role, idx) => (
+                      <option key={idx} value={role.role} style={{ textTransform: "capitalize" }}>
+                        {role.role}
+                      </option>))
+                  }
+                  <option key="other role">
+                    other role
+                  </option>
+                </Form.Select> */}
+                <Form.Control.Feedback type="invalid">
+                  Please Select your Role.{" "}
+                </Form.Control.Feedback>
+              </Form.Group>
+              {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicOtherRole" className="mt-2">
+                <Form.Label></Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  name="otherRole"
+                  placeholder="Job Title"
+                  onChange={handleOtherRole}
+                  value={otherRole}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please mention your Job Title.{" "}
+                </Form.Control.Feedback>
+              </Form.Group>}
             </Row>
 
-            <Row className="mb-3">
-              <Form.Group as={Col} md="4" controlId="formBasicCompany">
-                <Form.Label>Company</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="company"
-                  disabled
-                  value={user.company}
-                />
-              </Form.Group>
-
-              <Form.Group as={Col} md="4" controlId="formBasicPostCode">
-                <Form.Label>Postcode</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="postCode"
-                  placeholder="Postcode"
-                  defaultValue={user.postCode}
-                />
-              </Form.Group>
-            </Row>
-
-            <Row className="mb-4" style={{ display: "none" }}>
-
-              <Form.Group as={Col} md="5" controlId="formBasicdeliveryAddress">
-                <Form.Label>Delivery Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="deliveryAddress"
-                  placeholder="Delivery Address"
-                  defaultValue={user.deliveryAddress}
-                />
-              </Form.Group>
-
-              <Form.Group as={Col} md="4" controlId="formBasicState">
-                <Form.Label>State</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="state"
-                  placeholder="State"
-                  defaultValue={user.state}
-                />
-              </Form.Group>
-            </Row>
             <Row className="mt-4 ms-1 justify-content-md-left">
-              <Button variant="primary" type="submit" className="w-auto">
+              <Button variant="primary" type="submit" className={styles.updateBtn}>
                 Update
               </Button>
               <p></p>
@@ -343,12 +357,12 @@ const UserProfilePageComponent = ({
               >
                 User updated
               </Alert>
-              <span>*All disabled fields can only be updated by an Administrator</span>
+              <span className={styles.notification}>*All disabled fields can only be updated by an Administrator</span>
             </Row>
           </Form>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 };
 

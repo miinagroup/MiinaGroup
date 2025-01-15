@@ -1,3 +1,9 @@
+.title {
+    font-family: "GloriaHallelujah";
+    font-size: 40px;
+    color: #483F55;
+}
+
 .userOrdersMobileWrapper {
     margin-top: 15px;
     margin-bottom: 20px;

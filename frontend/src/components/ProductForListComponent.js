@@ -292,9 +292,7 @@ const ProductForListComponent = ({
             </h6>}
             {isUserInfo && <div className="btnLogin btnLoginText">
               <div className="btnsLoginRegistration">
-                <button onClick={(e) => handleShow(e, "LoginForm")} className="btn_blue">LogIn</button>
-                {/* <div>or</div>
-                  <button className="btn_blue" onClick={(e) => handleShow(e, "RegisterForm")}>Register</button> */}
+                <button onClick={(e) => handleShow(e, "LoginForm")} className="loginBtn">LogIn</button>
               </div>
             </div>}
           </div>
@@ -368,7 +366,7 @@ const ProductForListComponent = ({
         className="preview_product_modal"
       >
         <Modal.Header closeButton>
-          <Modal.Title style={{ textAlign: "center", width: "100%" }}>
+          <Modal.Title style={{ textAlign: "center", width: "100%", color: "#521712", fontFamily: "HelveticaNeue" }}>
             {name}
           </Modal.Title>
         </Modal.Header>

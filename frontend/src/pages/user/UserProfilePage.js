@@ -26,7 +26,6 @@ const UserProfilePage = () => {
     location,
     company,
     role,
-    deliveryAddress,
     state,
     postCode,
     siteSku,
@@ -41,7 +40,6 @@ const UserProfilePage = () => {
       location,
       company,
       role,
-      deliveryAddress,
       state,
       postCode,
       siteSku,
@@ -65,11 +63,11 @@ const UserProfilePage = () => {
   };
 
   return (
-    <Row className={`m-5 ${styles.userProfilePageComponentWrapper}`}>
-      <Col md={2}>
-        <UserLinksComponent />
-      </Col>
-      <Col md={10}>
+    <div className={`${styles.userProfilePageComponentWrapper}`}>
+      <div>
+         <UserLinksComponent />
+      </div>
+
         <UserProfilePageComponent
           updateUserApiRequest={updateUserApiRequest}
           fetchUser={fetchUser}
@@ -80,8 +78,7 @@ const UserProfilePage = () => {
           localStorage={window.localStorage}
           sessionStorage={window.sessionStorage}
         />
-      </Col>
-    </Row>
+    </div>
   );
 };
 

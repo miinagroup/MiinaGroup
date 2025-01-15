@@ -27,7 +27,6 @@ import FilterComponent from "../../components/filterQueryResultOptions/FilterCom
 import BreadcrumbComponent from "../../components/filterQueryResultOptions/BreadcrumbComponent";
 import { getCategories } from "../../redux/actions/categoryActions";
 import EditProductShortInforComponent from "../admin/components/EditProductShortInforComponent";
-import ReturnProfitCalculator from "../ReturnProfitCalculator";
 import LoginRegisterPage from "../LoginRegisterPage";
 
 import "./SharedPages.css";
@@ -71,7 +70,7 @@ const ProductDetailsPageComponent = ({
     setShowLoginModal(true);
   };
   const cartItems = useSelector((state) => state.cart.cartItems);
-  ;
+  
   //categories
   const dispatch = useDispatch();
 
@@ -553,6 +552,7 @@ const ProductDetailsPageComponent = ({
 
   return (
     <Container className="content-container product-detail-page" fluid>
+      "home"
       <Row className="product-detail-page-row">
         <Col xxl={2} xl={3} lg={3} md={3}>
           <ListGroup variant="flush">
@@ -622,8 +622,9 @@ const ProductDetailsPageComponent = ({
 
               <Row>
                 <ListGroup variant="flush" className="product-detail-page-list-group">
+                  "product"
                   <ListGroup.Item>
-                    <h2 className="text-uppercase product-detail-page-title">{product.name}</h2>
+                    <div className="product-detail-page-title">{product.name}</div>
                     {userData.isAdmin === true ? (
                       <>
                         <button
@@ -804,7 +805,7 @@ const ProductDetailsPageComponent = ({
                         </h6>}
                         {isUserInfo && <div className="btnLogin btnLoginText btnLoginProductPage">
                           <div className="btnsLoginRegistrationProductPage">
-                            <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="btn_blue">LogIn</button>
+                            <button onClick={(e) => handleShowLoginModal(e, "LoginForm")} className="loginBtn">LogIn</button>
                           </div>
                         </div>}
 
@@ -1286,20 +1287,6 @@ const ProductDetailsPageComponent = ({
                                 );
                               })}
                           </div>
-                        </Tab>
-                      ) : null}
-                      {/* Return Calculator */}
-                      {product.returnCalculator && product.returnCalculator === true ? (
-                        <Tab eventKey="returnCalculator" title="Return Calculator">
-                          <div className="border border-light border-2 m-3 p-3 d-flex justify-content-center">
-                            <Button onClick={handleShowCalculator}>Open Calculator <i class="bi bi-box-arrow-up-right"></i></Button>
-                          </div>
-                          <Modal
-                            show={showCalculator}
-                            onHide={handleCloseCalculator}
-                            className="edite_product_short_infor">
-                            <ReturnProfitCalculator />
-                          </Modal>
                         </Tab>
                       ) : null}
                     </Tabs>

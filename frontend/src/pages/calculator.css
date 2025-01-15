@@ -1,44 +1,3 @@
-
-/*------------------------------------*/
-
-.calculator_blocks_row {
-   
-    margin-left: 0.5%;
-    margin-top: 2%;
-    margin-right: 0.5%;
-    background-color: rgb(255, 255, 255);
-    height: 100%;
-    justify-content:center;
-    width: 99%;
-    
-}
-.calculator_blocks_col {
-    margin-top: 0rem;
-    margin-bottom: 1rem;
-    /* margin-right: 3%;
-    margin-left: 3%; */
-
-    
-}
-.calculator_blocks_card {
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-    font-size:13px;
-}
-.calculator_blocks_card_body {
-    padding-left: 1rem;
-
-}
-.calculator_blocks_card_body_chart {
-    padding-left: 0rem;
-    background-color: antiquewhite;
-    /* width:100%; */
-    height: 100%;
-
-}
 .card_title{
     background-color: rgb(192, 192, 192);
     padding-top: 1rem;
@@ -63,24 +22,6 @@
 }
 /*----------------------*/
 
-
-
-
-.bar-group .name-label {
-  text-anchor: end;
-  font-weight: 300;
-  font-size: 1em;
-  fill: #222121;
-  rotate: 90deg;
-}
-
-.bar-group .value-label {
-  text-anchor: end;
-  fill: #000000;
-  font-weight: 700;
-  font-size: 0.9em;
-  text-align: center;
-}
 .value-label{
     rotate: 90deg;
 }
@@ -89,22 +30,5 @@
   transition: opacity 0.3s;
 }
 
-/* Fade bars when the chart is hovered */
-/* .container:hover .bar-group {
-  opacity: 0.3;
-}
-
-/* But don't fade the hovered bar... 
-.container .bar-group:hover {
-  opacity: 1;
-}
-
-.container .bar-group:hover .name-label {
-  font-weight: 400;
-}
-
-.container .bar-group:hover .value-label {
-  font-size: 0.8em;
-} */
 
 

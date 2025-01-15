@@ -3,10 +3,6 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setReduxUserState } from "../../redux/actions/userActions";
 import UserLinksComponent from "../../components/user/UserLinksComponent";
-import {
-  Row,
-  Col, 
-} from "react-bootstrap";
 
 const updateUserApiRequest = async (
   password,
@@ -27,11 +23,10 @@ const UserPasswordPage = () => {
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
 
   return (
-    <Row className="m-5">
-      <Col md={2}>
-        <UserLinksComponent />
-      </Col>
-      <Col md={10}>
+    <div>
+        <div>
+         <UserLinksComponent />
+        </div>
         <UserPasswordPageComponent
           updateUserApiRequest={updateUserApiRequest}
           fetchUser={fetchUser}
@@ -41,8 +36,7 @@ const UserPasswordPage = () => {
           localStorage={window.localStorage}
           sessionStorage={window.sessionStorage}
         />
-      </Col>
-    </Row>
+    </div>
   );
 };
 

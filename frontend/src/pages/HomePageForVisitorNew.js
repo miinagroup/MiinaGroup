@@ -32,7 +32,7 @@ return (<>
   <AboutSection />
   <TeamSection />
   <ContactSection />
-  <Footer />
+  {/* <Footer /> */}
   </>
 )}
 

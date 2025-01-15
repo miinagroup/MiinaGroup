@@ -35,6 +35,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
     { name: "Shipped", field: "isDelivered", sortable: true },
     { name: "Order details", field: "_id", sortable: false },
   ];
+  
 
   useEffect(() => {
     getOrders()
@@ -118,7 +119,6 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
       });
     }
 
-    //console.log(computedOrders);
     var productArray = []
     computedOrders?.map((order) => {
       productArray.push(order)
@@ -179,12 +179,12 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
 
   return (
     <>
-      <Row className="m-5 desktop">
-        <Col md={2}>
+      <div>
+        <div>
           <UserLinksComponent />
-        </Col>
-        <Col md={10}>
-          <h1>MY ORDERS</h1>
+        </div>
+        <div>
+          <h1 className={styles.title}>MY ORDERS</h1>
           <div className="row ">
             <div className="col-md-9">
               <Pagination
@@ -204,10 +204,11 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
             </div>
           </div>
           <table className="table table-striped">
-            <TableHeader
+              <TableHeader
               headers={productHeaders}
               onSorting={(field, order) => setSorting({ field, order })}
             />
+            
             <tbody>
               {productData ? (
                 productData?.map((order, idx) => (
@@ -284,14 +285,14 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
               />
             </div>
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
       <Modal show={show} onHide={handleClose} className="order_preview_items">
         <UserOrderItemForOrderPageComponent id={selectedOrderId} />
       </Modal>
 
-      <div className={`${styles.userOrdersMobileWrapper} mobile`}>
+      {/* <div className={`${styles.userOrdersMobileWrapper} mobile`}>
         <Col md={2} className={styles.userOrdersMobileMenu}>
           <UserLinksComponent />
         </Col>
@@ -349,7 +350,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
             </div>
           </Tab>
         </Tabs>
-      </div>
+      </div> */}
     </>
   );
 };

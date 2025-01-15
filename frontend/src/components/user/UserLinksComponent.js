@@ -7,6 +7,8 @@ import FetchAuthFromServer from "../FetchAuthFromServer";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+import styles from "../../pages/user/components/UserProfilePageComponent.module.css"
+
 const UserLinksComponent = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -38,33 +40,6 @@ const UserLinksComponent = () => {
     },
   ];
 
-  const marketingLinks = [
-    {
-      title: "Marketing Team:",
-      link: "none",
-      access: "isMarketing, isSuperAdmin, accounts, isSales, isAdmin",
-    },
-    {
-      title: "Analytics",
-      link: "/user/analytics",
-      access: "isMarketing, isSuperAdmin, accounts, isSales, isAdmin",
-    },
-    {
-      title: "Posts Track",
-      link: "/user/postsTrack",
-      access: "isMarketing, isSuperAdmin, accounts, isSales, isAdmin",
-    },
-    {
-      title: "User Interactions",
-      link: "/user/userInteractions",
-      access: "isMarketing, isSuperAdmin, accounts, isSales, isAdmin",
-    },
-    {
-      title: "BACK TO ADMIN",
-      link: "/admin/orders",
-      access: "isSuperAdmin, accounts, isSales, isAdmin",
-    },
-  ];
 
   const hasAccess = (access) => {
     if (access === "all") return true;
@@ -89,31 +64,23 @@ const UserLinksComponent = () => {
 
   return (
     <>
-      <Navbar className="user_side_navBar">
-        <Nav className="flex-column user_side_nav">
+      <Navbar className={styles.userNavBarLinks}>
+        <Nav className={styles.userNavBarLinksWrapper}>
           {userLinks.map((link) => {
             if (hasAccess(link.access)) {
-              if (link.title === "Quotes") {
-                return (
-                  <LinkContainer key={link.title} to={link.link} isActive={() => isPathActive('/user/my-quotes')}>
-                    <Nav.Link className="user_side_nav_options">
-                      {link.title}
-                    </Nav.Link>
-                  </LinkContainer>
-                );
-              } else {
                 return (
                   <LinkContainer key={link.title} to={link.link}>
-                    <Nav.Link className="user_side_nav_options">
+                    <Nav.Link className={`${styles.navLink} ${isPathActive(link.link) ? styles.active : ""} `}>
+                      {isPathActive(link.link) && <img src="/images/SubmarkGreen.png" alt="Miina Bush Tree" className={styles.tagImage}/>}
                       {link.title}
                     </Nav.Link>
                   </LinkContainer>
                 );
               }
-            }
-            return null;
-          })}
-          <Nav.Link onClick={() => dispatch(logout())}>Logout</Nav.Link>
+              return null;
+            })
+          }
+          <Nav.Link className={styles.navLink} onClick={() => dispatch(logout())}>Logout</Nav.Link>
         </Nav>
       </Navbar>
       <br />
