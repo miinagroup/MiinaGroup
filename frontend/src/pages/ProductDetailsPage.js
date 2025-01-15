@@ -5,6 +5,7 @@ import axios from "axios";
 import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
 import { addToCart } from "../redux/actions/cartActions";
 
+
 const getProductDetails = async (id) => {
   const { data } = await axios.get(`/api/products/get-one/${id}`);
   return data;
