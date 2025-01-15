@@ -9,12 +9,9 @@ const CartItemDropDown = ({
   removeFromCartHandler = false,
   orderCreated = false,
   changeCount = false,
-  uniformUserId,
-  // userUniformRole,
 }) => {
   const [qty, setQty] = useState(item.cartProducts[0].quantity);
 
-  //console.log("item", item);
   useEffect(() => {
     setQty(item.cartProducts[0].quantity);
   }, [item.cartProducts[0].quantity]);
@@ -56,58 +53,27 @@ const CartItemDropDown = ({
             </div>
           </Col>
           <Col md={5}>
-            {(item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
-              <a href={`/uniform-details/${item.productId}`}>
-                <p className="" style={{ color: "#1E4881" }}>
-                  <span className="text-uppercase">{item.name}</span>
-                </p>
-              </a>
-            ) : (
-              <a href={`/product-details/${item.productId}`}>
-                <p className="" style={{ color: "#1E4881" }}>
-                  <span className="text-uppercase">{item.name}</span>
-                </p>
-              </a>
-            )}
-
+            <a href={`/product-details/${item.productId}`}>
+              <p className="" style={{ color: "#1E4881" }}>
+                <span className="text-uppercase">{item.name}</span>
+              </p>
+            </a>
           </Col>
           <Col md={3}>
-            {(item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
-              <>
-                <p className="m-0 cart_product_attr">
-                  Item:{" "}
-                  <span className="cart_product_detail">
-                    {item.cartProducts[0].attrs.split("/")[1]}
-                  </span>
-                </p>
-                <p className="m-0 cart_product_attr">
-                  Variant:{" "}
-                  <span className="cart_product_detail">
-                    {item.cartProducts[0].color + " (" + item.cartProducts[0].size + ")"}
-                  </span>
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="m-0 cart_product_attr">
-                  Item:{" "}
-                  <span className="cart_product_detail">
-                    {item.cartProducts[0].attrs}
-                  </span>
-                </p>
-                <p className="m-0 cart_product_attr">
-                  Each: $
-                  <span className="cart_product_detail">
-                    {itemPrice}
-                  </span>
-                </p>
-              </>
-            )}
-
-
-            {/*  */}
+            <p className="m-0 cart_product_attr">
+              Item:{" "}
+              <span className="cart_product_detail">
+                {item.cartProducts[0].attrs}
+              </span>
+            </p>
+            <p className="m-0 cart_product_attr">
+              Each: $
+              <span className="cart_product_detail">
+                {itemPrice}
+              </span>
+            </p>
           </Col>
-          <Col md={2} disabled={item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")}>
+          <Col md={2}>
             <Form.Control
               type="number"
               min={item.saleunit}
@@ -116,7 +82,7 @@ const CartItemDropDown = ({
               className="form-control"
               value={qty}
               onChange={handleChange}
-              disabled={orderCreated || item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")}
+              disabled={orderCreated}
             />
           </Col>
           {/* delete button trash */}
@@ -127,7 +93,6 @@ const CartItemDropDown = ({
               quantity={item.cartProducts[0].quantity}
               price={item.cartProducts[0].price}
               item={item.cartProducts[0].attrs}
-              uniformUserId={uniformUserId}
               removeFromCartHandler={
                 removeFromCartHandler ? removeFromCartHandler : undefined
               }

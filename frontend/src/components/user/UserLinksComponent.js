@@ -93,17 +93,7 @@ const UserLinksComponent = () => {
         <Nav className="flex-column user_side_nav">
           {userLinks.map((link) => {
             if (hasAccess(link.access)) {
-              if (link.title === "Uniforms") {
-                if (deliveryBook?.hasUniform === true) {
-                  return (
-                    <LinkContainer key={link.title} to={link.link}>
-                      <Nav.Link className="user_side_nav_options">
-                        {link.title}
-                      </Nav.Link>
-                    </LinkContainer>
-                  );
-                }
-              } else if (link.title === "Quotes") {
+              if (link.title === "Quotes") {
                 return (
                   <LinkContainer key={link.title} to={link.link} isActive={() => isPathActive('/user/my-quotes')}>
                     <Nav.Link className="user_side_nav_options">
@@ -127,35 +117,6 @@ const UserLinksComponent = () => {
         </Nav>
       </Navbar>
       <br />
-      {/* <Navbar className="user_side_navBar">
-        <Nav className="flex-column user_side_nav">
-          {marketingLinks.map((link) => {
-            if (hasAccess(link.access)) {
-              if (link.title === "Marketing Team:") {
-                return (
-                  <Nav.Link
-                    key={link.title}
-                    style={{ color: "black" }}
-                    disabled={true}
-                    className="user_side_nav_options"
-                  >
-                    {link.title}
-                  </Nav.Link>
-                );
-              } else {
-                return (
-                  <LinkContainer key={link.title} to={link.link}>
-                    <Nav.Link className="user_side_nav_options">
-                      {link.title}
-                    </Nav.Link>
-                  </LinkContainer>
-                );
-              }
-            }
-            return null;
-          })}
-        </Nav>
-      </Navbar> */}
     </>
   );
 };

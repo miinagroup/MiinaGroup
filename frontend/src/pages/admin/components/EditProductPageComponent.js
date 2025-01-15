@@ -12,7 +12,6 @@ import {
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, Fragment, useRef } from "react";
 import { useParams } from "react-router-dom";
-//当更改了产品信息，就navigate去product list page
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CurrencyInput from "react-currency-input-field";
@@ -28,10 +27,8 @@ const onHover = {
   transform: "scale(2.7)",
 };
 
-//需要的变量，以及随后会用到的功能
 const EditProductPageComponent = ({
   categories,
-  // clientsSkuList,
   fetchProduct,
   updateProductApiRequest,
   reduxDispatch,
@@ -70,20 +67,12 @@ const EditProductPageComponent = ({
   const createNewAttrVal = useRef(null);
 
   const [stockLength, setStockLength] = useState(0);
-  // const [clientsSkus, setClientsSku] = useState([]);
-  // const [newProductClientsSkus, setNewProductClientSkus] = useState([]);
-
-  // const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
-  // const [skuClientNumebr, setSkuClientNumber] = useState({});
-
   const setValuesForAttrFromDbSelectForm = (e) => {
-    // 如果不等于choose attribute的话，就var 一个 selectedAttr
     if (e.target.value !== "Choose attribute") {
       var selectedAttr = attributesFromDb.find(
         (item) => item.key === e.target.value
       );
       let valuesForAttrKeys = attrVal.current;
-      // 如果选择的attri有东西，就remove attrikey的value，然后添加对应的新value
       if (selectedAttr && selectedAttr.value.length > 0) {
         while (valuesForAttrKeys.options.length) {
           valuesForAttrKeys.remove(0);
@@ -101,18 +90,10 @@ const EditProductPageComponent = ({
 
   const navigate = useNavigate();
 
-  // [id，imageremoved] id是啥 我忘记了，imageremoved就是 如果image removed is changed，然后useEffect will ba called once again
-  // the produce will be fetched once again from the dtabase but without one image.
-  // 懂了，就是如果这里的state variable change了，那么useEffect 就会 called once，然后product也会fetched once again，finally HTML 也会rendered once again
   useEffect(() => {
     fetchProduct(id)
       .then((product) => {
         setProduct(product);
-        // const newClientsSkus = product.stock.map(item => {
-        //   return item.clientsSku;
-        // });
-        // setClientsSku(prevSkus => [...prevSkus, ...newClientsSkus]);
-        // setClientsSku([...newClientsSkus])
         setStockLength(product.stock.length);
       })
       .catch((er) => console.log(er));
@@ -241,10 +222,8 @@ const EditProductPageComponent = ({
       const uom = document.getElementsByName(`uom-${i}`)[0].value;
       const barcode = document.getElementsByName(`barcode-${i}`)[0].value;
       const ctlsku = document.getElementsByName(`ctlsku-${i}`)[0].value;
-      // const slrsku = document.getElementsByName(`slrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
-      // const clientsSku = clientsSkus[i];
       const finalCount = replenishment ? count + replenishment : count;
 
       stock.push({
@@ -256,9 +235,7 @@ const EditProductPageComponent = ({
         uom,
         barcode,
         ctlsku,
-        // slrsku,
         suppliersku,
-        // clientsSku
       });
     }
 
@@ -273,33 +250,13 @@ const EditProductPageComponent = ({
       } else {
         price = document.getElementsByName(`price-${i}`)[0].value;
       }
-
-      /*       let purchaseprice;
-      console.log(
-        i + stockLength,
-        dynamicPrices,
-        typeof dynamicPrices,
-        dynamicPrices[i + stockLength]?.purchasepric
-      );
-      if (dynamicPrices[i + stockLength]?.purchaseprice) {
-        purchaseprice = dynamicPrices[i + stockLength].purchaseprice;
-      } else {
-        purchaseprice = document.getElementsByName(`newPurchaseprice-${i}`)[0]
-          .value;
-      } */
-
       const purchaseprice = dynamicPrices[i + stockLength].purchaseprice;
-
       const attrs = document.getElementsByName(`newAttrs-${i}`)[0].value;
       const uom = document.getElementsByName(`newUom-${i}`)[0].value;
       const barcode = document.getElementsByName(`newBarcode-${i}`)[0].value;
       const ctlsku = document.getElementsByName(`newCtlsku-${i}`)[0].value;
-      // const slrsku = document.getElementsByName(`newSlrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`newSuppliersku-${i}`)[0]
         .value;
-      // const clientsSku = newProductClientsSkus[i];
-
-
       stockNew.push({
         count,
         price,
@@ -308,15 +265,10 @@ const EditProductPageComponent = ({
         uom,
         barcode,
         ctlsku,
-        // slrsku,
         suppliersku,
-        // clientsSku
       });
     }
-    // check if stockNew is an array
-    /* if (Array.isArray(stockNew) && stockNew.length > 0) {
-      stock.push(...stockNew);
-    } */
+
     const formInputs = {
       name: form.name.value,
       description: form.description.value,
@@ -514,20 +466,6 @@ const EditProductPageComponent = ({
     setRowCount(rowCount - 1);
   };
 
-  /*   const [selectedStock, setSelectedStock] = useState(null);
-  
-    const handleDeleteStock = async (stockId) => {
-      try {
-        const res = await axios.delete(`/api/products/admin/${product._id}/stock/${stockId}`);
-        setSelectedStock(null);
-        console.log(res.data); // log the updated product to the console
-        window.location.reload();
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
-    console.log('selectedStock',selectedStock); */
-
   const handleRemoveStock = (index) => {
     const newStock = [...product.stock];
     newStock.splice(index, 1);
@@ -547,49 +485,10 @@ const EditProductPageComponent = ({
     setStockLength(newStock.length);
   };
 
-  // const handleSelect = (e, index) => {
-  //   setSelectedClientSkuName({ ...selectedClientSkuName, [index]: e.target.value });
-  // }
-
-  // const handleInputChange = (e, index) => {
-  //   setSkuClientNumber({ ...skuClientNumebr, [index]: e.target.value });
-  // };
-
-
-  // const addNewClientSku = (array, setArray, index) => {
-  //   const isSkuName = array[index]?.some(el => el.name === selectedClientSkuName[index]);
-  //   if (selectedClientSkuName[index] && skuClientNumebr[index]) {
-  //     if (isSkuName) {
-  //       alert('This SKU name already exists for this item in stock.');
-  //       return;
-  //     }
-  //     const updatedClientsSkus = [...array];
-  //     if (updatedClientsSkus[index]) {
-  //       updatedClientsSkus[index].push({ name: selectedClientSkuName[index], number: skuClientNumebr[index] });
-  //     } else {
-  //       updatedClientsSkus[index] = [{ name: selectedClientSkuName[index], number: skuClientNumebr[index] }];
-  //     }
-  //     setArray(updatedClientsSkus);
-  //     setSelectedClientSkuName({ ...selectedClientSkuName, [index]: "" });
-  //     setSkuClientNumber({ ...skuClientNumebr, [index]: "" });
-  //   } else {
-  //     alert('Please select a SKU and enter a number.');
-  //   }
-  // };
-
-  // const removeClientSku = (array, setArray, index, i) => {
-  //   const updatedClientsSkus = [...array];
-  //   updatedClientsSkus[index] = updatedClientsSkus[index].filter((_, index) => index !== i);
-  //   setArray(updatedClientsSkus);
-  // };
-
   return (
     <Container fluid>
       <Row className="justify-content-md-center mt-5 content-container ">
         <Col md={1}>
-          {/* <Link to="/admin/products" className="btn btn-info my-3">
-            Go Back
-          </Link> */}
           <GoBackButton />
         </Col>
         <Col md={6}>
@@ -748,15 +647,6 @@ const EditProductPageComponent = ({
                           <Form.Label className="text-danger">
                             Product Price
                           </Form.Label>
-                          {/* <CurrencyInput
-                            className={`form-control price-${index}`}
-                            name={`price-${index}`}
-                            placeholder="AUD 0.00"
-                            defaultValue={item.price}
-                            decimalsLimit={2}
-                            required="true"
-                            disableGroupSeparators="true"
-                          /> */}
                           <Form.Control
                             name={`price-${index}`}
                             required
@@ -847,72 +737,6 @@ const EditProductPageComponent = ({
                             defaultValue={item.suppliersku}
                           />
                         </Form.Group>
-
-                        {/* <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicSLRSKU-${index}`}
-                          hidden
-                        >
-                          <Form.Label>SLR SKU</Form.Label>
-                          <Form.Control
-                            name={`slrsku-${index}`}
-                            type="text"
-                            defaultValue={item.slrsku}
-                          />
-                        </Form.Group> */}
-
-                        {/* <Form.Group>
-                      <Form.Label>Client Sku</Form.Label>
-                      <div style={{display: "flex", gap: "20px", marginBottom: "20px"}}>
-                        <Form.Select 
-                        value={selectedClientSkuName[index]} 
-                        onChange={(e) => handleSelect(e, index)}
-                        >
-                                  <option 
-                                  value={selectedClientSkuName[index] === "" && ""}
-                                  >Select SKU name</option>
-                                  { clientsSkuList && clientsSkuList.map(item => {
-                                      return <option value={item.sku}>{item.sku}</option>
-                                    })
-                                  }
-                      </Form.Select>
-
-
-                      <Form.Control
-                              type="text"
-                              value={skuClientNumebr[index] || ""}
-                              onChange={(e) => handleInputChange(e, index)}
-                      />
-                      </div>
-                      
-                      <Button 
-                      onClick={(e) => addNewClientSku(clientsSkus, setClientsSku, index)}
-                      >Save</Button>
-
-                      <Table>
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Client SKU</th>
-                          <th>Number</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {clientsSkus[index] && clientsSkus[index].map((skus, i) => {
-                          return <tr>
-                            <td>{i + 1}</td>
-                            <td>{skus.name}</td>
-                            <td>{skus.number}</td>
-                            <td><i onClick={() => removeClientSku(clientsSkus, setClientsSku, index, i)} className="bi bi-x-circle close" style={{cursor:"pointer"}}></i></td>
-                          </tr> 
-                        })}
-                      </tbody>
-                      </Table>
-                    </Form.Group> */}
-
                       </React.Fragment>
                     </Row>
                   </>
@@ -997,15 +821,6 @@ const EditProductPageComponent = ({
                       <Form.Label className="text-danger">
                         Product Price
                       </Form.Label>
-                      {/* <CurrencyInput
-                        className={`form-control newPrice-${index}`}
-                        name={`newPrice-${index}`}
-                        placeholder="AUD 0.00"
-                        defaultValue={0}
-                        decimalsLimit={2}
-                        required="true"
-                        disableGroupSeparators="true"
-                      /> */}
                       <Form.Control
                         name={`price-${index}`}
                         required
@@ -1091,83 +906,11 @@ const EditProductPageComponent = ({
                         type="text"
                       />
                     </Form.Group>
-                    {/* <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewSLRSKU-${index}`}
-                      hidden
-                    >
-                      <Form.Label>SLR SKU</Form.Label>
-                      <Form.Control name={`newSlrsku-${index}`} type="text" />
-                    </Form.Group> */}
-
-                    {/* <Form.Group>
-                      <Form.Label>Client Sku</Form.Label>
-                      <div style={{display: "flex", gap: "20px", marginBottom: "20px"}}>
-                        <Form.Select 
-                        value={selectedClientSkuName[index]} 
-                        onChange={(e) => handleSelect(e, index)}
-                        >
-                                  <option 
-                                  value={selectedClientSkuName[index] === "" && ""}
-                                  >Select SKU name</option>
-                                  { clientsSkuList && clientsSkuList.map(item => {
-                                      return <option value={item.sku}>{item.sku}</option>
-                                    })
-                                  }
-                    </Form.Select>
-
-
-                      <Form.Control
-                              type="text"
-                              value={skuClientNumebr[index] || ""}
-                              onChange={(e) => handleInputChange(e, index)}
-                      />
-                      </div>
-                      
-                      <Button 
-                      onClick={(e) => addNewClientSku(newProductClientsSkus, setNewProductClientSkus, index)}
-                      >Save</Button>
-
-                      <Table>
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Client SKU</th>
-                          <th>Number</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {newProductClientsSkus[index] && newProductClientsSkus[index].map((skus, i) => {
-                          return <tr>
-                            <td>{i + 1}</td>
-                            <td>{skus.name}</td>
-                            <td>{skus.number}</td>
-                            <td><i onClick={() => removeClientSku(newProductClientsSkus, setNewProductClientSkus, index, i)} className="bi bi-x-circle close" style={{cursor:"pointer"}}></i></td>
-                          </tr> 
-                        })}
-                      </tbody>
-                      </Table>
-                    </Form.Group> */}
-
                   </React.Fragment>
                 </Row>
               </>
             ))}
-
             <hr />
-            {/* <p
-              onClick={handleNewProduct}
-              style={{
-                cursor: "pointer",
-                textAlign: "center",
-                fontStyle: "italic",
-              }}
-            >
-              Add New Product
-            </p> */}
             <Button
               onClick={handleNewProduct}
               style={{
@@ -1181,40 +924,7 @@ const EditProductPageComponent = ({
               Add a New Product
             </Button>
             <hr />
-
-            {/* {selectedStock && (
-        <div>
-          <p>Are you sure you want to delete this stock object?</p>
-          <button onClick={() => handleDeleteStock(selectedStock._id)}>Delete</button>
-          <button onClick={() => setSelectedStock(null)}>Cancel</button>
-        </div>
-      )} */}
-
             <Row>
-              {/* <Form.Group
-                as={Col}
-                md="3"
-                className="mb-3"
-                controlId="formBasicPurchasePrice"
-              >
-                <Form.Label>Purchase Price</Form.Label>
-                {/* <CurrencyInput
-                  className={`form-control PurchasePrice`}
-                  name={`PurchasePrice`}
-                  placeholder="AUD 0.00"
-                  decimalsLimit={2}
-                  required="true"
-                  disableGroupSeparators="true"
-                  defaultValue={Number(product.purchaseprice)}
-                /> *
-                <Form.Control
-                  name="PurchasePrice"
-                  required
-                  type="number"
-                  step="0.01"
-                  defaultValue={product.purchaseprice}
-                />
-              </Form.Group> */}
               <Form.Group
                 as={Col}
                 md="3"
@@ -1222,15 +932,7 @@ const EditProductPageComponent = ({
                 controlId="formBasicSLRBuyingPrice"
               >
                 <Form.Label className="text-danger">Display Price</Form.Label>
-                {/* <CurrencyInput
-                  className={`form-control displayPrice`}
-                  name={`displayPrice`}
-                  placeholder="AUD 0.00"
-                  defaultValue={product.displayPrice}
-                  decimalsLimit={2}
-                  required="true"
-                  disableGroupSeparators="true"
-                /> */}
+
                 <Form.Control
                   name="displayPrice"
                   type="number"

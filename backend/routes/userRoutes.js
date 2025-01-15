@@ -20,8 +20,7 @@ const {
   formatUserName,
   forgotPassword,
   validateResetLink,
-  resetPassword,
-  updateUserBulk
+  resetPassword
 } = require("../controllers/userController");
 
 router.post("/register", registerUser);
@@ -39,10 +38,6 @@ router.put("/password", updateUserPassword);
 router.get("/profile/:id", getUserProfile);
 router.get("/store/:email", getStoreUser);
 router.get("/list/:company", getUsersList)
-router.put("/bulkUpdate", updateUserBulk);
-
-/* router.post('/review/:productId', writeReview) */
-// 既然writeReview删除了，那么const里的，以及controller里面的都要删掉
 
 // admin routes:
 router.use(verifyIsAdmin);

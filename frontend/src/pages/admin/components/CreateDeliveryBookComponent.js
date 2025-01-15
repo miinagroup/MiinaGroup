@@ -3,13 +3,10 @@ import {
   Col,
   Container,
   Form,
-  Button,
-  CloseButton,
-  Table,
-  Alert,
+  Button
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MaskedInput from 'react-text-mask';
 import GoBackButton from "./GoBackButton";
@@ -17,8 +14,6 @@ import GoBackButton from "./GoBackButton";
 const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
   const [validated, setValidated] = useState(false);
   const [textDueDays, setTextDueDays] = useState("7")
-  const [textQBCustomerId, setTextQBCustomerId] = useState("124")
-  const [hasUniform, setHasUniform] = useState(false);
   const [createDeliveryBookResponseState, setCreateDeliveryBookResponseState] =
     useState({
       message: "",
@@ -70,11 +65,8 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
       billingEmail: form.billingEmail.value,
       companyAccount: form.companyAccount.value,
       dueDays: form.dueDays.value,
-      // quickBooksCutomerId: form.quickBooksCustomerId.value,
-      quickBooksCustomerId: 1,
       sites: sites,
-      abn: form.abn.value,
-      hasUniform: hasUniform
+      abn: form.abn.value
     };
 
     if (event.currentTarget.checkValidity() === true) {
@@ -102,18 +94,11 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
     setAbnNum(newValue);
   };
 
-  const handleToggle = (e) => {
-    setHasUniform(e.target.checked);
-  };
-
   return (
     <Container>
       <Row className="justify-content-md-center mt-5 content-container">
         <Row>
           <Col md={1}>
-            {/* <Link to="/admin/deliveryBooks" className="btn btn-info my-3">
-              Go Back
-            </Link> */}
             <GoBackButton />
           </Col>
           <Col md={8}>
@@ -159,24 +144,10 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
                 <Form.Label>Company Account</Form.Label>
                 <Form.Control name="companyAccount" required type="text" />
               </Form.Group>
-              {/* <Form.Group className="mb-3" controlId="formBasicQuickBooksCustomerId">
-                <Form.Label>QuickBooks Customer Id</Form.Label>
-                <Form.Control name="quickBooksCustomerId" required type="text" value={textQBCustomerId} onChange={(e) => setTextQBCustomerId(e.target.value)} />
-              </Form.Group> */}
               <Form.Group className="mb-3" controlId="formBasicDueDays">
                 <Form.Label>Due Days</Form.Label>
                 <Form.Control name="dueDays" required type="text" value={textDueDays} onChange={(e) => setTextDueDays(e.target.value)} />
               </Form.Group>
-              {/* <Form.Group className="mb-3" controlId="formBasicHasUniform">
-                <Form.Label>Has Uniform</Form.Label>
-                <Form.Check
-                  type="switch"
-                  name="hasUniform"
-                  label=""
-                  checked={hasUniform}
-                  onChange={handleToggle}
-                />
-              </Form.Group> */}
 
               {[...Array(rowCount)].map((_, index) => (
                 <>

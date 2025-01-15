@@ -10,11 +10,8 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import CartItemForOrderComponent from "../../../components/CartItemForOrderComponent";
-// import { getClientsSkuList } from "../../../redux/actions/productsActions";
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
-
 import { useReactToPrint } from "react-to-print";
 import DeliveryNotePrint from "../../../components/Pdfs/DeliveryNotePrint";
 import PickingPackingPrint from "../../../components/Pdfs/PickingPackingPrint";
@@ -25,7 +22,6 @@ import { pdf } from "@react-pdf/renderer";
 import SendInvoice from "../../../components/SendEmail/SendInvoice";
 import { emptyCart } from "../../../redux/actions/cartActions";
 import { useSelector, useDispatch } from "react-redux";
-
 import axios, { isCancel } from "axios";
 
 const OrderDetailsPageComponent = ({
@@ -65,7 +61,6 @@ const OrderDetailsPageComponent = ({
   const [paidAt, setPaidAt] = useState("");
   const [deliveryBooks, setDeliveryBooks] = useState([]);
   const [adminNote, setAdminNote] = useState("");
-
   const [isDelivered, setIsDelivered] = useState(false);
   const [invoiceSent, setInvoiceSent] = useState(false);
   const [proformaInvoiceSent, setProformaInvoiceSent] = useState(false);
@@ -84,7 +79,6 @@ const OrderDetailsPageComponent = ({
   const [orderData, setOrderData] = useState([]);
   const [edit, setEdit] = useState(false);
   const [editInvoiceNumber, setEditInvoiceNumber] = useState(false);
-  // const [enterClientSKU, setEnterClientSKU] = useState(false);
   const [removed, setRemoved] = useState(false);
   const [selectedDeliverySite, setSelectedDeliverySite] = useState();
   const [editLocation, setEditLocation] = useState(false);
@@ -98,63 +92,6 @@ const OrderDetailsPageComponent = ({
   const [btnMarkAsPaid, setBtnMarkAsPaid] = useState(false)
   const dispatch = useDispatch();
 
-  // const { clientsSkuList } = useSelector((state) => state.products);
-  // const [currentClientSkuName, setCurrentClientSkuName] = useState();
-  // const [newClientSkus, setNewClientSkus] = useState([]);
-
-  // const [isCancelClientSku, setIsCancelClientSku] = useState(false);
-  // const [isUpdatedClientSku, setIsUpdatedClientSku] = useState(false);
-
-  // useEffect(() => {
-  //   dispatch(getClientsSkuList());
-  // }, [dispatch]);
-
-  // const handleNewClientSkusChange = (newClientSku, ctlSku, cartItemId) => {
-  //   const existingProduct = newClientSkus.find(product => product.ctlSku === ctlSku);
-
-  //   if (existingProduct) {
-  //     setNewClientSkus((prevProducts) =>
-  //       prevProducts.map((product) =>
-  //         product.ctlSku === ctlSku
-  //           ? { ...product, newClientSku: { name: currentClientSkuName, number: newClientSku.number } }
-  //           : product
-  //       )
-  //     );
-  //   } else {
-
-  //     setNewClientSkus((prevProducts) => [
-  //       ...prevProducts,
-  //       { newClientSku: { name: currentClientSkuName, number: newClientSku.number }, ctlSku, cartItemId }
-  //     ]);
-  //   }
-  // };
-
-  // const changeClientSkuBulk = async (newClientSkusSku) => {
-  //   try {
-  //     const { data } = await axios.put(
-  //       `/api/products/admin/updateSKUBulk`, newClientSkusSku
-
-  //     );
-  //     return data;
-  //   } catch (error) {
-  //     console.log("Failed to change sku", error);
-  //   }
-  // };
-
-  // const handleSaveClientSku = async () => {
-  //   try {
-  //     const data = await changeClientSkuBulk(newClientSkus)
-  //     const order = await axios.put(
-  //       `/api/orders/admin/bulkUpdateClientSkus/${id}`, newClientSkus
-  //     );
-  //     console.log("Client SKU updated successfully");
-  //     setIsUpdatedClientSku(true)
-  //     handleClientSKU()
-  //   } catch (error) {
-  //     console.error("Failed to save client SKU", error);
-  //   }
-  // };
-
   useEffect(() => {
     getUser()
       .then((data) => {
@@ -163,22 +100,9 @@ const OrderDetailsPageComponent = ({
       .catch((err) => console.log(err));
   }, []);
 
-  // useEffect(() => {
-  //   clientsSkuList && order && clientsSkuList.map(sku => {
-  //     const noSpacesDeliverySite = order.deliverySite.toLowerCase().replace(/\s+/g, '');
-  //     if (sku.sku.toLowerCase().includes(noSpacesDeliverySite)) {
-  //       setCurrentClientSkuName(sku.sku)
-  //     }
-  //   })
-
-  // }, [clientsSkuList, order]);
-
-
-
   useEffect(() => {
     getOrder(id)
       .then((order) => {
-        // updateClientSku(order.cartItems, order.deliverySite);
         setOrder(order);
         setUserInfo(order.user);
         setBackOrderStatus(order.backOrder);
@@ -219,7 +143,6 @@ const OrderDetailsPageComponent = ({
           setorderPaidButton("Order is Paid");
           setpaidButtonDisabled(true);
         }
-        // setCartItems(order.cartItems);
         setOrderData(order);
       })
       .catch((er) =>
@@ -228,67 +151,6 @@ const OrderDetailsPageComponent = ({
         )
       );
   }, [isDelivered, invoiceSent, id, edit, removed, editLocation, refreshOrder]);
-
-  // const updateClientSku = async (data, site) => {
-  //   try {
-  //     const emptyClientSku = {
-  //       name: "",
-  //       number: ""
-  //     }
-
-  //     const newCartItems = await Promise.all(data.map(async (item) => {
-
-  //       const differentDeiverySite = item.cartProducts[0].currentClientSku?.name.toLowerCase().includes(site.replace(/\s+/g, '').toLowerCase());
-  //       const noCurrentClientSku = item.cartProducts[0].currentClientSku;
-  //       const currentClientSkuNumberEmpty = item.cartProducts[0].currentClientSku?.number === "";
-
-  //       if (!noCurrentClientSku || currentClientSkuNumberEmpty || !differentDeiverySite) {
-  //         const res = await fetchProduct(item.productId);
-  //         const stockItem = res.stock.find(st => st.ctlsku === item.cartProducts[0].ctlsku);
-  //         const matchingClientSku = stockItem.clientsSku?.find(sku =>
-  //           sku.name?.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(site.toLowerCase())
-  //         );
-
-  //         if (matchingClientSku) {
-  //           await updateOrderClientCurrentSku(id, matchingClientSku, item.cartProducts[0].ctlsku, item._id);
-  //           return {
-  //             ...item,
-  //             cartProducts: item.cartProducts.map((product, productIdx) => {
-  //               if (productIdx === 0) {
-  //                 return {
-  //                   ...product,
-  //                   currentClientSku: matchingClientSku,
-  //                 };
-  //               }
-  //               return product;
-  //             }),
-  //           };
-  //         } else {
-  //           await updateOrderClientCurrentSku(id, emptyClientSku, item.cartProducts[0].ctlsku, item._id);
-  //           return {
-  //             ...item,
-  //             cartProducts: item.cartProducts.map((product, productIdx) => {
-  //               if (productIdx === 0) {
-  //                 return {
-  //                   ...product,
-  //                   currentClientSku: emptyClientSku
-  //                 };
-  //               }
-  //               return product;
-  //             }),
-  //           };
-  //         }
-  //       }
-
-  //       return item;
-  //     }));
-
-  //     setCartItems(newCartItems)
-
-  //   } catch (error) {
-  //     console.error("Error updating client SKU:", error);
-  //   }
-  // };
 
   useEffect(() => {
     if (userInfo?.email) {
@@ -366,13 +228,7 @@ const OrderDetailsPageComponent = ({
     const email = e.target.value;
     setEmailAddress(email);
   };
-  // edit client sku
-  // const handleClientSKU = () => setEnterClientSKU(!enterClientSKU);
-  // const saveClientSKU = () => {
-  //   setTimeout(() => {
-  //     setEnterClientSKU(false);
-  //   }, 500);
-  // };
+
   const changeCount = (orderId, itemId, price, suppliedQty) => {
     updateBackOrder(orderId, itemId, price, suppliedQty);
   };
@@ -405,7 +261,6 @@ const OrderDetailsPageComponent = ({
 
   const saveEditLocation = () => {
     adminUpdateDeliverySite(id, selectedDeliverySite?.name);
-    // updateClientSku(cartItems, selectedDeliverySite?.name);
     setTimeout(() => {
       setEditLocation(false);
     }, 500);
@@ -530,13 +385,8 @@ const OrderDetailsPageComponent = ({
     });
   }, [base64Data]);
 
-  // console.log("invBillingAddress", invBillingAddress);
-  // console.log("invoice data", invData);
-  // ap@slrltd.com.au
-
   const [sendingInv, setSendingInv] = useState(false);
   const [sendingInvManually, setSendingInvManually] = useState(false);
-  //const [sendingInv, setSendingInv] = useState(false);
 
   const sendInvoiceEmail = async (invData) => {
     setSendingInv(true);
@@ -897,7 +747,6 @@ const OrderDetailsPageComponent = ({
       user_id: order.user._id,
       userName: order.userName,
       userCompany: order.userCompany,
-      quickBooksCustomerId: order.quickBooksCustomerId,
       dueDays: order.dueDays,
       secondOwnerId: order.secondOwnerId,
       storeId: order.storeId,
@@ -995,12 +844,6 @@ const OrderDetailsPageComponent = ({
   }
 
   const isPaidDateString = formatDateString(paidAt);
-
-  // const handleSkuUpdateSuccess = () => {
-  //   setEnterClientSKU(false);
-  //   setRefreshOrder(!refreshOrder);
-  // };
-
   const handleShowProformaInvoice = () => {
     setShowProformaInvoice(!showProformaInvoice)
   }
@@ -1083,12 +926,6 @@ const OrderDetailsPageComponent = ({
               </ListGroup.Item>
             </Col>
             <Col md={6} className="mb-0">
-              {/*  ******* DON'T REMOVE *******        
-              <h3>PAYMENT METHOD</h3>
-              <Form.Select value={paymentMethod} disabled={true}>
-                <option value="Invoice">Invoice</option>
-                <option value="PayPal">PayPal</option>
-              </Form.Select> */}
               <h5>ORDER STATUS:</h5>
               <Alert
                 className="mt-1 p-0 ps-2 mb-1"
@@ -1121,14 +958,6 @@ const OrderDetailsPageComponent = ({
                   <>
                     <i className="bi bi-check-circle-fill text-success" /> Paid
                     on: {isPaidDateString}
-                    {/* {new Date(isPaid).toLocaleString("en-AU", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })} */}
                   </>
                 ) : (
                   <>Not paid yet</>
@@ -1188,39 +1017,6 @@ const OrderDetailsPageComponent = ({
                 <tr>
                   <th style={{ width: "6%" }}></th>
                   <th style={{ width: "22%" }}>Product</th>
-                  {/* <th style={{ width: "8%" }}>
-                    Client SKU
-                    {enterClientSKU === false ? (
-                      <>
-                        {" "}
-                        <i
-                          onClick={() => {
-                            handleClientSKU()
-                            setIsCancelClientSku(false)
-                            setIsUpdatedClientSku(false)
-                          }}
-                          className="bi bi-pencil-square"
-                          style={{ cursor: "pointer" }}
-                        ></i>
-                      </>
-                    ) : <><button
-                      className="btn btn-primary mt-2 p-0 pe-1 ps-1"
-                      onClick={handleSaveClientSku}
-                    >
-                      <small>Save</small>
-                    </button>
-                      <button
-                        className="btn btn-primary mt-2 p-0 pe-1 ps-1 mx-1"
-                        onClick={
-                          () => {
-                            handleClientSKU()
-                            setIsCancelClientSku(true)
-                          }
-                        }
-                      >
-                        <small>Cancel</small>
-                      </button></>}
-                  </th> */}
                   <th style={{ width: "8%" }}>CTLSKU</th>
                   <th style={{ width: "7%" }}>Unit Price</th>
                   <th style={{ width: "7%" }}>Order Qty</th>
@@ -1237,22 +1033,15 @@ const OrderDetailsPageComponent = ({
                   item={item}
                   orderCreated={true}
                   edit={edit}
-                  // enterClientSKU={enterClientSKU}
-                  // setEnterClientSKU={setEnterClientSKU}
                   changeCount={changeCount}
                   changePrice={changePrice}
                   removeFromOrderHandler={removeFromOrderHandler}
                   id={id}
                   backOrderStatus={backOrderStatus}
                   userInfo={userInfo}
-                  // onSkuUpdateSuccess={handleSkuUpdateSuccess}
-                  // currentClientSkuName={currentClientSkuName}
                   selectedDeliverySite={setSelectedDeliverySite}
                   editingIndex={editingIndex}
                   setEditingIndex={setEditingIndex}
-                // handleNewClientSkusChange={handleNewClientSkusChange}
-                // isCancel={isCancelClientSku}
-                // isUpdated={isUpdatedClientSku}
                 />)
               })}
             </table>
@@ -1364,7 +1153,6 @@ const OrderDetailsPageComponent = ({
                 <Button
                   className="p-0 m-0 w-50"
                   onClick={handleShowTrackLink}
-                  // disabled={deliveredButtonDisabled}
                   variant={deliveredButtonDisabled ? "secondary" : "success"}
                   type="button"
                 >
@@ -1376,7 +1164,6 @@ const OrderDetailsPageComponent = ({
               <ListGroup.Item className="p-1 ps-2">
                 <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Delivery Note</Button>
               </ListGroup.Item>
-              // <PDFPopupButton disabled loadingText="Print Delivery Note" style={{ opacity: 0.5, cursor: 'not-allowed' }} />
             ) : (
               <PDFPopupButton
                 documentComponent={
@@ -1397,25 +1184,7 @@ const OrderDetailsPageComponent = ({
                 loadingText="Print Delivery Note"
               />
             )}
-            {/* <PDFPopupButton
-              documentComponent={
-                <DeliveryNotePrint
-                  cartItems={cartItems}
-                  invoiceNumber={invoiceNumber}
-                  userInfo={userInfo}
-                  purchaseNumber={purchaseNumber}
-                  cartSubtotal={cartSubtotal}
-                  invoiceDate={deliveredAt}
-                  dueDays={dueDays}
-                  selectedDeliverySite={selectedDeliverySite}
-                  companyAccount={companyAccount}
-                  deliveredAt={deliveredAt}
-                />
-              }
-              disabled={deliveredButtonDisabled}
-              fileName={"DN" + invoiceNumber}
-              loadingText="Print Delivery Note"
-            /> */}
+
             <ListGroup.Item
               className="p-1 ps-2"
               hidden={backOrderStatus === false}
@@ -1582,7 +1351,6 @@ const OrderDetailsPageComponent = ({
                     >
                       {sendingInv ? "Sending..." : proformaInvSentButton}{" "}
                       <span hidden={!order?.proformaInvHasSent}>({order?.proformaInvHasSent})</span>{" "}
-                      {/* {`(${order?.invHasSent})`} */}
                     </Button>
                   </div>
                 </ListGroup.Item>

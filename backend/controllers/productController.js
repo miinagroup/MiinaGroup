@@ -137,12 +137,8 @@ const getProductsVisitor = async (req, res, next) => {
 
     let totalProducts = await Product.countDocuments(query);
     let products = await Product.find(query)
-      // .select(select)
       .skip(recordsPerPage * (pageNum - 1))
-      // .sort(sortCriteria)
       .limit(recordsPerPage);
-
-    // products = products.filter((product) => product.category !== "QUOTE");
 
     res.json({
       products,
@@ -550,30 +546,18 @@ const getProducts = async (req, res, next) => {
     ];
 
     const isAdmin = req.user.isAdmin;
-
-    // console.log(isAdmin);
-
     let totalProducts = await Product.countDocuments(query);
-
-    // console.log("products 1", totalProducts.length);
-
     let products = await Product.find(query)
       .select(select)
       .skip(recordsPerPage * (pageNum - 1))
       .sort(sortCriteria)
       .limit(recordsPerPage);
 
-    // console.log("products 2", products.length);
-
     if (!isAdmin) {
       products = products.filter((product) => product.category !== "QUOTE");
-      // console.log("products 3", products.length);
-      // totalProducts = products.length;
+
     }
 
-    /*     console.log("totalProducts", totalProducts);
-        console.log("recordsPerPage", recordsPerPage);
-        console.log(Math.ceil(totalProducts / recordsPerPage)); */
     res.json({
       products,
       pageNum,
@@ -652,16 +636,6 @@ const adminGetSupplierSku = async (req, res, next) => {
   }
 };
 
-const adminGetHobsonCTLSku = async (req, res, next) => {
-  try {
-    const products = await Product.find({ supplier: req.params.supplier })
-      // .sort({ suppliersku: 1 })
-      .select("stock.ctlsku");
-    return res.json(products);
-  } catch (err) {
-    next(err);
-  }
-};
 
 const adminDeleteProduct = async (req, res, next) => {
   try {
@@ -731,9 +705,7 @@ const adminCreateProduct = async (req, res, next) => {
           purchaseprice,
           barcode,
           ctlsku,
-          // slrsku,
           suppliersku,
-          // clientsSku
         } = item;
         product.stock.push({
           attrs: attrs || "",
@@ -743,9 +715,7 @@ const adminCreateProduct = async (req, res, next) => {
           purchaseprice: purchaseprice || 0,
           barcode: barcode || "",
           ctlsku: ctlsku || "",
-          // slrsku: slrsku || "",
-          suppliersku: suppliersku || "",
-          // clientsSku: clientsSku || []
+          suppliersku: suppliersku || ""
         });
       });
     } else {
@@ -768,318 +738,6 @@ const adminCreateProduct = async (req, res, next) => {
   }
 };
 
-const adminUpdateHobsonProduct = async (req, res, next) => {
-  try {
-    const tempAvailabilityArray = req.body.tempAvailabilityArray
-    if (!tempAvailabilityArray || tempAvailabilityArray.length === 0) {
-      return res.status(400).json({ message: "No data available to process." });
-    }
-    // Initialize bulk operation
-    var bulk = Product.collection.initializeUnorderedBulkOp();
-    let local = 0
-    let national = 0
-    tempAvailabilityArray?.forEach((availabilityArray) => {
-      availabilityArray.logged_in_user_availability?.forEach((site) => {
-        if (site.warehouse === "Perth") {
-          local = site.available
-        } else {
-          national = national + site.available
-        }
-      });
-      // Add the update operation to the bulk operation
-      bulk.find({ "stock.suppliersku": availabilityArray.part_number }).updateOne(
-        {
-          $set: { "availability.$.local": local, "availability.$.national": national }
-        }
-      );
-    });
-
-    // Execute bulk operation only if there are pending operations
-    if (bulk.s && bulk.s.currentBatch) {
-      bulk.execute((err, result) => {
-        if (err) {
-          console.error("Bulk operation error:", err);
-          return res.status(500).json({ message: "Bulk operation failed.", error: err });
-        } else {
-          console.log("Bulk operation success:", result);
-          return res.status(200).json({ message: "Bulk operation succeeded.", result: result });
-        }
-      });
-    } else {
-      console.log("No operations to execute in bulk.");
-      return res.status(400).json({ message: "No bulk operations to execute." });
-    }
-
-  } catch (err) {
-    next(err);
-  }
-};
-
-const scheduledHobsonStockUpdate = async (req, res, next) => {
-  try {
-    await Product.collection.createIndex({ "stock.suppliersku": 1 });
-    const supplier = "HOBSON ENGINEERING"
-    const hobsonProductCodes = await Product.find({ supplier: supplier }).select("stock.suppliersku");
-    let productSupplierSkuArray = []
-    let tempAvailabilityArray = []
-    hobsonProductCodes?.map((productCode) => {
-      productSupplierSkuArray.push(productCode?.stock[0]?.suppliersku)
-    })
-
-    const chunkSize = 500;
-    for (let i = 0, j = 1; i < productSupplierSkuArray.length; i += chunkSize, j++) {
-      const chunk = productSupplierSkuArray.slice(i, i + chunkSize);
-
-      const url = 'https://hdi.hobson.com.au/v3/stock/availability/logged-in';
-      const data = JSON.stringify({
-        "app_token": `${appToken}`,
-        "store_code": `${storeCode}`,
-        "data": { "part_numbers": [...chunk] }
-      });
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'api-key': `${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: data,
-      });
-      const fullProductAvailability = await response.json();
-      const batchResults = fullProductAvailability.data
-      tempAvailabilityArray.push(...batchResults)
-    }
-    var bulk = Product.collection.initializeUnorderedBulkOp();
-    tempAvailabilityArray?.map((availabilityArray) => {
-      let local = 0
-      let national = 0
-      availabilityArray.logged_in_user_availability?.map((site) => {
-        if (site.warehouse === "Perth") {
-          local = site.available
-        } else {
-          national = national + site.available
-        }
-      })
-
-      bulk.find({ "stock.suppliersku": availabilityArray.part_number }).updateOne(
-        {
-          $set: { "availability.$.local": local, "availability.$.national": national }
-        }
-      )
-    })
-    // Execute bulk operation only if there are pending operations
-    if (bulk.s && bulk.s.currentBatch) {
-      bulk.execute((err, result) => {
-        if (err) {
-          console.error("Bulk operation error:", err);
-        } else {
-          console.log("Bulk operation success:", result);
-        }
-      });
-    } else {
-      console.log("No operations to execute in bulk.");
-    }
-  } catch (err) {
-    next(err);
-  }
-};
-
-//Auto Update Hobson Stock Every Day 12am
-cron.schedule("0 0 * * *", scheduledHobsonStockUpdate, {
-  scheduled: true,
-  timezone: "UTC",
-});
-
-const scheduledHobsonPriceUpdate = async (res, req, next) => {
-  try {
-    await Product.collection.createIndex({ "stock.suppliersku": 1 });
-    const supplier = "HOBSON ENGINEERING"
-    const hobsonProductCodes = await Product.find({ supplier: supplier }).select("stock.suppliersku");
-    let productSupplierSkuArray = []
-    let tempPriceArray = []
-    hobsonProductCodes?.map((productCode) => {
-      productSupplierSkuArray.push(productCode?.stock[0]?.suppliersku)
-    })
-    const chunkSize = 500;
-    for (let i = 0, j = 1; i < productSupplierSkuArray.length; i += chunkSize, j++) {
-      const chunk = productSupplierSkuArray.slice(i, i + chunkSize);
-
-      const url = 'https://hdi.hobson.com.au/v3/stock/price';
-      const data = JSON.stringify({
-        "app_token": `${appToken}`,
-        "store_code": `${storeCode}`,
-        "data": { "part_numbers": [...chunk] }
-      });
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'api-key': `${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: data,
-      });
-      const fullProductsPriceList = await response.json();
-      const batchResults = fullProductsPriceList.data
-      tempPriceArray.push(...batchResults)
-    }
-    var bulk = Product.collection.initializeUnorderedBulkOp();
-    let local = 0
-    let national = 0
-    tempPriceArray?.map((priceArray) => {
-      priceArray.logged_in_user_availability?.map((site) => {
-        if (site.warehouse === "Perth") {
-          local = site.available
-        } else {
-          national = national + site.available
-        }
-      })
-
-      bulk.find({ "stock.suppliersku": priceArray.part_number }).updateOne(
-        {
-          $set: { "availability.$.local": local, "availability.$.national": national }
-        }
-      )
-    })
-    // Execute bulk operation only if there are pending operations
-    if (bulk.s && bulk.s.currentBatch) {
-      bulk.execute((err, result) => {
-        console.log("bulk executed");
-        if (err) {
-          console.error("Bulk operation error:", err);
-        } else {
-          console.log("Bulk operation success:", result);
-        }
-      });
-    } else {
-      console.log("No operations to execute in bulk.");
-    }
-  } catch (err) {
-    next(err);
-  }
-};
-
-//Auto Update Hobson Pricing Every Monday 12am
-cron.schedule("0 0 * * 1", scheduledHobsonPriceUpdate, {
-  scheduled: true,
-  timezone: "UTC",
-});
-
-
-const adminCreateHobsonProduct = async (req, res, next) => {
-  try {
-    const product = new Product();
-    const {
-      name,
-      description,
-      saleunit,
-      max,
-      displayPrice,
-      supplier,
-      category,
-      stock,
-      availability,
-      images,
-      pdfs,
-      sortOrder,
-      standards,
-      createdBy,
-      editedBy,
-    } = req.body;
-
-    product.name = name.toUpperCase();
-    product.description = description;
-    product.saleunit = saleunit;
-    product.max = max;
-    product.displayPrice = displayPrice;
-    product.supplier = supplier;
-    product.category = category;
-    product.sortOrder = sortOrder;
-    product.standards = standards;
-    product.createdBy = createdBy;
-    product.editedBy = editedBy;
-    if (stock.length > 0) {
-      product.stock = [];
-      stock.map((item) => {
-        const {
-          attrs,
-          uom,
-          count,
-          purchaseprice,
-          price,
-          barcode,
-          ctlsku,
-          suppliersku,
-          // clientsSku,
-          sales
-        } = item;
-        product.stock.push({
-          attrs: attrs || "",
-          uom: uom.toUpperCase() || "",
-          count: count || 0,
-          price: price || 0,
-          purchaseprice: purchaseprice || 0,
-          barcode: barcode || "",
-          ctlsku: ctlsku || "",
-          suppliersku: suppliersku || "",
-          // clientsSku: clientsSku || [],
-          sales: sales || 0
-        });
-      });
-    } else {
-      product.stock = [];
-    }
-
-    if (availability.length > 0) {
-      product.availability = [];
-      availability.map((item) => {
-        const {
-          local,
-          national
-        } = item;
-        product.availability.push({
-          local: local || 0,
-          national: national || 0
-        });
-      });
-    } else {
-      product.availability = [];
-    }
-
-    if (images.length > 0) {
-      product.images = [];
-      images.map((item) => {
-        const { path } = item;
-        product.images.push({
-          path: path || ""
-        })
-      })
-    } else {
-      product.images = [];
-    }
-
-    if (pdfs.length > 0) {
-      product.pdfs = [];
-      pdfs.map((item) => {
-        const { path } = item;
-        product.pdfs.push({
-          path: path || ""
-        })
-      })
-    } else {
-      product.pdfs = [];
-    }
-
-    await product.save();
-
-    res.json({
-      message: "product created",
-      productId: product._id,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
 
 const schedulePriceReset = async (productId, expireDate) => {
   const [time, date] = expireDate.split(" ");
@@ -1137,11 +795,6 @@ const dailyPriceResetCheck = async () => {
   }
 };
 
-/* cron.schedule('0 59 07 * * *', dailyPriceResetCheck, {
-  scheduled: true,
-  timezone: "UTC"
-}); */
-
 cron.schedule("0 10 16 * * *", dailyPriceResetCheck, {
   scheduled: true,
   timezone: "UTC",
@@ -1182,7 +835,6 @@ const adminUpdateProduct = async (req, res, next) => {
     product.max = max || product.max;
     product.standards = standards || product.standards;
     product.editedBy = editedBy || product.editedBy;
-    // product.expireDate = expireDate || product.expireDate;
     product.expireDate =
       expireDate === "remove" ? undefined : expireDate || product.expireDate;
     if (stock.length > 0) {
@@ -1197,9 +849,7 @@ const adminUpdateProduct = async (req, res, next) => {
           purchaseprice,
           barcode,
           ctlsku,
-          // slrsku,
           suppliersku,
-          // clientsSku
         } = item;
         product.stock.push({
           _id: _id,
@@ -1210,9 +860,7 @@ const adminUpdateProduct = async (req, res, next) => {
           purchaseprice: purchaseprice || 0,
           barcode: barcode || "",
           ctlsku: ctlsku || "",
-          // slrsku: slrsku || "",
-          suppliersku: suppliersku || "",
-          // clientsSku: clientsSku || []
+          suppliersku: suppliersku || ""
         });
       });
     } else {
@@ -1231,7 +879,6 @@ const adminUpdateProduct = async (req, res, next) => {
 const getProductByCTLSKU = async (req, res, next) => {
   try {
     const cltsku = req.query.ctlsku;
-    const clientSiteSku = req.query.clientSiteSku;
     const product = await Product.findOne({ "stock.ctlsku": cltsku });
 
     if (!product) {
@@ -1241,7 +888,7 @@ const getProductByCTLSKU = async (req, res, next) => {
     if (!stockItem) {
       return res.status(404).json({ error: "Stock item not found" });
     }
-    res.json({ [clientSiteSku]: stockItem[clientSiteSku] });
+    res.json({ stockItem });
   } catch (err) {
     next(err);
   }
@@ -1250,48 +897,7 @@ const getProductByCTLSKU = async (req, res, next) => {
 const userUpdateSKU = async (req, res, next) => {
   try {
     const ctlsku = req.params.ctlsku;
-    const clientSiteSku = Object.keys(req.body)[0];
-    // const clientSkuNumber = req.body["clientSkuNumber"];
-    // const clientSkuName = req.body["clientSkuName"];
-
-    if (!clientSiteSku) {
-      return res.status(400).json({ error: "clientSiteSku is required" });
-    }
-
     let product = await Product.findOne({ "stock.ctlsku": ctlsku });
-    // const productClientSku = await product.stock.find(item => item.ctlsku === ctlsku);
-    // const productClientSkuName = await productClientSku.clientsSku.find(sku => sku.name === clientSkuName)
-
-    // if (productClientSkuName) {
-    //   product = await Product.findOneAndUpdate(
-    //     { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName },
-    //     {
-    //       $set: {
-    //         "stock.$[elem].clientsSku.$[clientSku].number": clientSkuNumber
-    //       }
-    //     },
-    //     {
-    //       arrayFilters: [{ "elem.ctlsku": ctlsku }, { "clientSku.name": clientSkuName }],
-    //       new: true,
-    //     }
-    //   )
-    // } else {
-    //   product = await Product.findOneAndUpdate(
-    //     { "stock.ctlsku": ctlsku },
-    //     // {
-    //     //   $push: {
-    //     //     "stock.$[elem].clientsSku": {
-    //     //       number: clientSkuNumber,
-    //     //       name: clientSkuName,
-    //     //     }
-    //     //   }
-    //     // },
-    //     {
-    //       arrayFilters: [{ "elem.ctlsku": ctlsku }],
-    //       new: true,
-    //     }
-    //   )
-    // }
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -1306,60 +912,12 @@ const userUpdateSKU = async (req, res, next) => {
 const adminUpdateSKU = async (req, res, next) => {
   try {
     const ctlsku = req.params.ctlsku;
-    // const clientSiteSku = req.body['clientSku'];
-    // const clientSkuName = req.body['clientSku']?.name;
-    // const clientSkuNumber = req.body['clientSku']?.number;
-    // const clientSkuId = req.body['clientSku']?._id;
-
-    if (!clientSiteSku) {
-      return res.status(400).json({ error: "clientSiteSku is required" });
-    }
 
     let product = await Product.findOne({
       "stock.ctlsku": ctlsku,
     });
 
     const stockItem = product.stock.find(item => item.ctlsku === ctlsku);
-
-    // const existingClientSku = stockItem.clientsSku.find(c => c.name === clientSkuName);
-
-    // if (existingClientSku !== undefined) {
-    //   product = await Product.findOneAndUpdate(
-    //     { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName },
-    //     {
-    //       $set: {
-    //         "stock.$[stock].clientsSku.$[clientSku].number": clientSkuNumber
-    //       },
-    //     },
-    //     {
-    //       arrayFilters: [
-    //         { "stock.ctlsku": ctlsku },
-    //         { "clientSku.name": clientSkuName }
-    //       ],
-    //       new: true,
-    //       runValidators: true,
-    //     }
-    //   );
-    // } else {
-    //   product = await Product.findOneAndUpdate(
-    //     {
-    //       "stock.ctlsku": ctlsku
-    //     },
-    //     {
-    //       $push: {
-    //         "stock.$.clientsSku": {
-    //           name: clientSkuName,
-    //           number: clientSkuNumber,
-    //           _id: clientSkuId,
-    //         }
-    //       },
-    //     },
-    //     {
-    //       arrayFilters: [{ "stock.ctlsku": ctlsku }],
-    //       new: true,
-    //     }
-    //   );
-    // }
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -1371,76 +929,6 @@ const adminUpdateSKU = async (req, res, next) => {
   }
 };
 
-
-// const adminBulkUpdateClientSkus = async (req, res, next) => {
-//   try {
-//     const clientSkuArray = req.body;
-
-//     const updatePromises = clientSkuArray.map(async (product) => {
-//       const ctlsku = product.ctlSku;
-//       const newClientSku = product.newClientSku;
-//       const clientSkuName = newClientSku.name;
-//       const clientSkuNumber = newClientSku.number;
-
-//       let productDoc = await Product.findOne({ "stock.ctlsku": ctlsku });
-
-//       if (!productDoc) {
-//         return { error: `Product with ctlSku ${ctlsku} not found` };
-//       }
-
-//       const stockItem = productDoc.stock.find(item => item.ctlsku === ctlsku);
-//       const existingClientSku = stockItem.clientsSku.find(c => c.name === clientSkuName);
-
-//       if (existingClientSku) {
-//         productDoc = await Product.findOneAndUpdate(
-//           { "stock.ctlsku": ctlsku, "stock.clientsSku.name": clientSkuName },
-//           {
-//             $set: {
-//               "stock.$[stock].clientsSku.$[clientSku].number": clientSkuNumber,
-//             },
-//           },
-//           {
-//             arrayFilters: [
-//               { "stock.ctlsku": ctlsku },
-//               { "clientSku.name": clientSkuName },
-//             ],
-//             new: true,
-//             runValidators: true,
-//           }
-//         );
-//       } else {
-//         productDoc = await Product.findOneAndUpdate(
-//           { "stock.ctlsku": ctlsku },
-//           {
-//             $push: {
-//               "stock.$.clientsSku": {
-//                 name: clientSkuName,
-//                 number: clientSkuNumber,
-//               },
-//             },
-//           },
-//           {
-//             arrayFilters: [{ "stock.ctlsku": ctlsku }],
-//             new: true,
-//           }
-//         );
-//       }
-
-//       return productDoc;
-//     });
-
-//     const results = await Promise.all(updatePromises);
-
-//     const errors = results.filter(result => result.error);
-//     if (errors.length > 0) {
-//       return res.status(400).json({ errors });
-//     }
-
-//     return res.status(200).json(results);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 const adminUpdateImages = async (req, res, next) => {
   try {
@@ -1520,28 +1008,6 @@ const adminUpdateCategory = async (req, res, next) => {
     next(err);
   }
 };
-
-// const adminUpdateHobsonAvailability = async (req, res, next) => {
-//   try {
-//     const product = await Product.findOneAndUpdate(
-//       { stock.suppliersku: req.params.supplierSku },
-//       { $set: { availability.local: req.body.local },{ availability.national: req.body.national } },
-//       // { new: true }
-//     );
-
-// if (!product) {
-//   return res.status(404).json({ error: "Product not found" });
-// }
-
-// return res.status(200).json(product);
-//   } catch (err) {
-//   next(err);
-// }
-// };
-// cron.schedule("* * 24 * * *", adminUpdateHobsonAvailability, {
-//   scheduled: true,
-//   timezone: "UTC",
-// });
 
 const adminUpload = async (req, res, next) => {
   if (req.query.bunny === "true") {
@@ -1873,10 +1339,6 @@ const productsCheck = async (req, res) => {
       });
     }
 
-    // console.log("Products with Updated DisplayPrice: ", updatedDisplayPrice);
-    // console.log("Missing Main Fields: ", missingMainFields.length);
-    // console.log("Missing Stock Fields: ", missingStockFields.length);
-
     const duplicateCtlSku = await Product.aggregate([
       { $unwind: "$stock" },
       {
@@ -1952,15 +1414,6 @@ const adminReplenishment = async (req, res, next) => {
   try {
     console.log("adminReplenishment");
     const { barcode, suppliersku, replenishment } = req.body;
-
-    // console.log(
-    //   "barcode",
-    //   barcode,
-    //   "suppliersku",
-    //   suppliersku,
-    //   "replenishment",
-    //   replenishment
-    // );
 
     let product = null;
     let stockItem = null;
@@ -2206,11 +1659,6 @@ const searchProducts = async (req, res, next) => {
         const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
         productFound = productFound.concat(nameMatches);
       }
-      // productFound = _.uniqBy(productFound, 'id');
-      // if (productFound.length < 250) {
-      //   const clientskuMatches = await Product.find({ "stock.clientsSku": { $elemMatch: { number: { $regex: regex } }, }, }).limit(250 - productFound.length);
-      //   productFound = productFound.concat(clientskuMatches);
-      // }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
         const ctlskuMatches = await Product.find({ "stock.ctlsku": regex }).limit(250 - productFound.length);
@@ -2294,8 +1742,6 @@ const searchProducts = async (req, res, next) => {
     } else if (productFound.length < 250 && query.length >= 2) {
       console.log("Test2");
       const regNormal = query.map(term => new RegExp(`${term.replace(/\s/g, '\\s*').replace(/s$/, '')}s?`, "i"));
-      //const regNormal = query.map(term => new RegExp(`${term}s?`, "i"));
-      //const regNormal = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
       const regExact = query.map(term => new RegExp(`(^|[^a-zA-Z0-9])${term.replace(/\s/g, '\\s*')}([^a-zA-Z0-9]|$)s?`, "i"));
       const regExactQueries = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
       const supplierFilters = query.map(term => (new RegExp(`^${term.replace(/\s/g, '\\s*')}$`, 'i')));
@@ -2320,24 +1766,6 @@ const searchProducts = async (req, res, next) => {
       }
 
       const keywords = regNormal.map(regex => regex.source); // Get the raw keyword from the regex
-      console.log(keywords);
-
-      // const regexSpace = new RegExp(`(^|[\\/\\s])${searchQuery}s?([\\/\\s]|$)`, "i");
-
-      // const tagsList = productFound.filter((product) => regexSpace.test(product.tags));
-      // const descriptionList = productFound.filter(
-      //   (product) => !tagsList.some((nameProduct) => nameProduct._id === product._id)
-      // );
-      // const concatenatedList = [...tagsList, ...descriptionList]
-      // const filetredProducts = _.uniqBy(concatenatedList, 'id');
-      // const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
-      // const sortedProducts = productMatch.slice(skip, skip + recordsPerPage);
-      // const totalProductsMatch = productFound.length
-
-      // const productsPerPage = getProductsbyPage(pageNum, sortedProducts);
-      // products = productsPerPage;
-      // totalProducts = totalProducts += totalProductsMatch
-      // console.log(totalProducts);
 
       const sortedProducts = productFound.sort((a, b) => {
         // Check how many keywords occur in `category`, `name`, or `description` for each product
@@ -2496,11 +1924,6 @@ const searchProductsForVisitor = async (req, res, next) => {
         const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
         productFound = productFound.concat(nameMatches);
       }
-      // productFound = _.uniqBy(productFound, 'id');
-      // if (productFound.length < 250) {
-      //   const slrskuMatches = await Product.find({ "stock.slrsku": regex }).limit(250 - productFound.length);
-      //   productFound = productFound.concat(slrskuMatches);
-      // }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
         const ctlskuMatches = await Product.find({ "stock.ctlsku": regex }).limit(250 - productFound.length);
@@ -2519,26 +1942,9 @@ const searchProductsForVisitor = async (req, res, next) => {
       productFound = _.uniqBy(productFound, 'id');
 
       if (productFound.length === 250) {
-        // const categoryList = productFound.filter((product) => {
-        //   const categoryParts = product.tags.split(" ")
-        //   if (categoryParts.length > 1)
-        //     return categoryParts?.some(part => regexSpace.test(part));
-        //   else
-        //     return regexSpace.test(product.category);
-        // })
-        // const categoryFilteredList = productFound.filter(
-        //   (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
-        // );
-        // const nameList = categoryFilteredList.filter((product) => regexSpace.test(product.supplier))
 
-        // // console.log(categoryList.length, nameList.length);
-        // console.log(productFound.length);
-
-        // const concatenatedList = [...categoryList, ...nameList]
         const filetredProducts = _.uniqBy(productFound, 'id');
         const productMatch = filetredProducts.filter((product) => product.category !== "QUOTE" && product.category !== "CLIENTQUOTE" && !excludedSuppliers.includes(product.supplier))
-        // .filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
-        // const productsNew = productMatch.slice(skip, skip + recordsPerPage);
         const productsNew = productMatch;
         const totalProductsMatch = productFound.length
 
@@ -2627,24 +2033,6 @@ const searchProductsForVisitor = async (req, res, next) => {
       }
 
       const keywords = regNormal.map(regex => regex.source); // Get the raw keyword from the regex
-      console.log(keywords);
-
-      // const regexSpace = new RegExp(`(^|[\\/\\s])${searchQuery}s?([\\/\\s]|$)`, "i");
-
-      // const tagsList = productFound.filter((product) => regexSpace.test(product.tags));
-      // const descriptionList = productFound.filter(
-      //   (product) => !tagsList.some((nameProduct) => nameProduct._id === product._id)
-      // );
-      // const concatenatedList = [...tagsList, ...descriptionList]
-      // const filetredProducts = _.uniqBy(concatenatedList, 'id');
-      // const productMatch = filetredProducts.filter((product) => (product.category !== "QUOTE") && (product.category !== "CLIENTQUOTE"));
-      // const sortedProducts = productMatch.slice(skip, skip + recordsPerPage);
-      // const totalProductsMatch = productFound.length
-
-      // const productsPerPage = getProductsbyPage(pageNum, sortedProducts);
-      // products = productsPerPage;
-      // totalProducts = totalProducts += totalProductsMatch
-      // console.log(totalProducts);
 
       const sortedProducts = productFound.sort((a, b) => {
         // Check how many keywords occur in `category`, `name`, or `description` for each product
@@ -2694,186 +2082,15 @@ const searchProductsForVisitor = async (req, res, next) => {
   }
 }
 
-// const searchProductsForVisitor = async (req, res, next) => {
-//   try {
-//     let skuSearch = true;
-//     const { searchQuery } = req.params;
-//     const query = searchQuery.split(" ");
-//     const pageNum = Number(req.query.pageNum) || 1;
-//     const skip = (pageNum - 1) * recordsPerPage;
-//     let totalProducts = 0;
-//     let products = [];
-
-//     function sortByName(array) {
-//       let withQueryWordsInName = [];
-//       let withoutQueryWordsInName = [];
-
-//       query.map(word => {
-//         array.map(product => {
-//           let nameWords = product.name.toLowerCase().split(/\s+/);
-//           if (nameWords.includes(word.toLowerCase())) {
-//             if (!withQueryWordsInName.some(item => item.name === product.name)) {
-//               return withQueryWordsInName.push(product);
-//             }
-//           } else {
-//             return withoutQueryWordsInName.push(product);
-//           }
-//         });
-//       });
-
-//       const sortedWithQueryWordsInName = sortByNameArray(withQueryWordsInName);
-
-//       return [...new Set([...sortedWithQueryWordsInName, ...withoutQueryWordsInName])]
-//     }
-
-//     function sortByNameArray(array) {
-//       let lowerCaseQuery = query.map(word => word.toLowerCase());
-//       let productsWithCounts = array.map(product => {
-//         let nameWords = product.name.toLowerCase().split(/\s+/);
-//         let count = lowerCaseQuery.reduce((acc, word) => {
-//           if (nameWords.includes(word)) {
-//             acc++;
-//           }
-//           return acc;
-//         }, 0);
-//         return { product: product, count: count };
-//       });
-
-//       productsWithCounts.sort((a, b) => b.count - a.count);
-//       let sortedProducts = productsWithCounts.map(obj => obj.product);
-
-//       return sortedProducts;
-//     }
-
-//     function getProductsbyPage(pageNumber, array) {
-//       const startIndex = (pageNumber - 1) * recordsPerPage;
-//       return array.slice(startIndex, startIndex + recordsPerPage);
-//     }
-
-//     if (searchQuery !== "" || searchQuery !== null || searchQuery !== undefined) {
-//       const spaceReplaced = searchQuery.replace(/ /g, '-')
-//       const escapeRegex = (string) => {
-//         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapes special characters
-//       };
-//       const escapedSearchQuery = escapeRegex(searchQuery);
-//       const regex = new RegExp(`${escapedSearchQuery}s?`, "i");
-//       const regExact = new RegExp(`\\b${escapedSearchQuery}s?\\b`, "i");
-//       const regexSpace = new RegExp(`\\b${spaceReplaced}s?\\b`, "i")
-//       searchCondition = {
-//         $or: [
-//           { "stock.slrsku": regex },
-//           { "stock.ctlsku": regex },
-//           { "stock.suppliersku": regex },
-//           { "supplier": regExact },
-//           { "name": regExact },
-//           { "description": regExact },
-//           { "category": regexSpace },
-//           { "tags": regExact }
-//         ]
-//       }
-
-//       const productFound = await Product.find(searchCondition)
-//       const categoryList = productFound.filter((product) => {
-//         const categoryParts = product.category?.split("/");
-//         return categoryParts.some(part => regexSpace.test(part));
-//       })
-//       const categoryFilteredList = productFound.filter(
-//         (product) => !categoryList.some((nameProduct) => nameProduct._id === product._id)
-//       );
-//       const nameList = categoryFilteredList.filter((product) => regExact.test(product.name))
-//       const descriptionList = productFound.filter(
-//         (product) => !nameList.some((nameProduct) => nameProduct._id === product._id)
-//       );
-//       console.log(categoryList.length, nameList.length, descriptionList.length);
-
-//       const concatenatedList = [...categoryList, ...nameList, ...descriptionList]
-//       const productMatch = concatenatedList.slice(skip, skip + recordsPerPage);
-
-//       const productsNew = productMatch.filter((product) => product.category !== "QUOTE");
-//       const totalProductsMatch = await Product.countDocuments(searchCondition);
-
-//       if (productsNew.length === 0) {
-//         skuSearch = false
-//       } else {
-//         products = products.concat(productsNew);
-//         totalProducts = totalProducts += totalProductsMatch
-//       }
-//     }
-
-//     // General search by supplier, name, description depending on how many words in search.
-//     // Now search by tags doesn't work as field tag is not completed for a Product. It is for future. 
-//     if (!skuSearch && query.length === 1) {
-//       const regexQueries = query.map(term => new RegExp(term, 'i'));
-//       const regExactQueries = query.map(term => new RegExp(`\\b${term}\\b`, "i"));
-//       const supplierFilters = query.map(term => (new RegExp(`^${term}$`, 'i')));
-
-//       searchCondition = {
-//         $or: [
-//           { name: regexQueries },
-//           { supplier: supplierFilters },
-//           { description: regexQueries },
-//           { tags: regexQueries }
-//         ],
-//         $and: [{ supplier: { $nin: excludedSuppliers } }]
-//       }
-
-//       const foundProducts = await Product.find(searchCondition);
-//       const sortedProductsArray = sortByName(foundProducts);
-//       const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
-
-//       totalProducts = await Product.countDocuments(searchCondition);
-//       products = productsPerPage;
-
-//     } else if (!skuSearch && query.length >= 2) {
-//       const regexQueries = query.map(term => new RegExp(term, 'i'));
-//       const searchCondition = regexQueries.map(regex => ({
-//         $or: [
-//           { name: regex },
-//           { description: regex },
-//           { supplier: regex },
-//           { tags: regex }
-//         ],
-//         $and: [{ supplier: { $nin: excludedSuppliers } }]
-//       }));
-
-//       const foundProducts = await Product.find({ $and: searchCondition });
-//       const sortedProductsArray = sortByName(foundProducts);
-//       const productsPerPage = getProductsbyPage(pageNum, sortedProductsArray);
-
-//       totalProducts = await Product.countDocuments({ $and: searchCondition });
-//       products = productsPerPage;
-
-//     } else {
-//       console.log("query", query)
-//     }
-
-//     const filetredProducst = _.uniqBy(products, 'id');
-//     const productsNew = filetredProducst.filter((product) => product.category !== "QUOTE");
-
-//     return res.json({
-//       products: productsNew,
-//       pageNum,
-//       paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
-//     });
-
-//   } catch (error) {
-//     console.log(error);
-//     next(error);
-//   }
-// }
-
 module.exports = {
   getProducts,
   getProductById,
   getProductByCTLSKU,
   adminGetProducts,
   adminGetCTLSKU,
-  adminGetHobsonCTLSku,
   adminGetSupplierSku,
   adminDeleteProduct,
   adminCreateProduct,
-  adminCreateHobsonProduct,
-  adminUpdateHobsonProduct,
   adminUpdateProduct,
   adminUpdateSKU,
   adminUpdateImages,
@@ -2890,7 +2107,6 @@ module.exports = {
   searchProducts,
   getProductsVisitor,
   searchProductsForVisitor,
-  // adminBulkUpdateClientSkus,
   adminUpdateTags,
   adminFindDuplicateCTLSKU
 };

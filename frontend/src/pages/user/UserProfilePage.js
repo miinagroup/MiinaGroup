@@ -59,25 +59,10 @@ const UserProfilePage = () => {
     return data;
   };
 
-
   const getdeliveryBooks = async () => {
     const { data } = await axios.get("/api/deliveryBooks/deliveryBook/" + userInfo.email);
     return data;
   };
-
-  const getAllUniformRole = async () => {
-    const { data } = await axios.get("/api/uniformRoles");
-    return data;
-  }
-
-  const handleUniformCart = async (userId, userData) => {
-    try {
-      const userData1 = userData[0]
-      const updateResponse = await axios.put(`/api/uniformCarts/user/${userId}`, { userData1 });
-    } catch (error) {
-      console.error("Error fetching data", error);
-    }
-  }
 
   return (
     <Row className={`m-5 ${styles.userProfilePageComponentWrapper}`}>
@@ -94,7 +79,6 @@ const UserProfilePage = () => {
           reduxDispatch={reduxDispatch}
           localStorage={window.localStorage}
           sessionStorage={window.sessionStorage}
-          getAllUniformRole={getAllUniformRole}
         />
       </Col>
     </Row>

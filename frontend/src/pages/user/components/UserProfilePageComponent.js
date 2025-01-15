@@ -19,7 +19,6 @@ const UserProfilePageComponent = ({
   reduxDispatch,
   localStorage,
   sessionStorage,
-  getAllUniformRole
 }) => {
   const [validated, setValidated] = useState(false);
   const [updateUserResponseState, setUpdateUserResponseState] = useState({
@@ -32,7 +31,6 @@ const UserProfilePageComponent = ({
   const [selectedSite, setSelectedSite] = useState(null);
   const [abnNum, setAbnNum] = useState("");
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/];
-  const [allUniformRoles, setAllUniformRoles] = useState([])
   const [userRole, setUserRole] = useState();
   const [otherRole, setOtherRole] = useState();
 
@@ -43,16 +41,6 @@ const UserProfilePageComponent = ({
   const handleChangeRole = (e) => {
     setUserRole(e.target.value)
   }
-
-  useEffect(() => {
-    getAllUniformRole()
-      .then((data) => {
-        const updatedRoles = data.filter(role => role.role !== "other role");
-        setAllUniformRoles(updatedRoles)
-      })
-
-      .catch((er) => console.log(er));
-  }, []);
 
   useEffect(() => {
     fetchUser(userInfo._id)
@@ -332,45 +320,6 @@ const UserProfilePageComponent = ({
                 />
               </Form.Group>
             </Row>
-            <Row>
-              <Form.Group as={Col} md="6" controlId="formBasicRole">
-                <Form.Label>Role</Form.Label>
-                <Form.Select
-                  required
-                  name="role"
-                  onChange={handleChangeRole}
-                >
-                  <option>{user.role}</option>
-                  {
-                    allUniformRoles.map((role, idx) => (
-                      <option key={idx} value={role.role} style={{ textTransform: "capitalize" }}>
-                        {role.role}
-                      </option>))
-                  }
-                  <option key="other role">
-                    other role
-                  </option>
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">
-                  Please Select your Role.{" "}
-                </Form.Control.Feedback>
-              </Form.Group>
-              {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicOtherRole" className="mt-2">
-                <Form.Label></Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  name="otherRole"
-                  placeholder="Job Title"
-                  onChange={handleOtherRole}
-                  value={otherRole}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please mention your Job Title.{" "}
-                </Form.Control.Feedback>
-              </Form.Group>}
-            </Row>
-
             <Row className="mt-4 ms-1 justify-content-md-left">
               <Button variant="primary" type="submit" className="w-auto">
                 Update

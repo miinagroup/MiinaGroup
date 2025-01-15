@@ -1,6 +1,5 @@
 const Order = require("../models/OrderModel");
 const Product = require("../models/ProductModel");
-//const Quote = require("../models/QuoteModel");
 const ObjectId = require("mongodb").ObjectId;
 const mongoose = require("mongoose");
 const Decimal = require('decimal.js');
@@ -60,7 +59,6 @@ const createOrder = async (req, res, next) => {
       storeId,
       userName,
       userCompany,
-      quickBooksCustomerId,
       dueDays,
       createdUserId,
       createdUserName,
@@ -77,7 +75,6 @@ const createOrder = async (req, res, next) => {
       !storeId ||
       !userName ||
       !userCompany ||
-      !quickBooksCustomerId ||
       !dueDays ||
       !createdUserId ||
       !createdUserName ||
@@ -98,22 +95,12 @@ const createOrder = async (req, res, next) => {
       invoiceNumber: invoiceNumber,
       orderNote: orderNote,
       deliverySite: deliverySite,
-      quickBooksCustomerId: quickBooksCustomerId,
       dueDays: dueDays,
       createdUserId: createdUserId,
       createdUserName: createdUserName,
       deliveryAddress: deliveryAddress
     });
     const createdOrder = await order.save();
-
-    // await Promise.all(cartItems.map(async (item) => {
-    //   if (item.quoteId) {
-    //     await Quote.updateOne(
-    //       { _id: item.quoteId },
-    //       { $set: { purchased: true } }
-    //     );
-    //   }
-    // }));
 
     res.status(201).send(createdOrder);
   } catch (err) {
@@ -132,12 +119,9 @@ const adminCreateOrder = async (req, res, next) => {
       invoiceNumber,
       orderNote,
       deliverySite,
-      //secondOwnerId,
-      //storeId,
       user_id,
       userName,
       userCompany,
-      quickBooksCustomerId,
       dueDays
     } = req.body;
     if (
@@ -147,19 +131,14 @@ const adminCreateOrder = async (req, res, next) => {
       !purchaseNumber ||
       !invoiceNumber ||
       !deliverySite ||
-      //!secondOwnerId ||
-      //!storeId ||
       !user_id ||
       !userName ||
       !userCompany ||
-      !quickBooksCustomerId ||
       !dueDays
     ) {
       return res.status(400).send("All inputs are required");
     }
-    // console.log(orderTotal, typeof orderTotal);
     const order = new Order({
-      // 新元素
       user: ObjectId(user_id),
       userName: userName,
       userCompany: userCompany,
@@ -171,9 +150,6 @@ const adminCreateOrder = async (req, res, next) => {
       invoiceNumber: invoiceNumber,
       orderNote: orderNote,
       deliverySite: deliverySite,
-      //secondOwnerId: secondOwnerId,
-      //storeId: storeId,
-      quickBooksCustomerId: quickBooksCustomerId,
       dueDays: dueDays
     });
     const createdOrder = await order.save();
@@ -682,191 +658,6 @@ const getSupplier = async (req, res) => {
   }
 };
 
-// const adminUpdateOrderClientSku = async (req, res, next) => {
-//   try {
-//     const id = req.params.id;
-//     const clientSkuName = req.body['clientSku']?.name;
-//     const clientSkuNumber = req.body['clientSku']?.number;
-//     const ctlsku = req.body['ctlsku'];
-//     const cartItemId = req.body['cartItemId'];
-
-//     if (!id) {
-//       return res.status(400).json({ error: "Order ID is required" });
-//     }
-
-//     let order = await Order.findOne({ _id: id });
-//     const stockItem = order.cartItems.find(item => item._id.toString() === cartItemId);
-//     const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === ctlsku);
-
-//     if (cartProduct.currentClientSku) {
-//       order = await Order.findOneAndUpdate(
-//         {
-//           _id: id,
-//           'cartItems.cartProducts.ctlsku': ctlsku,
-//           'cartItems._id': cartItemId,
-//         },
-//         {
-//           $set: {
-//             'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': clientSkuNumber,
-//             'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': clientSkuName,
-
-//           },
-//         },
-//         {
-//           arrayFilters: [
-//             { 'cartItem._id': cartItemId },
-//             { 'cartProduct.ctlsku': ctlsku },
-//           ],
-//           new: true,
-//         }
-//       );
-//     } else {
-//       order = await Order.findOneAndUpdate(
-//         {
-//           _id: id,
-//           'cartItems.cartProducts.ctlsku': ctlsku,
-//           'cartItems._id': cartItemId,
-//         },
-//         {
-//           $push: {
-//             "cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku": {
-//               number: clientSkuNumber,
-//               name: clientSkuName,
-//             }
-//           },
-//         },
-//         {
-//           arrayFilters: [
-//             { 'cartItem._id': cartItemId },
-//             { "cartProduct.ctlsku": ctlsku }
-//           ],
-//           new: true,
-//         },
-//       );
-//     }
-
-//     if (!order) {
-//       return res.status(404).json({ error: "Order not found" });
-//     }
-
-//     return res.status(200).json(order);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
-// const adminBulkUpdateClientSkus = async (req, res, next) => {
-//   try {
-//     const id = req.params.id;
-//     const clientSkuArray = req.body;
-//     let order = await Order.findOne({ _id: id });
-
-//     if (!order) {
-//       return res.status(404).json({ error: "Order not found" });
-//     }
-
-//     const updatePromises = clientSkuArray.map(async (product) => {
-//       const stockItem = order.cartItems.find(item => item._id.toString() === product.cartItemId);
-//       const cartProduct = stockItem.cartProducts.find(item => item.ctlsku === product.ctlSku);
-
-//       if (cartProduct && cartProduct.currentClientSku) {
-//         return Order.findOneAndUpdate(
-//           {
-//             _id: id,
-//             'cartItems._id': product.cartItemId,
-//             'cartItems.cartProducts.ctlsku': product.ctlSku,
-//           },
-//           {
-//             $set: {
-//               'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.number': product.newClientSku.number,
-//               'cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku.name': product.newClientSku.name,
-//             },
-//           },
-//           {
-//             arrayFilters: [
-//               { 'cartItem._id': product.cartItemId },
-//               { 'cartProduct.ctlsku': product.ctlSku },
-//             ],
-//             new: true,
-//           }
-//         );
-//       } else if (cartProduct) {
-//         return Order.findOneAndUpdate(
-//           {
-//             _id: id,
-//             'cartItems._id': product.cartItemId,
-//             'cartItems.cartProducts.ctlsku': product.ctlSku,
-//           },
-//           {
-//             $push: {
-//               "cartItems.$[cartItem].cartProducts.$[cartProduct].currentClientSku": {
-//                 number: product.newClientSku.number,
-//                 name: product.newClientSku.name,
-//               }
-//             },
-//           },
-//           {
-//             arrayFilters: [
-//               { 'cartItem._id': product.cartItemId },
-//               { "cartProduct.ctlsku": product.ctlSku }
-//             ],
-//             new: true,
-//           }
-//         );
-//       }
-//     });
-
-//     await Promise.all(updatePromises);
-
-//     order = await Order.findOne({ _id: id });
-
-//     return res.status(200).json(order);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-const scheduledEmailNotificationForOverdueOrders = async () => {
-  try {
-    let backOrderList = []
-    const orders = await Order.find({})
-    orders?.map((order) => {
-      const dateDifferenceInMs = new Date() - new Date(order.createdAt)
-      const differenceInDays = Math.floor(dateDifferenceInMs / (1000 * 60 * 60 * 24));
-
-      const date = new Date(order.createdAt)
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const seconds = String(date.getSeconds()).padStart(2, '0');
-      const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-      if (!order.isDelivered && differenceInDays > 7) {
-        backOrderList.push("Invoice Number : " + order.invoiceNumber + " , Created Date : " + formattedDate + "\n")
-      }
-    })
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    const receivingEmail = "techteam@ctlaus.com"
-    const res = await sendNotification(receivingEmail, backOrderList)
-
-  } catch (err) {
-    console.error("Error in scheduled Email Notification For Overdue Orders:", err);
-  }
-};
-
-//Auto Update Hobson Stock Every Day 12am
-cron.schedule("0 8 * * 1", scheduledEmailNotificationForOverdueOrders, {
-  scheduled: true,
-  timezone: "Australia/Perth",
-});
-
-
 
 module.exports = {
   getUserOrders,
@@ -892,7 +683,5 @@ module.exports = {
   deleteOrder,
   orderSalesToProduct,
   getSupplier,
-  updateApprovedPO,
-  // adminUpdateOrderClientSku,
-  // adminBulkUpdateClientSkus
+  updateApprovedPO
 };

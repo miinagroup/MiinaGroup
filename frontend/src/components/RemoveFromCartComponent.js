@@ -12,7 +12,6 @@ const RemoveFromCartComponent = ({
   removeFromPOCartHandler,
   poCartItemId,
   fetchPOCartData,
-  uniformUserId,
 }) => {
   const [removing, setRemoving] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -37,7 +36,7 @@ const RemoveFromCartComponent = ({
           setShowErrorModal(true);
         });
     } else {
-      removeFromCartHandler(productId, qty, price, attrs, uniformUserId);
+      removeFromCartHandler(productId, qty, price, attrs);
     }
   };
 

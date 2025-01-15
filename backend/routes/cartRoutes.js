@@ -6,7 +6,6 @@ const {
   // getUserCart,
   getCart,
   addToCart,
-  addToCartUniform,
   reOrder,
   updateItem,
   deleteItem,
@@ -15,11 +14,8 @@ const {
 
 router.use(verifyIsLoggedIn);
 
-// router.post('/create', createCart);
-// router.get('/:userId', getUserCart);
 router.get('/', getCart);
 router.post('/add', addToCart);
-router.post('/addUniform', addToCartUniform);
 router.post('/reOrder', reOrder);
 router.put('/update/:itemId', updateItem);
 router.delete('/delete/:itemId', deleteItem);

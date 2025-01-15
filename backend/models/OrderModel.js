@@ -1,20 +1,11 @@
 const mongoose = require("mongoose");
-//我们需要usermodel，因为我们需要知道谁下的订单
 const User = require("./UserModel");
-
-// const clientSkuSchema = new mongoose.Schema({
-//   name: { type: String, required: false, unique: true },
-//   number: { type: String, required: false }
-// });
 
 const orderSchema = mongoose.Schema(
   {
     user: {
-      //ObjectID is going to be the ID of the user that has created the order and required througth.
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      //下面的user的东西，就直接从UserModel调用了。
-      // this field user refers to user model.
       ref: User,
     },
     secondOwnerId: {
@@ -67,16 +58,8 @@ const orderSchema = mongoose.Schema(
             ctlsku: { type: String, required: false },
             suppliersku: { type: String, required: false },
             attrs: { type: String, required: true },
-            QuickBooksItemID: { type: String, required: false },
-            // slrsku: { type: String, required: false },
             color: { type: String, required: false },
             size: { type: String, required: false },
-            // ID: { type: String, required: false },
-            // clientsSku: { type: [clientSkuSchema], required: false },
-            // currentClientSku: {
-            //   name: { type: String, required: false, unique: true },
-            //   number: { type: String, required: false }
-            // }
           },
         ],
         image: { type: String, required: true },
@@ -99,18 +82,6 @@ const orderSchema = mongoose.Schema(
       required: false,
     },
     invoiceNumber: {
-      type: String,
-      required: false,
-    },
-    quickBooksInvID: {
-      type: String,
-      required: false,
-    },
-    quickBooksCustomerId: {
-      type: String,
-      required: false,
-    },
-    quickBooksPaymentId: {
       type: String,
       required: false,
     },
@@ -139,11 +110,6 @@ const orderSchema = mongoose.Schema(
       createTime: { type: String },
       amount: { type: Number },
     },
-    /*     isPaid: {
-          type: Boolean,
-          required: true,
-          default: false,
-        }, */
     paidAt: {
       type: String,
     },

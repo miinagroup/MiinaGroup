@@ -11,7 +11,6 @@ const EditDeliveryBookComponent = ({
 }) => {
     const [validated, setValidated] = useState(false);
     const [deliveryBook, setDeliveryBook] = useState([]);
-    const [hasUniform, setHasUniform] = useState(false);
     const [updateDeliveryBookResponseState, setUpdateDeliveryBookResponseState] =
         useState({
             message: "",
@@ -74,7 +73,6 @@ const EditDeliveryBookComponent = ({
             const deliveryAddress = document.getElementsByName(
                 `newDeliveryAddress-${i}`
             )[0].value;
-            //const siteSku = document.getElementsByName(`newSiteSku-${i}`)[0].value;
             const storeEmail = document.getElementsByName(`newStoreEmail-${i}`)[0]
                 .value;
 
@@ -91,12 +89,9 @@ const EditDeliveryBookComponent = ({
             emailHost: form.emailHost.value,
             billingEmail: form.billingEmail.value,
             companyAccount: form.companyAccount.value,
-            // quickBooksCustomerId: form.quickBooksCustomerId.value,
-            quickBooksCustomerId: 1,
             dueDays: form.dueDays.value,
             sites: [...sites, ...sitesNew],
             abn: form.abn.value,
-            hasUniform: hasUniform
         };
 
         if (event.currentTarget.checkValidity() === true) {
@@ -127,7 +122,6 @@ const EditDeliveryBookComponent = ({
             .then((data) => {
                 setDeliveryBook(data);
                 setAbnNum(data.abn)
-                setHasUniform(data.hasUniform)
             })
             .catch((er) =>
                 console.log(
@@ -146,17 +140,10 @@ const EditDeliveryBookComponent = ({
         setRowCount(rowCount - 1);
     };
 
-    const handleToggle = (e) => {
-        setHasUniform(e.target.checked);
-    };
-
     return (
         <Container>
             <Row className="justify-content-md-center mt-5 content-container">
                 <Col md={1}>
-                    {/* <Link to="/admin/deliveryBooks" className="btn btn-info my-3">
-                        Go Back
-                    </Link> */}
                     <GoBackButton />
                 </Col>
                 <Col md={8}>
@@ -222,18 +209,6 @@ const EditDeliveryBookComponent = ({
                                 defaultValue={deliveryBook.companyAccount}
                             />
                         </Form.Group>
-                        {/* <Form.Group
-                            className="mb-3"
-                            controlId="formBasicQuickBooksCustomerId"
-                        >
-                            <Form.Label>QuickBooks Customer Id</Form.Label>
-                            <Form.Control
-                                name="quickBooksCustomerId"
-                                required
-                                type="text"
-                                defaultValue={deliveryBook.quickBooksCustomerId}
-                            />
-                        </Form.Group> */}
                         <Form.Group className="mb-3" controlId="formBasicDueDays">
                             <Form.Label>DueDays</Form.Label>
                             <Form.Control
@@ -243,17 +218,6 @@ const EditDeliveryBookComponent = ({
                                 defaultValue={deliveryBook.dueDays}
                             />
                         </Form.Group>
-                        {/* <Form.Group className="mb-3" controlId="formBasicHasUniform">
-                            <Form.Label>Has Uniform</Form.Label>
-                            <Form.Check
-                                type="switch"
-                                name="hasUniform"
-                                label=""
-                                checked={hasUniform}
-                                onChange={handleToggle}
-                            />
-                        </Form.Group> */}
-
                         <hr
                             style={{
                                 color: "#000000",
@@ -315,20 +279,6 @@ const EditDeliveryBookComponent = ({
                                                         defaultValue={book.deliveryAddress}
                                                     />
                                                 </Form.Group>
-                                                {/* <Form.Group
-                                                    as={Col}
-                                                    md="4"
-                                                    className="mb-3"
-                                                    controlId={`formBasicSiteSku-${index}`}
-                                                >
-                                                    <Form.Label>Site Sku</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name={`siteSku-${index}`}
-                                                        required
-                                                        defaultValue={book.siteSku}
-                                                    />
-                                                </Form.Group> */}
                                                 <Form.Group
                                                     as={Col}
                                                     md="4"
@@ -405,19 +355,6 @@ const EditDeliveryBookComponent = ({
                                                 required
                                             />
                                         </Form.Group>
-                                        {/* <Form.Group
-                                            as={Col}
-                                            md="4"
-                                            className="mb-3"
-                                            controlId={`formBasicNewSiteSku-${index}`}
-                                        >
-                                            <Form.Label>Site Sku</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                name={`newSiteSku-${index}`}
-                                                required
-                                            />
-                                        </Form.Group> */}
                                         <Form.Group
                                             as={Col}
                                             md="4"

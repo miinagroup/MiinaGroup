@@ -47,28 +47,6 @@ const UserCartDetailsPage = () => {
     return data;
   }
 
-  const getUniformCart = async (userId) => {
-    const { data } = await axios.get(`/api/uniformCarts/getByUser/${userId}`);
-    return data;
-  };
-  const updateUniformCart = async (id, purchaseData) => {
-    const { data } = await axios.put(`/api/uniformCarts/updateOnCartItemDelete/${id}`, { purchaseData });
-    return data;
-  };
-  const updateUniformCartOnEmptyCart = async (id, purchaseData) => {
-    const { data } = await axios.put(`/api/uniformCarts/updateOnEmptyCart/${id}`, { purchaseData });
-    return data;
-  };
-  const updateUniformCartOnPurchase = async (id, purchaseData) => {
-    const { data } = await axios.put(`/api/uniformCarts/updateOnPurchase/${id}`, { ...purchaseData });
-    return data;
-  };
-  const getUniformById = async (uniformId) => {
-    const { data } = await axios.get(`/api/uniforms/get-one/${uniformId}`);
-    return data;
-  };
-
-
   return (
     <UserCartDetailsPageComponent
       cartItems={cartItems}
@@ -85,11 +63,6 @@ const UserCartDetailsPage = () => {
       getOrdersInvNo={getOrdersInvNo}
       getStoreUser={getStoreUser}
       taxAmount={taxAmount}
-      updateUniformCart={updateUniformCart}
-      updateUniformCartOnEmptyCart={updateUniformCartOnEmptyCart}
-      updateUniformCartOnPurchase={updateUniformCartOnPurchase}
-      getUniformCart={getUniformCart}
-      getUniformById={getUniformById}
     />
   );
 };

@@ -61,16 +61,6 @@ const getSubcategoriesT2 = async (req, res, next) => {
   }
 }
 
-const getT1Categories = async (req, res, next) => {
-  try {
-    const categories = await Category.find({}).sort({ name: "asc" }).orFail();
-    console.log(categories)
-    res.json(categories);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const categoriesForProductList = async (req, res, next) => {
   try {
     let categoryQueryCondition = {};
@@ -196,22 +186,6 @@ const newCategory = async (req, res, next) => {
   }
 };
 
-const newHobsonCategory = async (req, res, next) => {
-  try {
-    console.log("xxxxxxx");
-
-    const { name,
-      display,
-      description,
-      image,
-      attrs, } = req.body;
-    console.log(name);
-
-  } catch (err) {
-    next(err);
-  }
-};
-
 const deleteCategory = async (req, res, next) => {
   try {
     if (req.params.category !== "Choose category") {
@@ -321,9 +295,7 @@ cron.schedule("40 9 * * *", updateCategoryDisplay, {
 
 module.exports = {
   getCategories,
-  getT1Categories,
   newCategory,
-  newHobsonCategory,
   deleteCategory,
   saveAttr,
   categoriesForProductList,

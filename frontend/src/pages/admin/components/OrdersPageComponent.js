@@ -55,10 +55,6 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
       computedOrders = computedOrders.filter(
         (order) => !order.invSent && order.isDelivered
       );
-    } else if (filterValue === "uniforms") {
-      computedOrders = computedOrders.filter(
-        (order) => order.orderNote === "Uniform"
-      );
     }
 
     if (search) {
@@ -106,9 +102,6 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
 
     setTotalItems(computedOrders.length);
 
-    //Sorting products
-    // as localeCompare only can compare String, we have to update it as below.
-    // nested property 嵌套的数据，不能直接获取，容易报错。所以用下面的公式去解析 orderTotal.cartSubtotal
     const getNestedProperty = (obj, path) => {
       return path.split(".").reduce((acc, part) => acc && acc[part], obj);
     };
@@ -295,7 +288,6 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
                 <option value="undispatched">Undispatched</option>
                 <option value="backOrder">Back Order</option>
                 <option value="invNotSent">Inv Not Sent</option>
-                {/* <option value="uniforms">Uniforms</option> */}
               </select>
               <Search
                 onSearch={(value) => {

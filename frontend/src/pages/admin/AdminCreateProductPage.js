@@ -16,9 +16,7 @@ import {
   saveAttributeToCatDoc,
   getCategories
 } from "../../redux/actions/categoryActions";
-// import { getClientsSkuList } from "../../redux/actions/productsActions";
 import CreateProductPageComponent from "./components/CreateProductPageComponent";
-
 
 const createProductApiRequest = async (formInputs) => {
   const { data } = await axios.post(`/api/products/admin`, { ...formInputs });
@@ -31,16 +29,13 @@ const getCTLSku = async () => {
 }
 
 const AdminCreateProductPage = () => {
-  //categories
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCategories());
-    // dispatch(getClientsSkuList());
   }, [dispatch]);
 
   const { categories } = useSelector((state) => state.getCategories);
-  // const { clientsSkuList } = useSelector((state) => state.products);
 
   return (
     <CreateProductPageComponent
@@ -50,7 +45,6 @@ const AdminCreateProductPage = () => {
       uploadPdfApiRequest={uploadPdfApiRequest}
       uploadPdfCloudinaryApiRequest={uploadPdfCloudinaryApiRequest}
       categories={categories}
-      // clientsSkuList={clientsSkuList}
       reduxDispatch={dispatch}
       newCategory={newCategory}
       deleteCategory={deleteCategory}

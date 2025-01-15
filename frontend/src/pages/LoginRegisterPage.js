@@ -62,8 +62,6 @@ const LoginRegisterPage = ({ modalType }) => {
     role,
     deliveryAddress,
     billAddress,
-    // state,
-    // postCode,
     abn
   ) => {
     const { data } = await axios.post("/api/users/register", {
@@ -78,14 +76,9 @@ const LoginRegisterPage = ({ modalType }) => {
       role,
       deliveryAddress,
       billAddress,
-      // state,
-      // postCode,
       abn
     });
-    /* 传信息去redux ？？？？*/
     sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
-    /* 如果注册成功了，就转去user page */
-    // if (data.success === "User created") window.location.href = "/user";
 
     setUserDetails(data.userCreated)
     return data;
@@ -100,105 +93,6 @@ const LoginRegisterPage = ({ modalType }) => {
     const { data } = await axios.get("/api/deliveryBooks");
     return data;
   };
-
-  const getAllUniformRole = async () => {
-    const { data } = await axios.get("/api/uniformRoles");
-    return data;
-  }
-
-  const handleUniformCart = async (userData) => {
-    try {
-      const userData1 = userData[0]
-      const updateResponse = await axios.post("/api/uniformCarts/create", { userData1 });
-    } catch (error) {
-      console.error("Error fetching data", error);
-    }
-  }
-
-  useEffect(() => {
-    if (userDetails) {
-      try {
-        getAllUniformRole()
-          .then((data) => {
-            let userData = []
-            let roleData = []
-            let flag = 0
-
-            if (data?.map((role) => {
-              if (role.role?.toUpperCase() === userDetails.role?.toUpperCase()) {
-                if (role.stock) {
-                  role.stock?.map((sRole) => {
-                    roleData.push({
-                      "_id": sRole._id,
-                      "itemName": sRole.itemName,
-                      "cartCount": 0,
-                      "purchaseCount": 0,
-                      "purchaseLimit": sRole.itemLimit
-                    })
-                  })
-                }
-                userData.push({
-                  "userId": userDetails._id,
-                  "userName": userDetails.name + " " + userDetails.lastName,
-                  "userCompany": userDetails.company,
-                  "userRole": userDetails.role,
-                  "stock": roleData
-                })
-                flag++
-              }
-            }))
-              if (flag === 0) {
-                roleData = [{
-                  "_id": "6620a0445e581b7b980b107a",
-                  "itemName": "SHIRTS",
-                  "cartCount": 0,
-                  "purchaseCount": 0,
-                  "purchaseLimit": 5
-                },
-                {
-                  "_id": "6620a0585e581b7b980b1083",
-                  "itemName": "JACKETS",
-                  "cartCount": 0,
-                  "purchaseCount": 0,
-                  "purchaseLimit": 5
-                },
-                {
-                  "_id": "6620a0685e581b7b980b108c",
-                  "itemName": "PANTS",
-                  "cartCount": 0,
-                  "purchaseCount": 0,
-                  "purchaseLimit": 5
-                },
-                {
-                  "_id": "6620a0805e581b7b980b1095",
-                  "itemName": "OVERALLS",
-                  "cartCount": 0,
-                  "purchaseCount": 0,
-                  "purchaseLimit": 5
-                },
-                {
-                  "_id": "6620a0925e581b7b980b109e",
-                  "itemName": "BOOTS",
-                  "cartCount": 0,
-                  "purchaseCount": 0,
-                  "purchaseLimit": 5
-                }]
-                userData.push({
-                  "userId": userDetails._id,
-                  "userName": userDetails.name + " " + userDetails.lastName,
-                  "userCompany": userDetails.company,
-                  "userRole": userDetails.role,
-                  "stock": roleData
-                })
-              }
-            handleUniformCart(userData)
-          })
-          .catch((er) => console.log(er));
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    }
-  }, [userDetails])
 
   useEffect(() => {
     const url = window.location.href;
@@ -241,7 +135,6 @@ const LoginRegisterPage = ({ modalType }) => {
                   registerUserApiRequest={registerUserApiRequest}
                   reduxDispatch={reduxDispatch}
                   setReduxUserState={setReduxUserState}
-                  getAllUniformRole={getAllUniformRole}
                   getAlldeliveryBooks={getAlldeliveryBooks}
                 />
               </Tab>

@@ -54,63 +54,7 @@ const AdminLinksComponent = () => {
 
   ];
 
-  // const marketingLinks = [
-  //   {
-  //     title: "Analytics",
-  //     link: "/user/analytics",
-  //     access: "isSuperAdmin",
-  //   },
-  //   {
-  //     title: "Posts Track",
-  //     link: "/user/postsTrack",
-  //     access: "isSuperAdmin",
-  //   },
-  //   {
-  //     title: "User Interactions",
-  //     link: "/user/userInteractions",
-  //     access: "isSuperAdmin",
-  //   },
-  // ];
-
-  // const developerLinks = [
-  //   {
-  //     title: "Uniforms",
-  //     link: "/admin/uniforms",
-  //     access: "all",
-  //   },
-  //   {
-  //     title: "UniformCart",
-  //     link: "/admin/UniformCart",
-  //     access: "all",
-  //   },
-  //   {
-  //     title: "Return Calculator",
-  //     link: "/return-calculator",
-  //     access: "all",
-  //   },
-  //   {
-  //     title: "Weather",
-  //     link: "/admin/weathers",
-  //     access: "all",
-  //   },
-  //   {
-  //     title: "Test",
-  //     link: "/admin/test",
-  //     access: "all",
-  //   },
-  // ];
-
   const myselfLinks = [
-    // {
-    //   title: "Orders",
-    //   link: "/user/my-orders",
-    //   access: "all",
-    // },
-    // {
-    //   title: "Quotes",
-    //   link: "/user/my-quotes?tab=completedQuotes&pageNum=1",
-    //   access: "all",
-    // },
     {
       title: "Profile",
       link: "/user",
@@ -133,8 +77,6 @@ const AdminLinksComponent = () => {
     links.some((link) => location.pathname === link.link);
 
   useEffect(() => {
-    // setOpenMarketing(isPathInLinks(marketingLinks));
-    // setOpenDevelopers(isPathInLinks(developerLinks));
     setOpenClientVersion(isPathInLinks(myselfLinks));
   }, [location]);
 
@@ -185,55 +127,6 @@ const AdminLinksComponent = () => {
         </Nav>
       </Navbar>
       <br />
-      {/* <Navbar
-        className="user_side_navBar"
-        onClick={() => setOpenMarketing(!openMarketing)}
-        style={{ cursor: "pointer" }}
-      >
-        <Nav className="flex-column user_side_nav">
-          <Nav.Link style={{ color: "black" }} disabled>
-            Marketing Team:
-          </Nav.Link>
-
-          <div hidden={!openMarketing}>
-            {marketingLinks.map((link) => {
-              if (hasAccess(link.access)) {
-                return (
-                  <LinkContainer key={link.title} to={link.link}>
-                    <Nav.Link>{link.title}</Nav.Link>
-                  </LinkContainer>
-                );
-              }
-              return null;
-            })}
-          </div>
-        </Nav>
-      </Navbar> */}
-      {/* <br hidden={!isAuth.isDeveloper} />
-      <Navbar
-        className="user_side_navBar"
-        onClick={() => setOpenDevelopers(!openDevelopers)}
-        hidden={!isAuth.isDeveloper}
-        style={{ cursor: "pointer" }}
-      >
-        <Nav className="flex-column user_side_nav">
-          <Nav.Link style={{ color: "black" }} disabled>
-            Developers:
-          </Nav.Link>
-          <div hidden={!openDevelopers}>
-            {developerLinks.map((link) => {
-              if (hasAccess(link.access)) {
-                return (
-                  <LinkContainer key={link.title} to={link.link}>
-                    <Nav.Link>{link.title}</Nav.Link>
-                  </LinkContainer>
-                );
-              }
-              return null;
-            })}
-          </div>
-        </Nav>
-      </Navbar> */}
       <br />
       <Navbar
         className="user_side_navBar"

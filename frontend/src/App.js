@@ -43,7 +43,6 @@ import AdminEditProductPage from "./pages/admin/AdminEditProductPage";
 import AdminEditUserPage from "./pages/admin/AdminEditUserPage";
 import AdminEditDeliveryBook from "./pages/admin/AdminEditDeliveryBook";
 import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
-import AdminInvoicesPage from "./pages/admin/AdminInvoicesPage";
 import AdminOrderDetailsPage from "./pages/admin/AdminOrderDetailsPage";
 import ScrollToTop from "./utils/ScrollToTop";
 
@@ -138,16 +137,7 @@ function App() {
               element={<AdminEditProductPage />}
             />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
-            {/* <Route path="/admin/invoices" element={<AdminInvoicesPage />} /> */}
-            <Route
-              path="/admin/invoices"
-              element={
-                <ProtectedRoutesFilterComponent
-                  permissionKey="accounts"
-                  route={AdminInvoicesPage}
-                />
-              }
-            />
+
             <Route
               path="/admin/orders"
               element={

@@ -30,20 +30,6 @@ export const getSubcategories = () => async (dispatch) => {
     }
 }
 
-export const getT1Categories = () => async (dispatch) => {
-    try {
-        const { data } = await axios.get("/api/categories/T1Categories");
-        dispatch({
-            type: actionTypes.GET_CATEGORIES_REQUEST,
-            payload: data,
-        })
-        localStorage.setItem("categories", JSON.stringify(data));
-    } catch (error) {
-        console.log(error);
-    }
-
-}
-
 
 export const saveAttributeToCatDoc = (key, val, categoryChoosen) => async (dispatch, getState) => {
     const { data } = await axios.post("/api/categories/attr", { key, val, categoryChoosen });

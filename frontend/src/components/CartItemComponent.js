@@ -9,7 +9,6 @@ const CartItemComponent = ({
   removeFromCartHandler = false,
   orderCreated = false,
   changeCount = false,
-  uniformUserId,
 }) => {
   const [qty, setQty] = useState(item.cartProducts[0].quantity);
 
@@ -54,48 +53,23 @@ const CartItemComponent = ({
             </div>
           </Col>
           <Col md={5}>
-            {(item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
-              <a href={`/uniform-details/${item.productId}`}>
-                <p className="" style={{ color: "#1E4881" }}>
-                  <strong className="text-uppercase">{item.name}</strong>
-                </p>
-              </a>
-            ) : (
-              <a href={`/product-details/${item.productId}`}>
-                <p className="" style={{ color: "#1E4881" }}>
-                  <strong className="text-uppercase">{item.name}</strong>
-                </p>
-              </a>
-            )}
-
+            <a href={`/product-details/${item.productId}`}>
+              <p className="" style={{ color: "#1E4881" }}>
+                <strong className="text-uppercase">{item.name}</strong>
+              </p>
+            </a>
           </Col>
           <Col md={3}>
-            {(item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
-              <>
-                <p className="m-0">
-                  Item:{" "}
-                  <span className="fw-bold">{item.cartProducts[0].attrs.split("/")[1]}</span>
-                </p>
-                <p className="m-0">
-                  Variant:{" "}
-                  <span className="fw-bold">{item.cartProducts[0].color + " (" + item.cartProducts[0].size + ")"}</span>
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="m-0">
-                  Item:{" "}
-                  <span className="fw-bold">{item.cartProducts[0].attrs}</span>
-                </p>
-                <p className="m-0">
-                  Unit Price: $
-                  <span className="fw-bold">
-                    {itemPrice}
-                  </span>
-                </p>
-              </>
-            )}
-            {/*  */}
+            <p className="m-0">
+              Item:{" "}
+              <span className="fw-bold">{item.cartProducts[0].attrs}</span>
+            </p>
+            <p className="m-0">
+              Unit Price: $
+              <span className="fw-bold">
+                {itemPrice}
+              </span>
+            </p>
           </Col>
           <Col md={2} className="form-control-container">
             <Form.Control
@@ -106,37 +80,20 @@ const CartItemComponent = ({
               className="form-control"
               value={qty}
               onChange={handleChange}
-              disabled={orderCreated || item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")}
+              disabled={orderCreated}
             />
           </Col>
           {/* delete button trash */}
           <Col md={1} className="remove-from-cart">
-            {
-              (item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
-                <RemoveFromCartComponent
-                  orderCreated={orderCreated}
-                  productId={item.cartProducts[0]._id}
-                  qty={item.cartProducts[0].quantity}
-                  price={item.cartProducts[0].price}
-                  attrs={item.cartProducts[0].attrs}
-                  uniformUserId={uniformUserId}
-                  removeFromCartHandler={
-                    removeFromCartHandler ? removeFromCartHandler : undefined
-                  }
-                />
-              ) : (
-                <RemoveFromCartComponent
-                  orderCreated={orderCreated}
-                  productId={item.cartProducts[0]._id}
-                  quantity={item.quantity}
-                  price={item.price}
-                  removeFromCartHandler={
-                    removeFromCartHandler ? removeFromCartHandler : undefined
-                  }
-                />
-              )
-            }
-
+            <RemoveFromCartComponent
+              orderCreated={orderCreated}
+              productId={item.cartProducts[0]._id}
+              quantity={item.quantity}
+              price={item.price}
+              removeFromCartHandler={
+                removeFromCartHandler ? removeFromCartHandler : undefined
+              }
+            />
           </Col>
         </Row>
       </ListGroup.Item>

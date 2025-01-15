@@ -113,11 +113,6 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    // isUniformManager: {
-    //   type: Boolean,
-    //   required: false,
-    //   default: false,
-    // },
     isVIP: {
       type: Boolean,
       required: true,
@@ -133,18 +128,12 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    // isDeveloper: {
-    //   type: Boolean,
-    //   required: true,
-    //   default: false,
-    // },
     mobileNotificationToken: {
       type: String,
       required: false,
     },
     verified: { type: Boolean, default: false },
     siteVerified: { type: Boolean, default: false },
-    // wantWeather: { type: Boolean, default: false },
     editeHistroys: [
       {
         operator: {
@@ -166,8 +155,6 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
-/* userSchema.index({ ipAddress: 1 }, { unique: true, sparse: true }); */
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

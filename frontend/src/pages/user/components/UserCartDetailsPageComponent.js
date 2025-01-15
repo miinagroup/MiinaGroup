@@ -26,11 +26,6 @@ const UserCartDetailsPageComponent = ({
   getOrdersInvNo,
   emptyCart,
   getStoreUser,
-  updateUniformCart,
-  updateUniformCartOnEmptyCart,
-  updateUniformCartOnPurchase,
-  getUniformCart,
-  getUniformById,
 }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -58,16 +53,9 @@ const UserCartDetailsPageComponent = ({
   const [deliverySites, setDeliverySites] = useState();
   const [userSites, setUserSites] = useState();
   const [selectedDeliverySite, setSelectedDeliverySite] = useState();
-  const [quickBooksCustomerId, setQuickBooksCustomerId] = useState();
   const [dueDays, setDueDays] = useState();
-  const [clientSiteSku, setClientSiteSku] = useState();
   const [showVerifySiteModal, setShowVerifySiteModal] = useState(false);
   const [shouldRenderVerifySiteModal, setShouldRenderVerifySiteModal] = useState(false);
-  const [unifroms, setUniforms] = useState([])
-  const [uniformId, setUniformId] = useState()
-  const [hasProducts, setHasProducts] = useState()
-  const [uniformUserId, setUniformUserId] = useState()
-  const [uniformUserName, setUniformUserName] = useState()
   const [createdUserId, setCreatedUserId] = useState()
   const [createdUserName, setCreatedUserName] = useState()
   const [user, setUser] = useState();
@@ -140,10 +128,6 @@ const UserCartDetailsPageComponent = ({
     let total = 0;
     if (cartItems) {
       cartItems.map((item) => {
-        if (item.uniformUserId) {
-          setUniformUserId(item.uniformUserId)
-          setUniformUserName(item.uniformUserName)
-        }
         total += item.cartProducts[0].quantity
       })
     }
@@ -177,7 +161,6 @@ const UserCartDetailsPageComponent = ({
         setChosenDeliverySite(deliveryBooks[0].sites[0]);
         setUserSites(deliveryBooks[0]);
         setDeliverySites(deliveryBooks[0]?.sites);
-        setQuickBooksCustomerId(deliveryBooks[0]?.quickBooksCustomerId);
         setDueDays(deliveryBooks[0]?.dueDays);
       })
       .catch((err) =>
@@ -188,16 +171,6 @@ const UserCartDetailsPageComponent = ({
         )
       );
   }, []);
-
-  useEffect(() => {
-    cartItems?.map((cart) => {
-      if (!cart.cartProducts[0]?.attrs?.toUpperCase().includes("UNIFORM/")) {
-        setHasProducts(1)
-      } else {
-        setHasProducts(0)
-      }
-    })
-  }, [cartItems])
 
   const changeDeliverySite = (e) => {
     setSelectedDeliverySite(e.target.value);
@@ -259,7 +232,6 @@ const UserCartDetailsPageComponent = ({
         setMissingAddress(false);
         setStoreId(userInfo._id);
         setUserId(userInfo._id);
-        setClientSiteSku(userInfo.siteSku);
         setShippingAddress(data.deliveryAddress)
       })
       .catch((er) =>
@@ -268,19 +240,6 @@ const UserCartDetailsPageComponent = ({
         )
       );
   }, [userInfo._id]);
-
-  useEffect(() => {
-    if (hasProducts === 0) {
-      const date = new Date()
-      const uniformPurchaseNumber = "U-" + date.getFullYear() + "" + date.getMonth() + "" + date.getDate() + "-" + date.getHours() + "" + date.getMinutes()
-      setPurchaseNumber(uniformPurchaseNumber)
-      setOrderNote("Uniform")
-    } else {
-      if (orderNote === "Uniform") {
-        setOrderNote("")
-      }
-    }
-  }, [hasProducts])
 
   useEffect(() => {
     if (!userInfo.siteVerified) {
@@ -316,10 +275,9 @@ const UserCartDetailsPageComponent = ({
               suppliedQty: item.cartProducts[0].quantity,
               backOrder: 0,
               sales: item.cartProducts[0].sales ?? null,
-              [clientSiteSku]: item.cartProducts[0][clientSiteSku] ?? null,
               suppliersku: item.cartProducts[0].suppliersku,
-              color: item.cartProducts[0].attrs?.toUpperCase().includes("UNIFORM/") ? item.cartProducts[0].color : "",
-              size: item.cartProducts[0].attrs?.toUpperCase().includes("UNIFORM/") ? item.cartProducts[0].size : "",
+              color: "",
+              size: "",
               _id: item.cartProducts[0]._id,
             },
           ],
@@ -327,15 +285,14 @@ const UserCartDetailsPageComponent = ({
       }),
       paymentMethod: paymentMethod,
       purchaseNumber: purchaseNumber,
-      orderNote: uniformUserName ? uniformUserName + "'s " + orderNote + " Order" : orderNote,
+      orderNote: orderNote,
       invoiceNumber: largestInvoice + 1,
       deliverySite: chosenDeliverySite.name,
       deliveryAddress: chosenDeliverySite.deliveryAddress,
       userName: userName,
       userCompany: userCompany,
-      quickBooksCustomerId: quickBooksCustomerId,
       dueDays: dueDays,
-      storeId: uniformUserId ? uniformUserId : storeId,
+      storeId: storeId,
       createdUserId: createdUserId ? createdUserId : "",
       createdUserName: createdUserName ? createdUserName : "",
     };
@@ -348,19 +305,8 @@ const UserCartDetailsPageComponent = ({
       .then(async (data) => {
         if (data) {
           let cartCount = 0
-          let id = uniformUserId ? uniformUserId : userInfo._id
+          let id = userInfo._id
           let purchaseData = []
-          const uniformCartItems = cartItems
-          uniformCartItems.map((uniformItems) => {
-            if (uniformItems.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) {
-              purchaseData.push(uniformItems.cartProducts[0])
-            }
-          })
-          updateUniformCartOnPurchase(id, { purchaseData }).then((data) => {
-            if (data) {
-              setTimeout(() => { }, 1000)
-            }
-          });
 
           reduxDispatch(emptyCart());
           setTimeout(() => {
@@ -395,23 +341,8 @@ const UserCartDetailsPageComponent = ({
     setManagerEmail(e.target.value + `@${userEmail}`);
   };
 
-  const removeFromCartHandler = (productId, qty, price, attrs, uniformUserId) => {
+  const removeFromCartHandler = (productId, qty, price, attrs) => {
     reduxDispatch(removeFromCart(productId, qty, price));
-    var userId = ""
-    if (uniformUserId) {
-      userId = uniformUserId
-    } else {
-      userId = userInfo._id
-    }
-    const id = productId
-    if (attrs?.toUpperCase().includes("UNIFORM/")) {
-      updateUniformCart(userId, { id, qty })
-        .then((data) => {
-          if (data.message === "UniformCart updated") {
-            window.location.reload()
-          }
-        })
-    }
   };
 
   useEffect(() => {
@@ -422,32 +353,9 @@ const UserCartDetailsPageComponent = ({
 
   const removeAllItems = () => {
     reduxDispatch(emptyCart());
-    const deleteList = []
-    cartItems.map((cart) => {
-      if (cart.cartProducts[0].attrs.includes("UNIFORM/")) {
-        deleteList.push(cart.cartProducts[0])
-      }
-    })
-    if (deleteList.length > 0) {
-      var userId = ""
-      if (uniformUserId) {
-        userId = uniformUserId
-      } else {
-        userId = userInfo._id
-      }
-      updateUniformCartOnEmptyCart(userId, { deleteList })
-        .then((data) => {
-          if (data.message === "UniformCart updated") {
-            setTimeout(() => {
-              window.location.href = "/user/my-uniforms";
-            }, 1000);
-          }
-        })
-    } else {
-      setTimeout(() => {
-        window.location.href = "/product-list";
-      }, 1000);
-    }
+    setTimeout(() => {
+      window.location.href = "/product-list";
+    }, 1000);
   };
 
   const userEmail = userInfo.email?.split("@")[1];
@@ -694,115 +602,11 @@ const UserCartDetailsPageComponent = ({
             >
               <h1>CART DETAILS</h1>
             </div>
-            {(hasProducts === 1) && (
-              <Row className="mb-4 p-0" style={{ fontSize: "12px", width: "100%", maxWidth: "915px" }}>
-                <div className="d-flex justify-content-between cart_detail_btns" style={{ width: "100%" }}>
-                  <div className="d-flex gap-5 cart_detail_btns_email_download">
-                    <div className="d-flex justify-content-between">
-                      <div>
-                        <PDFDownloadLink
-                          document={
-                            <CartPrint
-                              cartItems={cartItems}
-                              userInfo={userInfo}
-                              userAddress={userAddress}
-                              purchaseNumber={purchaseNumber}
-                              cartSubtotal={cartSubtotal}
-                              taxAmount={taxAmount}
-                            />
-                          }
-                          fileName={userInfo.name + "'s Cart"}
-                          className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
-                          style={{ width: "100%", maxWidth: "200px", fontSize: "12px" }}
-                        >
-                          <span>
-                            Download Cart <i className="bi bi-file-earmark-pdf"></i>
-                          </span>
-                        </PDFDownloadLink>
-                      </div>
-                      <div className="d-flex justify-content-end">
-                        <Button
-                          type="button"
-                          onClick={removeAllItems}
-                          variant="primary" size="sm"
-                          style={{ fontSize: "12px" }}
-                          className="mobile-visibility"
-                        >
-                          Empty Cart <i className="bi bi-trash" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div >
-                      <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
-
-                        <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px" }}>
-                          <InputGroup size="sm">
-                            <Form.Control
-                              className="p-0 ps-2"
-                              onChange={enterManagerEmail}
-                              type="string"
-                              name="MangerEmail"
-                              placeholder={`Enter email`}
-                              required
-                              aria-label="Recipient's username"
-                              aria-describedby="basic-addon2"
-                              style={{ border: "none", fontSize: "12px" }}
-                            />
-                            <InputGroup.Text
-                              id="basic-addon2"
-                              style={{ border: "none", borderRadius: "0", fontSize: "12px" }}
-                            >
-                              @{userEmail}
-                            </InputGroup.Text>
-                          </InputGroup>
-                          <Form.Control.Feedback type="invalid">
-                            Please Enter Your Manager's Email.{" "}
-                          </Form.Control.Feedback>
-                        </ListGroup.Item>
-
-                       
-                      </ListGroup>
-                    </div>
-                  </div>
-                  <div className="desktop">
-                    <Button
-                      type="button"
-                      onClick={removeAllItems}
-                      variant="primary" size="sm"
-                      style={{ fontSize: "12px" }}
-                    >
-                      Empty Cart <i className="bi bi-trash" />
-                    </Button>
-                  </div>
-                </div>
-              </Row>
-            )}
-
-
-
-            <Col md={11}>
-              <ListGroup className="cart-items-list mb-3">
-                {cartItems.map((item, idx) => (
-                  <CartItemComponent
-                    item={item}
-                    key={idx}
-                    changeCount={changeCount}
-                    removeFromCartHandler={removeFromCartHandler}
-                    uniformUserId={uniformUserId}
-                  />
-                ))}
-              </ListGroup>
-
-            </Col>
-          </div>
-          <Col md={3} className="cart_detail_right">
-            <br />
-            {(hasProducts === 1) ? (
-              <>
-                {/* <ListGroup>
-                  <ListGroup.Item>
-                    <div className="d-flex justify-content-center">
+            <Row className="mb-4 p-0" style={{ fontSize: "12px", width: "100%", maxWidth: "915px" }}>
+              <div className="d-flex justify-content-between cart_detail_btns" style={{ width: "100%" }}>
+                <div className="d-flex gap-5 cart_detail_btns_email_download">
+                  <div className="d-flex justify-content-between">
+                    <div>
                       <PDFDownloadLink
                         document={
                           <CartPrint
@@ -815,243 +619,260 @@ const UserCartDetailsPageComponent = ({
                           />
                         }
                         fileName={userInfo.name + "'s Cart"}
-                        className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
-                        style={{width: "100%", maxWidth: "200px"}}
+                        className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
+                        style={{ width: "100%", maxWidth: "200px", fontSize: "12px" }}
                       >
                         <span>
                           Download Cart <i className="bi bi-file-earmark-pdf"></i>
                         </span>
                       </PDFDownloadLink>
                     </div>
-                  </ListGroup.Item>
-                </ListGroup>
-                <br />
-                <ListGroup hidden={cartItems.length === 0}>
-                  <ListGroup.Item controlid="validationMangerEmail" className="p-0">
-                    <InputGroup className="m-0 p-0">
-                      <Form.Control
-                        className="p-0 ps-2"
-                        onChange={enterManagerEmail}
-                        type="string"
-                        name="MangerEmail"
-                        placeholder={`Enter email`}
-                        required
-                        aria-label="Recipient's username"
-                        aria-describedby="basic-addon2"
-                        style={{ border: "none" }}
-                      />
-                      <InputGroup.Text
-                        id="basic-addon2"
-                        className="p-1"
-                        style={{ border: "none", borderRadius: "0" }}
-                      >
-                        @{userEmail}
-                      </InputGroup.Text>
-                    </InputGroup>
-                    <Form.Control.Feedback type="invalid">
-                      Please Enter Your Manager's Email.{" "}
-                    </Form.Control.Feedback>
-                  </ListGroup.Item>
-
-                  <ListGroup.Item className="p-1 ps-2">
-                    <div className="d-grid gap-2">
-                      <QuoeteManagementApproval quotePriceData={quotePriceData} />
-                    </div>
-                  </ListGroup.Item>
-                </ListGroup>
-                <br /> */}
-                <ListGroup className="">
-                  <ListGroup.Item className="p-1 ps-2">
-                    <h4 className="m-0">Order Summary</h4>
-                  </ListGroup.Item>
-                  <ListGroup.Item className="p-1 ps-2">
-                    <p className="p-0 m-0">
-                      Total:{" "}
-                      <span className="float-end">
-                        <span className="fw-bold ">{totaQuantity}</span>{" "}
-                        {cartItems.length === 1 ? "Product" : "Products"}
-                      </span>
-                    </p>
-                  </ListGroup.Item>
-
-                  <ListGroup.Item className="p-1 ps-2">
-                    Item Price:{" "}
-                    <span className="fw-bold float-end"> $ {nonGSTPrice}</span>
-                  </ListGroup.Item>
-                  <ListGroup.Item className="p-1 ps-2">
-                    Total GST <span className="fw-bold float-end">$ {GST}</span>
-                  </ListGroup.Item>
-                  <ListGroup.Item className="p-1 ps-2">
-                    Invoice Amount:{" "}
-                    <span className="fw-bold text-danger float-end">
-                      $ {incGSTPrice}
-                    </span>
-                  </ListGroup.Item>
-
-
-                  <><ListGroup.Item
-                    controlid="validationSLRPurchaseNum"
-                    className="p-1 ps-2"
-                  >
-                    <Form.Label className="fw-bold text-danger">
-                      PO Number
-                    </Form.Label>
-                    <Form.Control
-                      className="p-0 ps-1"
-                      onChange={enterPurchaseNum}
-                      type="string"
-                      name="SLRPurchaseNumber"
-                      placeholder="PO Number"
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Please Enter Your Purchase Number.{" "}
-                    </Form.Control.Feedback>
-                  </ListGroup.Item>
-
-                    <ListGroup.Item
-                      controlid="validationOrderNote"
-                      className="p-1 ps-2"
-                    >
-                      <Form.Label className="fw-bold">Order Name:</Form.Label>
-                      <Form.Control
-                        className="p-0 ps-1"
-                        type="string"
-                        name="orderNote"
-                        placeholder="Order Name"
-                        onChange={enterOrderNote}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please Enter Your Note.{" "}
-                      </Form.Control.Feedback>
-                    </ListGroup.Item>
-
-                    <CartAddressesSectionComponent
-                      setIsOpenNewAddressModal={setIsOpenNewAddressModal}
-                      setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
-                      deliveryBooks={deliveryBooks}
-                      selectedIndex={selectedIndex}
-                      handleSelect={handleSelect}
-                      chosenDeliverySite={chosenDeliverySite}
-                    />
-                    {<AddNewAddressModalComponent
-                      isOpenNewAddressModal={isOpenNewAddressModal}
-                      handleClose={handleClose}
-                      setIsOpenNewAddressModal={setIsOpenNewAddressModal}
-                      setNewDeliveryAddress={setNewDeliveryAddress}
-                      setNewBillingAddress={setNewBillingAddress}
-                      setIsLocationValid={setIsLocationValid}
-                      addNewAddress={addNewAddress}
-                      sameAddress={sameAddress}
-                      handleSameAddressChange={handleSameAddressChange}
-                      newDeliveryAddress={newDeliveryAddress}
-                      handleNewDeliveryAddress={handleNewDeliveryAddress}
-                      handleLocation={handleLocation}
-                      handleNewBillingAddress={handleNewBillingAddress}
-                      isLocationValid={isLocationValid}
-                    />}
-
-                    {
-                      <ChangeAddressModalComponent
-                        isOpenChangeAddressModal={isOpenChangeAddressModal}
-                        setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
-                        setIsLocationValid={setIsLocationValid}
-                        updateAddress={updateAddress}
-                        handleLocation={handleLocation}
-                        chosenDeliverySite={chosenDeliverySite}
-                        isLocationValid={isLocationValid}
-                        handleBillingAddress={handleBillingAddress}
-                        billingAddress={billingAddress}
-                        handleDeliveryAddress={handleDeliveryAddress}
-                        deliveryAddress={deliveryAddress}
-                      />
-                    }
-                  </>
-                  <>
-                    {userInfo.isSiteManager && deliverySites?.length > 0 ? (
-                      <ListGroup.Item className="p-1 ps-2">
-                        <Form.Label className="fw-bold">
-                          Creating This Order For Any Stores?
-                        </Form.Label>
-                        <Form.Check
-                          type="switch"
-                          id="custom-switch"
-                          label="Select Site"
-                          onChange={onSwitchAction}
-                          className="mb-2"
-                        />
-                        <div style={{ height: "2.5em" }}>
-                          <div>
-                            <Form.Select
-                              required
-                              name="sites"
-                              aria-label="Default select example"
-                              onChange={changeDeliverySite}
-                              className="p-1 ps-2"
-                              value={selectedDeliverySite?.toLowerCase()}
-                              disabled={!isSwitchOn}
-                            >
-                              {deliverySites &&
-                                deliverySites.map((site, idx) => {
-                                  return site.name !== "" ? (
-                                    <option
-                                      key={idx}
-                                      value={site.name.toLowerCase()}
-                                    >
-                                      {" "}
-                                      {site.name}
-                                    </option>
-                                  ) : (
-                                    <option
-                                      key={idx}
-                                      value={site.name.toLowerCase()}
-                                    >
-                                      {" "}
-                                      {site.name}
-                                    </option>
-                                  );
-                                })}
-                            </Form.Select>
-                          </div>
-                        </div>
-                      </ListGroup.Item>
-                    ) : (
-                      ""
-                    )}
-                  </>
-                  <ListGroup.Item className="p-1 ps-2">
-                    <div className="d-grid gap-2">
+                    <div className="d-flex justify-content-end">
                       <Button
-                        size="lg"
-                        onClick={orderHandler}
-                        disabled={purchaseNumber === "" ? true : false}
-                        className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
-                        style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}
+                        type="button"
+                        onClick={removeAllItems}
+                        variant="primary" size="sm"
+                        style={{ fontSize: "12px" }}
+                        className="mobile-visibility"
                       >
-                        Confirm Order
+                        Empty Cart <i className="bi bi-trash" />
                       </Button>
                     </div>
-                  </ListGroup.Item>
-                </ListGroup>
+                  </div>
+
+                  <div >
+                    <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
+
+                      <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px" }}>
+                        <InputGroup size="sm">
+                          <Form.Control
+                            className="p-0 ps-2"
+                            onChange={enterManagerEmail}
+                            type="string"
+                            name="MangerEmail"
+                            placeholder={`Enter email`}
+                            required
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            style={{ border: "none", fontSize: "12px" }}
+                          />
+                          <InputGroup.Text
+                            id="basic-addon2"
+                            style={{ border: "none", borderRadius: "0", fontSize: "12px" }}
+                          >
+                            @{userEmail}
+                          </InputGroup.Text>
+                        </InputGroup>
+                        <Form.Control.Feedback type="invalid">
+                          Please Enter Your Manager's Email.{" "}
+                        </Form.Control.Feedback>
+                      </ListGroup.Item>
+
+
+                    </ListGroup>
+                  </div>
+                </div>
+                <div className="desktop">
+                  <Button
+                    type="button"
+                    onClick={removeAllItems}
+                    variant="primary" size="sm"
+                    style={{ fontSize: "12px" }}
+                  >
+                    Empty Cart <i className="bi bi-trash" />
+                  </Button>
+                </div>
+              </div>
+            </Row>
+            <Col md={11}>
+              <ListGroup className="cart-items-list mb-3">
+                {cartItems.map((item, idx) => (
+                  <CartItemComponent
+                    item={item}
+                    key={idx}
+                    changeCount={changeCount}
+                    removeFromCartHandler={removeFromCartHandler}
+                  />
+                ))}
+              </ListGroup>
+
+            </Col>
+          </div>
+          <Col md={3} className="cart_detail_right">
+            <br />
+            <ListGroup className="">
+              <ListGroup.Item className="p-1 ps-2">
+                <h4 className="m-0">Order Summary</h4>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2">
+                <p className="p-0 m-0">
+                  Total:{" "}
+                  <span className="float-end">
+                    <span className="fw-bold ">{totaQuantity}</span>{" "}
+                    {cartItems.length === 1 ? "Product" : "Products"}
+                  </span>
+                </p>
+              </ListGroup.Item>
+
+              <ListGroup.Item className="p-1 ps-2">
+                Item Price:{" "}
+                <span className="fw-bold float-end"> $ {nonGSTPrice}</span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2">
+                Total GST <span className="fw-bold float-end">$ {GST}</span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2">
+                Invoice Amount:{" "}
+                <span className="fw-bold text-danger float-end">
+                  $ {incGSTPrice}
+                </span>
+              </ListGroup.Item>
+
+
+              <><ListGroup.Item
+                controlid="validationSLRPurchaseNum"
+                className="p-1 ps-2"
+              >
+                <Form.Label className="fw-bold text-danger">
+                  PO Number
+                </Form.Label>
+                <Form.Control
+                  className="p-0 ps-1"
+                  onChange={enterPurchaseNum}
+                  type="string"
+                  name="SLRPurchaseNumber"
+                  placeholder="PO Number"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please Enter Your Purchase Number.{" "}
+                </Form.Control.Feedback>
+              </ListGroup.Item>
+
+                <ListGroup.Item
+                  controlid="validationOrderNote"
+                  className="p-1 ps-2"
+                >
+                  <Form.Label className="fw-bold">Order Name:</Form.Label>
+                  <Form.Control
+                    className="p-0 ps-1"
+                    type="string"
+                    name="orderNote"
+                    placeholder="Order Name"
+                    onChange={enterOrderNote}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please Enter Your Note.{" "}
+                  </Form.Control.Feedback>
+                </ListGroup.Item>
+
+                <CartAddressesSectionComponent
+                  setIsOpenNewAddressModal={setIsOpenNewAddressModal}
+                  setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
+                  deliveryBooks={deliveryBooks}
+                  selectedIndex={selectedIndex}
+                  handleSelect={handleSelect}
+                  chosenDeliverySite={chosenDeliverySite}
+                />
+                {<AddNewAddressModalComponent
+                  isOpenNewAddressModal={isOpenNewAddressModal}
+                  handleClose={handleClose}
+                  setIsOpenNewAddressModal={setIsOpenNewAddressModal}
+                  setNewDeliveryAddress={setNewDeliveryAddress}
+                  setNewBillingAddress={setNewBillingAddress}
+                  setIsLocationValid={setIsLocationValid}
+                  addNewAddress={addNewAddress}
+                  sameAddress={sameAddress}
+                  handleSameAddressChange={handleSameAddressChange}
+                  newDeliveryAddress={newDeliveryAddress}
+                  handleNewDeliveryAddress={handleNewDeliveryAddress}
+                  handleLocation={handleLocation}
+                  handleNewBillingAddress={handleNewBillingAddress}
+                  isLocationValid={isLocationValid}
+                />}
+
+                {
+                  <ChangeAddressModalComponent
+                    isOpenChangeAddressModal={isOpenChangeAddressModal}
+                    setIsOpenChangeAddressModal={setIsOpenChangeAddressModal}
+                    setIsLocationValid={setIsLocationValid}
+                    updateAddress={updateAddress}
+                    handleLocation={handleLocation}
+                    chosenDeliverySite={chosenDeliverySite}
+                    isLocationValid={isLocationValid}
+                    handleBillingAddress={handleBillingAddress}
+                    billingAddress={billingAddress}
+                    handleDeliveryAddress={handleDeliveryAddress}
+                    deliveryAddress={deliveryAddress}
+                  />
+                }
               </>
-            ) : (
               <>
-                <ListGroup className="">
+                {userInfo.isSiteManager && deliverySites?.length > 0 ? (
                   <ListGroup.Item className="p-1 ps-2">
-                    <div className="d-grid gap-2">
-                      <button
-                        size="sm"
-                        onClick={orderHandler}
-                        disabled={purchaseNumber === ""}
-                        className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
-                        style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}                      >
-                        Confirm Order
-                      </button>
+                    <Form.Label className="fw-bold">
+                      Creating This Order For Any Stores?
+                    </Form.Label>
+                    <Form.Check
+                      type="switch"
+                      id="custom-switch"
+                      label="Select Site"
+                      onChange={onSwitchAction}
+                      className="mb-2"
+                    />
+                    <div style={{ height: "2.5em" }}>
+                      <div>
+                        <Form.Select
+                          required
+                          name="sites"
+                          aria-label="Default select example"
+                          onChange={changeDeliverySite}
+                          className="p-1 ps-2"
+                          value={selectedDeliverySite?.toLowerCase()}
+                          disabled={!isSwitchOn}
+                        >
+                          {deliverySites &&
+                            deliverySites.map((site, idx) => {
+                              return site.name !== "" ? (
+                                <option
+                                  key={idx}
+                                  value={site.name.toLowerCase()}
+                                >
+                                  {" "}
+                                  {site.name}
+                                </option>
+                              ) : (
+                                <option
+                                  key={idx}
+                                  value={site.name.toLowerCase()}
+                                >
+                                  {" "}
+                                  {site.name}
+                                </option>
+                              );
+                            })}
+                        </Form.Select>
+                      </div>
                     </div>
                   </ListGroup.Item>
-                </ListGroup>
+                ) : (
+                  ""
+                )}
               </>
-            )}
+              <ListGroup.Item className="p-1 ps-2">
+                <div className="d-grid gap-2">
+                  <Button
+                    size="lg"
+                    onClick={orderHandler}
+                    disabled={purchaseNumber === "" ? true : false}
+                    className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
+                    style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}
+                  >
+                    Confirm Order
+                  </Button>
+                </div>
+              </ListGroup.Item>
+            </ListGroup>
             <br />
           </Col>
         </div>

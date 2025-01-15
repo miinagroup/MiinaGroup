@@ -43,16 +43,13 @@ const AdminCartDetailsPageComponent = ({
   const [purchaseNumber, setPurchaseNumber] = useState("");
   const [adminOrderNote, setAdminOrderNote] = useState("");
   const [orderNote, setOrderNote] = useState("");
-  //const [storeUser, setStoreUser] = useState(" ");
   const [isStoreUser, setIsStoreUser] = useState(false);
-  //const [secondOwnerId, setSecondOwnerId] = useState(" ");
   const [largestInvoice, setLargestInvoice] = useState(0);
   const [users, setUsers] = useState([]);
   const [userNameEmail, setUserNameEmail] = useState();
   const [userName, setUserName] = useState();
   const [managerEmail, setManagerEmail] = useState();
   const [base64Data, setBase64Data] = useState([]);
-
   const [adminDeliveryBooks, setAdminDeliveryBooks] = useState();
   const [adminDeliverySites, setAdminDeliverySites] = useState([]);
   const [userList, setUserList] = useState([]);
@@ -68,13 +65,11 @@ const AdminCartDetailsPageComponent = ({
   const [adminSelectedUserName, setAdminSelectedUserName] = useState();
   const [adminSelectedUserId, setAdminSelectedUserId] = useState();
   const [userInformation, setUserInformation] = useState([]);
-  const [quickBooksCustomerId, setQuickBooksCustomerId] = useState();
   const [dueDays, setDueDays] = useState();
   const [userNameList, setUserNamesList] = useState([])
   const [shippingAddress, setShippingAddress] = useState("");
 
   const navigate = useNavigate();
-
   const changeCount = (id, qty) => {
     reduxDispatch(editQuantity(id, qty));
   };
@@ -121,25 +116,6 @@ const AdminCartDetailsPageComponent = ({
         )
       );
   }, [userInfo._id]);
-
-  // function updateCurrentClientSku(clientsSku) {
-  //   const matchingClientSku = clientsSku.find(sku =>
-  //     sku.name.match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase().includes(adminSelectedDeliverySite.toLowerCase())
-  //   );
-
-  //   if (matchingClientSku) {
-  //     return {
-  //       name: matchingClientSku.name,
-  //       number: matchingClientSku.number
-  //     };
-  //   }
-
-  //   return {
-  //     name: "",
-  //     number: ""
-  //   };
-  // }
-
 
   useEffect(() => {
     getOrdersInvNo().then((orders) => {
@@ -257,7 +233,6 @@ const AdminCartDetailsPageComponent = ({
 
   useEffect(() => {
     const chosenCompany = adminDeliveryBooks?.filter(book => book.companyName === adminSelectedCompany)
-    setQuickBooksCustomerId(chosenCompany && chosenCompany[0]?.quickBooksCustomerId);
     setDueDays(chosenCompany && chosenCompany[0]?.dueDays);
   }, [adminSelectedCompany])
 
@@ -269,23 +244,10 @@ const AdminCartDetailsPageComponent = ({
           if (adminSite.name?.toUpperCase() === user.location?.toUpperCase()) {
             setUserAddress(adminSite.deliveryAddress)
           }
-
-          // if (adminSite.storeEmail && adminSite.storeEmail?.toUpperCase() === user.email?.toUpperCase()) {
-          //   setStoreUser(user)
-          //}
         });
       }
     })
   }, [adminSelectedCompany, adminSelectedUserName, adminSelectedDeliverySite, adminSelectedUserId]);
-
-  // useEffect(() => {
-  //   if (storeUser && storeUser?._id === adminSelectedUserId) {
-  //     setSecondOwnerId(" ")
-  //   } else if (storeUser !== " ") {
-  //     setSecondOwnerId(storeUser?._id)
-  //   }
-  // }, [storeUser])
-
 
   const orderHandler = () => {
     const orderData = {
@@ -295,7 +257,6 @@ const AdminCartDetailsPageComponent = ({
         taxAmount: taxAmount,
       },
       cartItems: cartItems.map((item) => {
-        //const currentClientSku = updateCurrentClientSku(item.cartProducts[0].clientsSku)
         return {
           productId: item.productId,
           name: item.name,
@@ -313,10 +274,7 @@ const AdminCartDetailsPageComponent = ({
               suppliedQty: item.cartProducts[0].quantity,
               backOrder: 0,
               sales: item.cartProducts[0].sales ?? null,
-              // slrsku: item.cartProducts[0].slrsku,
               suppliersku: item.cartProducts[0].suppliersku,
-              // clientsSku: item.cartProducts[0].clientsSku,
-              // currentClientSku: currentClientSku,
               _id: item.cartProducts[0]._id,
             },
           ],
@@ -328,12 +286,9 @@ const AdminCartDetailsPageComponent = ({
       orderNote: orderNote,
       invoiceNumber: largestInvoice + 1,
       deliverySite: adminSelectedDeliverySite,
-      //secondOwnerId: secondOwnerId,
-      //storeId: storeUser !== " " ? (storeUser._id) : " ",
       user_id: adminSelectedUserId,
       userName: adminSelectedUserName,
       userCompany: adminSelectedCompany,
-      quickBooksCustomerId: quickBooksCustomerId,
       dueDays: dueDays,
     };
 
@@ -514,19 +469,6 @@ const AdminCartDetailsPageComponent = ({
                               </option>
                             ) : ("");
                           })}
-                      {/* {userList &&
-                        userList
-                          .sort((a, b) => a.userName.localeCompare(b.userName))
-                          .map((user, idx) => {
-                            return user !== "" ? (
-                              <option key={idx} 
-                            value={user.userName}
-                              >
-                                {" "}
-                                {user.userName}
-                              </option>
-                            ) : ("");
-                          })} */}
                     </Form.Select>
                   </Col>
                   <Col md={3}>
@@ -610,41 +552,6 @@ const AdminCartDetailsPageComponent = ({
                 </div>
               </ListGroup.Item>
             </ListGroup>
-
-            {/* <ListGroup hidden={cartItems.length === 0}>
-
-              <ListGroup.Item controlid="validationMangerEmail" className="p-0">
-                <InputGroup className="m-0 p-0">
-                  <Form.Control
-                    className="p-0 ps-2"
-                    onChange={enterManagerEmail}
-                    type="string"
-                    name="MangerEmail"
-                    placeholder={`Enter email`}
-                    required
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-                    style={{ border: "none" }}
-                  />
-                  <InputGroup.Text
-                    id="basic-addon2"
-                    className="p-1"
-                    style={{ border: "none", borderRadius: "0" }}
-                  >
-                    @{userEmail}
-                  </InputGroup.Text>
-                </InputGroup>
-                <Form.Control.Feedback type="invalid">
-                  Please Enter Your Manager's Email.{" "}
-                </Form.Control.Feedback>
-              </ListGroup.Item>
-
-              <ListGroup.Item className="p-1 ps-2">
-                <div className="d-grid gap-2">
-                  <QuoeteManagementApproval quotePriceData={quotePriceData} />
-                </div>
-              </ListGroup.Item>
-            </ListGroup> */}
             <br />
             <ListGroup className="">
               <ListGroup.Item className="p-1 ps-2">
@@ -692,7 +599,6 @@ const AdminCartDetailsPageComponent = ({
                 <Form.Control.Feedback type="invalid">
                   Please Enter Your Purchase Number.{" "}
                 </Form.Control.Feedback>
-                {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
               </ListGroup.Item>
 
               <ListGroup.Item

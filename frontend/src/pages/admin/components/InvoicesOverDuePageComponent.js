@@ -187,12 +187,9 @@ const InvoicesOverDuePageComponent = ({
 
     const invData = useMemo(() => {
         let computedOrders = filterInvoicesByCompany(
-            // overDueInv.filter((invoice) => invoice.quickBooksInvID),
             overDueInv,
             companyFilter
         );
-
-        // console.log("computedOrders", computedOrders);
 
         if (search) {
             computedOrders = computedOrders.filter(
@@ -287,15 +284,15 @@ const InvoicesOverDuePageComponent = ({
                         const dateB = new Date(b.deliveredAt);
                         return dateA - dateB;
                     });
-    
-                    let runningTotal = 0; 
+
+                    let runningTotal = 0;
                     const updatedInvoices = sortedInvoices.map(invoice => {
                         runningTotal += parseFloat(invoice.orderTotal.cartSubtotal);
                         return { ...invoice, overDueBalance: runningTotal.toFixed(2) };
                     });
-    
+
                     openPDFInPopup(
-                        React.cloneElement(documentComponent, { selectedInvoices: updatedInvoices }), 
+                        React.cloneElement(documentComponent, { selectedInvoices: updatedInvoices }),
                         fileName
                     );
                 }}

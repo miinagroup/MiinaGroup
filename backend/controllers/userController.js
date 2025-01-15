@@ -34,8 +34,6 @@ const registerUser = async (req, res, next) => {
       role,
       deliveryAddress,
       billAddress,
-      // state,
-      // postCode,
       mobileRegistration,
       abn
     } = req.body;
@@ -52,8 +50,6 @@ const registerUser = async (req, res, next) => {
         role &&
         deliveryAddress &&
         billAddress &&
-        // state &&
-        // postCode &&
         abn
       )
     ) {
@@ -78,8 +74,6 @@ const registerUser = async (req, res, next) => {
         role,
         deliveryAddress,
         billAddress,
-        // state,
-        // postCode,
         abn
       });
 
@@ -132,92 +126,11 @@ const registerUser = async (req, res, next) => {
           role: user.role,
           deliveryAddress: user.deliveryAddress,
           billAddress: user.billAddress,
-          // state: user.state,
-          // postCode: user.postCode,
           mobileLogin: true,
           abn: user.abn
         },
       });
-      /*       if (mobileRegistration) {
-              console.log("Mobile registration");
-              let doNotLogout = true;
-      
-              let cookieParams = {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-                maxAge: 1000 * 60 * 60 * 24 * 9
-              };
-            
-              if (doNotLogout) {
-                cookieParams.maxAge = 1000 * 60 * 60 * 24 * 9;
-              }
-      
-              return res
-              .status(201)
-              .cookie(
-                "access_token",
-                generateAuthToken(
-                  user._id,
-                  user.name,
-                  user.lastName,
-                  user.email,
-                  user.isAdmin,
-                  user.verified,
-                  user.siteSku,
-                  user.siteVerified,
-                  user.isSuperAdmin,
-                  user.isSales,
-                  user.accounts,
-                  user.isMarketing,
-                  user.isDeveloper
-                ),
-                cookieParams
-              )
-              .json({
-                success: "User created",
-                userCreated: {
-                  _id: user._id,
-                  name: user.name,
-                  lastName: user.lastName,
-                  email: user.email,
-                  isAdmin: user.isAdmin,
-                  verified: user.verified,
-                  phone: user.phone,
-                  mobile: user.mobile,
-                  location: user.mobile,
-                  company: user.company,
-                  role: user.role,
-                  deliveryAddress: user.deliveryAddress,
-                  billAddress: user.billAddress,
-                  state: user.state,
-                  postCode: user.postCode,
-                  mobileLogin: true,
-                },
-              });
-            } else {
-              res.status(201).json({
-                success: "User created",
-                userCreated: {
-                  _id: user._id,
-                  name: user.name,
-                  lastName: user.lastName,
-                  email: user.email,
-                  isAdmin: user.isAdmin,
-                  verified: user.verified,
-                  phone: user.phone,
-                  mobile: user.mobile,
-                  location: user.mobile,
-                  company: user.company,
-                  role: user.role,
-                  deliveryAddress: user.deliveryAddress,
-                  billAddress: user.billAddress,
-                  state: user.state,
-                  postCode: user.postCode,
-                  mobileLogin: true,
-                },
-              });
-            } */
+
     }
   } catch (err) {
     next(err);
@@ -255,18 +168,14 @@ const loginUser = async (req, res, next) => {
     }
 
     const email = rawEmail.toLowerCase();
-    // Get user's current public IP address
     const ipAddress =
       req.headers["x-forwarded-for"]?.split(", ")[0] ||
       req.connection.remoteAddress;
 
     const user = await User.findOne({ email: email });
     console.log("I found a user");
-    //console.log(email, password, doNotLogout, mobileNotificationToken, mobileLogin, user);
-    // Compare passwords
     if (user && comparePasswords(password, user.password)) {
       console.log("I am here compare password!");
-      // Skip IP address check for ctlservices.com.au emails
       const skipIpAddressCheck =
         email.endsWith("ctlservices.com.au") ||
         email.endsWith("ctlaus.com") ||
@@ -289,13 +198,6 @@ const loginUser = async (req, res, next) => {
       if (doNotLogout) {
         cookieParams = { ...cookieParams, maxAge: 1000 * 60 * 60 * 24 * 9 }; // 1000=1ms
       }
-
-      // Update user's IP address in the database
-      // await User.updateOne({ _id: user._id }, { $set: { ipAddress } });
-      // await User.updateOne(
-      //   { _id: user._id },
-      //   { $set: { mobileNotificationToken } }
-      // );
 
       let updateData = {};
       if (ipAddress) updateData.ipAddress = ipAddress;
@@ -327,16 +229,6 @@ const loginUser = async (req, res, next) => {
           .status(400)
           .send({ message: "An Email sent to your account please verify" });
       }
-      /*       if (mobileLogin) {
-              if (!user.verified) {
-                console.log(
-                  "Unverified MOBILE user login:",
-                  user.email,
-                  user.verified
-                );
-              }
-              return loginUserResponse(res, user, { doNotLogout });
-            } */
 
       if (user.verified) {
         console.log("verified user");
@@ -345,55 +237,6 @@ const loginUser = async (req, res, next) => {
         console.log("Unverified user login Rejected:", user.email);
         return res.status(401).send("You are not authorized to login!");
       }
-
-      /*       if (user.verified) {
-        return res
-          .cookie(
-            "access_token",
-            generateAuthToken(
-              user._id,
-              user.name,
-              user.lastName,
-              user.email,
-              user.isAdmin,
-              user.verified,
-              user.siteSku,
-              user.siteVerified,
-              user.isSuperAdmin,
-              user.isSales,
-              user.accounts,
-              user.isMarketing,
-              user.isDeveloper
-            ),
-            cookieParams
-          )
-          .json({
-            success: "user logged in",
-            userLoggedIn: {
-              _id: user._id,
-              name: user.name,
-              lastName: user.lastName,
-              email: user.email,
-              isAdmin: user.isAdmin,
-              isPD: user.isPD,
-              isSiteManager: user.isSiteManager,
-              isSitePerson: user.isSitePerson,
-              isInvoiceViwer: user.isInvoiceViwer,
-              verified: user.verified,
-              location: user.location,
-              company: user.company,
-              siteSku: user.siteSku,
-              siteVerified: user.siteVerified,
-              isSuperAdmin: user.isSuperAdmin,
-              accounts: user.accounts,
-              isSales: user.isSales,
-              isMarketing: user.isMarketing,
-              wantWeather: user.wantWeather,
-              doNotLogout,
-              role: user.role,
-            },
-          });
-      } */
     } else {
       return res.status(401).send("wrong credentials");
     }
@@ -427,9 +270,6 @@ const loginUserResponse = async (res, user, { doNotLogout }) => {
     user.isSalesAdmin,
     user.accounts,
     user.isMarketing,
-    // user.isDeveloper,
-    // user.isUniformManager,
-    // user.isDeveloper
   );
 
   return res.cookie("access_token", token, cookieParams).json({
@@ -592,13 +432,9 @@ const updateUserProfile = async (req, res, next) => {
       abn
     } = req.body;
 
-    // console.log(req.body);
-
     const user = await User.findById(req.user._id).orFail();
     user.name = name || user.name;
     user.lastName = lastName || user.lastName;
-    /* 这里我们不需要用户更改邮箱地址 */
-    // user.email = req.body.email || user.email;
     user.phone = phone || user.phone;
     user.mobile = mobile || user.mobile;
     user.location = location || user.location;
@@ -658,26 +494,6 @@ const updateUserPassword = async (req, res, next) => {
   }
 };
 
-// const wantWeather = async (req, res, next) => {
-//   try {
-//     // console.log("I am here to want weather");
-//     const wantWeather = req.body.wantWeather;
-//     const user = await User.findById(req.user._id).orFail();
-
-//     user.wantWeather = wantWeather;
-//     // console.log(user.wantWeather);
-//     await user.save();
-//     res.json({
-//       success: "wantWeather updated",
-//       userUpdated: {
-//         wantWeather: user.wantWeather,
-//       },
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
 const getUserProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).orFail();
@@ -701,7 +517,6 @@ const getUsersList = async (req, res, next) => {
     const users = await User.find({});
     const usersList = [];
     for (let user of users) {
-      //const hostEmail = (user.email).split('@')
       if (req.params.company === user.company) {
         usersList.push(user);
       }
@@ -755,13 +570,11 @@ const updateUser = async (req, res, next) => {
     user.company = req.body.company || user.company;
     user.abn = req.body.abn || user.abn;
     user.role = req.body.role || user.role;
-
     if (req.body.ipAddress === "") {
       user.ipAddress = "";
     } else {
       user.ipAddress = req.body.ipAddress || user.ipAddress;
     }
-
     user.isAdmin = req.body.isAdmin;
     user.verified = req.body.verified;
     user.isPD = req.body.isPD;
@@ -769,10 +582,6 @@ const updateUser = async (req, res, next) => {
     user.isSitePerson = req.body.isSitePerson;
     user.isSales = req.body.isSales;
     user.isMarketing = req.body.isMarketing;
-    // user.isDeveloper = req.body.isDeveloper;
-    // user.isSuperAdmin = req.body.isSuperAdmin;
-    // user.isVIP = req.body.isVIP;
-    // user.isCreditVerified = req.body.isCreditVerified;
     user.accounts = req.body.accounts;
     user.abn = req.body.abn;
     user.role = req.body.role;
@@ -781,35 +590,6 @@ const updateUser = async (req, res, next) => {
     res.send("user updated");
   } catch (err) {
     next(err);
-  }
-};
-
-const updateUserBulk = async (req, res, next) => {
-  try {
-    const { updatedUniformUsers } = req.body;
-
-    if (!updatedUniformUsers || updatedUniformUsers.length === 0) {
-      return res.status(400).json({ message: "No users provided for bulk update." });
-    }
-
-    // Prepare bulk operations
-    const bulkOperations = updatedUniformUsers.map((user) => ({
-      updateOne: {
-        filter: { _id: user.userId }, // Match the user by ID
-        update: { $set: { role: user.userRole } }, // Update the user role
-      },
-    }));
-
-    // Execute bulk operation
-    const result = await User.bulkWrite(bulkOperations);
-
-    res.status(200).json({
-      message: "success",
-      modifiedCount: result.modifiedCount,
-    });
-  } catch (error) {
-    console.error("Bulk update error:", error);
-    res.status(500).json({ message: "Bulk update failed.", error: error.message });
   }
 };
 
@@ -844,42 +624,6 @@ const deleteUser = async (req, res, next) => {
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 };
-
-/* const formatUserName = async (req, res, next) => {
-  console.log("I am here to update User Name and Last Name!!!");
-  try {
-    const users = await User.find({});
-
-    for (let user of users) {
-      user.name = capitalizeFirstLetter(user.name);
-      user.lastName = capitalizeFirstLetter(user.lastName);
-      user.location = user.location.toUpperCase();
-    
-      const userEmail = user.email.split("@")[1];
-      const deliveryBooks = await DeliveryBook.find({
-        emailHost: new RegExp(userEmail, "i")
-      });
-    
-      if (deliveryBooks.length > 0) {
-        user.company = deliveryBooks[0].companyName; 
-        console.log(`Setting company for user ${user.email} to ${user.company}`);
-      } else {
-        console.log(`No delivery books found for user with email: ${user.email}`);
-      }
-    
-      await user.save();
-    }
-    
-
-    console.log("All user names and last names formatted successfully!");
-    res.status(200).json({
-      message: "Name and Last Name updated successfully!",
-    });
-  } catch (err) {
-    console.error("Error formatting user names:", err);
-    res.status(500).json({ message: "Server error" });
-  }
-}; */
 
 const formatUserName = async (req, res, next) => {
   let formattedUsers = [];
@@ -947,6 +691,5 @@ module.exports = {
   formatUserName,
   forgotPassword,
   validateResetLink,
-  resetPassword,
-  updateUserBulk
+  resetPassword
 };

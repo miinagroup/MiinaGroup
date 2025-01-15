@@ -4,23 +4,17 @@ import {
   Container,
   Form,
   Button,
-  CloseButton,
-  Table,
-  Card
-
+  CloseButton
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import CurrencyInput from "react-currency-input-field";
+import { useSelector } from "react-redux";
 import {
   changeCategory,
-  setValuesForAttrFromDbSelectForm,
   setAttributesTableWrapper,
 } from "./utils/utils";
 import GoBackButton from "./GoBackButton";
-
 
 const CreateProductPageComponent = ({
   createProductApiRequest,
@@ -29,7 +23,6 @@ const CreateProductPageComponent = ({
   uploadPdfApiRequest,
   uploadPdfCloudinaryApiRequest,
   categories,
-  // clientsSkuList,
   reduxDispatch,
   newCategory,
   deleteCategory,
@@ -38,7 +31,6 @@ const CreateProductPageComponent = ({
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
-  const [attributesFromDb, setAttributesFromDb] = useState([]);
   const [images, setImages] = useState(false);
   const [pdfs, setPdfs] = useState(false);
   const [isCreating, setIsCreating] = useState("");
@@ -54,17 +46,9 @@ const CreateProductPageComponent = ({
   const [newAttrKey, setNewAttrKey] = useState(false);
   const [newAttrValue, setNewAttrValue] = useState(false);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-
-  const attrVal = useRef(null);
   const attrKey = useRef(null);
   const createNewAttrKey = useRef(null);
   const createNewAttrVal = useRef(null);
-
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  // const [clientsSkus, setClientsSku] = useState([]);
-  // const [selectedClientSkuName, setSelectedClientSkuName] = useState({});
-  // const [skuClientNumebr, setSkuClientNumber] = useState({});
   const [rowCount, setRowCount] = useState(1);
 
   useEffect(() => {
@@ -115,7 +99,6 @@ const CreateProductPageComponent = ({
   };
 
   const [dynamicPrices, setDynamicPrices] = useState({});
-
   const updateDynamicPrice = (index, field, value) => {
     const newDynamicPrices = { ...dynamicPrices };
     if (!newDynamicPrices[index]) {
@@ -132,7 +115,6 @@ const CreateProductPageComponent = ({
 
   const handlePriceChange = (index, value) => {
     const newDynamicPrices = { ...dynamicPrices };
-    //console.log(newDynamicPrices[index], index, value);
     newDynamicPrices[index] = {
       ...newDynamicPrices[index],
       calculatedPrice: parseFloat(value),
@@ -141,7 +123,6 @@ const CreateProductPageComponent = ({
   };
 
   const navigate = useNavigate();
-
   const handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -163,7 +144,6 @@ const CreateProductPageComponent = ({
         price = document.getElementsByName(`price-${i}`)[0].value;
       }
 
-
       let purchaseprice;
       if (dynamicPrices[i]?.purchasePrice) {
         purchaseprice = dynamicPrices[i].purchasePrice;
@@ -175,11 +155,8 @@ const CreateProductPageComponent = ({
       const uom = document.getElementsByName(`uom-${i}`)[0].value;
       const barcode = document.getElementsByName(`barcode-${i}`)[0].value;
       const ctlsku = document.getElementsByName(`ctlsku-${i}`)[0].value;
-      // const slrsku = document.getElementsByName(`slrsku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
-      // const clientsSku = clientsSkus[i];
-
       stock.push({
         count,
         price: price,
@@ -188,9 +165,7 @@ const CreateProductPageComponent = ({
         uom,
         barcode,
         ctlsku,
-        // ,slrsku
         suppliersku,
-        // clientsSku
       });
     }
 
@@ -221,8 +196,6 @@ const CreateProductPageComponent = ({
       createProductApiRequest(formInputs)
         .then((data) => {
           if (images) {
-            // 如果是===就是test cloudnary的上传，如果是!== 就是测试local
-            // !===只存在于 三个文件里(edit / create component 以及 editPage)
             if (process.env.NODE_ENV === "dev") {
               // TODO: change to !==  ===
               uploadImagesApiRequest(images, data.productId)
@@ -239,8 +212,6 @@ const CreateProductPageComponent = ({
             }
           }
           if (pdfs) {
-            // 如果是===就是test cloudnary的上传，如果是!== 就是测试local
-            // !===只存在于 三个文件里(edit / create component 以及 editPage)
             if (process.env.NODE_ENV === "dev") {
               // to do: change to !==
               uploadPdfApiRequest(pdfs, data.productId)
@@ -271,9 +242,6 @@ const CreateProductPageComponent = ({
     setValidated(true);
   };
 
-  /*   const uploadHandlerImage = (images) => {
-    setImages(images);
-  }; */
   const uploadHandlerImage = (e) => {
     console.log(e.target.files);
     setImages(e.target.files);
@@ -361,45 +329,6 @@ const CreateProductPageComponent = ({
       ))
     );
   };
-
-  // const handleSelect = (e, index) => {
-  //   setSelectedClientSkuName({ ...selectedClientSkuName, [index]: e.target.value });
-  // }
-
-  // const handleInputChange = (e, index) => {
-  //   setSkuClientNumber({ ...skuClientNumebr, [index]: e.target.value });
-  // };
-
-
-  // const addNewClientSku = (e, index) => {
-  //   const isSkuName = clientsSkus[index]?.some(el => el.name === selectedClientSkuName[index]);
-  //   if (selectedClientSkuName[index] && skuClientNumebr[index]) {
-  //     if (isSkuName) {
-  //       alert('This SKU name already exists for this item in stock.');
-  //       return;
-  //     }
-  //     const updatedClientsSkus = [...clientsSkus];
-  //     if (updatedClientsSkus[index]) {
-  //       updatedClientsSkus[index].push({ name: selectedClientSkuName[index], number: skuClientNumebr[index] });
-  //     } else {
-  //       updatedClientsSkus[index] = [{ name: selectedClientSkuName[index], number: skuClientNumebr[index] }];
-  //     }
-  //     setClientsSku(updatedClientsSkus);
-  //     setSelectedClientSkuName({ ...selectedClientSkuName, [index]: "" });
-  //     setSkuClientNumber({ ...skuClientNumebr, [index]: "" });
-  //   } else {
-  //     alert('Please select a SKU and enter a number.');
-  //   }
-  // };
-
-  // const removeClientSku = (index, i) => {
-  //   const updatedClientsSkus = [...clientsSkus];
-  //   updatedClientsSkus[index] = updatedClientsSkus[index].filter((_, index) => index !== i);
-  //   setClientsSku(updatedClientsSkus);
-  // };
-
-
-
   return (
     <Container>
       <Row className="justify-content-md-center mt-5 content-container ">
@@ -517,15 +446,6 @@ const CreateProductPageComponent = ({
                       controlId={`formBasicPrice-${index}`}
                     >
                       <Form.Label>Product Price</Form.Label>
-                      {/*                       <CurrencyInput
-                        className={`form-control price-${index}`}
-                        name={`price-${index}`}
-                        placeholder="AUD 0.00"
-                        defaultValue="0"
-                        decimalsLimit={2}
-                        required="true"
-                        disableGroupSeparators="true"
-                      /> */}
                       <Form.Control
                         name={`price-${index}`}
                         required
@@ -611,65 +531,6 @@ const CreateProductPageComponent = ({
                         type="text"
                       />
                     </Form.Group>
-
-                    {/* <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicSLRSKU-${index}`}
-                      hidden
-                    >
-                      <Form.Label>SLR SKU</Form.Label>
-                      <Form.Control
-                        name={`slrsku-${index}`}
-                        type="text"
-                      />
-                    </Form.Group> */}
-
-                    {/* <Form.Group>
-                      <Form.Label>Client Sku</Form.Label>
-                      <div style={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-                        <Form.Select value={selectedClientSkuName[index]} onChange={(e) => handleSelect(e, index)}>
-                          <option value={selectedClientSkuName[index] === "" && ""}>Select SKU name</option>
-                          {clientsSkuList && clientsSkuList.map(item => {
-                            return <option value={item.sku}>{item.sku}</option>
-                          })
-                          }
-                        </Form.Select>
-
-
-                        <Form.Control
-                          type="text"
-                          value={skuClientNumebr[index] || ""}
-                          onChange={(e) => handleInputChange(e, index)}
-                        />
-                      </div>
-
-                      <Button onClick={(e) => addNewClientSku(e, index)}>Save</Button>
-
-                      <Table>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Client SKU</th>
-                            <th>Number</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {clientsSkus[index] && clientsSkus[index].map((skus, i) => {
-                            return <tr>
-                              <td>{i + 1}</td>
-                              <td>{skus.name}</td>
-                              <td>{skus.number}</td>
-                              <td><i onClick={() => removeClientSku(index, i)} className="bi bi-x-circle close"></i></td>
-                            </tr>
-                          })}
-                        </tbody>
-                      </Table>
-                    </Form.Group> */}
-
-
                   </React.Fragment>
                 </Row>
               </>
@@ -703,8 +564,6 @@ const CreateProductPageComponent = ({
                   step="0.01"
                   defaultValue={0}
                 />
-                {/* <Form.Label>Supplier</Form.Label>
-                <Form.Control name="supplier" required type="text" /> */}
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -786,7 +645,6 @@ const CreateProductPageComponent = ({
                   changeCategory(
                     e,
                     categories,
-                    setAttributesFromDb,
                     setCategoryChoosen
                   )
                 }
@@ -828,117 +686,6 @@ const CreateProductPageComponent = ({
                 type="text"
               />
             </Form.Group>
-
-            {/* {attributesFromDb.length > 0 && (
-              <Row className="mt-5">
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="formBasicAttributes">
-                    <Form.Label>Choose atrribute and set value</Form.Label>
-                    <Form.Select
-                      name="atrrKey"
-                      aria-label="Default select example"
-                      ref={attrKey}
-                      onChange={(e) =>
-                        setValuesForAttrFromDbSelectForm(
-                          e,
-                          attrVal,
-                          attributesFromDb
-                        )
-                      }
-                    >
-                      <option>Choose attribute</option>
-                      {attributesFromDb.map((item, idx) => (
-                        <React.Fragment key={idx}>
-                          <option value={item.key}>{item.key}</option>
-                        </React.Fragment>
-                      ))}
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="formBasicAttributeValue"
-                  >
-                    <Form.Label>Attribute value</Form.Label>
-                    <Form.Select
-                      onChange={attributeValueSelected}
-                      name="atrrVal"
-                      aria-label="Default select example"
-                      ref={attrVal}
-                    >
-                      <option>Choose attribute value</option>
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-              </Row>
-            )} */}
-
-            {/* <Row>
-              {attributesTable.length > 0 && (
-                <Table hover>
-                  <thead>
-                    <tr>
-                      <th>Attribute</th>
-                      <th>Value</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {attributesTable.map((item, idx) => (
-                      <tr key={idx}>
-                        <td>{item.key}</td>
-                        <td>{item.value}</td>
-                        <td>
-                          <CloseButton
-                            onClick={() => deleteAttribute(item.key)}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              )}
-            </Row> */}
-
-            {/* <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="formBasicNewAttribute">
-                  <Form.Label>Create new attribute</Form.Label>
-                  <Form.Control
-                    ref={createNewAttrKey}
-                    disabled={["", "Choose category"].includes(categoryChoosen)}
-                    placeholder="first choose or create category"
-                    name="newAttrValue"
-                    type="text"
-                    onKeyUp={newAttrKeyHandler}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="formBasicNewAttributeValue"
-                >
-                  <Form.Label>Attribute value</Form.Label>
-                  <Form.Control
-                    ref={createNewAttrVal}
-                    disabled={["", "Choose category"].includes(categoryChoosen)}
-                    placeholder="first choose or create category"
-                    required={newAttrKey}
-                    name="newAttrValue"
-                    type="text"
-                    onKeyUp={newAttrValueHandler}
-                  />
-                </Form.Group>
-              </Col>
-            </Row> */}
-
-            {/* <Alert show={newAttrKey && newAttrValue} variant="primary">
-              After typing attribute key and value press enterr on one of the
-              field
-            </Alert> */}
-
             <Form.Group controlId="formFileMultiple" className="mb-3 mt-3">
               {/* ********* Image upload ********* */}
               <Form.Label>Images</Form.Label>

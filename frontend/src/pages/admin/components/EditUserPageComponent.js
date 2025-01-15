@@ -7,7 +7,7 @@ import GoBackButton from "./GoBackButton";
 import FetchAuthFromServer from "../../../components/FetchAuthFromServer";
 import MaskedInput from 'react-text-mask';
 
-const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformRole }) => {
+const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
   const [validated, setValidated] = useState(false);
   const [user, setUser] = useState([]);
   const [isAdminState, setIsAdminState] = useState(false);
@@ -17,18 +17,13 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
   const [verified, setVerified] = useState(false);
   const [isSales, setIsSales] = useState(false);
   const [isMarketing, setIsMarketing] = useState(false);
-  // const [isDeveloper, setIsDeveloper] = useState(false);
   const [accounts, setAccounts] = useState(false);
-  // const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  // const [isVIP, setIsVIP] = useState(false);
   const [abn, setAbn] = useState();
-  // const [isCreditVerified, setIsCreditVerified] = useState(false);
   const [updateUserResponseState, setUpdateUserResponseState] = useState({
     message: "",
     error: "",
   }); // handling errors and messages
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/];
-  const [allUniformRoles, setAllUniformRoles] = useState([])
   const [userRole, setUserRole] = useState();
   const [otherRole, setOtherRole] = useState();
 
@@ -39,14 +34,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
   const handleChangeRole = (e) => {
     setUserRole(e.target.value)
   }
-
-  useEffect(() => {
-    getAllUniformRole()
-      .then((data) => {
-        setAllUniformRoles(data)
-      })
-      .catch((er) => console.log(er));
-  }, []);
 
   const handleAbn = (e) => {
     const newValue = e.target.value;
@@ -186,28 +173,6 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getAllUniformR
                 defaultValue={user.email}
 
               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicRole">
-              <Form.Label>Role</Form.Label>
-              <Form.Select
-                required
-                name="role"
-                onChange={handleChangeRole}
-              >
-                <option>{user.role}</option>
-                {
-                  allUniformRoles.map((role, idx) => (
-                    <option key={idx} value={role.role} style={{ textTransform: "capitalize" }}>
-                      {role.role}
-                    </option>))
-                }
-                <option key="other role">
-                  other role
-                </option>
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Please Select your Role.{" "}
-              </Form.Control.Feedback>
             </Form.Group>
             {userRole === "other role" && <Form.Group className="mb-3" controlId="formBasicOtherRole">
               <Form.Label>User Role</Form.Label>

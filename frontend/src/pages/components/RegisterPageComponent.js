@@ -15,7 +15,6 @@ const RegisterPageComponent = ({
   registerUserApiRequest,
   reduxDispatch,
   setReduxUserState,
-  getAllUniformRole,
   getAlldeliveryBooks
 }) => {
   const [validated, setValidated] = useState(false);
@@ -37,7 +36,6 @@ const RegisterPageComponent = ({
   const [selectedSites, setSelectedSites] = useState({})
   const [abnNum, setAbnNum] = useState("")
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
-  const [allUniformRoles, setAllUniformRoles] = useState([]);
   const [deliveryBookData, setDeliveryBookData] = useState();
   const [userSites, setUserSites] = useState([])
 
@@ -60,37 +58,19 @@ const RegisterPageComponent = ({
     })
   }, [])
 
-
-  useEffect(() => {
-    getAllUniformRole()
-      .then((data) => {
-        const updatedRoles = data.filter(role => role.role !== "other role");
-        setAllUniformRoles(updatedRoles)
-      })
-
-      .catch((er) => console.log(er));
-  }, []);
-
   const isValidEmail = (email) => {
     const emailDomain = email.split('@')[1];
-    console.log(emailDomain);
-
     const isAllowedEmail = userSites.some((site) => {
       const allowedDomains = site.emailHost.split('/');
-
       return allowedDomains.some(domain => emailDomain.endsWith(domain));
     });
-
     return !isAllowedEmail
   };
 
-
   const setUserDetails = (emailHost) => {
     const emailDomain = emailHost.toLowerCase();
-
     const userCompany = userSites.find((site) => {
       const allowedDomains = site.emailHost.toLowerCase().split('/');
-
       return allowedDomains.some((domain) => emailDomain.endsWith(domain));
     });
 
@@ -110,7 +90,6 @@ const RegisterPageComponent = ({
     }
   };
 
-
   // submit form
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -123,16 +102,11 @@ const RegisterPageComponent = ({
     const phone = form.phone.value;
     const mobile = form.phone.value;
     const location = userLocation;
-    //const company = form.company?.value.toUpperCase();
     const company = userCompany;
     const role = userRole === "other role" ? otherRole : userRole;
     const deliveryAddress = "new user";
     const billAddress = "new user";
-    //TODO if need deliveryAddress again, change the value from location to deliveryAddress.
-    //const state = form.state.value;
-    //const postCode = form.postCode.value;
     const abn = abnNum;
-    /* 下面是一些form里面的判定 validation的判定 */
     if ((location === "") && (company !== "")) {
       alert("Please Select Your Site")
     } else if (
@@ -148,8 +122,6 @@ const RegisterPageComponent = ({
       role &&
       deliveryAddress &&
       billAddress &&
-      //state &&
-      //postCode &&
       form.password.value === form.confirmPassword.value &&
       abn
     ) {
@@ -167,26 +139,18 @@ const RegisterPageComponent = ({
         role,
         deliveryAddress,
         billAddress,
-        //state,
-        //postCode,
         abn
       )
         .then((data) => {
-          /* 如果data success了，那就set spinner false */
           setRegisterUserResponseState({
             success: data.success,
             loading: false,
             userCreated: data.userCreated
           });
           reduxDispatch(setReduxUserState(data.userCreated));
-
-          // Check if the user's email ends with "@slrltd.com"
           if (isValidEmail(email)) {
-            // If not, redirect to the /unfortunately page
             window.location.href = "/unfortunately";
           } else {
-            // If yes, clear the form fields
-            console.log("I am here");
             setUserCompany("")
             setUserLocation("")
             setSelectedSites(userSites[0])
@@ -200,15 +164,6 @@ const RegisterPageComponent = ({
             form.abn.value = "";
             setValidated(false);
             setEmailSent(true);
-            console.log("I am here");
-            //window.close()
-            // setTimeout(() => {
-            //   console.log("timeOut");
-
-            //   setShow(false)
-            //   window.location.href = "/?Register=true";
-            //   //setAfterRegister(true)
-            // }, 7000);
           }
         })
         // incase some error写一个catch error的function
@@ -223,15 +178,9 @@ const RegisterPageComponent = ({
     } else {
       console.log("Something wrong");
     }
-
     setValidated(true);
   };
 
-  // useEffect(() => {
-  //   getAlldeliveryBooks().then((data) => {
-  //     console.log("data", data);
-  //   })
-  // }, [])
 
   /* **************** Show Password **************** */
   const [showPassword, setShowPassword] = useState(false);
@@ -246,7 +195,6 @@ const RegisterPageComponent = ({
     setShowLocation(false);
   };
   const handleEmail = (e) => {
-    //selectedSites.length = 0
     const email = e.target.value
     if (email === "" || email === null) {
       setShow(false);
@@ -269,22 +217,6 @@ const RegisterPageComponent = ({
     const newValue = e.target.value;
     setAbnNum(newValue);
   };
-
-
-  // const handleSelectedSites = (company) => {
-  //   var siteList = []
-  //   userSites.map((site, idx) => {
-  //     if (site.company?.toUpperCase() === company?.toUpperCase()) {
-  //       site.sites.map((data, index) => {
-  //         console.log(data);
-  //         siteList.push({ "index": index, "value": data })
-  //       })
-  //       console.log(siteList);
-  //       setSelectedSites([{ ...siteList }])
-  //     }
-  //   })
-  //   setSelectedSites([selectedSites[0]])
-  // }
 
   const handleChangeLocation = (e) => {
     setUserLocation(e.target.value)
@@ -318,7 +250,7 @@ const RegisterPageComponent = ({
             >
               <Row className="mb-3">
                 <Form.Group as={Col} md="6" controlId="validationCustom01">
-                <Form.Label>First name</Form.Label>
+                  <Form.Label>First name</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -332,7 +264,7 @@ const RegisterPageComponent = ({
                 </Form.Group>
 
                 <Form.Group as={Col} md="6" controlId="formBasicLastName">
-                <Form.Label>Last name</Form.Label>
+                  <Form.Label>Last name</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -346,10 +278,9 @@ const RegisterPageComponent = ({
               </Row>
               <Row>
                 <Form.Group as={Col} md="6" controlId="formBasicEmail">
-                <Form.Label>Email</Form.Label>
+                  <Form.Label>Email</Form.Label>
 
                   <InputGroup hasValidation>
-                    {/* <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text> */}
                     <Form.Control
                       type="text"
                       name="email"
@@ -380,19 +311,6 @@ const RegisterPageComponent = ({
                     Please enter phone number.{" "}
                   </Form.Control.Feedback>
                 </Form.Group>
-                {/* <Form.Group as={Col} md="4" controlId="formBasicRole">
-                <Form.Control
-                  required
-                  type="text"
-                  name="role"
-                  placeholder="Job Title"
-                  style={{ display: "none" }}
-                  value="Employee"
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please mention your Job Title.{" "}
-                </Form.Control.Feedback>
-              </Form.Group> */}
                 <Form.Group as={Col} md="4" controlId="formBasicMobile">
                   <Form.Control
                     required
@@ -463,7 +381,7 @@ const RegisterPageComponent = ({
               </Row>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+                <Form.Label>Password</Form.Label>
                 <Form.Control
                   name="password"
                   required
@@ -472,7 +390,6 @@ const RegisterPageComponent = ({
                   minLength={6}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-
                 <Form.Control.Feedback type="invalid">
                   Please enter a valid password
                 </Form.Control.Feedback>
@@ -481,7 +398,7 @@ const RegisterPageComponent = ({
                 </Form.Text>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPasswordRepeat">
-              <Form.Label>Confirm Password</Form.Label>
+                <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   name="confirmPassword"
                   required
@@ -496,7 +413,6 @@ const RegisterPageComponent = ({
                   Both passwords should match
                 </Form.Control.Feedback>
               </Form.Group>
-
               <Form.Group className="mb-3">
                 <Form.Check
                   type="checkbox"
@@ -504,14 +420,13 @@ const RegisterPageComponent = ({
                   onChange={(e) => setShowPassword(e.target.checked)}
                 />
               </Form.Group>
-
               <Row></Row>
 
               {show ? (
                 <>
                   <Row className="mb-3" >
                     <Form.Group as={Col} md="6" controlId="formBasicCompany">
-                    <Form.Label>Company</Form.Label>
+                      <Form.Label>Company</Form.Label>
                       <InputGroup hasValidation>
                         <Form.Control
                           type="text"
@@ -529,7 +444,7 @@ const RegisterPageComponent = ({
                     </Form.Group>
 
                     <Form.Group as={Col} md="6" controlId="formBasicLocation">
-                    <Form.Label>Location</Form.Label>
+                      <Form.Label>Location</Form.Label>
                       <Form.Select
                         required
                         name="location"
@@ -546,29 +461,6 @@ const RegisterPageComponent = ({
                       </Form.Select>
                     </Form.Group>
 
-                    <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
-                    <Form.Label>Role</Form.Label>
-                      <Form.Select
-                        required
-                        name="role"
-                        onChange={handleChangeRole}
-                        style={{ textTransform: "capitalize" }}
-                      >
-                        <option>--Select Role--</option>
-                        {
-                          allUniformRoles.map((role, idx) => (
-                            <option key={idx} value={role.role} style={{ textTransform: "capitalize" }}>
-                              {role.role}
-                            </option>))
-                        }
-                        <option key="other role">
-                          Other Role
-                        </option>
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        Please Select your Role.{" "}
-                      </Form.Control.Feedback>
-                    </Form.Group>
                     {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
                       <Form.Control
                         required
@@ -588,7 +480,7 @@ const RegisterPageComponent = ({
                 <>
                   <Row className="mb-3" >
                     <Form.Group as={Col} md="6" controlId="formBasicCompany">
-                      
+
                       <InputGroup hasValidation>
                         <Form.Control
                           type="text"
@@ -628,32 +520,32 @@ const RegisterPageComponent = ({
 
               {showAbn ? (
                 <>
-                 <Form.Label>ABN</Form.Label>
-                <Form.Group as={Col} md="6" controlId="formBasicAbn">
-                  <MaskedInput
-                    mask={abnMask}
-                    placeholder="ABN"
-                    guide={false}
-                    value={abnNum}
-                    onChange={handleAbn}
-                    render={(ref, props) => <Form.Control
-                      required
-                      minLength={14}
-                      maxLength={14}
-                      type="text"
-                      name="abn"
-                      ref={ref}
-                      {...props}
-                    />}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please enter ABN.
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  <Form.Label>ABN</Form.Label>
+                  <Form.Group as={Col} md="6" controlId="formBasicAbn">
+                    <MaskedInput
+                      mask={abnMask}
+                      placeholder="ABN"
+                      guide={false}
+                      value={abnNum}
+                      onChange={handleAbn}
+                      render={(ref, props) => <Form.Control
+                        required
+                        minLength={14}
+                        maxLength={14}
+                        type="text"
+                        name="abn"
+                        ref={ref}
+                        {...props}
+                      />}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please enter ABN.
+                    </Form.Control.Feedback>
+                  </Form.Group>
                 </>
               ) : ("")}
 
-    
+
               <br />
               <Button type="submit" className="mb-3 loginBtn ">
                 {registerUserResponseState &&
@@ -679,20 +571,16 @@ const RegisterPageComponent = ({
               >
                 User with that email already exists!
               </Alert>
-
-             
             </Form>
           </Col>
-
           :
-
           <Alert
             show={
               registerUserResponseState &&
               registerUserResponseState.success === "User created"
             }
             variant="info"
-  
+
           >
             A verification email has been sent to your registered email
             address. Please make sure to check your junk/spam folder as well.

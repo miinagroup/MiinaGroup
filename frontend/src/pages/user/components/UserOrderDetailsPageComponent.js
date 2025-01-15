@@ -461,79 +461,65 @@ const UserOrderDetailsPageComponent = ({
               <ListGroup.Item className="p-1 ps-2">
                 <h3>ORDER SUMMARY</h3>
               </ListGroup.Item>
-              {
-                (orderNote === "Uniform") ? ("") : (
-                  <>
-                    <ListGroup.Item className="p-1 ps-2">
-                      Item Price:{" "}
-                      <span className="fw-bold float-end"> $ {taxAmount ? orderNetAmount : nonGSTPrice}</span>
-                    </ListGroup.Item>
-                    <ListGroup.Item className="p-1 ps-2">
-                      Total GST <span className="fw-bold float-end">$ {taxAmount ? TAX : GST}</span>
-                    </ListGroup.Item>
-                    <ListGroup.Item className="p-1 ps-2">
-                      Invoice Amount:{" "}
-                      <span className="fw-bold text-danger float-end">
-                        $ {incGSTPrice}
-                      </span>
-                    </ListGroup.Item>
-                  </>
-                )
-              }
-
+              <ListGroup.Item className="p-1 ps-2">
+                Item Price:{" "}
+                <span className="fw-bold float-end"> $ {taxAmount ? orderNetAmount : nonGSTPrice}</span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2">
+                Total GST <span className="fw-bold float-end">$ {taxAmount ? TAX : GST}</span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2">
+                Invoice Amount:{" "}
+                <span className="fw-bold text-danger float-end">
+                  $ {incGSTPrice}
+                </span>
+              </ListGroup.Item>
               <ListGroup.Item className="p-1 ps-2">
                 PO Number: <span className="fw-bold">{purchaseNumber}</span>
               </ListGroup.Item>
 
               <ListGroup.Item className="p-1 ps-2">
                 <Row>
-                  {
-                    (orderNote === "Uniform") ? ("") :
-                      (
-                        <>
-                          <Col>
-                            <div>
-                              <Button
-                                onClick={handleReorderClick}
-                                className="button-shadow p-0 pe-2 ps-2 m-0"
-                                variant="success"
-                              >
-                                Re-Order
-                              </Button>
-                              <Modal
-                                show={showConfirmation}
-                                onHide={closeModal}
-                                className="Re_Order_Modal"
-                              >
-                                <Modal.Header className="p-0 m-2 mb-0" closeButton>
-                                  <span className="fw-bold p-0 m-0">Confirmation</span>
-                                </Modal.Header>
-                                <Modal.Body className="p-2 pt-0">
-                                  Some items already in your cart! Do you want to empty
-                                  your cart before re-ordering?
-                                </Modal.Body>
-                                <Modal.Footer className="p-0 d-flex justify-content-between">
-                                  <Button
-                                    variant="success"
-                                    onClick={() => handleConfirmationClose(true)}
-                                    className="ms-5 p-0 pe-1 ps-1 button-shadow"
-                                  >
-                                    Empty Cart
-                                  </Button>
-                                  <Button
-                                    variant="secondary"
-                                    onClick={() => handleConfirmationClose(false)}
-                                    className="me-5 p-0 pe-1 ps-1 button-shadow"
-                                  >
-                                    Keep Cart Items
-                                  </Button>
-                                </Modal.Footer>
-                              </Modal>
-                            </div>
-                          </Col>
-                        </>
-                      )
-                  }
+                  <Col>
+                    <div>
+                      <Button
+                        onClick={handleReorderClick}
+                        className="button-shadow p-0 pe-2 ps-2 m-0"
+                        variant="success"
+                      >
+                        Re-Order
+                      </Button>
+                      <Modal
+                        show={showConfirmation}
+                        onHide={closeModal}
+                        className="Re_Order_Modal"
+                      >
+                        <Modal.Header className="p-0 m-2 mb-0" closeButton>
+                          <span className="fw-bold p-0 m-0">Confirmation</span>
+                        </Modal.Header>
+                        <Modal.Body className="p-2 pt-0">
+                          Some items already in your cart! Do you want to empty
+                          your cart before re-ordering?
+                        </Modal.Body>
+                        <Modal.Footer className="p-0 d-flex justify-content-between">
+                          <Button
+                            variant="success"
+                            onClick={() => handleConfirmationClose(true)}
+                            className="ms-5 p-0 pe-1 ps-1 button-shadow"
+                          >
+                            Empty Cart
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            onClick={() => handleConfirmationClose(false)}
+                            className="me-5 p-0 pe-1 ps-1 button-shadow"
+                          >
+                            Keep Cart Items
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                    </div>
+                  </Col>
                   <Col>
                     <Button
                       className="p-0 pe-2 ps-2 m-0 button-shadow"
@@ -550,15 +536,11 @@ const UserOrderDetailsPageComponent = ({
             <ListGroup className="pt-3">
               <ListGroup.Item className="p-1 ps-2">
                 <b>Order Note:</b> {orderNote ? null : "N/A"}
-                {
-                  (orderNote === "Uniform") ? ("") : (
-                    <i
-                      onClick={handleShow}
-                      className="bi bi-pencil-square"
-                      style={{ cursor: "pointer" }}
-                    ></i>
-                  )
-                }
+                <i
+                  onClick={handleShow}
+                  className="bi bi-pencil-square"
+                  style={{ cursor: "pointer" }}
+                ></i>
               </ListGroup.Item>
               {orderNote ? (
                 <ListGroup.Item className="p-1 ps-2">{orderNote}</ListGroup.Item>
@@ -847,7 +829,7 @@ const UserOrderDetailsPageComponent = ({
                         alt="s"
                       />
                       {/* <div>PRODUCTS</div> */}
-                      <a href={`/uniform-details/${item.productId}`} className={styles.orderDetailPageMobileProductName} >
+                      <a href={`/product-details/${item.productId}`} className={styles.orderDetailPageMobileProductName} >
                         <strong className="text-uppercase" style={{ color: "#1E4881" }}>
                           {item.name}
                         </strong>
@@ -855,34 +837,16 @@ const UserOrderDetailsPageComponent = ({
                     </div>
 
                     <div className={styles.orderDetailPageMobileDataProduct}>
-
-                      {
-                        (item.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) ? (
-                          <>
-                            <p className="m-0">
-                              Item:{" "}
-                              <span className="fw-bold">{item.cartProducts[0].attrs.split("/")[1]}</span>
-                            </p>
-                            <p className="m-0">
-                              Variant:{" "}
-                              <span className="fw-bold">{item.cartProducts[0].color + " (" + item.cartProducts[0].size + ")"}</span>
-                            </p>
-                          </>
-                        ) : (
-                          <>
-                            <p className="m-0">
-                              Item:{" "}
-                              <span className="fw-bold">{item.cartProducts[0].attrs}</span>
-                            </p>
-                            <p className="m-0">
-                              Unit Price: $
-                              <span className="fw-bold">
-                                {itemPrice}
-                              </span>
-                            </p>
-                          </>
-                        )
-                      }
+                      <p className="m-0">
+                        Item:{" "}
+                        <span className="fw-bold">{item.cartProducts[0].attrs}</span>
+                      </p>
+                      <p className="m-0">
+                        Unit Price: $
+                        <span className="fw-bold">
+                          {itemPrice}
+                        </span>
+                      </p>
                     </div>
                   </div>
                   <div className={styles.orderDetailPageMobileProductItemQuantity}>
@@ -923,79 +887,65 @@ const UserOrderDetailsPageComponent = ({
           <ListGroup.Item>
             <h5>ORDER SUMMARY</h5>
           </ListGroup.Item>
-          {
-            (orderNote === "Uniform") ? ("") : (
-              <>
-                <ListGroup.Item className="p-1 ps-2">
-                  Item Price:{" "}
-                  <span className="fw-bold float-end"> $ {taxAmount ? orderNetAmount : nonGSTPrice}</span>
-                </ListGroup.Item>
-                <ListGroup.Item className="p-1 ps-2">
-                  Total GST <span className="fw-bold float-end">$ {taxAmount ? TAX : GST}</span>
-                </ListGroup.Item>
-                <ListGroup.Item className="p-1 ps-2">
-                  Invoice Amount:{" "}
-                  <span className="fw-bold text-danger float-end">
-                    $ {incGSTPrice}
-                  </span>
-                </ListGroup.Item>
-              </>
-            )
-          }
-
+          <ListGroup.Item className="p-1 ps-2">
+            Item Price:{" "}
+            <span className="fw-bold float-end"> $ {taxAmount ? orderNetAmount : nonGSTPrice}</span>
+          </ListGroup.Item>
+          <ListGroup.Item className="p-1 ps-2">
+            Total GST <span className="fw-bold float-end">$ {taxAmount ? TAX : GST}</span>
+          </ListGroup.Item>
+          <ListGroup.Item className="p-1 ps-2">
+            Invoice Amount:{" "}
+            <span className="fw-bold text-danger float-end">
+              $ {incGSTPrice}
+            </span>
+          </ListGroup.Item>
           <ListGroup.Item className="p-1 ps-2">
             PO Number: <span className="fw-bold">{purchaseNumber}</span>
           </ListGroup.Item>
 
           <ListGroup.Item className="p-1 ps-2">
             <Row>
-              {
-                (orderNote === "Uniform") ? ("") :
-                  (
-                    <>
-                      <Col>
-                        <div>
-                          <Button
-                            onClick={handleReorderClick}
-                            className={styles.reorderBtn}
-                            variant="success"
-                          >
-                            Re-Order
-                          </Button>
-                          <Modal
-                            show={showConfirmation}
-                            onHide={closeModal}
-                            className="Re_Order_Modal"
-                          >
-                            <Modal.Header className="p-0 m-2 mb-0" closeButton>
-                              <span className="fw-bold p-0 m-0">Confirmation</span>
-                            </Modal.Header>
-                            <Modal.Body className="p-2 pt-0">
-                              Some items already in your cart! Do you want to empty
-                              your cart before re-ordering?
-                            </Modal.Body>
-                            <Modal.Footer className="p-0 d-flex justify-content-between">
-                              <Button
-                                variant="success"
-                                onClick={() => handleConfirmationClose(true)}
-                                className="ms-5 p-0 pe-1 ps-1 button-shadow"
-                              >
-                                Empty Cart
-                              </Button>
-                              <Button
-                                variant="secondary"
-                                onClick={() => handleConfirmationClose(false)}
-                                className={styles.reorderBtn}
-                              >
-                                Keep Cart Items
-                              </Button>
-                            </Modal.Footer>
-                          </Modal>
-                        </div>
-                      </Col>
-                    </>
-                  )
-              }
+              <Col>
+                <div>
+                  <Button
+                    onClick={handleReorderClick}
+                    className={styles.reorderBtn}
+                    variant="success"
+                  >
+                    Re-Order
+                  </Button>
+                  <Modal
+                    show={showConfirmation}
+                    onHide={closeModal}
+                    className="Re_Order_Modal"
+                  >
+                    <Modal.Header className="p-0 m-2 mb-0" closeButton>
+                      <span className="fw-bold p-0 m-0">Confirmation</span>
+                    </Modal.Header>
+                    <Modal.Body className="p-2 pt-0">
+                      Some items already in your cart! Do you want to empty
+                      your cart before re-ordering?
+                    </Modal.Body>
+                    <Modal.Footer className="p-0 d-flex justify-content-between">
+                      <Button
+                        variant="success"
+                        onClick={() => handleConfirmationClose(true)}
+                        className="ms-5 p-0 pe-1 ps-1 button-shadow"
+                      >
+                        Empty Cart
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleConfirmationClose(false)}
+                        className={styles.reorderBtn}
+                      >
+                        Keep Cart Items
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </div>
+              </Col>
               <Col>
                 <Button
                   className={styles.reorderBtn}
@@ -1013,15 +963,11 @@ const UserOrderDetailsPageComponent = ({
         <ListGroup className={styles.UserOrderDetailsPageComponentSummary}>
           <ListGroup.Item className="p-1 ps-2">
             <b>Order Note:</b> {orderNote ? null : "N/A"}
-            {
-              (orderNote === "Uniform") ? ("") : (
-                <i
-                  onClick={handleShow}
-                  className="bi bi-pencil-square"
-                  style={{ cursor: "pointer" }}
-                ></i>
-              )
-            }
+            <i
+              onClick={handleShow}
+              className="bi bi-pencil-square"
+              style={{ cursor: "pointer" }}
+            ></i>
           </ListGroup.Item>
           {orderNote ? (
             <ListGroup.Item className="p-1 ps-2">{orderNote}</ListGroup.Item>
@@ -1276,8 +1222,6 @@ const UserOrderDetailsPageComponent = ({
         </div>
       </div>
     </>
-
-
   );
 };
 

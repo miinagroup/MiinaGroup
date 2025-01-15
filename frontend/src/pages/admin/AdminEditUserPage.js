@@ -28,10 +28,6 @@ const AdminEditUserPage = () => {
     location,
     isSales,
     isMarketing,
-    // isDeveloper,
-    // isSuperAdmin,
-    // isVIP,
-    // isCreditVerified,
     accounts,
     abn,
     role
@@ -52,10 +48,6 @@ const AdminEditUserPage = () => {
       location,
       isSales,
       isMarketing,
-      // isDeveloper,
-      // isSuperAdmin,
-      // isVIP,
-      // isCreditVerified,
       accounts,
       abn,
       role
@@ -65,30 +57,10 @@ const AdminEditUserPage = () => {
     return data;
   };
 
-  const updateUniformCart = async () => {
-    const { data } = await axios.get("/api/uniformCarts/admin");
-    return data;
-  }
-
-  const getAllUniformRole = async () => {
-    const { data } = await axios.get("/api/uniformRoles");
-    return data;
-  }
-
-  const handleUniformCart = async (userId, userData) => {
-    try {
-      const userData1 = userData[0]
-      const updateResponse = await axios.put(`/api/uniformCarts/admin/${userId}`, { userData1 });
-    } catch (error) {
-      console.error("Error fetching data", error);
-    }
-  }
-
   return (
     <EditUserPageComponent
       updateUserApiRequest={updateUserApiRequest}
       fetchUser={fetchUser}
-      getAllUniformRole={getAllUniformRole}
     />
   );
 };

@@ -62,12 +62,6 @@ const productSchema = mongoose.Schema(
           type: Number,
           default: 0,
         },
-        QuickBooksItemID: {
-          type: String,
-          required: false,
-        },
-        // slrsku: { type: String, required: false },
-        // clientsSku: { type: [clientSkuSchema], required: false }
       },
     ],
     availability: [{

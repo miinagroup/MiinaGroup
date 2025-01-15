@@ -40,7 +40,6 @@ const ProductForListComponent = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [userNameEmail, setUserNameEmail] = useState();
   const [quoteData, setQuoteData] = useState();
-  const [isUniform, setIsUniform] = useState(false);
 
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -56,17 +55,6 @@ const ProductForListComponent = ({
     setShowLoginModal(true);
     setModalType(type);
   };
-
- 
-
-  //check for uniform content in cart
-  useEffect(() => {
-    cartItems?.map((items) => {
-      if (items.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) {
-        setIsUniform(true)
-      }
-    })
-  }, [cartItems])
 
   useEffect(() => {
     if (product?.saleunit) {
@@ -311,22 +299,8 @@ const ProductForListComponent = ({
             </div>}
           </div>
         </a>
-        {
-          isUniform ? (
-            <OverlayTrigger
-              delay={{ hide: 450, show: 200 }}
-              overlay={(props) => (
-                <Tooltip {...props} >
-                  To Enable Add to Cart,<br /> Please Complete Existing Cart <br />( OR )<br /> Empty Your Cart
-                </Tooltip>
-              )}
-              placement="bottom"
-            ><i class="bi bi-exclamation-circle-fill fa-lg" style={{ cursor: "pointer", color: "orange", paddingLeft: "89%", position: "absolute", bottom: "10%", zIndex: 1 }}></i>
-            </OverlayTrigger>
-          ) : ("")
-        }
 
-        {!isUserInfo && 
+        {!isUserInfo &&
           <>
             <div className="container">
               <div className="row btn-group justify-content-center">
@@ -340,7 +314,7 @@ const ProductForListComponent = ({
                     onBlur={handleBlur}
                     onChange={(e) => setQty(e.target.value)}
                     step={saleunit}
-                    disabled={price === 0 || isUniform}
+                    disabled={price === 0}
                   />
                 </div>
                 <div className="col-6 w-50">
@@ -350,7 +324,7 @@ const ProductForListComponent = ({
                         id="dropdown-item-button"
                         title={buttonText}
                         drop="up"
-                        disabled={price === 0 || isUniform}
+                        disabled={price === 0}
                       >
                         {stock && stock.length !== 1
                           ? stock.map((stk) => (
@@ -374,7 +348,7 @@ const ProductForListComponent = ({
                         className="CTL_btn"
                         value={stock[0].attrs}
                         onClick={handleProductChange}
-                        disabled={price === 0 || isUniform}
+                        disabled={price === 0}
                       >
                         {buttonText}
                       </Button>
@@ -384,7 +358,7 @@ const ProductForListComponent = ({
               </div>
             </div>
           </>
-  }
+        }
       </div>
       {/* </div> */}
       {/* </div> */}

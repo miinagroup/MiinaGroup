@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
 
-// const clientSkuSchema = new mongoose.Schema({
-//   name: { type: String, required: true, unique: true },
-//   number: { type: String, required: true }
-// });
-
 const cartSchema = new mongoose.Schema(
   {
     userId: {
@@ -12,14 +7,7 @@ const cartSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    uniformUserId: {
-      type: String,
-      required: false,
-    },
-    uniformUserName: {
-      type: String,
-      required: false,
-    },
+
     cartItems: [
       {
         productId: { type: String, required: false },
@@ -39,15 +27,9 @@ const cartSchema = new mongoose.Schema(
             ctlsku: { type: String, required: false },
             suppliersku: { type: String, required: false },
             attrs: { type: String, required: false },
-            // slrsku: { type: String, required: false },
             category: { type: String, required: false },
             size: { type: String, required: false },
-            color: { type: String, required: false },
-            // clientsSku: { type: [clientSkuSchema], required: false },
-            // currentClientSku: {
-            //   name: { type: String, required: false, unique: true },
-            //   number: { type: String, required: false }
-            // }
+            color: { type: String, required: false }
           },
         ],
       },
@@ -57,5 +39,4 @@ const cartSchema = new mongoose.Schema(
 );
 
 const Cart = mongoose.model("Cart", cartSchema);
-
 module.exports = Cart;

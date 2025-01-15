@@ -38,9 +38,7 @@ const ProductDetailsPageComponent = ({
   getProductDetails,
   getUser,
   createQuote,
-  // clientUpdateSku,
   addToPOCartHandler,
-  // clientsSkuList
 }) => {
   const { id } = useParams();
   const [showCartMessage, setShowCartMessage] = useState(false);
@@ -54,20 +52,15 @@ const ProductDetailsPageComponent = ({
   const [userData, setUserData] = useState([]);
   const [quoteData, setQuoteData] = useState();
   const [edit, setEdit] = useState(false);
-  // const [changedClientSKU, setChangedClientSKU] = useState("");
   const [brandSearch, setBrandSearch] = useState("");
   const navigate = useNavigate();
-
-  // const [clientSKU, setClientSKU] = useState('');
   const [stockPrice, setStockPrice] = useState('');
   const [stockCode, setstockCode] = useState('');
   const [supplierCode, setsupplierCode] = useState('');
   const [stockLevel, setStockLevel] = useState(0)
-  // const [clientSkuName, setClientSkuName] = useState('');
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const [isUserInfo, setIsUserInfo] = useState(Object.keys(userInfo).length === 0);
   const [modalType, setModalType] = useState("LoginForm")
-
   const [showLoginModal, setShowLoginModal] = useState(false);
   const handleCloseLoginModal = () => {
     setShowLoginModal(false);
@@ -77,8 +70,6 @@ const ProductDetailsPageComponent = ({
     setModalType(type);
     setShowLoginModal(true);
   };
-  //check for uniform content in cart
-  const [isUniform, setIsUniform] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems);
   ;
   //categories
@@ -89,14 +80,6 @@ const ProductDetailsPageComponent = ({
   }, [dispatch]);
 
   const { categories } = useSelector((state) => state.getCategories);
-
-  useEffect(() => {
-    cartItems?.map((items) => {
-      if (items.cartProducts[0].attrs.toUpperCase().includes("UNIFORM/")) {
-        setIsUniform(true)
-      }
-    })
-  }, [cartItems])
 
   var displayTable = [];
   var tableHeadings = [
@@ -119,10 +102,6 @@ const ProductDetailsPageComponent = ({
     "TECHNICAL DETAILS",
   ];
 
-  // var trackData = localStorage.getItem("trackData")
-  // console.log("trackData", trackData);
-
-  // 当product state update的时候，重置一下setQty
   useEffect(() => {
     if (product.saleunit) {
       setQty(product.saleunit);
@@ -148,7 +127,6 @@ const ProductDetailsPageComponent = ({
               key === "suppliersku" ||
               key === "ctlsku" ||
               key === "sales" ||
-              key === "QuickBooksItemID" ||
               key === siteSku
             ) {
               acc[key] = singleStockItem[key];
@@ -190,7 +168,6 @@ const ProductDetailsPageComponent = ({
               key === "suppliersku" ||
               key === "ctlsku" ||
               key === "sales" ||
-              key === "QuickBooksItemID" ||
               key === siteSku
             ) {
               acc[key] = stockItem[key];
@@ -246,7 +223,6 @@ const ProductDetailsPageComponent = ({
         )
       );
   }, [edit, id]);
-  //console.log(product);
 
   // 如果直接用toLocaleString() 报错的话，可能是value undefined了，那就format一下price， 然后再加上 toLocaleString
   const price = stockPrice;
@@ -920,24 +896,11 @@ const ProductDetailsPageComponent = ({
                               className="CTL_btn btn-ripple addTocartBtn"
                               disabled={
                                 selectedProduct === "Please-Select" ||
-                                buttonText !== "Add to cart" ||
-                                isUniform
+                                buttonText !== "Add to cart"
                               }
                             >
                               {buttonText}
                             </Button>&nbsp;
-                            {isUniform ? (
-                              <OverlayTrigger
-                                delay={{ hide: 450, show: 200 }}
-                                overlay={(props) => (
-                                  <Tooltip {...props} >
-                                    To Enable Add To Cart Button, Please Complete Uniform Ordering <br />( OR )<br /> Empty Your Cart
-                                  </Tooltip>
-                                )}
-                                placement="bottom"
-                              ><i class="bi bi-exclamation-circle-fill fa-lg" style={{ color: "orange" }}></i>
-                              </OverlayTrigger>
-                            ) : ("")}
                           </Col>
                         </>
                       )}
