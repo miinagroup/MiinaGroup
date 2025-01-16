@@ -40,12 +40,10 @@ const ProductForListComponent = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [userNameEmail, setUserNameEmail] = useState();
   const [quoteData, setQuoteData] = useState();
-
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [isUserInfo, setIsUserInfo] = useState(Object.keys(userInfo).length === 0);
   const [modalType, setModalType] = useState("LoginForm")
-
   const [showLoginModal, setShowLoginModal] = useState(false);
   const handleClose = () => {
     setShowLoginModal(false);
@@ -192,8 +190,6 @@ const ProductForListComponent = ({
   })
   return (
     <>
-      {/* <div className="product-block"> */}
-      {/* <div className="mb-2"> */}
       <div className="product-block card mt-0 mb-3 mx-2">
         <div
           className="bg-image hover-zoom ripple img_hovf"
@@ -248,7 +244,6 @@ const ProductForListComponent = ({
           {userInfo.isAdmin ? (
             <>
               <div className="Preview_Update_Div">
-                {/* <text className="Preview_Update_Text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></text> */}
                 <select
                   className="Preview_Update_Button"
                   onChange={updateProductCategory}
@@ -266,7 +261,6 @@ const ProductForListComponent = ({
                   })}
                 </select>
               </div>
-              {/* <div style={{ position:"absolute", bottom:"40%", fontWeight:"bold" }}>sort order: {sortOrder}</div> */}
             </>
           ) : (
             ""
@@ -358,8 +352,6 @@ const ProductForListComponent = ({
           </>
         }
       </div>
-      {/* </div> */}
-      {/* </div> */}
       <Modal
         show={showModal}
         onHide={toggleModal}

@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import qs from "qs";
 import "./Filter.css";
@@ -27,7 +26,6 @@ const FilterComponent = () => {
   }, [])
 
   const categories = useSelector((state) => state.getCategories.categories);
-
   const mainCategory = [
     {
       label: "PPE",
@@ -51,15 +49,12 @@ const FilterComponent = () => {
 
   useEffect(() => {
     let subCategories = {};
-
     const mainLinks = mainCategory.map((category) => category.link); // extract links for validation
-
     categories?.forEach((category) => {
       // Only process this category if display is true
       if (!category.display) {
         return;
       }
-
       const parts = category.name.split("/");
 
       // Only process categories if they belong to the predefined main categories links
@@ -74,12 +69,13 @@ const FilterComponent = () => {
         }
       }
     });
-
     setSubCategory(subCategories);
   }, [categories]);
 
   const location = useLocation();
   const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const queryMainLink = query.categoryPath.split("/")[0]
+  const querySubLink = query.categoryPath.split("/")[1]
 
   return (
     <div className="accordion_container">
@@ -92,7 +88,6 @@ const FilterComponent = () => {
                 data-bs-toggle="collapse"
                 href={`#collapse${idx}`}
                 aria-expanded="true"
-                
               >
                 {main.label}
               </a>
@@ -100,7 +95,7 @@ const FilterComponent = () => {
             <div
               id={`collapse${idx}`}
               className={
-                query.categoryName === `${main.link}`
+                queryMainLink === `${main.link}`
                   ? "collapse show"
                   : "collapse"
               }
@@ -109,17 +104,16 @@ const FilterComponent = () => {
               <div className="accordion-body">
                 {subCategory[main.link]?.map((sub, index) => {
                   return (
-
                     <li
                       key={`${sub}-${index}`}
                       className={
-                        query.subCategoryName === sub
+                        querySubLink === sub
                           ? "activeLabel subCatFilter"
                           : "subCatFilter"
                       }
                     >
                       <a
-                        href={`/product-list?categoryName=${main.link}&subCategoryName=${sub}`}
+                        href={`/product-list?categoryPath=${main.link}/${sub}`}
                       >
                         {sub.replace(/-/g, " ").replace(/_/g, " & ")}
                       </a>

@@ -5,62 +5,12 @@ import "../pages/general.css";
 
 const ProductCategoriesComponent = ({
   category,
-  categoryName,
-  subCat,
-  childCat,
-  fourCat,
-  fiveCat,
-  sixCat,
-  sevenCat
+  categoryPath
 }) => {
   const onHover = {
     cursor: "pointer",
   };
-
-  let baseCategory = `categoryName=${categoryName}`;
-  if (!subCat) {
-    if (!childCat) {
-      baseCategory += `&subCategoryName=${category}`;
-    } else {
-      return baseCategory;
-    }
-  }
-  if (subCat) {
-    if (!childCat) {
-      baseCategory += `&subCategoryName=${subCat}&childCategoryName=${category}`;
-    } else {
-      baseCategory += `&subCategoryName=${subCat}`;
-    }
-  }
-  if (childCat) {
-    if (!fourCat) {
-      baseCategory += `&childCategoryName=${childCat}&fourCategoryName=${category}`;
-    } else {
-      baseCategory += `&childCategoryName=${childCat}`;
-    }
-  }
-  if (fourCat) {
-    if (!fiveCat) {
-      baseCategory += `&fourCategoryName=${fourCat}&fiveCategoryName=${category}`;
-    } else {
-      baseCategory += `&fourCategoryName=${fourCat}`;
-    }
-  }
-  if (fiveCat) {
-    if (!sixCat) {
-      baseCategory += `&fiveCategoryName=${fiveCat}&sixCategoryName=${category}`;
-    } else {
-      baseCategory += `&fiveCategoryName=${fiveCat}`;
-    }
-  }
-  if (sixCat) {
-    if (!sevenCat) {
-      baseCategory += `&sixCategoryName=${sixCat}&sevenCategoryName=${category}`;
-    } else {
-      baseCategory += `&sixCategoryName=${sixCat}`;
-    }
-  }
-
+  let baseCategory = `categoryPath=${categoryPath}/${category}`;
   const displayCategory = category.replace(/-/g, ' ').replace(/_/g, " & ").replace(/,/g, ".");
 
   return (
@@ -69,8 +19,7 @@ const ProductCategoriesComponent = ({
         <LinkContainer style={onHover} to={`/product-list?${baseCategory}`} className="bigbox_product_categories_item">
           <div className="subcategoryWrapper">
             <img src="/svg/SubmarkWhite.svg" alt="Miina Plant" className="logoPlant" />
-            
-          {displayCategory}
+            {displayCategory}
           </div>
         </LinkContainer>
       </Container>

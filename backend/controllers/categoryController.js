@@ -61,120 +61,19 @@ const getSubcategoriesT2 = async (req, res, next) => {
   }
 }
 
-const getT1Categories = async (req, res, next) => {
-  try {
-    const categories = await Category.find({}).sort({ name: "asc" }).orFail();
-    console.log(categories)
-    res.json(categories);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const categoriesForProductList = async (req, res, next) => {
   try {
     let categoryQueryCondition = {};
-    const categoryName = req.params.categoryName || "";
-
-    if (categoryName) {
-      const a = categoryName.replace(/,/g, "/");
-      let regEx = null;
-      const subCategoryName = req.query.subCategoryName;
-      const childCategoryName = req.query.childCategoryName;
-      const fourCategoryName = req.query.fourCategoryName;
-      var fiveCategoryName = req.query.fiveCategoryName;
-      var sixCategoryName = req.query.sixCategoryName;
-      var sevenCategoryName = req.query.sevenCategoryName;
-
-
-      if (sevenCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "/" +
-          sixCategoryName +
-          "/" +
-          sevenCategoryName +
-          "(?![\\w-])"
-        );
-      } else if (sixCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "/" +
-          sixCategoryName +
-          "(?![\\w-])"
-        );
-      } else if (fiveCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "(?![\\w-])"
-        );
-      } else if (fourCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "(?![\\w-])"
-        );
-      } else if (childCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "(?![\\w-])"
-        );
-      } else if (subCategoryName) {
-        regEx = new RegExp("^" + a + "/" + subCategoryName + "(?![\\w-])");
-      } else {
-        regEx = new RegExp("^" + a + "(?![\\w-])");
-      }
-
-      // console.log("xxx:", regEx);
-      categoryQueryCondition = { name: regEx, display: true };
-    }
-
+    let categoryPath = req.params.categoryPath || "";
+    categoryPath = categoryPath.replace(/,/g, "/");
+    let regEx = new RegExp("^" + categoryPath + "(?![\\w-])");
+    categoryQueryCondition = { name: regEx, display: true };
     const categories = await Category.find(categoryQueryCondition);
     res.json(categories);
   } catch (error) {
     next(error);
   }
 };
-
-
 
 const newCategory = async (req, res, next) => {
   try {
@@ -191,22 +90,6 @@ const newCategory = async (req, res, next) => {
       });
       res.status(201).send({ categoryCreated: categoryCreated });
     }
-  } catch (err) {
-    next(err);
-  }
-};
-
-const newHobsonCategory = async (req, res, next) => {
-  try {
-    console.log("xxxxxxx");
-
-    const { name,
-      display,
-      description,
-      image,
-      attrs, } = req.body;
-    console.log(name);
-
   } catch (err) {
     next(err);
   }

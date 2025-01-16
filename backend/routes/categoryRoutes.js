@@ -4,9 +4,9 @@ const { getCategories, newCategory, deleteCategory, saveAttr, categoriesForProdu
 const { verifyIsLoggedIn, verifyIsAdmin } = require("../middleware/verifyAuthToken")
 
 router.get("/subcategories", getSubcategoriesT2)
-// router.use(verifyIsLoggedIn)
-router.get("/categoryBlocks/:categoryName", categoriesForProductList)
+router.get("/categoryBlocks/:categoryPath", categoriesForProductList)
 router.get("/", getCategories)
+
 router.use(verifyIsAdmin)
 router.post("/", newCategory)
 router.post("/updateDisplay", updateCategoryDisplay)

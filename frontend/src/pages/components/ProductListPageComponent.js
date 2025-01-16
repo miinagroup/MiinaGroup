@@ -11,18 +11,13 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./SharedPages.css";
 
-const ProductListPage = ({
+const ProductListPageComponent = ({
   getProducts,
   categories,
+  categoryPath,
   getProductCategories,
   getUser,
   createQuote,
-  subCat = "",
-  childCat = "",
-  fourCat = "",
-  fiveCat = "",
-  sixCat = "",
-  sevenCat = "",
   brandName = "",
   userInfo,
   getProductsBySearch,
@@ -33,58 +28,19 @@ const ProductListPage = ({
   const [productCategories, setProductCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [attrsFilter, setAttrsFilter] = useState([]);
-
   const [categoriesFromFilter, setCategoriesFromFilter] = useState({});
   const [paginationLinksNumber, setPaginationLinksNumber] = useState(null);
   const [pageNum, setPageNum] = useState(null);
   const [userNameEmail, setUserNameEmail] = useState();
   const [isAdmin, setIsAdmin] = useState();
 
-
-
   var [params] = useSearchParams();
+  var categoryPath = params.get("categoryPath") || "";
   var categoryName = params.get("categoryName") || "";
   var pageNumParam = params.get("pageNum") || 1;
   var searchQuery = params.get("searchQuery") || "";
   var brandName = params.get("brandName") || "";
   var sortOrder = params.get("sortOrder") || 1;
-
-  
-
-  useEffect(() => {
-    if (categoryName) {
-      let categoryAllData = categories?.find(
-        (item) => item.name === categoryName.replaceAll(",", "/")
-      );
-      if (categoryAllData) {
-        let mainCategory = categoryAllData.name.split("/")[0];
-        let index = categories.findIndex((item) => item.name === mainCategory);
-        setAttrsFilter(categories[index].attrs);
-      }
-    } else {
-      setAttrsFilter([]);
-    }
-  }, [categoryName, categories]);
-
-  useEffect(() => {
-    if (Object.entries(categoriesFromFilter).length > 0) {
-      setAttrsFilter([]);
-      var cat = [];
-      var count;
-      Object.entries(categoriesFromFilter).forEach(([category, checked]) => {
-        if (checked) {
-          var name = category.split("/")[0];
-          cat.push(name);
-          count = cat.filter((x) => x === name).length;
-          if (count === 1) {
-            var index = categories.findIndex((item) => item.name === name);
-            setAttrsFilter((attrs) => [...attrs, ...categories[index].attrs]);
-          }
-        }
-      });
-    }
-  }, [categoriesFromFilter, categories]);
 
   useEffect(() => {
     const fetchCategoriesAndProducts = async () => {
@@ -92,28 +48,16 @@ const ProductListPage = ({
       try {
         if (!searchQuery && !brandName) {
           const categories = await getProductCategories(
-            categoryName,
-            subCat,
-            childCat,
-            fourCat,
-            fiveCat,
-            sixCat,
-            sevenCat
+            categoryPath
           );
           setProductCategories(categories.map((item) => item.name));
 
           if (categories.length < 2) {
             const products = await getProducts(
-              categoryName,
+              categoryPath,
               pageNumParam,
               searchQuery,
               sortOrder,
-              subCat,
-              childCat,
-              fourCat,
-              fiveCat,
-              sixCat,
-              sevenCat,
               brandName,
               userInfo
             );
@@ -122,19 +66,13 @@ const ProductListPage = ({
             setPageNum(products.pageNum);
           }
         } else if (searchQuery.length > 0) {
-          
+
         } else {
           const products = await getProducts(
-            categoryName,
+            categoryPath,
             pageNumParam,
             searchQuery,
             sortOrder,
-            subCat,
-            childCat,
-            fourCat,
-            fiveCat,
-            sixCat,
-            sevenCat,
             brandName,
             userInfo
           );
@@ -154,13 +92,7 @@ const ProductListPage = ({
     fetchCategoriesAndProducts();
 
   }, [
-    categoryName,
-    subCat,
-    childCat,
-    fourCat,
-    fiveCat,
-    sixCat,
-    sevenCat,
+    categoryPath,
     pageNumParam,
     searchQuery,
   ]);
@@ -169,14 +101,7 @@ const ProductListPage = ({
   const [filteredCategories, setFilteredCategories] = useState([]);
   useEffect(() => {
     if (productCategories.length > 1) {
-      let baseCategory = categoryName;
-      if (subCat) baseCategory += `/${subCat}`;
-      if (childCat) baseCategory += `/${childCat}`;
-      if (fourCat) baseCategory += `/${fourCat}`;
-      if (fiveCat) baseCategory += `/${fiveCat}`;
-      if (sixCat) baseCategory += `/${sixCat}`;
-      if (sevenCat) baseCategory += `/${sevenCat}`;
-
+      let baseCategory = categoryPath;
       const baseDepth = baseCategory.split("/").length;
 
       setFilteredCategories(
@@ -188,10 +113,10 @@ const ProductListPage = ({
           .map((item) => item.split("/")[baseDepth])
       );
     }
-  }, [productCategories, categoryName, subCat, childCat, fourCat, fiveCat, sixCat, sevenCat]);
+  }, [productCategories, categoryPath]);
 
 
-  
+
   useEffect(() => {
     getUser()
       .then((data) => {
@@ -260,7 +185,6 @@ const ProductListPage = ({
     setPreviousQuery(searchQuery);
   }, [searchQuery, previousQuery, fetchData]);
 
-
   return (
     <Container className="content-container products-list-component" fluid>
       <BreadcrumbComponent />
@@ -280,14 +204,8 @@ const ProductListPage = ({
                 <Col md={3}>
                   {paginationLinksNumber > 1 ? (
                     <PaginationComponent
-                      categoryName={categoryName}
+                      categoryPath={categoryPath}
                       searchQuery={searchQuery}
-                      subCategoryName={subCat}
-                      childCategoryName={childCat}
-                      fourCategoryName={fourCat}
-                      fiveCategoryName={fiveCat}
-                      sixCategoryName={sixCat}
-                      sevenCategoryName={sevenCat}
                       brandName={brandName}
                       paginationLinksNumber={paginationLinksNumber}
                       pageNum={pageNum}
@@ -309,14 +227,8 @@ const ProductListPage = ({
               filteredCategories.map((category) => (
                 <ProductCategoriesComponent
                   key={category._id}
-                  categoryName={categoryName}
+                  categoryPath={categoryPath}
                   category={category}
-                  subCat={subCat}
-                  childCat={childCat}
-                  fourCat={fourCat}
-                  fiveCat={fiveCat}
-                  sixCat={sixCat}
-                  sevenCat={sevenCat}
                 />
               ))
             ) : productCategories.length < 2 && products.length === 0 ? null : (
@@ -341,17 +253,11 @@ const ProductListPage = ({
               })
             )}
           </Row>
-     
+
             {paginationLinksNumber > 1 ? (
               <PaginationComponent
-                categoryName={categoryName}
+                categoryPath={categoryPath}
                 searchQuery={searchQuery}
-                subCategoryName={subCat}
-                childCategoryName={childCat}
-                fourCategoryName={fourCat}
-                fiveCategoryName={fiveCat}
-                sixCategoryName={sixCat}
-                sevenCategoryName={sevenCat}
                 brandName={brandName}
                 paginationLinksNumber={paginationLinksNumber}
                 pageNum={pageNum}
@@ -390,7 +296,7 @@ const ProductListPage = ({
   );
 };
 
-export default ProductListPage;
+export default ProductListPageComponent;
 
 
 

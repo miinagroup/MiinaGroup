@@ -6,24 +6,14 @@ import "./page.css";
 
 // 第276章节 先完成 pagination 然后去 productListPageComponent 继续完成, 最后去backend里面搞一搞
 const PaginationComponent = ({
-  categoryName,
-  subCategoryName,
-  childCategoryName,
-  fourCategoryName,
-  fiveCategoryName,
-  sixCategoryName,
-  sevenCategoryName,
+  categoryPath,
   brandName,
   searchQuery,
   paginationLinksNumber,
   pageNum,
 }) => {
 
-  let url = ""
-
-  url = `/product-list?categoryName=${categoryName || ""
-    }&subCategoryName=${subCategoryName || ""
-    }&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}&searchQuery=${searchQuery}&brandName=${brandName}&`
+  let url = `/product-list?categoryPath=${categoryPath}&searchQuery=${searchQuery}&brandName=${brandName}&`
 
   return (
     <>

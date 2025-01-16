@@ -35,11 +35,11 @@ const {
 } = require("../middleware/verifyAuthToken");
 
 router.get("/visitor/search", searchProductsForVisitor);
-router.get("/visitor/category/:categoryName", getProductsVisitor);
+router.get("/visitor/category/:categoryPath", getProductsVisitor);
 router.get("/get-one/:id", getProductById);
 
 router.use(verifyIsLoggedIn);
-router.get("/category/:categoryName", getProducts);
+router.get("/category/:categoryPath", getProducts);
 router.get("/brand/:brandName", getProducts);
 router.get("/", getProducts);
 router.get("/get-one/:id", getProductById);

@@ -70,7 +70,7 @@ const ProductDetailsPageComponent = ({
     setShowLoginModal(true);
   };
   const cartItems = useSelector((state) => state.cart.cartItems);
-  
+
   //categories
   const dispatch = useDispatch();
 
@@ -543,16 +543,25 @@ const ProductDetailsPageComponent = ({
       });
   };
 
-  const [catList, setCatList] = useState([])
+  const [catList, setCatList] = useState([]);
   useEffect(() => {
-    if (product.category !== "" || product.category !== undefined) {
-      setCatList(product?.category?.split("/"))
+    if (product.category !== "" && product.category !== undefined) {
+      const input = product.category;
+      const parts = input.split("/");
+
+      let result = [];
+      let currentPath = "";
+
+      for (let i = 0; i < parts.length; i++) {
+        currentPath = currentPath ? `${currentPath}/${parts[i]}` : parts[i];
+        result.push({ name: parts[i], link: currentPath });
+      }
+      setCatList(result);
     }
-  }, [product])
+  }, [product]);
 
   return (
     <Container className="content-container product-detail-page" fluid>
-      "home"
       <Row className="product-detail-page-row">
         <Col xxl={2} xl={3} lg={3} md={3}>
           <ListGroup variant="flush">
@@ -576,45 +585,13 @@ const ProductDetailsPageComponent = ({
                 catList ? (
                   <>
                     < span className="categoryHD">
-                      {catList[0] ? (
-                        <a href={`/product-list?categoryName=${catList[0]}`}>{catList[0]}</a>
-                      ) : ("")}
-                      {catList[1] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}`}>{catList[1]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[2] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}`}>{catList[2]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[3] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}`}>{catList[3]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[4] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}`}>{catList[4]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[5] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}&sixCategoryName=${catList[5]}`}>{catList[5]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[6] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}&sixCategoryName=${catList[5]}&sevenCategoryName=${catList[6]}`}>{catList[6]}</a>
-                        </>
-                      ) : ("")}
+                      {
+                        catList.map((category, index) => (
+                          <a href={`/product-list?categoryPath=${category.link}`} key={index}>
+                            {category.name} <label>&nbsp; / &nbsp; </label>
+                          </a>
+                        ))
+                      }
                     </span>
                   </>
                 ) : ("")
@@ -622,7 +599,6 @@ const ProductDetailsPageComponent = ({
 
               <Row>
                 <ListGroup variant="flush" className="product-detail-page-list-group">
-                  "product"
                   <ListGroup.Item>
                     <div className="product-detail-page-title">{product.name}</div>
                     {userData.isAdmin === true ? (

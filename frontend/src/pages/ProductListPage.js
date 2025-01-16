@@ -4,26 +4,20 @@ import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const getProducts = async (
-  categoryName = "",
+  categoryPath = "",
   pageNumParam = null,
   searchQuery = "",
   sortOrder = "",
-  subCategoryName = "",
-  childCategoryName = "",
-  fourCategoryName = "",
-  fiveCategoryName = "",
-  sixCategoryName = "",
-  sevenCategoryName = "",
   brandName = "",
   userInfo
 ) => {
+  categoryPath = categoryPath.replace(/\//g, ",");
   const search = searchQuery ? `search/${searchQuery}/` : "";
-  const category = categoryName ? `category/${categoryName}/` : "";
+  const category = categoryPath ? `category/${categoryPath}/` : "";
   const brand = brandName ? `brand/${brandName}/` : "";
   const sort = sortOrder ? `sort/${sortOrder}/` : "";
-  
-  const url = `/api/products/${category}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}&brandName=${brandName}`;
-  const urlVisitor = `/api/products/visitor/${category}${brand}?pageNum=${pageNumParam}&subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}&brandName=${brandName}`;
+  const url = `/api/products/${category}${brand}?pageNum=${pageNumParam}&brandName=${brandName}`;
+  const urlVisitor = `/api/products/visitor/${category}${brand}?pageNum=${pageNumParam}&brandName=${brandName}`;
 
   try {
     if (Object.keys(userInfo).length === 0) {
@@ -40,33 +34,19 @@ const getProducts = async (
 };
 
 const getProductCategories = async (
-  categoryName = "",
-  subCategoryName = "",
-  childCategoryName = "",
-  fourCategoryName = "",
-  fiveCategoryName = "",
-  sixCategoryName = "",
-  sevenCategoryName = ""
+  categoryPath = ""
 ) => {
-  const category = categoryName ? `categoryBlocks/${categoryName}/` : "";
-  const url = `/api/categories/${category}?subCategoryName=${subCategoryName}&childCategoryName=${childCategoryName}&fourCategoryName=${fourCategoryName}&fiveCategoryName=${fiveCategoryName}&sixCategoryName=${sixCategoryName}&sevenCategoryName=${sevenCategoryName}`;
+  categoryPath = categoryPath.replace(/\//g, ",");
+  const category = categoryPath ? `categoryBlocks/${categoryPath}` : "";
+  const url = `/api/categories/${category}`;
   var { data } = await axios.get(url);
   return data;
 };
 
 const ProductListPage = () => {
   var [params] = useSearchParams();
-
-  var subCategoryName = params.get("subCategoryName") || "";
-  var childCategoryName = params.get("childCategoryName") || "";
-  var fourCategoryName = params.get("fourCategoryName") || "";
-  var fiveCategoryName = params.get("fiveCategoryName") || "";
-  var sixCategoryName = params.get("sixCategoryName") || "";
-  var sevenCategoryName = params.get("sevenCategoryName") || "";
-
+  var categoryPath = params.get("categoryPath") || "";
   var brandName = params.get("brandName") || "";
-
-
   const { categories } = useSelector((state) => state.getCategories);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
 
@@ -100,16 +80,11 @@ const ProductListPage = () => {
 
   return (
     <ProductListPageComponent
+      categories={categories}
+      categoryPath={categoryPath}
+      brandName={brandName}
       getUser={getUser}
       getProducts={getProducts}
-      categories={categories}
-      subCat={subCategoryName}
-      childCat={childCategoryName}
-      fourCat={fourCategoryName}
-      fiveCat={fiveCategoryName}
-      sixCat={sixCategoryName}
-      sevenCat={sevenCategoryName}
-      brandName={brandName}
       getProductCategories={getProductCategories}
       createQuote={createQuote}
       userInfo={userInfo}

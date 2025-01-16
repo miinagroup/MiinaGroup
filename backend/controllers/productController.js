@@ -7,7 +7,6 @@ const cron = require("node-cron");
 const moment = require("moment-timezone");
 const _ = require('lodash');
 const recordsPerPage = 100
-
 const excludedSuppliers = ["CAPRARI", "CABLE SUPPLY", "CABLE DISTRIBUTION SERVICES", "ELECTRA CABLES", "POWER SAFE", "SCINTEX"];
 const appToken = "9Ark2TryUeCOQObeKkxnVoB4IwPznpoE"
 const storeCode = "EMBLETON"
@@ -35,89 +34,14 @@ const getProductsVisitor = async (req, res, next) => {
     let query = {};
     let queryCondition = false;
     let categoryQueryCondition = {};
-    const categoryName = req.params.categoryName || "";
-    if (categoryName) {
+    let categoryPath = req.params.categoryPath || "";
+    categoryPath = categoryPath.replace(/,/g, "/")
+    if (categoryPath) {
       queryCondition = true;
-      let a = categoryName.replace(/,/g, "/");
-      var regEx = null;
-      var subCategoryName = req.query.subCategoryName;
-      var childCategoryName = req.query.childCategoryName;
-      var fourCategoryName = req.query.fourCategoryName;
-      var fiveCategoryName = req.query.fiveCategoryName;
-      var sixCategoryName = req.query.sixCategoryName;
-      var sevenCategoryName = req.query.sevenCategoryName;
-
-      if (sevenCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "/" +
-          sixCategoryName +
-          "/" +
-          sevenCategoryName +
-          "(?:/|$)"
-        );
-      } else if (sixCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "/" +
-          sixCategoryName +
-          "(?:/|$)"
-        );
-      } else if (fiveCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "(?:/|$)"
-        );
-      } else if (fourCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "(?:/|$)"
-        );
-      } else if (childCategoryName) {
-        regEx = new RegExp(
-          "^" + a + "/" + subCategoryName + "/" + childCategoryName + "(?:/|$)"
-        );
-      } else if (subCategoryName) {
-        regEx = new RegExp("^" + a + "/" + subCategoryName + "(?:/|$)");
-      } else {
-        regEx = new RegExp("^" + a);
-      }
+      let regEx = new RegExp("^" + categoryPath + "(?:/|$)");
       categoryQueryCondition = { category: regEx };
     }
+
     const pageNum = Number(req.query.pageNum) || 1;
     let sort = {};
     const sortOption = req.params.sortOrder || "";
@@ -170,93 +94,15 @@ const getProducts = async (req, res, next) => {
     }
 
     let categoryQueryCondition = {};
-    const categoryName = req.params.categoryName || "";
-    if (categoryName) {
-      queryCondition = true;
-      let a = categoryName.replace(/,/g, "/");
-      var regEx = null;
-      var subCategoryName = req.query.subCategoryName;
-      var childCategoryName = req.query.childCategoryName;
-      var fourCategoryName = req.query.fourCategoryName;
-      var fiveCategoryName = req.query.fiveCategoryName;
-      var sixCategoryName = req.query.sixCategoryName;
-      var sevenCategoryName = req.query.sevenCategoryName;
-
-      if (sevenCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "/" +
-          sixCategoryName +
-          "/" +
-          sevenCategoryName +
-          "(?:/|$)"
-        );
-      } else if (sixCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "/" +
-          sixCategoryName +
-          "(?:/|$)"
-        );
-      } else if (fiveCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "/" +
-          fiveCategoryName +
-          "(?:/|$)"
-        );
-      } else if (fourCategoryName) {
-        regEx = new RegExp(
-          "^" +
-          a +
-          "/" +
-          subCategoryName +
-          "/" +
-          childCategoryName +
-          "/" +
-          fourCategoryName +
-          "(?:/|$)"
-        );
-      } else if (childCategoryName) {
-        regEx = new RegExp(
-          "^" + a + "/" + subCategoryName + "/" + childCategoryName + "(?:/|$)"
-        );
-      } else if (subCategoryName) {
-        regEx = new RegExp("^" + a + "/" + subCategoryName + "(?:/|$)");
-      } else {
-        regEx = new RegExp("^" + a);
-      }
+    let categoryPath = req.params.categoryPath || "";
+    categoryPath = categoryPath.replace(/,/g, "/");
+    if (categoryPath) {
+      let regEx = new RegExp("^" + categoryPath + "(?![\\w-])");
       categoryQueryCondition = { category: regEx };
     }
 
     let brandQueryCondition = {};
     const brandName = req.params.brandName || "";
-    console.log(brandName);
     if (brandName) {
       queryCondition = true;
       let a = brandName.replace(/,/g, "-");
@@ -308,14 +154,8 @@ const getProducts = async (req, res, next) => {
         queriesToSearch = [`"${query.searchQuery}"`];
       }
 
-      // console.log("Queries to search:", queriesToSearch);
-
       for (const queryText of queriesToSearch) {
-        // console.log("Performing text search for:", queryText);
-        // ! 下面这个原来是 performTextSearch 可以改回来
-
         let queryResults;
-
         queryResults = await performRegexSearch(queryText);
 
         if (!Array.isArray(queryResults)) {
@@ -332,11 +172,9 @@ const getProducts = async (req, res, next) => {
         (result) => result._id
       );
       return { _id: { $in: resultsIds } };
-      // return Array.from(results.values());
     };
 
     const performTextSearch = async (searchQuery) => {
-      // console.log("Text search for:", searchQuery);
       const searchCondition = {
         $text: {
           $search: searchQuery,
@@ -344,9 +182,7 @@ const getProducts = async (req, res, next) => {
           $diacriticSensitive: false,
         },
       };
-      // console.log("Query filter:", searchQueryCondition);
       const results = await Product.find(searchCondition);
-      // console.log("Results:", results.length);
       return results;
     };
 
@@ -358,9 +194,7 @@ const getProducts = async (req, res, next) => {
         searchCondition = {
           $or: [
             { name: regexPattern },
-            // { description: regexPattern },
             { supplier: regexPattern },
-            // { "stock.slrsku": regexPattern },
             { "stock.ctlsku": regexPattern },
             { "stock.suppliersku": regexPattern }
           ],
@@ -369,20 +203,13 @@ const getProducts = async (req, res, next) => {
         searchCondition = {
           $or: [
             { name: regexPattern },
-            // { description: regexPattern },
             { supplier: regexPattern },
-            // { "stock.slrsku": regexPattern },
             { "stock.ctlsku": regexPattern },
             { "stock.suppliersku": regexPattern },
             { [`stock.${userSiteSku}`]: regexPattern },
           ],
         };
       }
-
-
-
-
-      // console.log("Debug Search Condition:", searchCondition);
 
       const results = await Product.find(searchCondition);
       console.log("Results:", results.length);
