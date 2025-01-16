@@ -74,8 +74,8 @@ const FilterComponent = () => {
 
   const location = useLocation();
   const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-  const queryMainLink = query.categoryPath.split("/")[0]
-  const querySubLink = query.categoryPath.split("/")[1]
+  const queryMainLink = query.categoryPath?.split("/")[0]
+  const querySubLink = query.categoryPath?.split("/")[1]
 
   return (
     <div className="accordion_container">
