@@ -36,7 +36,6 @@ const ProductListPageComponent = ({
 
   var [params] = useSearchParams();
   var categoryPath = params.get("categoryPath") || "";
-  var categoryName = params.get("categoryName") || "";
   var pageNumParam = params.get("pageNum") || 1;
   var searchQuery = params.get("searchQuery") || "";
   var brandName = params.get("brandName") || "";

@@ -116,7 +116,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
               const hasSubcategories = subcategories[category.link]?.length > 0;
               return (
                 <div className={styles.category} key={category.link}>
-                  <a href={`/product-list?categoryPath=${category.link}`} className={styles.categoryName}>
+                  <a href={`/product-list?categoryPath=${category.link}`} className={styles.categoryPath}>
                     <img src="/images/SubmarkGreen.png" alt="Miina Group Logo" className={styles.logoTag} />
                     <div>{category.label}</div>
                   </a>

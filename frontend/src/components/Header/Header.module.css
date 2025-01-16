@@ -1,283 +1,281 @@
 button {
-     border: none;
-     background-color: transparent;
+  border: none;
+  background-color: transparent;
 }
 
 .header {
-    font-family: "GloriaHallelujah";
-    font-size: 20px;
-    background-color: rgba(219, 161, 98, 0.25);
-    color: #483F55;
-    padding: 10px 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  font-family: "GloriaHallelujah";
+  font-size: 20px;
+  background-color: rgba(219, 161, 98, 0.25);
+  color: #483f55;
+  padding: 10px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .headerWrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin:  0 auto;
-    width: 100%;
-    max-width: 1815px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1815px;
 }
 
 .logoTaglineWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .logo {
-    margin: 0 auto;
-    width: 100%;
-    max-width: 185px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 185px;
 }
 
 .menu {
-    flex: 0.5;
-    display: flex;
-    gap: 30px;
-    position: relative;
+  flex: 0.5;
+  display: flex;
+  gap: 30px;
+  position: relative;
 }
 
 .menuItem {
-    cursor: pointer;
-    transition: all 0.5s ease-in-out;
-    position: relative;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  position: relative;
 }
 
 .menuItem span:hover {
-    color: #DBA162
+  color: #dba162;
 }
 
 .search {
-        font-family: "HelveticaNeue";
-        font-size: 14px;
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        max-width: 390px;
-        display: flex;
+  font-family: "HelveticaNeue";
+  font-size: 14px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 390px;
+  display: flex;
   align-items: center;
 }
 
 .inputSearch {
-    border: 1px solid transparent;
-    box-sizing: border-box;
-    background-color: rgba(219, 161, 98, 0.45);
-    border-radius: 50px;
-    padding: 10px 0px;
-    width: 100%;
-    position: relative;
-    display: inline-block;
-    padding: 10px 10px; 
-    color: #483F55;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  background-color: rgba(219, 161, 98, 0.45);
+  border-radius: 50px;
+  padding: 10px 0px;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  padding: 10px 10px;
+  color: #483f55;
 }
 
 .inputSearch:focus {
-    border-color: #DBA162;
-    outline: 0;
+  border-color: #dba162;
+  outline: 0;
 }
 
-
 .iconNew {
-    position: absolute;
-    right: 10px;
-    top: 4px;
-    border: none;
-    background-color: transparent;
-    color: #483F55;
+  position: absolute;
+  right: 10px;
+  top: 4px;
+  border: none;
+  background-color: transparent;
+  color: #483f55;
 }
 
 .logRegNew {
-    display: flex;
-    flex: 0.5;
-    gap: 15px; 
-    align-items: center;
-    justify-content: flex-end
+  display: flex;
+  flex: 0.5;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .logRegNew button {
-     border: none;
-     background-color: transparent;
-     color: #483F55;
+  border: none;
+  background-color: transparent;
+  color: #483f55;
 }
 
 .logRegNew button {
-    padding: 0px;
+  padding: 0px;
 }
 
-.tagline{
-    font-size: 16px;
-    color: #483F55;
-    margin-top: -10px;
+.tagline {
+  font-size: 16px;
+  color: #483f55;
+  margin-top: -10px;
 }
 
 .dropdown {
-    background-color: rgba(219, 161, 98, 0.25);
-    padding: 15px 15px;
-    border-radius: 5px;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    top: 35px;
-    left: 0;
-    width: 300px;
-    
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 10;
+  background-color: rgba(219, 161, 98, 0.25);
+  padding: 15px 15px;
+  border-radius: 5px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  top: 35px;
+  left: 0;
+  width: 300px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 10;
 }
 
 .aboutMenuItem:hover + .dropdown,
 .dropdown:hover,
 .catalogueMenuItem:hover + .catalogueDropdown,
 .catalogueDropdown:hover {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .catalogueDropdown {
-    position: absolute;
-    top: 35px;
-    left: 0;
-    background-color: #dba162;
-    padding: 15px 25px;
-    border-radius: 10px;
-    max-width: 350px;
-    width: 350px;
-    z-index: 10;
+  position: absolute;
+  top: 35px;
+  left: 0;
+  background-color: #dba162;
+  padding: 15px 25px;
+  border-radius: 10px;
+  max-width: 350px;
+  width: 350px;
+  z-index: 10;
 
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .logoTag {
-    width: 30px;
+  width: 30px;
 }
 
 .logoTagSubcategory svg {
-    width: 50px;
+  width: 50px;
 }
 
 .category {
-     display: flex;
-     align-items: center;
-    justify-content: space-between;
-    padding: 5px 0px;
-    width: 100%;
-    max-width: 300px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0px;
+  width: 100%;
+  max-width: 300px;
+  position: relative;
 }
 
 .category a {
-    color: #483F55
+  color: #483f55;
 }
 
-.categoryName {
-     display: flex;
-     gap: 5px;
-     align-items: center;
+.categoryPath {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .category:hover {
-    background-color: rgba(82, 23, 18, 0.25);
-    border-radius: 5px;
-    color: white;
+  background-color: rgba(82, 23, 18, 0.25);
+  border-radius: 5px;
+  color: white;
 }
 
-.category:hover .categoryName {
-    color: white;
+.category:hover .categoryPath {
+  color: white;
 }
 
 .arrow {
-    fill: #483F55;
+  fill: #483f55;
 }
 
 .subcategories {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: 0;
-    width: 100%;
-    min-width: 400px;
-    width: 350px;
-   
-    background-color: #DBA162;
-    padding: 10px 15px;
-    border-radius: 5px;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 100%;
+  min-width: 400px;
+  width: 350px;
+
+  background-color: #dba162;
+  padding: 10px 15px;
+  border-radius: 5px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .category:hover .subcategories {
-    display: block;
+  display: block;
 }
 
 .category {
-    position: relative;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
+  position: relative;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
-.categoryName {
-    display: flex;
-    gap: 5px;
-    align-items: center;
+.categoryPath {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .subcategories a {
-    color: #483F55;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    transition: background-color 0.3s ease;
+  color: #483f55;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
 }
 
 .subcategories a:hover {
-    background-color: #dba162;
-    color: white;
+  background-color: #dba162;
+  color: white;
 }
 
 .aboutMenu {
-     display: flex;
-     gap: 5px;
-     align-items: center;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .subcategoryItem {
-     display: flex;
-     gap: 5px;
-     align-items: center;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .subcategoryItem:hover .subcategoryItem svg {
-    fill: white;
+  fill: white;
 }
 
-
 .headerNewBtns {
-    display: flex;
-    justify-content: flex-end;
-    gap: 25px;
-    align-items: center;
-    width: 100%;
-    max-width: 200px;
-} 
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+}
 
 .user_cart {
-     gap: 25px;
+  gap: 25px;
 }
