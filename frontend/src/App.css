@@ -136,6 +136,7 @@ justify-content: center;
 /* ****************      IMG HOVER  Larger  ************** */
 .img_hovf {
   overflow: hidden;
+  border: 1px solid #DBA162;
 }
 
 .img_hover:hover {
@@ -160,6 +161,7 @@ li:hover {
 .CTL_blue_light {
   color: #5c8dd1;
 }
+
 
 /* ********** Print Layout ********** */
 @media print {

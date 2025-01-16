@@ -17,7 +17,7 @@ const ChangeAddressModalComponent = ({
           setIsOpenChangeAddressModal(false)
           setIsLocationValid(true);
         }}>
-          <Modal.Title>Change Address</Modal.Title>
+          <Modal.Title style={{fontFamily: "GloriaHallelujah", color: "#483F55"}}>Change Address</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={updateAddress}>
@@ -33,7 +33,7 @@ const ChangeAddressModalComponent = ({
                 defaultValue={chosenDeliverySite.name}
                 disabled
               />
-               <div className="mt-1 px-1" style={{color: "rgb(7, 52, 116)", fontSize: "11px"}}>
+               <div className="mt-1 px-1" style={{color: "#521712", fontSize: "11px"}}>
                <i class="bi bi-exclamation-circle"></i>{" "} 
                 For security reasons, changes to the location cannot be made. 
                 If you still wish to proceed with a change, please contact{" "} 
@@ -46,7 +46,7 @@ const ChangeAddressModalComponent = ({
             <Row>
               <Col>
                 <Form.Group controlId="formBasicBillingAddressLine">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>Address Line</Form.Label>
+                  <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>Address Line</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -61,7 +61,7 @@ const ChangeAddressModalComponent = ({
             <Row>
               <Col>
                 <Form.Group controlId="formBasicCity">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>City</Form.Label>
+                  <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>City</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -74,7 +74,7 @@ const ChangeAddressModalComponent = ({
               </Col>
               <Col>
                 <Form.Group controlId="formBasicStateProvinceRegion">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>State</Form.Label>
+                  <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>State</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -90,7 +90,7 @@ const ChangeAddressModalComponent = ({
             <Row className="mb-3">
               <Col>
                 <Form.Group controlId="formBasicZIPostalCode">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>Postal Code</Form.Label>
+                  <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>Postal Code</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -103,7 +103,7 @@ const ChangeAddressModalComponent = ({
               </Col>
               <Col>
                 <Form.Group controlId="formBasicCountry">
-                  <Form.Label style={{ fontSize: "12px", color: "black" }}>Country</Form.Label>
+                  <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>Country</Form.Label>
                   <Form.Control
                     required
                     type="text"
@@ -121,7 +121,7 @@ const ChangeAddressModalComponent = ({
               <Row>
                 <Col>
                   <Form.Group controlId="formBasicDeliveryAddressLine">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>Address Line</Form.Label>
+                    <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>Address Line</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -137,7 +137,7 @@ const ChangeAddressModalComponent = ({
               <Row>
                 <Col>
                   <Form.Group controlId="formBasicDeliveryCity">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>City</Form.Label>
+                    <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>City</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -150,7 +150,7 @@ const ChangeAddressModalComponent = ({
                 </Col>
                 <Col>
                   <Form.Group controlId="formBasicDeliveryStateProvinceRegion">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>State</Form.Label>
+                    <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>State</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -165,7 +165,7 @@ const ChangeAddressModalComponent = ({
               <Row>
                 <Col>
                   <Form.Group controlId="formBasicDeliveryZIPostalCode">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>Postal Code</Form.Label>
+                    <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>Postal Code</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -178,7 +178,7 @@ const ChangeAddressModalComponent = ({
                 </Col>
                 <Col>
                   <Form.Group controlId="formBasicDeliveryCountry">
-                    <Form.Label style={{ fontSize: "12px", color: "black" }}>Country</Form.Label>
+                    <Form.Label style={{ fontSize: "12px", color: "#483F55" }}>Country</Form.Label>
                     <Form.Control
                       required
                       type="text"
@@ -199,7 +199,7 @@ const ChangeAddressModalComponent = ({
               }}>
                 Close
               </Button>
-              <Button variant="primary" type="submit">
+              <Button className="save-new-address-btn" type="submit">
                 Change Address
               </Button>
             </div>

@@ -184,6 +184,126 @@
     cursor: pointer;
 }
 
+.userCartDetailPage {
+    background-color: rgba(219, 161, 98, 0.25);
+    padding: 50px 50px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    font-family: "HelveticaNeue";
+}
+
+.userCartDetailPageWrapper {
+     width: 100%;
+     max-width: 1600px;
+}
+
+.cartDetailTitle {
+        font-family: "GloriaHallelujah";
+        font-size: 40px;
+        color: #483F55;
+        margin-bottom: 25px;
+}
+
+.userCartDetailPage .cart-items-list .list-group-item {
+    background-color: rgba(219, 161, 98, 0.25) !important;
+}
+
+.cart-item-row {
+    color: #483F55 !important;
+    align-items: center;
+}
+
+.cart-item-row a {
+    color: #483F55 !important;
+}
+
+p {
+     margin-bottom:  0px;
+}
+
+.form-control-light {
+     background-color: transparent;
+     border-color: #483F55;
+}
+
+.remove-btn {
+    background-color: transparent;
+}
+
+.remove-btn:hover {
+     border-color: #DBA162;
+     background-color: #DBA162  ;
+}
+
+.download_cart_btn_wrapper {
+    background-color: #999A47;
+    border: 1px solid transparent;
+    color: #521712;
+}
+
+.empty_cart_wrapper {
+    background-color: #999A47;
+    border: 1px solid transparent;
+    color: #521712;
+}
+
+.empty_cart_wrapper:hover {
+    background-color: transparent;
+    border-color: #483F55;
+    color: #483F55;
+}
+
+.download_cart_btn_wrapper:hover {
+    background-color: transparent;
+    border-color: #483F55;
+    color: #483F55;
+}
+
+.cart_detail_right {
+    color: #483F55 ;
+}
+
+.cart_detail_right .list-group .list-group-item {
+    background-color: transparent !important;
+    color: #483F55 !important;
+}
+
+.cart_detail_right-title {
+    padding: 10px 10px;
+    color: #483F55;
+    font-family: "HelveticaNeue";
+    font-weight: bold;
+}
+
+.address-title {
+    padding: 10px 10px;
+    color: #483F55;
+    font-family: "HelveticaNeue";
+    font-weight: bold;
+}
+
+.confirm-btn {
+    background-color: #999A47 !important;
+    border: none !important;
+    color: #521712 !important;
+}
+
+.btn-add-address, .btn-change-address, .save-new-address-btn {
+     background-color: #521712;
+     border: none;
+}
+
+.btn-add-address:hover, .btn-change-address:hover, .save-new-address-btn:hover {
+    background-color: #483F55;
+}
+
+.cart_detail_right_input{
+    background-color: transparent;
+    border-color: #521712;
+    color: #483F55;
+}
+
 @media (max-width: 820px) {
     .userCartDetailPage .cart-item {
         width: 33%;

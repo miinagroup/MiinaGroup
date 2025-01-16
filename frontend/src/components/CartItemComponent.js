@@ -40,10 +40,10 @@ const CartItemComponent = ({
 
   return (
     <>
-      <ListGroup.Item className="pt-3 cart-item">
-        <Row>
+      <ListGroup.Item className="cart-item">
+        <Row className="cart-item-row">
           <Col md={1}>
-            <div className="">
+            <div>
               <img
                 crossOrigin="anonymous"
                 src={item.image ? item.image ?? null : null}
@@ -54,7 +54,7 @@ const CartItemComponent = ({
           </Col>
           <Col md={5}>
             <a href={`/product-details/${item.productId}`}>
-              <p className="" style={{ color: "#1E4881" }}>
+              <p>
                 <strong className="text-uppercase">{item.name}</strong>
               </p>
             </a>
@@ -77,7 +77,7 @@ const CartItemComponent = ({
               min={item.saleunit}
               step={item.saleunit}
               onBlur={handleBlur}
-              className="form-control"
+              className="form-control form-control-light"
               value={qty}
               onChange={handleChange}
               disabled={orderCreated}

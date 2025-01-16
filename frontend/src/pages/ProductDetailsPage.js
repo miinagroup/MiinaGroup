@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
-import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent";
+import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent/ProductDetailsPageComponent";
 import { addToCart } from "../redux/actions/cartActions";
 
 

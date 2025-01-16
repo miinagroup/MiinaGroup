@@ -137,12 +137,12 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     return (
       <>
       <div 
-      // style={{paddingBottom: "110px"}}
+      style={{paddingBottom: "110px"}}
       >
         <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
         <Outlet />
       </div>
-      {/* <Footer /> */}
+      <Footer />
       <ScrollButton />
 
       </>
@@ -154,7 +154,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     return (
       <>
       <div 
-      // style={{paddingBottom: "110px" }}
+      style={{paddingBottom: "110px" }}
       >
         <NewHeaderComponentLoggedIn 
         setIsOpenModal={setIsOpenModalCatalogue}
@@ -166,7 +166,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
         onClickBtn={onClickBtn} />
         <Outlet />
       </div>
-        {/* <Footer /> */}
+        <Footer />
         <ScrollButton />
       </>
     );

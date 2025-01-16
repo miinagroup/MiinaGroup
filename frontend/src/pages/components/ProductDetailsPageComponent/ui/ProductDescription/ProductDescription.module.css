@@ -1,0 +1,31 @@
+.accordeonItem {
+    border: none !important;
+    border-bottom: 2px solid #999A47 !important;
+    
+}
+
+
+.accordionHeader button:not(.collapsed) {
+    border: none !important;
+    border-radius: 0px !important;
+    color: #521712 !important;
+    font-size: 24px !important;
+    background-color: transparent !important;
+    /* border-radius: 5px !important; */
+
+}
+
+.accordionHeader button:focus {
+    background-color: rgba(219, 161, 98, 0.25) !important;
+    border: none !important;
+    box-shadow: none !important;
+    /* border-radius: 5px !important; */
+
+}
+
+.accordionHeader button.collapsed {
+    background-color: rgba(219, 161, 98, 0.25) !important;
+    border: none !important;
+    box-shadow: none !important;
+    /* border-radius: 5px !important; */
+}

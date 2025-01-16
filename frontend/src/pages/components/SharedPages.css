@@ -1,10 +1,18 @@
 .addToCartBtn {
   width: 106px;
-  margin-left: 3rem;
+  /* margin-left: 3rem; */
+  background-color: #521712 !important;
+  border: none !important;
 }
 
 .addToCartQty {
-  width: 120px;
+  width: 100%;
+  max-width: 200px;
+  border: 1px solid #521712 !important;
+}
+
+.qnty-title {
+   color: #521712;
 }
 
 .PriceContact {
@@ -189,6 +197,17 @@
   margin-bottom: 10px;
   color: #521712;
   font-family: "HelveticaNeue";
+}
+
+.product-detail-page {
+  padding: 25px 25px 110px 25px;
+  /* background-color: rgba(219, 161, 98, 0.25); */
+}
+
+.green-line {
+   border: 1px solid #999A47;
+   /* margin-top: 5px; */
+   opacity: 50%;
 }
 
 

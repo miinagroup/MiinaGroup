@@ -46,6 +46,7 @@ const RemoveFromCartComponent = ({
         disabled={orderCreated || removing}
         type="button"
         variant="light"
+        className="remove-btn"
         onClick={() => removeCartItem()}
       >
         {removing ? (

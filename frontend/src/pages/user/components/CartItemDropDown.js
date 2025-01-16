@@ -38,35 +38,33 @@ const CartItemDropDown = ({
 
   return (
     <>
-      <ListGroup.Item className="mt-1">
+      <ListGroup.Item className="cartDropDownComponentItem">
         <Row className="cartDropDownComponent_container">
           <Col md={1}>
-            <div className="">
-              {/* Image */}
+            <div>
               <img
                 crossOrigin="anonymous"
                 src={item.image ? item.image ?? null : null}
                 className="w-100"
                 alt="s"
               />
-              {/* Image */}
             </div>
           </Col>
           <Col md={5}>
             <a href={`/product-details/${item.productId}`}>
-              <p className="" style={{ color: "#1E4881" }}>
+              <p>
                 <span className="text-uppercase">{item.name}</span>
               </p>
             </a>
           </Col>
           <Col md={3}>
-            <p className="m-0 cart_product_attr">
+            <p className="cart_product_attr">
               Item:{" "}
               <span className="cart_product_detail">
                 {item.cartProducts[0].attrs}
               </span>
             </p>
-            <p className="m-0 cart_product_attr">
+            <p className="cart_product_attr">
               Each: $
               <span className="cart_product_detail">
                 {itemPrice}
@@ -83,6 +81,7 @@ const CartItemDropDown = ({
               value={qty}
               onChange={handleChange}
               disabled={orderCreated}
+              style={{background: "transparent", border: "1px solid #DBA162"}}
             />
           </Col>
           {/* delete button trash */}

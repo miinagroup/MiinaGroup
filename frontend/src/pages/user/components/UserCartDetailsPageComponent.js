@@ -11,6 +11,7 @@ import VerifySiteComponent from "../../components/VerifySiteComponent";
 import AddNewAddressModalComponent from "./AddNewAddressModalComponent";
 import ChangeAddressModalComponent from "./ChangeAddressModalComponent";
 import CartAddressesSectionComponent from "./CartAddressesSectionComponent";
+import QuoeteManagementApproval from "../../../components/SendEmail/QuoeteManagementApproval";
 
 const UserCartDetailsPageComponent = ({
   cartItems,
@@ -593,14 +594,15 @@ const UserCartDetailsPageComponent = ({
 
   return (
     <>
-      <Container className="userCartDetailPage">
-        <div className="mt-4 d-flex cart_detail_container">
+        <div className="green-line"></div>
+      <div className="userCartDetailPage">
+        <div className="mt-4 d-flex cart_detail_container userCartDetailPageWrapper">
           <div>
             <div
               style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
               className="mb-1"
             >
-              <h1>CART DETAILS</h1>
+              <h1 className="cartDetailTitle">CART DETAILS</h1>
             </div>
             <Row className="mb-4 p-0" style={{ fontSize: "12px", width: "100%", maxWidth: "915px" }}>
               <div className="d-flex justify-content-between cart_detail_btns" style={{ width: "100%" }}>
@@ -631,7 +633,8 @@ const UserCartDetailsPageComponent = ({
                       <Button
                         type="button"
                         onClick={removeAllItems}
-                        variant="primary" size="sm"
+                        variant="primary" 
+                        size="sm"
                         style={{ fontSize: "12px" }}
                         className="mobile-visibility"
                       >
@@ -643,10 +646,10 @@ const UserCartDetailsPageComponent = ({
                   <div >
                     <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
 
-                      <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px" }}>
+                      <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px", background: "transparent", border: "1px solid #DBA162" }}>
                         <InputGroup size="sm">
                           <Form.Control
-                            className="p-0 ps-2"
+                            className="p-1 ps-2"
                             onChange={enterManagerEmail}
                             type="string"
                             name="MangerEmail"
@@ -654,11 +657,11 @@ const UserCartDetailsPageComponent = ({
                             required
                             aria-label="Recipient's username"
                             aria-describedby="basic-addon2"
-                            style={{ border: "none", fontSize: "12px" }}
+                            style={{ border: "none", fontSize: "12px", background: "transparent" }}
                           />
                           <InputGroup.Text
                             id="basic-addon2"
-                            style={{ border: "none", borderRadius: "0", fontSize: "12px" }}
+                            style={{ border: "none", borderLeft: "1px solid #DBA162" , borderRadius: "1px", fontSize: "12px" , background: "#DBA162", color: "#483F55"}}
                           >
                             @{userEmail}
                           </InputGroup.Text>
@@ -667,7 +670,9 @@ const UserCartDetailsPageComponent = ({
                           Please Enter Your Manager's Email.{" "}
                         </Form.Control.Feedback>
                       </ListGroup.Item>
-
+                      <div className="d-grid gap-2">
+                          <QuoeteManagementApproval quotePriceData={quotePriceData} />
+                        </div>
 
                     </ListGroup>
                   </div>
@@ -676,8 +681,9 @@ const UserCartDetailsPageComponent = ({
                   <Button
                     type="button"
                     onClick={removeAllItems}
-                    variant="primary" size="sm"
+                    size="sm"
                     style={{ fontSize: "12px" }}
+                    className="empty_cart_wrapper"
                   >
                     Empty Cart <i className="bi bi-trash" />
                   </Button>
@@ -702,9 +708,9 @@ const UserCartDetailsPageComponent = ({
             <br />
             <ListGroup className="">
               <ListGroup.Item className="p-1 ps-2">
-                <h4 className="m-0">Order Summary</h4>
+                <h4 className="m-0 cart_detail_right-title">Order Summary</h4>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <p className="p-0 m-0">
                   Total:{" "}
                   <span className="float-end">
@@ -714,14 +720,14 @@ const UserCartDetailsPageComponent = ({
                 </p>
               </ListGroup.Item>
 
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 Item Price:{" "}
                 <span className="fw-bold float-end"> $ {nonGSTPrice}</span>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 Total GST <span className="fw-bold float-end">$ {GST}</span>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 Invoice Amount:{" "}
                 <span className="fw-bold text-danger float-end">
                   $ {incGSTPrice}
@@ -731,13 +737,13 @@ const UserCartDetailsPageComponent = ({
 
               <><ListGroup.Item
                 controlid="validationSLRPurchaseNum"
-                className="p-1 ps-2"
+                className="p-2 ps-2"
               >
-                <Form.Label className="fw-bold text-danger">
+                <Form.Label className="fw-bold ps-2">
                   PO Number
                 </Form.Label>
                 <Form.Control
-                  className="p-0 ps-1"
+                  className="p-1 ps-2 cart_detail_right_input"
                   onChange={enterPurchaseNum}
                   type="string"
                   name="SLRPurchaseNumber"
@@ -753,9 +759,9 @@ const UserCartDetailsPageComponent = ({
                   controlid="validationOrderNote"
                   className="p-1 ps-2"
                 >
-                  <Form.Label className="fw-bold">Order Name:</Form.Label>
+                  <Form.Label className="fw-bold ps-2">Order Name:</Form.Label>
                   <Form.Control
-                    className="p-0 ps-1"
+                    className="p-1 ps-2 cart_detail_right_input"
                     type="string"
                     name="orderNote"
                     placeholder="Order Name"
@@ -859,14 +865,14 @@ const UserCartDetailsPageComponent = ({
                   ""
                 )}
               </>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-1 ps-2 pe-2">
                 <div className="d-grid gap-2">
                   <Button
                     size="lg"
                     onClick={orderHandler}
                     disabled={purchaseNumber === "" ? true : false}
-                    className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
-                    style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}
+                    className="btn p-1 ps-1 pe-1 download_cart_btn rounded confirm-btn"
+                    style={{ width: "100%", margin: "0 auto" }}
                   >
                     Confirm Order
                   </Button>
@@ -876,7 +882,7 @@ const UserCartDetailsPageComponent = ({
             <br />
           </Col>
         </div>
-      </Container>
+      </div>
       {shouldRenderVerifySiteModal && (
         <VerifySiteComponent
           show={showVerifySiteModal}
