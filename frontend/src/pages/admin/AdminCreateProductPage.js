@@ -23,8 +23,8 @@ const createProductApiRequest = async (formInputs) => {
   return data;
 };
 
-const getCTLSku = async () => {
-  const { data } = await axios.get(`/api/products/admin/getCTLSKU`);
+const getMNASku = async () => {
+  const { data } = await axios.get(`/api/products/admin/getMNASKU`);
   return data;
 }
 
@@ -49,7 +49,7 @@ const AdminCreateProductPage = () => {
       newCategory={newCategory}
       deleteCategory={deleteCategory}
       saveAttributeToCatDoc={saveAttributeToCatDoc}
-      getCTLSku={getCTLSku}
+      getMNASku={getMNASku}
     />
   );
 };

@@ -577,7 +577,7 @@ const ClientQuote = (quotePrintData) => {
                       </View>
                       <View style={styles.tableColHeaderMedium}>
                         <Text style={styles.tableColBillItem}>
-                          {item.stock[0].ctlsku}
+                          {item.stock[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderCenter}>
@@ -624,7 +624,7 @@ const ClientQuote = (quotePrintData) => {
                       </View>
                       <View style={styles.tableColHeaderMedium}>
                         <Text style={styles.tableColBillItem}>
-                          {item.stock[0].ctlsku}
+                          {item.stock[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderCenter}>
@@ -778,7 +778,7 @@ const ClientQuote = (quotePrintData) => {
                               </View>
                               <View style={styles.tableColHeaderShort}>
                                 <Text style={styles.tableColBillItem}>
-                                  {item.stock[0].ctlsku}
+                                  {item.stock[0].mnasku}
                                 </Text>
                               </View>
                               <View style={styles.tableColHeaderCenter}>
@@ -825,7 +825,7 @@ const ClientQuote = (quotePrintData) => {
                               </View>
                               <View style={styles.tableColHeaderShort}>
                                 <Text style={styles.tableColBillItem}>
-                                  {item.stock[0].ctlsku}
+                                  {item.stock[0].mnasku}
                                 </Text>
                               </View>
                               <View style={styles.tableColHeaderCenter}>

@@ -30,7 +30,7 @@ const UserOrderItemForOrderPageComponent = (id) => {
           <th style={{ width: "10%" }}></th>
           <th style={{ width: "25%" }}>Product</th>
           <th style={{ width: "10%" }}>Client SKU</th>
-          <th style={{ width: "10%" }}>CTLSKU</th>
+          <th style={{ width: "10%" }}>MNASKU</th>
           <th style={{ width: "10%" }}>Unit Price</th>
           <th style={{ width: "9%" }}>Order Qty</th>
           <th style={{ width: "11%" }}>Supplied Qty</th>

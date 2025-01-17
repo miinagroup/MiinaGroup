@@ -245,7 +245,7 @@ const ProductListPageComponent = ({
                     categories={categories}
                     sortOrder={product.sortOrder}
                     createQuote={createQuote}
-                    ctlsku={product.stock[0].ctlsku}
+                    mnasku={product.stock[0].mnasku}
                   />
 
                 );
@@ -280,7 +280,7 @@ const ProductListPageComponent = ({
                         categories={categories}
                         sortOrder={product.sortOrder}
                         createQuote={createQuote}
-                        ctlsku={product.stock[0].ctlsku}
+                        mnasku={product.stock[0].mnasku}
                       />
                     );
                   })

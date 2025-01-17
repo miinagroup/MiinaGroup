@@ -195,7 +195,7 @@ const getProducts = async (req, res, next) => {
           $or: [
             { name: regexPattern },
             { supplier: regexPattern },
-            { "stock.ctlsku": regexPattern },
+            { "stock.mnasku": regexPattern },
             { "stock.suppliersku": regexPattern }
           ],
         };
@@ -204,7 +204,7 @@ const getProducts = async (req, res, next) => {
           $or: [
             { name: regexPattern },
             { supplier: regexPattern },
-            { "stock.ctlsku": regexPattern },
+            { "stock.mnasku": regexPattern },
             { "stock.suppliersku": regexPattern },
             { [`stock.${userSiteSku}`]: regexPattern },
           ],
@@ -318,7 +318,7 @@ const getProducts = async (req, res, next) => {
       } else {
         if (searchWords.length === 1 && searchWords[0].startsWith("CTL")) {
           searchQueryCondition = {
-            "stock.ctlsku": {
+            "stock.mnasku": {
               $regex: new RegExp(`${searchWords[0]}`, "i"),
             },
           };
@@ -407,9 +407,9 @@ const getProductById = async (req, res, next) => {
 const adminGetProducts = async (req, res, next) => {
   try {
     const products = await Product.find({})
-      // .sort({ ctlsku: 1 })
+      // .sort({ mnasku: 1 })
       .select(
-        "name category displayPrice supplier stock.price stock.purchaseprice stock.ctlsku stock.count stock.suppliersku stock.attrs stock.uom stock.barcode images pdfs"
+        "name category displayPrice supplier stock.price stock.purchaseprice stock.mnasku stock.count stock.suppliersku stock.attrs stock.uom stock.barcode images pdfs"
       );
     return res.json(products);
   } catch (err) {
@@ -417,12 +417,12 @@ const adminGetProducts = async (req, res, next) => {
   }
 };
 
-const adminFindDuplicateCTLSKU = async (req, res, next) => {
+const adminFindDuplicateMNASKU = async (req, res, next) => {
   try {
     const duplicates = await Product.aggregate([
       {
         $group: {
-          _id: "$stock.ctlsku", // Group by the field to check
+          _id: "$stock.mnasku", // Group by the field to check
           count: { $sum: 1 }, // Count occurrences
         },
       },
@@ -440,11 +440,11 @@ const adminFindDuplicateCTLSKU = async (req, res, next) => {
   }
 }
 
-const adminGetCTLSKU = async (req, res, next) => {
+const adminGetMNASKU = async (req, res, next) => {
   try {
     const products = await Product.find({})
-      // .sort({ ctlsku: 1 })
-      .select("stock.ctlsku");
+      // .sort({ mnasku: 1 })
+      .select("stock.mnasku");
     return res.json(products);
   } catch (err) {
     next(err);
@@ -531,7 +531,7 @@ const adminCreateProduct = async (req, res, next) => {
           price,
           purchaseprice,
           barcode,
-          ctlsku,
+          mnasku,
           suppliersku,
         } = item;
         product.stock.push({
@@ -541,7 +541,7 @@ const adminCreateProduct = async (req, res, next) => {
           price: price || 0,
           purchaseprice: purchaseprice || 0,
           barcode: barcode || "",
-          ctlsku: ctlsku || "",
+          mnasku: mnasku || "",
           suppliersku: suppliersku || ""
         });
       });
@@ -675,7 +675,7 @@ const adminUpdateProduct = async (req, res, next) => {
           price,
           purchaseprice,
           barcode,
-          ctlsku,
+          mnasku,
           suppliersku,
         } = item;
         product.stock.push({
@@ -686,7 +686,7 @@ const adminUpdateProduct = async (req, res, next) => {
           price: price || 0,
           purchaseprice: purchaseprice || 0,
           barcode: barcode || "",
-          ctlsku: ctlsku || "",
+          mnasku: mnasku || "",
           suppliersku: suppliersku || ""
         });
       });
@@ -703,15 +703,15 @@ const adminUpdateProduct = async (req, res, next) => {
   }
 };
 
-const getProductByCTLSKU = async (req, res, next) => {
+const getProductByMNASKU = async (req, res, next) => {
   try {
-    const cltsku = req.query.ctlsku;
-    const product = await Product.findOne({ "stock.ctlsku": cltsku });
+    const cltsku = req.query.mnasku;
+    const product = await Product.findOne({ "stock.mnasku": cltsku });
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
-    const stockItem = product.stock.find((item) => item.ctlsku === cltsku);
+    const stockItem = product.stock.find((item) => item.mnasku === cltsku);
     if (!stockItem) {
       return res.status(404).json({ error: "Stock item not found" });
     }
@@ -723,8 +723,8 @@ const getProductByCTLSKU = async (req, res, next) => {
 
 const userUpdateSKU = async (req, res, next) => {
   try {
-    const ctlsku = req.params.ctlsku;
-    let product = await Product.findOne({ "stock.ctlsku": ctlsku });
+    const mnasku = req.params.mnasku;
+    let product = await Product.findOne({ "stock.mnasku": mnasku });
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -738,13 +738,13 @@ const userUpdateSKU = async (req, res, next) => {
 
 const adminUpdateSKU = async (req, res, next) => {
   try {
-    const ctlsku = req.params.ctlsku;
+    const mnasku = req.params.mnasku;
 
     let product = await Product.findOne({
-      "stock.ctlsku": ctlsku,
+      "stock.mnasku": mnasku,
     });
 
-    const stockItem = product.stock.find(item => item.ctlsku === ctlsku);
+    const stockItem = product.stock.find(item => item.mnasku === mnasku);
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
@@ -1027,20 +1027,20 @@ const checkStockCount = async (req, res) => {
         $match: {
           $or: [
             {
-              "stock.ctlsku": { $exists: true },
+              "stock.mnasku": { $exists: true },
               "stock.count": { $exists: false },
             },
-            { "stock.ctlsku": { $exists: true }, "stock.count": null },
-            { "stock.ctlsku": { $exists: false } },
-            { "stock.ctlsku": null },
-            { "stock.ctlsku": "" },
+            { "stock.mnasku": { $exists: true }, "stock.count": null },
+            { "stock.mnasku": { $exists: false } },
+            { "stock.mnasku": null },
+            { "stock.mnasku": "" },
           ],
         },
       },
       {
         $project: {
           _id: 1,
-          ctlsku: "$stock.ctlsku",
+          mnasku: "$stock.mnasku",
           count: "$stock.count",
           productName: "$name",
         },
@@ -1050,19 +1050,19 @@ const checkStockCount = async (req, res) => {
     const bulkOps = [];
     const productsToUpdate = [];
     const productsToDelete = [];
-    const productsNoCTLSKU = [];
+    const productsNoMNASKU = [];
 
     productsWithStock.forEach((p) => {
-      if (p.ctlsku && (p.count === null || p.count === undefined)) {
+      if (p.mnasku && (p.count === null || p.count === undefined)) {
         productsToUpdate.push(p);
         bulkOps.push({
           updateOne: {
-            filter: { _id: p._id, "stock.ctlsku": p.ctlsku },
+            filter: { _id: p._id, "stock.mnasku": p.mnasku },
             update: { $set: { "stock.$.count": 0 } },
           },
         });
-      } else if (!p.ctlsku || p.ctlsku === "" || p.ctlsku === null) {
-        productsNoCTLSKU.push(p);
+      } else if (!p.mnasku || p.mnasku === "" || p.mnasku === null) {
+        productsNoMNASKU.push(p);
       }
     });
 
@@ -1084,13 +1084,13 @@ const checkStockCount = async (req, res) => {
 
     console.log("productsToUpdate", productsToUpdate.length);
     console.log("productsToDelete", productsToDelete.length);
-    console.log("productStockItemsToDelete", productsNoCTLSKU.length);
+    console.log("productStockItemsToDelete", productsNoMNASKU.length);
 
     res.status(200).json({
       message: "Stock update and deletion completed",
       updatedProducts: productsToUpdate,
       deletedProducts: productsToDelete,
-      productsNoCTLSKU: productsNoCTLSKU,
+      productsNoMNASKU: productsNoMNASKU,
     });
   } catch (error) {
     console.error(error);
@@ -1156,7 +1156,7 @@ const productsCheck = async (req, res) => {
           stockItem.attrs === undefined ||
           stockItem.price === undefined ||
           (product.displayPrice !== 0 && stockItem.price <= 0) ||
-          stockItem.ctlsku === undefined
+          stockItem.mnasku === undefined
         ) {
           if (!missingStock) {
             missingStockFields.push(product);
@@ -1166,11 +1166,11 @@ const productsCheck = async (req, res) => {
       });
     }
 
-    const duplicateCtlSku = await Product.aggregate([
+    const duplicateMnaSku = await Product.aggregate([
       { $unwind: "$stock" },
       {
         $group: {
-          _id: "$stock.ctlsku",
+          _id: "$stock.mnasku",
           count: { $sum: 1 },
           products: { $addToSet: { id: "$_id", name: "$name" } },
         },
@@ -1178,12 +1178,12 @@ const productsCheck = async (req, res) => {
       { $match: { count: { $gt: 1 } } },
     ]);
 
-    if (duplicateCtlSku.length === 0) {
+    if (duplicateMnaSku.length === 0) {
       console.log("No duplicates found");
     } else {
-      duplicateCtlSku.forEach((dup) => {
+      duplicateMnaSku.forEach((dup) => {
         console.log(
-          `Duplicate ctlsku found: ${dup._id}, in products: ${dup.products.join(
+          `Duplicate mnasku found: ${dup._id}, in products: ${dup.products.join(
             ", "
           )}`
         );
@@ -1194,7 +1194,7 @@ const productsCheck = async (req, res) => {
       missingMainFields,
       missingStockFields,
       updatedDisplayPrice,
-      duplicateCtlSku,
+      duplicateMnaSku,
     });
   } catch (error) {
     console.error(error);
@@ -1204,20 +1204,20 @@ const productsCheck = async (req, res) => {
   }
 };
 
-async function findProductsWithDuplicateCtlSku() {
+async function findProductsWithDuplicateMnaSku() {
   try {
     const duplicates = await Product.aggregate([
       // Unwind to deconstruct the stock array
       { $unwind: "$stock" },
-      // Group by ctlsku and collect the product IDs
+      // Group by mnasku and collect the product IDs
       {
         $group: {
-          _id: "$stock.ctlsku",
+          _id: "$stock.mnasku",
           count: { $sum: 1 },
           products: { $addToSet: "$_id" },
         },
       },
-      // Filter for ctlsku values that appear in more than one product
+      // Filter for mnasku values that appear in more than one product
       { $match: { count: { $gt: 1 } } },
     ]);
 
@@ -1226,7 +1226,7 @@ async function findProductsWithDuplicateCtlSku() {
     } else {
       duplicates.forEach((dup) => {
         console.log(
-          `Duplicate ctlsku found: ${dup._id}, in products: ${dup.products.join(
+          `Duplicate mnasku found: ${dup._id}, in products: ${dup.products.join(
             ", "
           )}`
         );
@@ -1488,8 +1488,8 @@ const searchProducts = async (req, res, next) => {
       }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
-        const ctlskuMatches = await Product.find({ "stock.ctlsku": regex }).limit(250 - productFound.length);
-        productFound = productFound.concat(ctlskuMatches);
+        const mnaskuMatches = await Product.find({ "stock.mnasku": regex }).limit(250 - productFound.length);
+        productFound = productFound.concat(mnaskuMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
@@ -1753,8 +1753,8 @@ const searchProductsForVisitor = async (req, res, next) => {
       }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
-        const ctlskuMatches = await Product.find({ "stock.ctlsku": regex }).limit(250 - productFound.length);
-        productFound = productFound.concat(ctlskuMatches);
+        const mnaskuMatches = await Product.find({ "stock.mnasku": regex }).limit(250 - productFound.length);
+        productFound = productFound.concat(mnaskuMatches);
       }
       productFound = _.uniqBy(productFound, 'id');
       if (productFound.length < 250) {
@@ -1912,9 +1912,9 @@ const searchProductsForVisitor = async (req, res, next) => {
 module.exports = {
   getProducts,
   getProductById,
-  getProductByCTLSKU,
+  getProductByMNASKU,
   adminGetProducts,
-  adminGetCTLSKU,
+  adminGetMNASKU,
   adminGetSupplierSku,
   adminDeleteProduct,
   adminCreateProduct,
@@ -1935,6 +1935,6 @@ module.exports = {
   getProductsVisitor,
   searchProductsForVisitor,
   adminUpdateTags,
-  adminFindDuplicateCTLSKU
+  adminFindDuplicateMNASKU
 };
 

@@ -312,11 +312,6 @@ const UserOrderDetailsPageComponent = ({
     }
   }, [storeUsersList, siteUsersList])
 
-  // console.log(userInfo.isPD, userInfo.isSiteManager, userInfo.isSitePerson);
-  // console.log("companyUsersList", companyUsersList);
-  // console.log("siteUsersList", siteUsersList);
-  // console.log("usersList", usersList);
-
   const selectSecondOwner = (e) => {
     setSecondOwnerId(e.target.value)
     companyUsersList.map((user) => {

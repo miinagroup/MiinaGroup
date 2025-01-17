@@ -84,7 +84,7 @@ const ProductForStockPreviewComponent = ({
   if (selectedProduct !== "choose-product" && selectedStock) {
     stockCount = selectedStock.count;
     stockPrice = selectedStock.price;
-    stockCode = selectedStock.ctlsku;
+    stockCode = selectedStock.mnasku;
   }
 
   const price = stockPrice;

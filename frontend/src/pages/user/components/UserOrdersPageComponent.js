@@ -30,7 +30,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
     { name: "Shipped", field: "isDelivered", sortable: true },
     { name: "Order details", field: "_id", sortable: false },
   ];
-  
+
 
   useEffect(() => {
     getOrders()
@@ -79,8 +79,8 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
             (cartItem) =>
               cartItem.cartProducts &&
               cartItem.cartProducts.length > 0 &&
-              cartItem.cartProducts[0].ctlsku &&
-              cartItem.cartProducts[0].ctlsku
+              cartItem.cartProducts[0].mnasku &&
+              cartItem.cartProducts[0].mnasku
                 .toUpperCase()
                 .includes(productSearch.toUpperCase())
           ) ||
@@ -147,29 +147,29 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
   return (
     <>
       <div>
-          <UserLinksComponent />
+        <UserLinksComponent />
         <div className={styles.ordersWrapper}>
           <h1 className={styles.title}>MY ORDERS</h1>
           <div className={styles.searchPaginationWrapper}>
-              <Pagination
-                total={totalProducts}
-                itemsPerPage={ITEMS_PER_PAGE}
-                currentPage={currentPage}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-              <Search
-                onSearch={(value) => {
-                  setProductSearch(value);
-                  setCurrentPage(1);
-                }}
-              />
+            <Pagination
+              total={totalProducts}
+              itemsPerPage={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+            <Search
+              onSearch={(value) => {
+                setProductSearch(value);
+                setCurrentPage(1);
+              }}
+            />
           </div>
           <table className={`table ${styles.ordersTable}`}>
-              <TableHeader
+            <TableHeader
               headers={productHeaders}
               onSorting={(field, order) => setSorting({ field, order })}
             />
-            
+
             <tbody>
               {productData ? (
                 productData?.map((order, idx) => (

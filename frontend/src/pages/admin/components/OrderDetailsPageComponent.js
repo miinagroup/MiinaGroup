@@ -610,7 +610,7 @@ const OrderDetailsPageComponent = ({
     markAsDelivered(id, trackLink)
       .then((res) => {
         if (res.message === "Order has been shipped") {
-          if (cartItems[0]?.cartProducts[0].ctlsku !== "CTL000000") {
+          if (cartItems[0]?.cartProducts[0].mnasku !== "CTL000000") {
             setorderDeliveredButton("sending email");
             sendDeliveryNotice(userInfo?.email, purchaseNumber, trackLink)
               .then((res) => {
@@ -726,7 +726,7 @@ const OrderDetailsPageComponent = ({
               attrs: item.cartProducts[0].attrs,
               barcode: item.cartProducts[0].barcode,
               count: item.cartProducts[0].count,
-              ctlsku: item.cartProducts[0].ctlsku,
+              mnasku: item.cartProducts[0].mnasku,
               price: item.cartProducts[0].price,
               quantity: item.cartProducts[0].backOrder,
               suppliedQty: item.cartProducts[0].backOrder,
@@ -1017,7 +1017,7 @@ const OrderDetailsPageComponent = ({
                 <tr>
                   <th style={{ width: "6%" }}></th>
                   <th style={{ width: "22%" }}>Product</th>
-                  <th style={{ width: "8%" }}>CTLSKU</th>
+                  <th style={{ width: "8%" }}>MNASKU</th>
                   <th style={{ width: "7%" }}>Unit Price</th>
                   <th style={{ width: "7%" }}>Order Qty</th>
                   <th style={{ width: "7%" }}>Supplied Qty</th>

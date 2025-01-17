@@ -58,7 +58,7 @@ const ProductsPageComponent = ({
     { name: "Price", field: "price", sortable: true },
     { name: "Margin", field: "margin", sortable: true },
     { name: "Stock", field: "count", sortable: true },
-    { name: "CTLsku", field: "ctlsku", sortable: true },
+    { name: "MNAsku", field: "mnasku", sortable: true },
     { name: "Supplier sku", field: "suppliersku", sortable: true },
     { name: "Category", field: "category", sortable: true },
     { name: "View/Edit/Delete", field: "", sortable: false },
@@ -80,7 +80,7 @@ const ProductsPageComponent = ({
           products.supplier?.toLowerCase().includes(search.toLowerCase()) ||
           products.stock.some(
             (stockItem) =>
-              stockItem.ctlsku?.toLowerCase().includes(search.toLowerCase()) ||
+              stockItem.mnasku?.toLowerCase().includes(search.toLowerCase()) ||
               stockItem.slrsku?.toLowerCase().includes(search.toLowerCase()) ||
               stockItem.suppliersku
                 ?.toLowerCase()
@@ -345,26 +345,26 @@ const ProductsPageComponent = ({
                 </td>
                 <td>
                   {item.stock.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>{stockItem.attrs}</div>
+                    <div key={stockItem.mnasku}>{stockItem.attrs}</div>
                   ))}
                 </td>
                 <td>
                   {item.stock.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>
+                    <div key={stockItem.mnasku}>
                       ${stockItem.purchaseprice?.toFixed(2)}
                     </div>
                   ))}
                 </td>
                 <td>
                   {item.stock.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>
+                    <div key={stockItem.mnasku}>
                       ${stockItem.price?.toFixed(2)}
                     </div>
                   ))}
                 </td>
                 <td>
                   {item.stock.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>
+                    <div key={stockItem.mnasku}>
                       {(
                         (100 * (stockItem.price - stockItem.purchaseprice)) /
                         stockItem.purchaseprice
@@ -375,17 +375,17 @@ const ProductsPageComponent = ({
                 </td>
                 <td>
                   {item.stock.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>{stockItem.count}</div>
+                    <div key={stockItem.mnasku}>{stockItem.count}</div>
                   ))}
                 </td>
                 <td>
                   {item.stock.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>{stockItem.ctlsku}</div>
+                    <div key={stockItem.mnasku}>{stockItem.mnasku}</div>
                   ))}
                 </td>
                 <td>
                   {item.stock.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>{stockItem.suppliersku}</div>
+                    <div key={stockItem.mnasku}>{stockItem.suppliersku}</div>
                   ))}
                 </td>
                 <td>{item.category}</td>

@@ -529,7 +529,7 @@ const CartPrint = (cartItems) => {
                     <View style={styles.tableRowProducts} key={idx}>
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].ctlsku}
+                          {item.cartProducts[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderCenter}>
@@ -605,7 +605,7 @@ const CartPrint = (cartItems) => {
                     <View style={styles.tableRowProducts1} key={idx}>
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].ctlsku}
+                          {item.cartProducts[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderCenter}>
@@ -795,7 +795,7 @@ const CartPrint = (cartItems) => {
                           <View style={styles.tableRowProducts} key={idx}>
                             <View style={styles.tableColHeaderShort}>
                               <Text style={styles.tableColBillItem}>
-                                {item.cartProducts[0].ctlsku}
+                                {item.cartProducts[0].mnasku}
                               </Text>
                             </View>
                             <View style={styles.tableColHeaderCenter}>
@@ -877,7 +877,7 @@ const CartPrint = (cartItems) => {
                         <View style={styles.tableRowProducts1} key={idx}>
                           <View style={styles.tableColHeaderShort}>
                             <Text style={styles.tableColBillItem}>
-                              {item.cartProducts[0].ctlsku}
+                              {item.cartProducts[0].mnasku}
                             </Text>
                           </View>
                           <View style={styles.tableColHeaderCenter}>

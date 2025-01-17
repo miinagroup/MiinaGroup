@@ -14,8 +14,11 @@ const ProductDetailsPage = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const getUser = async () => {
-    const { data } = await axios.get("/api/users/profile/" + userInfo._id);
-    return data;
+    if (userInfo && userInfo._id) {
+      const { data } = await axios.get(`/api/users/profile/${userInfo._id}`);
+      return data;
+    }
+    return null; // Return null if userInfo._id doesn't exist
   };
 
   const createQuote = async (formInputs) => {

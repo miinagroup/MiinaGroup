@@ -27,7 +27,7 @@ const CartItemForUserPreviewComponent = ({ item }) => {
             </a>
           </td>
           <td style={{ width: "10%" }}>
-            <p className="m-0">{item.cartProducts[0].ctlsku}</p>
+            <p className="m-0">{item.cartProducts[0].mnasku}</p>
           </td>
           <td style={{ width: "10%" }}>{item.cartProducts[0].price}</td>
           <td style={{ width: "9%" }}>{item.cartProducts[0].quantity}</td>

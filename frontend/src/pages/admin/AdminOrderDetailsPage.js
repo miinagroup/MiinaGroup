@@ -14,12 +14,12 @@ const fetchProduct = async (productId) => {
   return data;
 };
 
-// const updateOrderClientCurrentSku = async (id, matchingClientSku, ctlsku, itemId) => {
+// const updateOrderClientCurrentSku = async (id, matchingClientSku, mnasku, itemId) => {
 //   const { data } = await axios.put(
 //     `/api/orders/admin/updateClientSku/${id}`,
 //     {
 //       "clientSku": matchingClientSku,
-//       "ctlsku": ctlsku,
+//       "mnasku": mnasku,
 //       "cartItemId": itemId
 //     }
 //   );

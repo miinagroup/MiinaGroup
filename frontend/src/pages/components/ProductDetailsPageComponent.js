@@ -124,7 +124,7 @@ const ProductDetailsPageComponent = ({
               key === "price" ||
               key === "barcode" ||
               key === "suppliersku" ||
-              key === "ctlsku" ||
+              key === "mnasku" ||
               key === "sales" ||
               key === siteSku
             ) {
@@ -165,7 +165,7 @@ const ProductDetailsPageComponent = ({
               key === "price" ||
               key === "barcode" ||
               key === "suppliersku" ||
-              key === "ctlsku" ||
+              key === "mnasku" ||
               key === "sales" ||
               key === siteSku
             ) {
@@ -188,7 +188,7 @@ const ProductDetailsPageComponent = ({
   useEffect(() => {
     if (selectedProduct !== "Please-Select" && selectedStock) {
       setStockPrice(selectedStock.price);
-      setstockCode(selectedStock.ctlsku);
+      setstockCode(selectedStock.mnasku);
       setsupplierCode(selectedStock.suppliersku);
       setStockLevel(selectedStock.count);
     }
@@ -340,7 +340,7 @@ const ProductDetailsPageComponent = ({
       setQuoteData({
         existingProduct: true,
         product: id,
-        ctlsku: selectedStock.ctlsku,
+        mnasku: selectedStock.mnasku,
         status: "Received",
       });
     }
@@ -488,7 +488,7 @@ const ProductDetailsPageComponent = ({
           supplier: product.supplier,
           poCartProducts: [
             {
-              ctlsku: selectedStock.ctlsku,
+              mnasku: selectedStock.mnasku,
               quantity: qty,
               purchaseprice: selectedStock.purchaseprice,
               suppliersku: selectedStock.suppliersku,
@@ -514,7 +514,7 @@ const ProductDetailsPageComponent = ({
       });
 
       item.poCartProducts.forEach((product, productIndex) => {
-        const requiredProductFields = ['ctlsku', 'quantity', 'purchaseprice', 'suppliersku', 'attrs', 'uom'];
+        const requiredProductFields = ['mnasku', 'quantity', 'purchaseprice', 'suppliersku', 'attrs', 'uom'];
         requiredProductFields.forEach((field) => {
           if (product[field] === undefined || product[field] === null) {
             missingFields.push(`${field}`);

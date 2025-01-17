@@ -55,7 +55,7 @@ const orderSchema = mongoose.Schema(
             suppliedQty: { type: Number, required: true },
             backOrder: { type: Number, required: false },
             count: { type: Number, required: false },
-            ctlsku: { type: String, required: false },
+            mnasku: { type: String, required: false },
             suppliersku: { type: String, required: false },
             attrs: { type: String, required: true },
             color: { type: String, required: false },

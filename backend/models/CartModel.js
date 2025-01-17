@@ -24,7 +24,7 @@ const cartSchema = new mongoose.Schema(
             purchaseprice: { type: Number, required: false },
             quantity: { type: Number, required: true },
             count: { type: Number, required: false },
-            ctlsku: { type: String, required: false },
+            mnasku: { type: String, required: false },
             suppliersku: { type: String, required: false },
             attrs: { type: String, required: false },
             category: { type: String, required: false },

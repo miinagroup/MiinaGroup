@@ -47,7 +47,7 @@ export const reOrder = (orderId) => async (dispatch, getState) => {
           saleunit: product.saleunit,
           image: product.image ?? null,
           cartProducts: product.cartProducts,
-          ctlsku: product.ctlsku,
+          mnasku: product.mnasku,
         },
       });
     });

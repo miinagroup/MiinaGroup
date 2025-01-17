@@ -27,7 +27,7 @@ const CreateProductPageComponent = ({
   newCategory,
   deleteCategory,
   saveAttributeToCatDoc,
-  getCTLSku,
+  getMNASku,
 }) => {
   const [validated, setValidated] = useState(false);
   const [attributesTable, setAttributesTable] = useState([]);
@@ -40,9 +40,9 @@ const CreateProductPageComponent = ({
     error: "",
   });
   const [categoryChoosen, setCategoryChoosen] = useState("Choose category");
-  const [ctlskuList, setCtlskuList] = useState([]);
-  const [newCTLSKU, setNewCTLSKU] = useState("");
-  const [newCtlSkus, setNewCtlSkus] = useState([]);
+  const [mnaskuList, setMnaskuList] = useState([]);
+  const [newMNASKU, setNewMNASKU] = useState("");
+  const [newMnaSkus, setNewMnaSkus] = useState([]);
   const [newAttrKey, setNewAttrKey] = useState(false);
   const [newAttrValue, setNewAttrValue] = useState(false);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
@@ -52,10 +52,10 @@ const CreateProductPageComponent = ({
   const [rowCount, setRowCount] = useState(1);
 
   useEffect(() => {
-    ctlskuList.length = 0;
-    getCTLSku().then((data) => {
+    mnaskuList.length = 0;
+    getMNASku().then((data) => {
       data?.map((ctl) => {
-        setCtlskuList((current) => [...current, ctl.stock[0]?.ctlsku]);
+        setMnaskuList((current) => [...current, ctl.stock[0]?.mnasku]);
       });
     });
   }, [1]);
@@ -63,10 +63,10 @@ const CreateProductPageComponent = ({
   useEffect(() => {
     let skucounter = 100100;
     let foundNextSku = false;
-    ctlskuList.sort();
-    ctlskuList?.forEach((ctlsku) => {
+    mnaskuList.sort();
+    mnaskuList?.forEach((mnasku) => {
       if (foundNextSku === false) {
-        const ctlNumber = parseInt(ctlsku?.replace("CTL", ""));
+        const ctlNumber = parseInt(mnasku?.replace("CTL", ""));
         if (ctlNumber > skucounter) {
           if (ctlNumber === skucounter + 1) {
             skucounter = ctlNumber;
@@ -76,26 +76,26 @@ const CreateProductPageComponent = ({
         }
       }
     });
-    const nextCtlSku = "CTL" + (skucounter + 1);
-    setNewCTLSKU(nextCtlSku);
-    setNewCtlSkus([nextCtlSku]);
-  }, [ctlskuList]);
+    const nextMnaSku = "CTL" + (skucounter + 1);
+    setNewMNASKU(nextMnaSku);
+    setNewMnaSkus([nextMnaSku]);
+  }, [mnaskuList]);
 
   const handleNewProduct = () => {
-    setNewCtlSkus([...newCtlSkus, newCTLSKU]);
+    setNewMnaSkus([...newMnaSkus, newMNASKU]);
     setRowCount(rowCount + 1);
   };
 
   const handleRemoveProduct = (idx) => {
-    setNewCtlSkus(newCtlSkus.filter((_, index) => index !== idx));
+    setNewMnaSkus(newMnaSkus.filter((_, index) => index !== idx));
     setRowCount((prevRowCount) => prevRowCount - 1);
   };
 
-  const handleCtlSkuChange = (index, value) => {
-    const updatedSkus = newCtlSkus.map((sku, idx) =>
+  const handleMnaSkuChange = (index, value) => {
+    const updatedSkus = newMnaSkus.map((sku, idx) =>
       idx === index ? value : sku
     );
-    setNewCtlSkus(updatedSkus);
+    setNewMnaSkus(updatedSkus);
   };
 
   const [dynamicPrices, setDynamicPrices] = useState({});
@@ -154,7 +154,7 @@ const CreateProductPageComponent = ({
       const attrs = document.getElementsByName(`attrs-${i}`)[0].value;
       const uom = document.getElementsByName(`uom-${i}`)[0].value;
       const barcode = document.getElementsByName(`barcode-${i}`)[0].value;
-      const ctlsku = document.getElementsByName(`ctlsku-${i}`)[0].value;
+      const mnasku = document.getElementsByName(`mnasku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
       stock.push({
@@ -164,7 +164,7 @@ const CreateProductPageComponent = ({
         attrs,
         uom,
         barcode,
-        ctlsku,
+        mnasku,
         suppliersku,
       });
     }
@@ -369,7 +369,7 @@ const CreateProductPageComponent = ({
               className="mb-3"
               controlId="formBasicSupplier"
             >
-              {/* <Form.Control name="create_CTLSKU" type="button" /> */}
+              {/* <Form.Control name="create_MNASKU" type="button" /> */}
             </Form.Group>
 
             {[...Array(rowCount)].map((_, index) => (
@@ -505,16 +505,16 @@ const CreateProductPageComponent = ({
                       as={Col}
                       md="3"
                       className="mb-3"
-                      controlId={`formBasicCTLSKU-${index}`}
+                      controlId={`formBasicMNASKU-${index}`}
                     >
                       <Form.Label>CTL SKU</Form.Label>
                       <Form.Control
-                        name={`ctlsku-${index}`}
+                        name={`mnasku-${index}`}
                         required
                         type="text"
-                        value={newCtlSkus[index] || ""}
+                        value={newMnaSkus[index] || ""}
                         onChange={(e) =>
-                          handleCtlSkuChange(index, e.target.value)
+                          handleMnaSkuChange(index, e.target.value)
                         }
                       />
                     </Form.Group>

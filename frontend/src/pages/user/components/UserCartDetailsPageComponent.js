@@ -269,7 +269,7 @@ const UserCartDetailsPageComponent = ({
               attrs: item.cartProducts[0].attrs,
               barcode: item.cartProducts[0].barcode,
               count: item.cartProducts[0].count,
-              ctlsku: item.cartProducts[0].ctlsku,
+              mnasku: item.cartProducts[0].mnasku,
               price: item.cartProducts[0].price,
               purchaseprice: item.cartProducts[0].purchaseprice,
               quantity: item.cartProducts[0].quantity,

@@ -664,7 +664,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                     <View style={styles.tableRowProducts} key={idx}>
                       <View style={styles.tableColHeaderMedium}>
                         <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].ctlsku}
+                          {item.cartProducts[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderCenter}>
@@ -751,7 +751,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                     <View style={styles.tableRowProducts1} key={idx}>
                       <View style={styles.tableColHeaderMedium}>
                         <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].ctlsku}
+                          {item.cartProducts[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderCenter}>
@@ -958,7 +958,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                           <View style={styles.tableRowProducts} key={idx}>
                             <View style={styles.tableColHeaderShort}>
                               <Text style={styles.tableColBillItem}>
-                                {item.cartProducts[0].ctlsku}
+                                {item.cartProducts[0].mnasku}
                               </Text>
                             </View>
                             <View style={styles.tableColHeaderCenter}>
@@ -1046,7 +1046,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                         <View style={styles.tableRowProducts1} key={idx}>
                           <View style={styles.tableColHeaderShort}>
                             <Text style={styles.tableColBillItem}>
-                              {item.cartProducts[0].ctlsku}
+                              {item.cartProducts[0].mnasku}
                             </Text>
                           </View>
                           <View style={styles.tableColHeaderCenter}>

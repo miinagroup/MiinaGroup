@@ -54,7 +54,7 @@ const productSchema = mongoose.Schema(
           type: String,
           required: true,
         },
-        ctlsku: {
+        mnasku: {
           type: String,
           required: true,
         },
@@ -161,7 +161,7 @@ productSchema.index(
     name: "text",
     // description: "text",
     // "stock.slrsku": "text",
-    "stock.ctlsku": "text",
+    "stock.mnasku": "text",
     "stock.suppliersku": "text",
   },
   {
@@ -171,7 +171,7 @@ productSchema.index(
       name: 5,
       // description: 2,
       // "stock.slrsku": 1,
-      "stock.ctlsku": 1,
+      "stock.mnasku": 1,
       "stock.suppliersku": 1,
     },
   }

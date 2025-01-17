@@ -83,8 +83,8 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
             (cartItem) =>
               cartItem.cartProducts &&
               cartItem.cartProducts.length > 0 &&
-              cartItem.cartProducts[0].ctlsku &&
-              cartItem.cartProducts[0].ctlsku
+              cartItem.cartProducts[0].mnasku &&
+              cartItem.cartProducts[0].mnasku
                 .toUpperCase()
                 .includes(search.toUpperCase())
           ) ||

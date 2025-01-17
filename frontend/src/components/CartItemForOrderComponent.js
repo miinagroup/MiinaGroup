@@ -25,7 +25,7 @@ const CartItemForOrderComponent = ({
 }) => {
   const [qty, setQty] = useState(item.cartProducts[0].suppliedQty);
   const [price, setPrice] = useState(item.cartProducts[0].price);
-  const [ctlsku, setCtlsku] = useState(item.cartProducts[0].ctlsku);
+  const [mnasku, setMnasku] = useState(item.cartProducts[0].mnasku);
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
   const [userEmail, setUserEmail] = useState(userInfo.email);
 
@@ -94,7 +94,7 @@ const CartItemForOrderComponent = ({
             </a>
           </td>
           <td style={{ width: "10%" }}>
-            <p className="m-0">{item.cartProducts[0].ctlsku}</p>
+            <p className="m-0">{item.cartProducts[0].mnasku}</p>
           </td>
 
           <td style={{ width: "10%" }}>

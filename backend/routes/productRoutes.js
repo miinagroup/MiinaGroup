@@ -3,10 +3,10 @@ const router = express.Router();
 const {
   getProducts,
   getProductById,
-  getProductByCTLSKU,
+  getProductByMNASKU,
   userUpdateSKU,
   adminGetProducts,
-  adminGetCTLSKU,
+  adminGetMNASKU,
   adminGetSupplierSku,
   adminDeleteProduct,
   adminUpdateSKU,
@@ -26,7 +26,7 @@ const {
   getProductsVisitor,
   searchProductsForVisitor,
   adminUpdateTags,
-  adminFindDuplicateCTLSKU
+  adminFindDuplicateMNASKU
 } = require("../controllers/productController");
 
 const {
@@ -43,19 +43,19 @@ router.get("/category/:categoryPath", getProducts);
 router.get("/brand/:brandName", getProducts);
 router.get("/", getProducts);
 router.get("/get-one/:id", getProductById);
-router.put("/client/updateSKU/:ctlsku", userUpdateSKU);
+router.put("/client/updateSKU/:mnasku", userUpdateSKU);
 router.get("/search", searchProducts);
 
 // admin routes:
 router.use(verifyIsAdmin);
 router.get("/admin", adminGetProducts);
-router.get("/admin/getCTLSKU", adminGetCTLSKU);
+router.get("/admin/getMNASKU", adminGetMNASKU);
 router.get("/admin/getSupplierSKU/:supplier", adminGetSupplierSku);
 router.delete("/admin/:id", adminDeleteProduct);
 router.delete("/admin/image/:imagePath/:productId", adminDeleteProductImage);
 router.delete("/admin/pdf/:pdfPath/:productId", adminDeleteProductPdf);
 router.put("/admin/updateProduct/:id", adminUpdateProduct);
-router.put("/admin/updateSKU/:ctlsku", adminUpdateSKU);
+router.put("/admin/updateSKU/:mnasku", adminUpdateSKU);
 router.put("/admin/updateImages/:id", adminUpdateImages);
 router.put("/admin/updateCategory/:id", adminUpdateCategory);
 router.put("/admin/replenishment", adminReplenishment);
@@ -66,5 +66,5 @@ router.post("/admin", adminCreateProduct);
 router.get("/admin/checkStockCount", checkStockCount);
 router.get("/admin/productsCheck", productsCheck);
 router.put("/admin/updateTags", adminUpdateTags);
-router.get("/admin/findDuplicateSKU", adminFindDuplicateCTLSKU)
+router.get("/admin/findDuplicateSKU", adminFindDuplicateMNASKU)
 module.exports = router;

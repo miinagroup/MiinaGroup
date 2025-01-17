@@ -44,7 +44,7 @@ const ProductForListPreviewComponent = ({
   const [userNameEmail, setUserNameEmail] = useState();
   const [productName, setProductName] = useState();
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-  const [ isLogedIn, serIsLogedIn ] = useState(Object.keys(userInfo).length > 0) 
+  const [isLogedIn, serIsLogedIn] = useState(Object.keys(userInfo).length > 0)
 
   useEffect(() => {
     if (product && product.stock && product.stock.length === 1) {
@@ -72,7 +72,7 @@ const ProductForListPreviewComponent = ({
   if (selectedProduct !== "choose-product" && selectedStock) {
     stockCount = selectedStock.count;
     stockPrice = selectedStock.price;
-    stockCode = selectedStock.ctlsku;
+    stockCode = selectedStock.mnasku;
   }
 
 
@@ -216,7 +216,7 @@ const ProductForListPreviewComponent = ({
                           Contact us for a quote
                         </span>
                       ) : (
-                       isLogedIn && <span className="fw-bold">
+                        isLogedIn && <span className="fw-bold">
                           Price: ${formattedPrice}
                         </span>
                       )}
@@ -231,7 +231,7 @@ const ProductForListPreviewComponent = ({
                     }
                   </Col>
                 </Row>
-               
+
                 {/* ************   Product details  ***************  */}
                 <Row className="preview-product-row">
                   <Col className="mt-2 preview-product-row-col">

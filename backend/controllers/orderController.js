@@ -591,16 +591,16 @@ const orderSalesToProduct = async (req, res, next) => {
           if (order.isDelivered === true) {
             const productId = item.productId;
             const stockId = item.cartProducts[0]._id;
-            const stockCtlsku = item.cartProducts[0].ctlsku;
+            const stockMnasku = item.cartProducts[0].mnasku;
 
             const product = await Product.findById(productId);
             if (!product) {
               throw new Error(`Product with id ${productId} not found.`);
             }
 
-            const stockItem = product.stock.find(s => s.ctlsku === stockCtlsku);
+            const stockItem = product.stock.find(s => s.mnasku === stockMnasku);
             if (!stockItem) {
-              throw new Error(`Stock item with ctlsku ${stockCtlsku} not found in product ${productId}.`);
+              throw new Error(`Stock item with mnasku ${stockMnasku} not found in product ${productId}.`);
             }
 
             stockItem.sales += Number(item.cartProducts[0].suppliedQty);
@@ -632,8 +632,8 @@ const getSupplier = async (req, res) => {
       {
         $lookup: {
           from: "products",
-          localField: "cartItems.cartProducts.ctlsku",
-          foreignField: "stock.ctlsku",
+          localField: "cartItems.cartProducts.mnasku",
+          foreignField: "stock.mnasku",
           as: "productDetails"
         }
       },

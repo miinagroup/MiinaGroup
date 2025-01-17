@@ -606,7 +606,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
                     <View style={styles.tableRowProducts} key={idx}>
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItem}>
-                          {item.poCartProducts[0].ctlsku}
+                          {item.poCartProducts[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderMedium}>
@@ -648,7 +648,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
                     <View style={styles.tableRowProducts1} key={idx}>
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItem}>
-                          {item.poCartProducts[0].ctlsku}
+                          {item.poCartProducts[0].mnasku}
                         </Text>
                       </View>
                       <View style={styles.tableColHeaderMedium}>
@@ -795,7 +795,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
                           <View style={styles.tableRowProducts} key={idx}>
                             <View style={styles.tableColHeaderShort}>
                               <Text style={styles.tableColBillItem}>
-                                {item.poCartProducts[0].ctlsku}
+                                {item.poCartProducts[0].mnasku}
                               </Text>
                             </View>
                             <View style={styles.tableColHeaderMedium}>
@@ -837,7 +837,7 @@ const PurchaseOrder = ({ purchaseOrderData, purchaseOrderTotal }) => {
                         <View style={styles.tableRowProducts1} key={idx}>
                           <View style={styles.tableColHeaderShort}>
                             <Text style={styles.tableColBillItem}>
-                              {item.poCartProducts[0].ctlsku}
+                              {item.poCartProducts[0].mnasku}
                             </Text>
                           </View>
                           <View style={styles.tableColHeaderMedium}>

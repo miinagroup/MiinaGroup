@@ -158,12 +158,12 @@ const ProductsPageReplenishment = ({ productReplenishment }) => {
                     <strong>Category:</strong> {product?.category}
                   </p>
                   {product?.stock?.map((stockItem) => (
-                    <div key={stockItem.ctlsku}>
+                    <div key={stockItem.mnasku}>
                       <p>
                         <strong>Item:</strong> {stockItem.attrs}
                       </p>
                       <p>
-                        <strong>CTL SKU:</strong> {stockItem.ctlsku}
+                        <strong>CTL SKU:</strong> {stockItem.mnasku}
                       </p>
                       <p>
                         <strong>Count:</strong> {stockItem.count}

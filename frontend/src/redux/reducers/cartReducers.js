@@ -76,7 +76,7 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
           ...state.cartItems,
           {
             cartProducts: productBeingAddedToCart.cartProducts,
-            ctlsku: productBeingAddedToCart.ctlsku,
+            mnasku: productBeingAddedToCart.mnasku,
             image: productBeingAddedToCart.image,
             name: productBeingAddedToCart.name,
             saleunit: productBeingAddedToCart.saleunit,

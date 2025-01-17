@@ -28,7 +28,7 @@ const ProductForListComponent = ({
   categories,
   sortOrder,
   createQuote,
-  ctlsku,
+  mnasku,
 }) => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
@@ -140,8 +140,11 @@ const ProductForListComponent = ({
   };
 
   const getUser = async () => {
-    const { data } = await axios.get("/api/users/profile/" + userInfo._id);
-    return data;
+    if (userInfo && userInfo._id) {
+      const { data } = await axios.get(`/api/users/profile/${userInfo._id}`);
+      return data;
+    }
+    return null; // Return null if userInfo._id doesn't exist
   };
 
   const formattedPrice = price?.toLocaleString(undefined, {
@@ -158,12 +161,16 @@ const ProductForListComponent = ({
   useEffect(() => {
     getUser()
       .then((data) => {
-        setUserNameEmail({
-          email: data.email,
-          name: data.name,
-        });
+        if (data) { // Check if getUser returns a valid object
+          setUserNameEmail({
+            email: data.email,
+            name: data.name,
+          });
+        } else {
+          console.log("getUser returned null or undefined.");
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Error fetching user:", err));
   }, []);
 
   const [quotePriceData, setQuotePriceData] = useState({});
@@ -172,7 +179,7 @@ const ProductForListComponent = ({
       setQuoteData({
         existingProduct: true,
         product: productId,
-        ctlsku: ctlsku,
+        mnasku: mnasku,
         status: "Received",
       });
       setQuotePriceData({
@@ -181,7 +188,7 @@ const ProductForListComponent = ({
         productId: productId,
       });
     }
-  }, [productId, price, ctlsku, userNameEmail, name]);
+  }, [productId, price, mnasku, userNameEmail, name]);
 
   const [checkImageAvailable, setCheckImageAvailable] = useState(false)
   useEffect(() => {

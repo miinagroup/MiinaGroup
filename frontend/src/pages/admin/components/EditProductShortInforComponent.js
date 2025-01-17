@@ -121,7 +121,7 @@ const EditProductShortInforComponent = ({
       const attrs = document.getElementsByName(`attrs-${i}`)[0].value;
       const uom = document.getElementsByName(`uom-${i}`)[0].value;
       const barcode = document.getElementsByName(`barcode-${i}`)[0].value;
-      const ctlsku = document.getElementsByName(`ctlsku-${i}`)[0].value;
+      const mnasku = document.getElementsByName(`mnasku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
 
@@ -135,7 +135,7 @@ const EditProductShortInforComponent = ({
         attrs,
         uom,
         barcode,
-        ctlsku,
+        mnasku,
         suppliersku,
       });
     }
@@ -150,7 +150,7 @@ const EditProductShortInforComponent = ({
       const attrs = document.getElementsByName(`newAttrs-${i}`)[0].value;
       const uom = document.getElementsByName(`newUom-${i}`)[0].value;
       const barcode = document.getElementsByName(`newBarcode-${i}`)[0].value;
-      const ctlsku = document.getElementsByName(`newCtlsku-${i}`)[0].value;
+      const mnasku = document.getElementsByName(`newMnasku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`newSuppliersku-${i}`)[0]
         .value;
 
@@ -161,7 +161,7 @@ const EditProductShortInforComponent = ({
         attrs,
         uom,
         barcode,
-        ctlsku,
+        mnasku,
         suppliersku,
       });
     }
@@ -502,14 +502,14 @@ const EditProductShortInforComponent = ({
                         as={Col}
                         md="3"
                         className="mb-3"
-                        controlId={`formBasicCTLSKU-${index}`}
+                        controlId={`formBasicMNASKU-${index}`}
                       >
                         <Form.Label>CTL SKU</Form.Label>
                         <Form.Control
-                          name={`ctlsku-${index}`}
+                          name={`mnasku-${index}`}
                           required
                           type="text"
-                          defaultValue={item.ctlsku}
+                          defaultValue={item.mnasku}
                         />
                       </Form.Group>
                       <Form.Group
@@ -638,11 +638,11 @@ const EditProductShortInforComponent = ({
                     as={Col}
                     md="3"
                     className="mb-3"
-                    controlId={`formBasicNewCTLSKU-${index}`}
+                    controlId={`formBasicNewMNASKU-${index}`}
                   >
                     <Form.Label>CTL SKU</Form.Label>
                     <Form.Control
-                      name={`newCtlsku-${index}`}
+                      name={`newMnasku-${index}`}
                       required
                       type="text"
                     />
