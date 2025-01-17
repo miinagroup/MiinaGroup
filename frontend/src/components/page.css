@@ -32,10 +32,6 @@
 }
 
 /* ***********  users initial ********** */
-.users_initial_dropdown:hover .users_dropdown, .users_dropdown:hover {
-  display: block;
-  z-index: 1000;
-}
 
 .users_initial_dropdown {
   float: left;
@@ -53,9 +49,10 @@
   position: absolute;
   background-color: #DBA162;
   color: white;
-  /* width: 120px; */
+  width: 120px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  z-index: 99;
+  /* right: 50px; */
   text-align: left;
   border-radius: 5px;
   font-weight: bold;
@@ -75,7 +72,6 @@
   position: relative;
   height: 75px;
   width: 75px;
-  /* background-image: linear-gradient(#68D4FE, #1E4881); */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -89,38 +85,23 @@
    color: white;
 }
 
-/* .Avtbox,
-.Avtbox:before {
-  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-}
-
-.Avtbox_users_initial {
-  color: white;
-  font-weight: 500;
-}
-
-.Avtbox_users_initial:hover {
-  color: white;
-} */
-
 .Avtbox_admin {
   position: relative;
-  height: 45px;
-  width: 40px;
-  background-image: linear-gradient(#62e75e, #035500);
+  height: 85px;
+  width: 75px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #1e4881;
+  color: white;
   font-size: 1.5rem;
   text-transform: uppercase;
+  background-image: url("/public/images/initials_background_admin.png");
+  background-size: cover;
 }
 
-.Avtbox_admin,
-.Avtbox_admin:before {
-  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+
+.Avtbox_admin a {
+  color: white;
 }
 
 
@@ -164,7 +145,6 @@
   position: absolute;
   top: 15%;
   right: -5%;
-  /* transform: translate(50%, -50%); */
   font-size: 0.6rem;
   font-family: "HelveticaNeue";
   background-color: #DBA162 !important;
@@ -172,7 +152,6 @@
 
 /* *******  ******* */
 .hd_bgc {
-  /* background-image: url("../../public/images/headerBackground_5.jpg"); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -182,17 +161,6 @@
   .hd_bgc {
     background-size: contain;
   }
-}
-
-
-.CTL_btn {
-  background-color: #1e4881;
-  border: #1E4881 solid 1px;
-}
-
-.CTL_btn:hover {
-  border: #5c8dd1 solid 1px;
-  background-color: #5c8dd1;
 }
 
 
@@ -219,13 +187,6 @@
 }
 
 
-
-/* ****** header LOIG hexagon ****** */
-.hexagontext {
-  width: 65%;
-  height: 30%;
-  margin-left: 10%;
-}
 
 .rotate {
   animation: rotation 4s linear;

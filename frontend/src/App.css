@@ -102,25 +102,12 @@ a {
   border-width: 0;
 }
 
-/*
-.loginfm {
-  width: 94%;
-  margin-left: 3%;
-  margin-top: 6%;
-}
 
-.lg_distributor {
-  margin-top: 20%;
-}
-
-.distfont {
-  font-size: 90%;
-} */
 
 /* *************    Nav's AAp.css     ***************** */
 /*--------------------STYLES FOR LOGIN PAGE--------------------*/
-.card{
-  margin-top:50px;
+.card {
+  margin-top: 25px;
   display:flex;
   background-color: #999A47;
   
@@ -148,19 +135,6 @@ li:hover {
 }
 
 
-/* **************  common css **************** */
-.ctl_blue_button {
-  background-color: #1E4881;
-  border: #1E4881;
-}
-
-.CTL_blue {
-  color: #1E4881;
-}
-
-.CTL_blue_light {
-  color: #5c8dd1;
-}
 
 
 /* ********** Print Layout ********** */

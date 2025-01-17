@@ -216,6 +216,7 @@ const LoginPageComponent = ({
                     size="sm"
                     role="status"
                     aria-hidden="true"
+                    variant="success" 
                   />
                 ) : (
                   ""

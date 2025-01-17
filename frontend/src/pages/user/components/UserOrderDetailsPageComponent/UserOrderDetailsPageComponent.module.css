@@ -65,3 +65,29 @@ padding-top: 10px;
     font-size: 12px;
     padding: 5px 10px;
 }
+
+.title {
+    font-family: "GloriaHallelujah";
+    color: #483F55; 
+}
+
+.btnMyOrders {
+ background-color: #521712;
+ color: white;
+ padding: 5px 10px;
+ border: none;
+
+}
+
+.btnMyOrders a {
+     color: white;
+}
+
+.btnMyOrders:hover {
+    background-color: transparent;
+    color: #521712;
+}
+
+.btnMyOrders:hover a {
+    color: #521712;
+}

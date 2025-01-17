@@ -40,7 +40,7 @@ const CartItemDropDown = ({
     <>
       <ListGroup.Item className="cartDropDownComponentItem">
         <Row className="cartDropDownComponent_container">
-          <Col md={1}>
+          <Col md={2}>
             <div>
               <img
                 crossOrigin="anonymous"
@@ -50,7 +50,7 @@ const CartItemDropDown = ({
               />
             </div>
           </Col>
-          <Col md={5}>
+          <Col md={4}>
             <a href={`/product-details/${item.productId}`}>
               <p>
                 <span className="text-uppercase">{item.name}</span>

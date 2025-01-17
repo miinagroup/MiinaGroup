@@ -55,7 +55,7 @@ const ProductListPage = () => {
       const { data } = await axios.get(`/api/users/profile/${userInfo._id}`);
       return data;
     }
-    return null; // Return null if userInfo._id doesn't exist
+    return null;
   };
 
   const createQuote = async (formInputs) => {

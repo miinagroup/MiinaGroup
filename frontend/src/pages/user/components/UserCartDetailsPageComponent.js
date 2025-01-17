@@ -324,11 +324,6 @@ const UserCartDetailsPageComponent = ({
 
   };
 
-  /* 修改支付方式的vale */
-  const choosePayment = (e) => {
-    setPaymentMethod(e.target.value);
-  };
-
   const enterPurchaseNum = (e) => {
     setPurchaseNumber(e.target.value);
     setButtonDisabled(false);
@@ -594,9 +589,9 @@ const UserCartDetailsPageComponent = ({
 
   return (
     <>
-        <div className="green-line"></div>
+      <div className="green-line"></div>
       <div className="userCartDetailPage">
-        <div className="mt-4 d-flex cart_detail_container userCartDetailPageWrapper">
+        <div className="d-flex cart_detail_container userCartDetailPageWrapper">
           <div>
             <div
               style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
@@ -706,7 +701,7 @@ const UserCartDetailsPageComponent = ({
           </div>
           <Col md={3} className="cart_detail_right">
             <br />
-            <ListGroup className="">
+            <ListGroup>
               <ListGroup.Item className="p-1 ps-2">
                 <h4 className="m-0 cart_detail_right-title">Order Summary</h4>
               </ListGroup.Item>

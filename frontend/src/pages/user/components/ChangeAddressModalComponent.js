@@ -37,7 +37,7 @@ const ChangeAddressModalComponent = ({
                <i class="bi bi-exclamation-circle"></i>{" "} 
                 For security reasons, changes to the location cannot be made. 
                 If you still wish to proceed with a change, please contact{" "} 
-              <a href="mailto:techctlaustralia@gmail.com" style={{textDecoration: "underline"}}>techctlaustralia@gmail.com</a>.
+              <a href="mailto:admin@miinagroup.com.au" style={{textDecoration: "underline"}}>admin@miinagroup.com.au</a>.
               </div>
             </Form.Group>
             

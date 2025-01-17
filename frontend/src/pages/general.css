@@ -27,9 +27,8 @@
 .card-title {
   text-align: center;
   text-overflow: hidden;
-  color: #521712;
+  color: #483F55;
   font-family: "HelveticaNeue";
-  font-size: 14px;
   height: 3.8rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -46,7 +45,7 @@
 .card-price {
   text-align: center;
   text-overflow: hidden;
-  color: #073474;
+  color: #521712;
 }
 
 .card-price:hover {
@@ -173,18 +172,25 @@
   color: #050505;
 }
 #item_button {
-  background-color: #073474;
-  min-width: 130%;
+  background-color: #521712;
+  border: 1px solid transparent;
+  padding: 7px 25px;
 }
 #item_button:hover {
-  background-color: #3a74c5;
+  background-color: transparent;
+  color:#521712;
+  border: 1px solid #521712;
+
 }
 #dropdown-item-button {
-  background-color: #073474;
-  min-width: 130%;
+  background-color: #521712;
+  border: 1px solid transparent;
+  padding: 7px 25px;
 }
 #dropdown-item-button:hover {
-  background-color: #3a74c5;
+  background-color: transparent;
+  color:#521712;
+  border: 1px solid #521712;
 }
 
 #item_qty {

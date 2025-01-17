@@ -125,7 +125,6 @@ const RegisterPageComponent = ({
       form.password.value === form.confirmPassword.value &&
       abn
     ) {
-      /* After clicking submit, the validity is determined. If everything in the form is true, then loading is true. This state will be used later to operate the spinner. */
       setRegisterUserResponseState({ loading: true });
       registerUserApiRequest(
         name,
@@ -590,7 +589,7 @@ const RegisterPageComponent = ({
 
         {registerUserResponseState &&
           registerUserResponseState.loading === true ?
-          <Spinner animation="border" role="status">
+          <Spinner animation="border" role="status" variant="success" >
             <span className="visually-hidden">Loading...</span>
           </Spinner>
           : (

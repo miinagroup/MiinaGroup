@@ -1,13 +1,12 @@
-import { Row, Col, Container, ListGroup, Form, Button } from "react-bootstrap";
+import { Row, Col, Container, ListGroup, Form, Spinner } from "react-bootstrap";
 import PaginationComponent from "../../components/PaginationComponent";
 import ProductForListComponent from "../../components/ProductForListComponent";
-import { useCallback, useEffect, useState, useMemo, useRef, Suspense } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import FilterComponent from "../../components/filterQueryResultOptions/FilterComponent";
 import BreadcrumbComponent from "../../components/filterQueryResultOptions/BreadcrumbComponent";
 import ProductCategoriesComponent from "../../components/ProductCategoriesComponent";
-import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./SharedPages.css";
 
@@ -221,7 +220,7 @@ const ProductListPageComponent = ({
 
           {!searchQuery ? <><Row className="m-2 product-list-wrapper" xs={1} md={2} lg={3} xl={4} xxl={5}>
             {loading ? (
-              <img className="loading-spinner" src="./loading-gif.gif"></img>
+              <Spinner animation="border" role="status" variant="success" ></Spinner>
             ) : productCategories.length > 1 ? (
               filteredCategories.map((category) => (
                 <ProductCategoriesComponent
@@ -264,7 +263,8 @@ const ProductListPageComponent = ({
             ) : null}</>
             :
             <>
-              <InfiniteScroll dataLength={searchedData.length} next={fetchData} hasMore={hasMore} loader={<img alt="Loading..." className="loading-spinner" src="./loading-gif.gif" />} endMessage={<p className="mx-4"><b>No more products to load</b></p>}>
+              <InfiniteScroll dataLength={searchedData.length} next={fetchData} hasMore={hasMore} 
+              loader={<Spinner animation="border" role="status" variant="success" ></Spinner>} endMessage={<p className="mx-4"><b>No more products to load</b></p>}>
                 <Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={5}>
                   {searchedData?.map((product, index) => {
                     return (

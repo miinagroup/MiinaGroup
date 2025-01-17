@@ -298,22 +298,6 @@ const UserProfilePageComponent = ({
 
               <Form.Group as={Col} md="4" controlId="formBasicRole">
                 <Form.Label>Role</Form.Label>
-                {/* <Form.Select
-                  required
-                  name="role"
-                  onChange={handleChangeRole}
-                >
-                  <option>{user.role}</option>
-                  {
-                    allUniformRoles.map((role, idx) => (
-                      <option key={idx} value={role.role} style={{ textTransform: "capitalize" }}>
-                        {role.role}
-                      </option>))
-                  }
-                  <option key="other role">
-                    other role
-                  </option>
-                </Form.Select> */}
                 <Form.Control.Feedback type="invalid">
                   Please Select your Role.{" "}
                 </Form.Control.Feedback>

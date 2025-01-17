@@ -61,6 +61,7 @@
 .breadCB {
     margin-top: 1%;
     margin-left: 1%;
+    color: #521712;
 }
 
 .breadcrumb {
@@ -68,11 +69,11 @@ margin-bottom: 0;
 }
 
 .active>a {
-    color: #1e4881;
+    color: #521712;
 }
 
 .active {
-    color: #1e4881;
+    color: #521712;
 }
 .active a:hover {
     text-decoration: underline;

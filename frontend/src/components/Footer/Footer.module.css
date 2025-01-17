@@ -4,6 +4,10 @@
     font-size: 20px;
     position: relative;
     padding: 25px 0px 25px 400px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 
 }
 

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import {
   useSelector, useDispatch
 } from "react-redux";
+import Spinner from 'react-bootstrap/Spinner';
 
 import { getSubcategories } from "../redux/actions/categoryActions.js";
 
@@ -123,28 +124,22 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
 
   if (isLoading) {
     return (
-      <div>
-        <img
-          className="loading-spinner"
-          src="/loading-gif.gif"
-          alt="Loading"
-          style={{ display: "block", margin: "auto", width: "200px", marginTop: "10%" }}
-        />{" "}
-      </div>
+        <Spinner animation="border" role="status" variant="success" ></Spinner>
     );
   }
   else if (isAuth === undefined || !isAuth) {
     return (
       <>
       <div 
-      style={{paddingBottom: "110px"}}
+      // style={{paddingBottom: "110px"}}
       >
         <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
-        <Outlet />
+        <div style={{minHeight: "100vh"}}>
+        <Outlet  />
       </div>
-      <Footer />
       <ScrollButton />
-
+      <Footer />
+      </div>
       </>
     );
   } else {
@@ -154,7 +149,8 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
     return (
       <>
       <div 
-      style={{paddingBottom: "110px" }}
+      // style={{paddingBottom: "110px", backgroundColor:"rgba(219, 161, 98, 0.25)" }}
+      style={{position: "relative"}}
       >
         <NewHeaderComponentLoggedIn 
         setIsOpenModal={setIsOpenModalCatalogue}
@@ -164,10 +160,12 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
         showSidebar={showSidebar}
         toggleShowSidebar={toggleShowSidebar}
         onClickBtn={onClickBtn} />
-        <Outlet />
+        <div style={{minHeight: "100vh"}}>
+        <Outlet  />
       </div>
         <Footer />
         <ScrollButton />
+        </div>
       </>
     );
     }

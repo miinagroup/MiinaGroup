@@ -195,7 +195,7 @@ const ProductForStockPreviewComponent = ({
           /><br />
           <Button
             onClick={() => addToCartHandler(selectedStock)}
-            className="btn_blue btn-ripple"
+            className="btn-ripple"
             variant="success"
             disabled={
               selectedProduct === "Please-Select" ||

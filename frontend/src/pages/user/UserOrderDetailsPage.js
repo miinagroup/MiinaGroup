@@ -1,4 +1,4 @@
-import UserOrderDetailsPageComponent from "./components/UserOrderDetailsPageComponent";
+import UserOrderDetailsPageComponent from "./components/UserOrderDetailsPageComponent/UserOrderDetailsPageComponent.js";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { loadScript } from "@paypal/paypal-js";

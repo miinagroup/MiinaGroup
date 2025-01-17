@@ -118,28 +118,6 @@
         margin:  0 auto;
     }
 
-    .userUniformsPageComponentTable {
-        font-size: 12px;
-    }
-
-    .userUniformsPageComponentWrapper {
-        padding: 0px 0px !important;
-        margin: 0px 0px !important;
-    }
-
-    
-    .userUniformsPageComponentWrapper h1 {
-        font-size: 18px;
-    }
-
-    .userUniformsPageComponentTable tr {
-        white-space: wrap !important;
-    }
-
-    .userUniformsPageComponentTable th, .userQuotesPageWrapper tr td, .userQuotesPageWrapper tr th {
-            padding: 5px 5px !important;      
-    }
-
     .userQuotesPageWrapper tbody {
         font-size: 11px !important;
     }

@@ -1,4 +1,4 @@
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Spinner } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../../redux/actions/userActions";
 import { useDispatch } from "react-redux";
@@ -86,7 +86,7 @@ const AdminLinksComponent = () => {
     return (
       <Navbar className="user_side_navBar" style={{ backgroundColor: "white" }}>
         <Nav className="flex-column user_side_nav">
-          <img src="/loading-gif.gif" alt="Loading" style={{ width: "150px", marginTop: "25%" }} className="loading-spinner" />
+        <Spinner animation="border" role="status" variant="success"></Spinner>
         </Nav>
       </Navbar>
     );

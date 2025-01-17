@@ -238,6 +238,10 @@ button {
   align-items: center;
 }
 
+.subcategories {
+  background: #B97F4E;
+}
+
 .subcategories a {
   color: #483f55;
   text-decoration: none;

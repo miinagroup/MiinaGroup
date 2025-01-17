@@ -2,7 +2,15 @@
   width: 106px;
   /* margin-left: 3rem; */
   background-color: #521712 !important;
-  border: none !important;
+  border: 1px solid transparent !important;
+}
+
+.addToCartBtn:hover {
+  width: 106px;
+  /* margin-left: 3rem; */
+  color: #521712 !important;
+  background-color: transparent !important;
+  border: 1px solid #521712 !important;
 }
 
 .addToCartQty {
@@ -62,12 +70,6 @@
   margin-left: -50%;
 }
 
-.btn_blue {
-  background-color: #073474;
-}
-.btn_blue:hover {
-  background-color: #3a74c5;
-}
 .categoryHD {
   margin-top: 0%;
   margin-left: 0.5%;
@@ -76,6 +78,20 @@
   opacity: 0.5;
   font-size: medium;
 }
+
+
+.categoryHD:hover {
+  opacity: 1;
+ }
+
+.categoryHD a {
+ color: #521712 !important;
+}
+
+
+.categoryHD:hover a {
+  opacity: 1;
+ }
 
 .btnLogin {
   text-align: center;
@@ -273,13 +289,6 @@
   .product-detail-page-spec-descrp div {
     padding: 0px;
     font-size: 12px !important;
-  }
-
-  .uniform-product-page {
-    padding: 0px 0px !important;
-    width: 100%;
-    max-width: 350px;
-    margin: 0 auto !important;
   }
 
   .product-details-page-description {

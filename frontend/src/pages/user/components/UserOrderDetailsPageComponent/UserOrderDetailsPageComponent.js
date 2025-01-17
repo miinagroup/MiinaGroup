@@ -7,21 +7,17 @@ import {
   ListGroup,
   Button,
   Modal,
-  ListGroupItem,
-  FormCheck,
-  FormLabel,
-  FormText,
+  ListGroupItem
 } from "react-bootstrap";
-import CartItemForUserOrderComponent from "../../../components/CartItemForUserOrderComponent";
+import CartItemForUserOrderComponent from "../../../../components/CartItemForUserOrderComponent";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { pdf } from "@react-pdf/renderer";
-import "./invoicePDF.css";
+import "../invoicePDF.css";
 import styles from "./UserOrderDetailsPageComponent.module.css";
-import InvoicePrint from "../../../components/Pdfs/InvoicePrint";
-import DeliveryNotePrint from "../../../components/Pdfs/DeliveryNotePrint";
+import InvoicePrint from "../../../../components/Pdfs/InvoicePrint";
+import DeliveryNotePrint from "../../../../components/Pdfs/DeliveryNotePrint";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { emptyCart, fetchCartItemsLogin } from "../../../redux/actions/cartActions";
+import { emptyCart, fetchCartItemsLogin } from "../../../../redux/actions/cartActions";
 import { useSelector } from "react-redux";
 
 function titleCase(str) {
@@ -63,7 +59,6 @@ const UserOrderDetailsPageComponent = ({
   const [trackLink, setTrackLink] = useState("");
   const [deliveryBooks, setDeliveryBooks] = useState([]);
   const [selectedDeliverySite, setSelectedDeliverySite] = useState();
-  //const [users, setUsers] = useState([]);
   const [usersList, setUsersList] = useState([]);
   const [companyUsersList, setCompanyUsersList] = useState([]);
   const [storeUsersList, setStoreUsersList] = useState([]);
@@ -77,9 +72,6 @@ const UserOrderDetailsPageComponent = ({
   const { id } = useParams();
 
   const reOrderItemsCheck = useSelector((state) => state.cart.cartItems);
-
-  // var trackData = localStorage.getItem("trackData")
-  // console.log("trackData", trackData);
 
   useEffect(() => {
     getUser()
@@ -139,10 +131,6 @@ const UserOrderDetailsPageComponent = ({
       .catch((err) => console.log(err));
   }, []);
 
-
-  //console.log(order);
-
-  // 分隔一下，跟上面的
   const orderHandler = () => {
     setButtonDisabled(true);
     if (paymentMethod === "PayPal") {
@@ -150,7 +138,6 @@ const UserOrderDetailsPageComponent = ({
         "To pay for your order click one of the buttons below"
       );
       if (!isPaid) {
-        // to do: load PayPal script and do actions
         loadPayPalScript(cartSubtotal, cartItems, id, updateStateAfterOrder);
       }
     } else {
@@ -166,13 +153,7 @@ const UserOrderDetailsPageComponent = ({
     paypalContainer.current.style = "display: none";
   };
 
-  const [finished, setFinished] = useState(false);
   const [orderCreated, setOrderCreated] = useState(true);
-
-
-  const onAnimationEnd = () => {
-    setFinished(true);
-  };
 
   const reOrderHandler = () => {
     reduxDispatch(reOrdertReduxAction(id));
@@ -280,10 +261,6 @@ const UserOrderDetailsPageComponent = ({
     if (userAddress.company) {
       getUsersList(userAddress.company)
         .then((users) => {
-          // setCompanyUsersList(users.filter(user => user.isSiteManager === false &&
-          //   user.isPD === false &&
-          //   (user.isSitePerson === false ||
-          //     (user.isSitePerson === true && user.location !== userAddress.location))))
           setCompanyUsersList(users)
           setStoreUsersList(users.filter(user => user.isSitePerson === true))
           setSiteUsersList(users.filter(user => user.location === userAddress.location &&
@@ -368,66 +345,11 @@ const UserOrderDetailsPageComponent = ({
 
   return (
     <>
-      <Container className="desktop">
-        <Row className="mt-4">
-          <h1>ORDER DETAILS</h1>
+    <div className="green-line"></div>
+      <div className="desktop userCartDetailPage">
+        <Row className="mt-4 userCartDetailPageWrapper">
+          <h1 className={styles.title}>ORDER DETAILS !</h1>
           <Col md={9}>
-            <Row style={{ display: "none" }}>
-              <Col md={6}>
-                <h3>SHIPPING</h3>
-                <b>Name</b>: {userInfo.name} {userInfo.lastName} <br />
-                <b>Site</b>: {orderData.deliverySite} <br />
-                <b>Phone</b>: {userAddress.phone} <br />
-                <b>Address</b>: {userAddress.deliveryAddress} {userAddress.state}{" "}
-                {userAddress.postCode}
-              </Col>
-              <Col md={6}>
-                <h3>PAYMENT DETAILS</h3>
-                <Form.Select value={paymentMethod} disabled={true}>
-                  <option value="Invoice">Invoice</option>
-                  {/* <option value="Credit Cards">Credit Cards</option> */}
-                  <option value="PayPal">PayPal</option>
-                </Form.Select>
-              </Col>
-              <Row>
-                <Col>
-                  <Alert
-                    className="mt-3 lh-1 h-50 pt-2 w-25"
-                    variant={isDelivered ? "success" : "danger"}
-                  >
-                    {isDelivered ? (
-                      <>Shipped at {shippedAT.split("at")[0]} </>
-                    ) : (
-                      <>Not Sent Yet</>
-                    )}
-                  </Alert>
-                </Col>
-                <Col>
-                  <Alert
-                    className="mt-3 lh-1 h-50 pt-2"
-                    variant={isPaid ? "success" : "danger"}
-                  >
-                    {isPaid ? (
-                      <>
-                        Paid on{" "}
-                        {new Date(isPaid).toLocaleString("en-AU", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                          hour12: true,
-                        })}
-                      </>
-                    ) : (
-                      <>Not paid yet</>
-                    )}
-                  </Alert>
-                </Col>
-              </Row>
-            </Row>
-            <br />
-            {/* <h3>ORDER ITEMS</h3> */}
             <ListGroup variant="flush">
               <table style={{ width: "100%" }} className="mt-1">
                 <thead>
@@ -435,9 +357,9 @@ const UserOrderDetailsPageComponent = ({
                     <th style={{ width: "7%" }}></th>
                     <th style={{ width: "35%" }}>PRODUCTS</th>
                     <th style={{ width: "18%" }}>DETAILS</th>
-                    <th style={{ width: "10%" }}>ORDER Qty</th>
-                    <th style={{ width: "11%" }}>SUPPLIED Qty</th>
-                    <th style={{ width: "11%" }}>BACK ORDER</th>
+                    <th style={{ width: "11%" }} className="ps-1">ORDER Qty</th>
+                    <th style={{ width: "11%" }} className="ps-1">SUPPLIED Qty</th>
+                    <th style={{ width: "11%" }} className="ps-1">BACK ORDER</th>
                   </tr>
                 </thead>
                 {cartItems.map((item, idx) => (
@@ -451,36 +373,35 @@ const UserOrderDetailsPageComponent = ({
               </table>
             </ListGroup>
           </Col>
-          <Col md={3}>
+          <Col md={3} className="cart_detail_right">
             <ListGroup>
               <ListGroup.Item className="p-1 ps-2">
-                <h3>ORDER SUMMARY</h3>
+                <h3  className="m-0 cart_detail_right-title">ORDER SUMMARY</h3>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 Item Price:{" "}
                 <span className="fw-bold float-end"> $ {taxAmount ? orderNetAmount : nonGSTPrice}</span>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 Total GST <span className="fw-bold float-end">$ {taxAmount ? TAX : GST}</span>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 Invoice Amount:{" "}
                 <span className="fw-bold text-danger float-end">
                   $ {incGSTPrice}
                 </span>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 PO Number: <span className="fw-bold">{purchaseNumber}</span>
               </ListGroup.Item>
 
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <Row>
                   <Col>
                     <div>
                       <Button
                         onClick={handleReorderClick}
-                        className="button-shadow p-0 pe-2 ps-2 m-0"
-                        variant="success"
+                        className="p-1 pe-3 ps-3 m-0 confirm-btn"
                       >
                         Re-Order
                       </Button>
@@ -517,10 +438,9 @@ const UserOrderDetailsPageComponent = ({
                   </Col>
                   <Col>
                     <Button
-                      className="p-0 pe-2 ps-2 m-0 button-shadow"
-                      variant="light"
+                      className={styles.btnMyOrders}
                     >
-                      <a href="/user/my-orders" style={{ color: "#073474" }}>
+                      <a href="/user/my-orders">
                         My Orders{" "}
                       </a>
                     </Button>
@@ -529,7 +449,7 @@ const UserOrderDetailsPageComponent = ({
               </ListGroup.Item>
             </ListGroup>
             <ListGroup className="pt-3">
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <b>Order Note:</b> {orderNote ? null : "N/A"}
                 <i
                   onClick={handleShow}
@@ -538,7 +458,7 @@ const UserOrderDetailsPageComponent = ({
                 ></i>
               </ListGroup.Item>
               {orderNote ? (
-                <ListGroup.Item className="p-1 ps-2">{orderNote}</ListGroup.Item>
+                <ListGroup.Item className="p-2 ps-3">{orderNote}</ListGroup.Item>
               ) : null}
             </ListGroup>
 
@@ -560,16 +480,15 @@ const UserOrderDetailsPageComponent = ({
               </Modal.Body>
               <Modal.Footer className="p-0 m-0">
                 <Button
-                  variant="secondary"
+                  
                   onClick={handleClose}
                   className="p-1 pt-0 pb-0 m-1"
                 >
                   Close
                 </Button>
                 <Button
-                  variant="success"
                   onClick={saveOrderName}
-                  className="p-1 pt-0 pb-0 m-1"
+                  className="p-1 pt-0 pb-0 m-1 confirm-btn"
                 >
                   Save Changes
                 </Button>
@@ -577,35 +496,35 @@ const UserOrderDetailsPageComponent = ({
             </Modal>
             {/* ******* shipping information ******* */}
             <ListGroup className="pt-3">
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <h5 className="m-0">SHIPPING INFORMATION</h5>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <b>Name</b>: {orderData?.userName?.split('(')[0]}
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <b>Site</b>: {orderData?.deliverySite}
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <Form.Label className="fw-bold" style={{ color: "black" }}>Shipping address:</Form.Label>
                 <Form.Control
                   as="textarea"
-                  className="p-0 ps-1"
+                  className="p-1 ps-2"
                   type="string"
                   name="shippingAddress"
                   placeholder="Shipping Address"
                   required
                   value={orderData.deliveryAddress && titleCase(orderData?.deliveryAddress).split(',').map(sentence => sentence.trim()).join('\n')}
-                  style={{ fontSize: '12px', height: "100px" }}
+                  style={{ fontSize: '12px', height: "100px", backgroundColor: "rgba(72, 63, 85, 0.2)", border: "none" }}
                   disabled
                 />
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <b>Phone</b>: {orderData?.user?.phone}
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2">
+              <ListGroup.Item className="p-2 ps-3">
                 <Alert
-                  className="m-0 lh-1 h-50 p-1 ps-2"
+                  className="m-0 lh-1 h-50 p-2 ps-2 pe-3"
                   variant={isDelivered ? "success" : "danger"}
                 >
                   {isDelivered ? (
@@ -625,7 +544,6 @@ const UserOrderDetailsPageComponent = ({
                             cartItems={cartItems}
                             invoiceNumber={invoiceNumber}
                             userInfo={userInfo}
-                            //userAddress={userAddress}
                             purchaseNumber={purchaseNumber}
                             cartSubtotal={cartSubtotal}
                             invoiceDate={createdAt}
@@ -730,7 +648,6 @@ const UserOrderDetailsPageComponent = ({
                         data-target="#ownership_div"
                         aria-expanded="false"
                         aria-controls="ownership_div"
-                        //disabled={userInfo.email !== userAddress.storeEmail}
                         disabled={(order?.secondOwnerId !== " " && order?.secondOwnerId !== userInfo?._id)}
 
                       />
@@ -801,7 +718,7 @@ const UserOrderDetailsPageComponent = ({
             </div>
           </Col>
         </Row>
-      </Container>
+      </div>
 
       <div className="mobile">
         <h5 className={styles.UserOrderDetailsPageTitle}>ORDER DETAILS</h5>
@@ -823,7 +740,6 @@ const UserOrderDetailsPageComponent = ({
                         className={styles.orderDetailPageMobileImage}
                         alt="s"
                       />
-                      {/* <div>PRODUCTS</div> */}
                       <a href={`/product-details/${item.productId}`} className={styles.orderDetailPageMobileProductName} >
                         <strong className="text-uppercase" style={{ color: "#1E4881" }}>
                           {item.name}
@@ -916,24 +832,24 @@ const UserOrderDetailsPageComponent = ({
                     className="Re_Order_Modal"
                   >
                     <Modal.Header className="p-0 m-2 mb-0" closeButton>
-                      <span className="fw-bold p-0 m-0">Confirmation</span>
+                      <span className="fw-bold p-0 m-0" style={{fontFamily: "GloriaHallelujah", color: "#483F55"}}>Confirmation</span>
                     </Modal.Header>
-                    <Modal.Body className="p-2 pt-0">
+                    <Modal.Body className="p-2 pt-0" style={{fontFamily: "HelveticaNeue", color: "#483F55"}}>
                       Some items already in your cart! Do you want to empty
                       your cart before re-ordering?
                     </Modal.Body>
                     <Modal.Footer className="p-0 d-flex justify-content-between">
                       <Button
-                        variant="success"
+                        
                         onClick={() => handleConfirmationClose(true)}
-                        className="ms-5 p-0 pe-1 ps-1 button-shadow"
+                        className="p-1 pe-2 ps-2 confirm-btn"
                       >
                         Empty Cart
                       </Button>
                       <Button
-                        variant="secondary"
                         onClick={() => handleConfirmationClose(false)}
                         className={styles.reorderBtn}
+                        style={{backgroundColor: "#521712", border: "none" }}
                       >
                         Keep Cart Items
                       </Button>
@@ -972,7 +888,7 @@ const UserOrderDetailsPageComponent = ({
         {/* edit order note modal */}
         <Modal show={show} onHide={handleClose} className="edite_order_name">
           <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
-            <Modal.Title>Enter Order Note:</Modal.Title>
+            <Modal.Title style={{color: "#483F55", fontFamily:"GloriaHallelujah"}}>Enter Order Note:</Modal.Title>
           </Modal.Header>
           <Modal.Body className="p-2 m-0">
             <Form.Control
@@ -987,16 +903,15 @@ const UserOrderDetailsPageComponent = ({
           </Modal.Body>
           <Modal.Footer className="p-0 m-0">
             <Button
-              variant="secondary"
               onClick={handleClose}
-              className="p-1 pt-0 pb-0 m-1"
+              className="p-2 pt-1 pb-1"
+              style={{backgroundColor: "#521712", border: "none"}}
             >
               Close
             </Button>
             <Button
-              variant="success"
               onClick={saveOrderName}
-              className="p-1 pt-0 pb-0 m-1"
+              className="p-2 pt-1 pb-1 m-1 confirm-btn"
             >
               Save Changes
             </Button>
@@ -1148,7 +1063,6 @@ const UserOrderDetailsPageComponent = ({
                     aria-controls="ownership_div"
                     //disabled={userInfo.email !== userAddress.storeEmail}
                     disabled={(order?.secondOwnerId !== " " && order?.secondOwnerId !== userInfo?._id)}
-
                   />
 
                   {

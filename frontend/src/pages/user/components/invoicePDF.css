@@ -178,15 +178,9 @@
     padding-right: 20px !important;
 }
 
-
-
-.clickable {
-    cursor: pointer;
-}
-
 .userCartDetailPage {
     background-color: rgba(219, 161, 98, 0.25);
-    padding: 50px 50px;
+    padding: 50px 50px 100px 50px;
     margin: 0 auto;
     display: flex;
     justify-content: center;

@@ -199,7 +199,7 @@ const ProductForListComponent = ({
     <>
       <div className="product-block card mt-0 mb-3 mx-2">
         <div
-          className="bg-image hover-zoom ripple img_hovf"
+          className="bg-image hover-zoom ripple"
           data-mdb-ripple-color="light"
         >
           <div className="preview_button_img">
@@ -280,7 +280,6 @@ const ProductForListComponent = ({
             {!isUserInfo && <h6 className="card-price mb-0 mt-3 d-flex justify-content-center">
               {price === 0 ? (
                 <span
-                  // className="fw-bold"
                   id={name.replace(/\s/g, "") + "_PRICE"}
                 >
                   Price: N/A
