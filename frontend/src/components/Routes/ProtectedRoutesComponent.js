@@ -7,14 +7,14 @@ import {
 } from "react-redux";
 import Spinner from 'react-bootstrap/Spinner';
 
-import { getSubcategories } from "../redux/actions/categoryActions.js";
+import { getSubcategories } from "../../redux/actions/categoryActions.js";
 
 
-import Header from "./Header/Header.js";
-import Footer from "./Footer/Footer.js";
-import ScrollButton from "./ScrollButton ";
+import Header from "../Header/Header.js";
+import Footer from "../Footer/Footer.js";
+import ScrollButton from "../Buttons/ScrollButton ";
 
-import NewHeaderComponentLoggedIn from "./Header/NewHeaderComponentLoggedIn.js";
+import NewHeaderComponentLoggedIn from "../Header/NewHeaderComponentLoggedIn.js";
 
 
 const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
@@ -132,6 +132,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
       <>
       <div 
       // style={{paddingBottom: "110px"}}
+      style={{position: "relative"}}
       >
         <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
         <div style={{minHeight: "100vh"}}>

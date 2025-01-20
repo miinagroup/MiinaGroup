@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,15 +48,13 @@ const FilterComponent = () => {
 
   useEffect(() => {
     let subCategories = {};
-    const mainLinks = mainCategory.map((category) => category.link); // extract links for validation
+    const mainLinks = mainCategory.map((category) => category.link);
     categories?.forEach((category) => {
-      // Only process this category if display is true
       if (!category.display) {
         return;
       }
       const parts = category.name.split("/");
 
-      // Only process categories if they belong to the predefined main categories links
       if (mainLinks.includes(parts[0])) {
         if (parts.length >= 2) {
           if (!subCategories[parts[0]]) {

@@ -1,29 +1,12 @@
-import {
-  Row,
-  Col,
-  Container,
-  ListGroup,
-  Button,
-  Tab,
-  Tabs,
-  Form,
-  Image,
-  Carousel,
-  Table,
-} from "react-bootstrap";
-import { Link } from "react-router-dom";
-import AddedToCartMessageComponent from "./AddedToCartMessageComponent";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-// import { Carousel } from "react-responsive-carousel";
-import ImageGallery from "react-image-gallery";
+import {Row,Col,Container,Button,Form} from "react-bootstrap";
+import AddedToCartMessageComponent from "./AddedToCartMessage/AddedToCartMessageComponent.js"
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import "react-medium-image-zoom/dist/styles.css";
-import FilterComponent from "./filterQueryResultOptions/FilterComponent";
-import BreadcrumbComponent from "./filterQueryResultOptions/BreadcrumbComponent";
-import "../pages/components/SharedPages.css";
+import "./SharedPages.css";
 
 const ProductForStockPreviewComponent = ({
   addToCartReduxAction,
@@ -49,11 +32,9 @@ const ProductForStockPreviewComponent = ({
     setButtonText("Adding...");
     try {
       await reduxDispatch(addToCartReduxAction(product._id, qty, selectedStock));
-      //setShowCartMessage(true);
       setButtonText("Added!");
       setTimeout(() => setButtonText("Add to cart"), 1000);
     } catch (error) {
-      // handle error case
       setButtonText("Add to cart");
     }
   };
@@ -94,9 +75,6 @@ const ProductForStockPreviewComponent = ({
       maximumFractionDigits: 2,
     })
     : "";
-
-  //react-image-lightbox -ends here
-  // quote price using
   useEffect(() => {
     getUser()
       .then((data) => {
@@ -107,20 +85,6 @@ const ProductForStockPreviewComponent = ({
       })
       .catch((err) => console.log(err));
   }, []);
-
-  const quotePriceData = {
-    ...userNameEmail,
-    productName: product?.name,
-    productId: product?._id,
-  };
-  // console.log("quotePriceDataquotePriceDataquotePriceData", quotePriceData);
-
-  // table first letter capitalized
-  function capitalizeFirstLetter(string) {
-    return string
-      ? string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
-      : "";
-  }
 
   const handleBlur = (e) => {
     const newValue =

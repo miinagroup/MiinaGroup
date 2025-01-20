@@ -1,14 +1,13 @@
-import { Row, Col, Modal, Tooltip, Button } from "react-bootstrap";
+import { Row, Col, Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
+import AdminLinksComponent from "../../../components/Admin/AdminLinksComponent";
 import { TableHeader, Pagination, Search } from "../../../components/DataTable";
 import { useEffect, useState, useMemo } from "react";
-import CartItemForOrderComponent from "../../../components/CartItemForOrderComponent";
 import OrderItemForOrderPageComponent from "./OrderItemForOrderPageComponent";
 import "./invoicePDF.css";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
 const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   const [orders, setOrders] = useState([]);
@@ -17,9 +16,6 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   const [monthTotal, setMothTotal] = useState(0);
   const [monthProfitMargin, setMonthProfitMargin] = useState(0)
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
-
-  /* sort table */
-  // #region
   const [totalItems, setTotalItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");

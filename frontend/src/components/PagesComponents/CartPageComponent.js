@@ -1,6 +1,6 @@
 import { Container, Row, Col, Alert, ListGroup, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import CartItemComponent from "../../components/CartItemComponent";
+import CartItemComponent from "../../components/Cart/CartItemComponent";
 
 const CartPageComponent = ({
   editQuantity,

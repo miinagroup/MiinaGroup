@@ -76,10 +76,9 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
                   {hasSubcategories && (
                     <>
                       <div className={styles.arrow}>
-                      <img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />
-                        {/* <svg width="27" height="16" viewBox="0 0 27 16" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="27" height="16" viewBox="0 0 27 16" xmlns="http://www.w3.org/2000/svg">
                           <path fill="currentColor" d="M0.991804 7.20499C0.439537 7.20952 -0.00449316 7.66089 3.3617e-05 8.21315C0.00456039 8.76542 0.45593 9.20945 1.0082 9.20492L0.991804 7.20499ZM26.712 8.70133C27.0993 8.30762 27.0942 7.67448 26.7004 7.28717L20.2845 0.975581C19.8908 0.588271 19.2577 0.59346 18.8704 0.987172C18.4831 1.38088 18.4883 2.01403 18.882 2.40134L24.585 8.01164L18.9747 13.7147C18.5874 14.1084 18.5926 14.7415 18.9863 15.1288C19.38 15.5161 20.0131 15.511 20.4005 15.1172L26.712 8.70133ZM1.0082 9.20492L26.0074 9.00001L25.991 7.00008L0.991804 7.20499L1.0082 9.20492Z" />
-                        </svg> */}
+                        </svg>
                       </div>
                       <div className={styles.subcategories}>
                         {subcategories[category.link]?.sort().map((subcategory, index) => (
@@ -109,14 +108,14 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
           <span className={styles.aboutMenuItem}>ABOUT US</span>
           <div className={styles.dropdown}>
             <button onClick={goToAboutSection}>
-              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} /><span>Who Miina Group is</span></div>
+              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Who Miina Group is</div>
             </button>
             <button onClick={goToTeamSection}>
-              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} /><span>Miina Group Team</span></div>
+              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Miina Group Team</div>
             </button>
           </div>
         </div>
-        <button onClick={goToContactSection}><div className={styles.menuItem}><span>CONTACT</span></div></button>
+        <button onClick={goToContactSection}><div className={styles.menuItem}>CONTACT</div></button>
       </div>
       <div className={styles.logoTaglineWrapper} onClick={() => { navigate("/") }}>
         <img src="/svg/PrimaryLogoColour.svg" alt="Miina Group Logo" className={styles.logo} />

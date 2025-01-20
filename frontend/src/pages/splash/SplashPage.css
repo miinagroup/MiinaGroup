@@ -34,11 +34,6 @@
 
 }
 
-/*white map only*/
-.redAUS {
-  z-index: 0;
-  width: 95%;
-}
 
 .message-btn {
   position: absolute;
@@ -69,46 +64,4 @@
 
 .btnUnfor {
   margin-top: -15%;
-}
-
-
-
-/* *************    middle screen     ************* */
-@media only screen and (max-width: 820px) {
-  .splashpage {
-    display: grid;
-    grid-template-columns: 40% 60%;
-    padding-bottom: 15rem;
-  }
-
-  .loginReg {
-    width: 100%;
-    padding-bottom: 5rem;
-  }
-
-  .redAUS {
-    width: 100%;
-    margin-top: 20%;
-  }
-}
-
-/* *************    middle screen     ************* */
-@media only screen and (max-width: 415px) {
-
-  .splashpage {
-    display: block;
-    padding-bottom: 5rem;
-  }
-
-  .loginReg {
-    width: 100%;
-  }
-
-  .redAUS {
-    margin-left: 22%;
-    margin-top: 0;
-    margin-bottom: 0;
-    width: 50%;
-
-  }
 }

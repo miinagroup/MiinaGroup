@@ -2,7 +2,7 @@ import UserPasswordPageComponent from "./components/UserPasswordPageComponent";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setReduxUserState } from "../../redux/actions/userActions";
-import UserLinksComponent from "../../components/user/UserLinksComponent";
+import UserLinksComponent from "../../components/User/UserLinksComponent";
 
 const updateUserApiRequest = async (
   password,

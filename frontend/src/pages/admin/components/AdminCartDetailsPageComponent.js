@@ -4,10 +4,9 @@ import {
   Col,
   Form,
   ListGroup,
-  InputGroup,
   Button,
 } from "react-bootstrap";
-import CartItemComponent from "../../../components/CartItemComponent";
+import CartItemComponent from "../../../components/Cart/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -33,9 +32,6 @@ const AdminCartDetailsPageComponent = ({
   emptyCart,
   fetchUsers,
 }) => {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [userAddress, setUserAddress] = useState("");
   const [missingAddress, setMissingAddress] = useState("");
@@ -43,7 +39,6 @@ const AdminCartDetailsPageComponent = ({
   const [purchaseNumber, setPurchaseNumber] = useState("");
   const [adminOrderNote, setAdminOrderNote] = useState("");
   const [orderNote, setOrderNote] = useState("");
-  const [isStoreUser, setIsStoreUser] = useState(false);
   const [largestInvoice, setLargestInvoice] = useState(0);
   const [users, setUsers] = useState([]);
   const [userNameEmail, setUserNameEmail] = useState();

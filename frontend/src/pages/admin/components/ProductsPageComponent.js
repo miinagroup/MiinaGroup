@@ -1,12 +1,10 @@
-import { Row, Col, Table, Button, Tooltip } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
-import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
+import AdminLinksComponent from "../../../components/Admin/AdminLinksComponent";
 import { TableHeader, Pagination, Search } from "../../../components/DataTable";
 import React, { useEffect, useState, useMemo } from "react";
 import "../../../pages/general.css";
-import ProductsPageReplenishment from "./ProductsPageReplenishment";
-import ProductsPageStockTake from "./ProductsPageStockTake";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
 import { useSelector } from "react-redux";
@@ -48,8 +46,6 @@ const ProductsPageComponent = ({
     });
   };
 
-  // 这里需要去到product controller 找到 adminGetProducts 改一些数据，才能显示出来
-  // 因为数据库太大的话，我们限制 get products的数据，就能faster
   const headers = [
     { name: "No#", field: "index", sortable: false },
     { name: "Product Name", field: "name", sortable: true },
@@ -269,30 +265,8 @@ const ProductsPageComponent = ({
         <AdminLinksComponent />
       </Col>
       <Col md={10}>
-        {/* <div className="priceRange">
-          <div className="priceRange_item">Total Products : <label style={{ fontWeight: "bold" }}> {productsCount[0]?.totalProductsCount}</label> </div>
-          <div className="priceRange_item">Products With Pricing : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithPriceCount}</label></div>
-          <div className="priceRange_item">Products Without Pricing : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutPriceCount}</label></div>
-          <div className="priceRange_item">Products Without Images : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImage}</label></div>
-          <div className="priceRange_item">Products Without Images in Orders : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutImageInOrders}</label></div>
-          <div className="priceRange_item">Products Without Downloads : <label style={{ fontWeight: "bold" }}>{productsCount[0]?.productsWithoutDownloads}</label></div>
-        </div> */}
         <h1>
           PRODUCTS
-          {/* <LinkContainer to="/admin/create-new-product">
-            <Button
-              variant="success"
-              className="m-0 me-4 ms-4 p-0 pe-1 ps-1"
-              size="lg"
-            >
-              New
-            </Button>
-          </LinkContainer> */}
-          {/* <ProductsPageReplenishment
-            productReplenishment={productReplenishment}
-          />
-          <ProductsPageStockTake productStockTake={productStockTake} /> */}
-
         </h1>
         <div className="row">
           <div className="col-md-4">
@@ -332,7 +306,6 @@ const ProductsPageComponent = ({
             onSorting={(field, order) => setSorting({ field, order })}
           />
           <tbody>
-            {/* 这里需要去到product controller 找到adminGetProducts 改一些数据，才能显示出来 */}
             {productsData.map((item, idx) => (
               <tr key={idx} id="product-row">
                 <td>{idx + 1}</td>

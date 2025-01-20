@@ -2,7 +2,7 @@ import { Nav, Navbar, Spinner } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../../redux/actions/userActions";
 import { useDispatch } from "react-redux";
-import FetchAuthFromServer from "../FetchAuthFromServer";
+import FetchAuthFromServer from "../Utils/FetchAuthFromServer";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 

@@ -1,10 +1,8 @@
 import { Row, Col, Container, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import GoBackButton from "./GoBackButton";
-import FetchAuthFromServer from "../../../components/FetchAuthFromServer";
+import FetchAuthFromServer from "../../../components/Utils/FetchAuthFromServer";
 import MaskedInput from 'react-text-mask';
 
 const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {

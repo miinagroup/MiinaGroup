@@ -1,15 +1,3 @@
-/* ***************  Quote Component *************** */
-.dropzone {
-    border: 2px dashed gray;
-    padding: 50px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.dropzone p {
-    margin: 0;
-}
-
 .managementAprroval_alert {
     position: absolute;
     top:-150px;

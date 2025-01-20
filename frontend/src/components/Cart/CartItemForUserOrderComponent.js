@@ -1,7 +1,5 @@
 import { Form } from "react-bootstrap";
 
-import React from "react";
-
 const CartItemForUserOrderComponent = ({
   item,
   orderCreated = false,

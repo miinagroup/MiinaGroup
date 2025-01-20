@@ -1,13 +1,12 @@
-import { Container, Col, Form, ListGroup, InputGroup, Button, Row } from "react-bootstrap";
-import CartItemComponent from "../../../components/CartItemComponent";
+import { Col, Form, ListGroup, InputGroup, Button, Row } from "react-bootstrap";
+import CartItemComponent from "../../../components/Cart/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { pdf } from "@react-pdf/renderer";
+import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import CartPrint from "../../../components/Pdfs/CartPrint";
 import axios from "axios";
 import "./invoicePDF.css";
-import VerifySiteComponent from "../../components/VerifySiteComponent";
+import VerifySiteComponent from "../../../components/Utils/VerifySiteComponent";
 import AddNewAddressModalComponent from "./AddNewAddressModalComponent";
 import ChangeAddressModalComponent from "./ChangeAddressModalComponent";
 import CartAddressesSectionComponent from "./CartAddressesSectionComponent";

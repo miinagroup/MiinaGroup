@@ -2,9 +2,8 @@ import { Pagination } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import React from "react";
 
-import "./page.css";
+import "../page.css";
 
-// 第276章节 先完成 pagination 然后去 productListPageComponent 继续完成, 最后去backend里面搞一搞
 const PaginationComponent = ({
   categoryPath,
   brandName,

@@ -1,9 +1,9 @@
 import { Row, Col, Table, Button, Form, InputGroup } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import AdminLinksComponent from "../../../components/admin/AdminLinksComponent";
+import AdminLinksComponent from "../../../components/Admin/AdminLinksComponent";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import FetchAuthFromServer from "../../../components/FetchAuthFromServer";
+import FetchAuthFromServer from "../../../components/Utils/FetchAuthFromServer";
 
 const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
   const [users, setUsers] = useState([]);

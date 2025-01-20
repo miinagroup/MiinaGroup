@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CartItemForUserPreviewComponent from "../../../components/CartItemForUserPreviewComponent";
+import CartItemForUserPreviewComponent from "../../../components/Cart/CartItemForUserPreviewComponent";
 import axios from "axios";
 
 const UserOrderItemForOrderPageComponent = (id) => {
@@ -19,9 +19,6 @@ const UserOrderItemForOrderPageComponent = (id) => {
     };
     getOrder(id);
   }, [id]);
-
-  // console.log(cartItems);
-
 
   return (
     <table style={{ width: "95%", marginLeft: "3%", marginTop: "2%", marginBottom: "2%" }}>

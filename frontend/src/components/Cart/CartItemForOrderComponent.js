@@ -1,9 +1,7 @@
 import { Form } from "react-bootstrap";
-import RemoveFromOrderComponent from "./RemoveFromOrderComponent";
+import RemoveFromOrderComponent from "../Utils/RemoveFromOrderComponent";
 import { useState, useEffect } from "react";
 
-import React from "react";
-import axios from "axios";
 
 const CartItemForOrderComponent = ({
   item,
@@ -25,9 +23,6 @@ const CartItemForOrderComponent = ({
 }) => {
   const [qty, setQty] = useState(item.cartProducts[0].suppliedQty);
   const [price, setPrice] = useState(item.cartProducts[0].price);
-  const [mnasku, setMnasku] = useState(item.cartProducts[0].mnasku);
-  const [isSaveEnabled, setIsSaveEnabled] = useState(false);
-  const [userEmail, setUserEmail] = useState(userInfo.email);
 
   useEffect(() => {
     if (item.saleunit) {

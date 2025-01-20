@@ -1,20 +1,11 @@
-import {
-  Button,
-  Form,
-  Modal,
-  Dropdown,
-  DropdownButton,
-  Tooltip,
-  OverlayTrigger,
-} from "react-bootstrap";
+import {Button,Form,Modal,Dropdown,DropdownButton} from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import ProductForListPreviewComponent from "./ProductForListPreviewComponent";
-import ProductForStockPreviewComponent from "./ProductForStockPreviewComponent";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../redux/actions/cartActions";
-import "../pages/general.css";
-import LoginRegisterPage from "../pages/LoginRegisterPage";
+import { addToCart } from "../../redux/actions/cartActions";
+import "../../pages/general.css";
+import LoginRegisterPage from "../../pages/LoginRegisterPage";
 
 const ProductForListComponent = ({
   productId,

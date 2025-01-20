@@ -1,8 +1,8 @@
-import LoginPageComponent from "./components/LoginPageComponent";
+import LoginPageComponent from "../components/PagesComponents/LoginPageComponent";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setReduxUserState } from "../redux/actions/userActions";
-import RegisterPageComponent from "./components/RegisterPageComponent";
+import RegisterPageComponent from "../components/PagesComponents/RegisterPageComponent";
 import { Container, Card, Tabs, Tab } from "react-bootstrap";
 import { useEffect, useState } from "react";
 

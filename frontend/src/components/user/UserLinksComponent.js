@@ -3,7 +3,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../../redux/actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import FetchAuthFromServer from "../FetchAuthFromServer";
+import FetchAuthFromServer from "../Utils/FetchAuthFromServer";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CartItemForOrderPreviewComponent from "../../../components/CartItemForOrderPreviewComponent";
+import CartItemForOrderPreviewComponent from "../../../components/Cart/CartItemForOrderPreviewComponent";
 import axios from "axios";
 
 const OrderItemForOrderPageComponent = (id) => {

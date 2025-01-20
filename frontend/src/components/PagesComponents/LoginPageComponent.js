@@ -1,17 +1,8 @@
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Alert,
-  InputGroup,
-} from "react-bootstrap";
+import {Container,Row,Col,Form,Button,Alert,InputGroup,} from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
-import ForgotPasswordComponent from "./ForgotPasswordComponent";
+import ForgotPasswordComponent from "../Utils/ForgotPasswordComponent";
 import axios from "axios";
 
 const LoginPageComponent = ({

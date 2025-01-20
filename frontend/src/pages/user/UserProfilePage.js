@@ -1,13 +1,10 @@
 import UserProfilePageComponent from "./components/UserProfilePageComponent";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { setReduxUserState } from "../../redux/actions/userActions";
-import UserLinksComponent from "../../components/user/UserLinksComponent";
-import {
-  Row,
-  Col,
-} from "react-bootstrap";
+import UserLinksComponent from "../../components/User/UserLinksComponent";
+
 
 import styles from "../user/components/UserProfilePageComponent.module.css";
 

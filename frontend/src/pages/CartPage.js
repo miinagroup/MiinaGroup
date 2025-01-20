@@ -1,4 +1,4 @@
-import CartPageComponent from "./components/CartPageComponent";
+import CartPageComponent from "../components/PagesComponents/CartPageComponent.js"
 
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart, removeFromCart, editQuantity } from "../redux/actions/cartActions";

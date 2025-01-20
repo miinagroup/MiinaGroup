@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
-import ProductDetailsPageComponent from "./components/ProductDetailsPageComponent/ProductDetailsPageComponent";
+import ProductDetailsPageComponent from "../components/PagesComponents/ProductDetailsPageComponent.js";
 import { addToCart } from "../redux/actions/cartActions";
 
 

@@ -10,17 +10,17 @@ import "./fonts/HelveticaNeueRoman.otf";
 // publicly available pages:
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import ProductListPage from "./pages/ProductListPage";
-import Unfortunately from "./pages/unfortunately";
+import Unfortunately from "./pages/splash/unfortunately";
 
 /* import LoginRegisterPage from "./pages/LoginRegisterPage"; */
 import LoginRegisterPage from "./pages/LoginRegisterPage";
-import SplashPage from "./pages/SplashPage";
+import SplashPage from "./pages/splash/SplashPage";
 import CartPage from "./pages/CartPage";
 import FaqPage from "./pages/FaqPage";
 import TermsConditions from "./pages/user/components/FooterComponents.js/TermsConditions.js";
 import PrivacyPolicy from "./pages/user/components/FooterComponents.js/privacypolicy.js";
 import GoodsReturnForm from "./pages/user/components/FooterComponents.js/GoodsReturnForm.js";
-import ProtectedRoutesComponent from "./components/ProtectedRoutesComponent";
+import ProtectedRoutesComponent from "./components/Routes/ProtectedRoutesComponent";
 
 // protected user pages:
 import UserProfilePage from "./pages/user/UserProfilePage";
@@ -28,8 +28,8 @@ import UserOrdersPage from "./pages/user/UserOrdersPage";
 import UserCartDetailsPage from "./pages/user/UserCartDetailsPage";
 import UserOrderDetailsPage from "./pages/user/UserOrderDetailsPage";
 import UserPasswordPage from "./pages/user/UserPasswordPage";
-import EmailVerify from "./components/user/EmailVerify";
-import ResetPassword from "./components/user/ResetPassword";
+import EmailVerify from "./components/User/EmailVerify";
+import ResetPassword from "./components/User/ResetPassword";
 
 // protected admin pages:
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
@@ -50,7 +50,7 @@ import PDFPreviewForVisitor from "./pages/user/components/HomePageForVisitors/PD
 import HomePageForVisitorNew from "./pages/HomePageForVisitorNew.js";
 import CreditApplication from "./pages/user/components/FooterComponents.js/CreditApplication.js";
 import SupplieCodeOfConduct from "./pages/user/components/FooterComponents.js/SupplieCodeOfConduct.js";
-import ProtectedRoutesFilterComponent from "./components/ProtectedRoutesFilterComponent.js";
+import ProtectedRoutesFilterComponent from "./components/Routes/ProtectedRoutesFilterComponent.js";
 
 
 function App() {

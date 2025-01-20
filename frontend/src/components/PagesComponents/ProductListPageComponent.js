@@ -1,14 +1,14 @@
 import { Row, Col, Container, ListGroup, Form, Spinner } from "react-bootstrap";
-import PaginationComponent from "../../components/PaginationComponent";
-import ProductForListComponent from "../../components/ProductForListComponent";
+import PaginationComponent from "../../components/Pagination/PaginationComponent";
+import ProductForListComponent from "../../components/Product/ProductForListComponent";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import FilterComponent from "../../components/filterQueryResultOptions/FilterComponent";
-import BreadcrumbComponent from "../../components/filterQueryResultOptions/BreadcrumbComponent";
-import ProductCategoriesComponent from "../../components/ProductCategoriesComponent";
+import FilterComponent from "../../components/FilterQueryResultOptions/FilterComponent";
+import BreadcrumbComponent from "../../components/FilterQueryResultOptions/BreadcrumbComponent";
+import ProductCategoriesComponent from "../../components/Product/ProductCategoriesComponent";
 import InfiniteScroll from "react-infinite-scroll-component";
-import "./SharedPages.css";
+import "../SharedPages.css";
 
 const ProductListPageComponent = ({
   getProducts,

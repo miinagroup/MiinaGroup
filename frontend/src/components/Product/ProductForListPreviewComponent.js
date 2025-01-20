@@ -1,29 +1,14 @@
-import {
-  Row,
-  Col,
-  Container,
-  ListGroup,
-  Button,
-  Tab,
-  Tabs,
-  Form,
-  Image,
-  Carousel,
-  Table,
-} from "react-bootstrap";
-import { Link } from "react-router-dom";
-import AddedToCartMessageComponent from "./AddedToCartMessageComponent";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import {Row,Col,Container,ListGroup,Table} from "react-bootstrap";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
+import AddedToCartMessageComponent from "../AddedToCartMessage/AddedToCartMessageComponent.js"
+
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "react-medium-image-zoom/dist/styles.css";
-import FilterComponent from "./filterQueryResultOptions/FilterComponent";
-import BreadcrumbComponent from "./filterQueryResultOptions/BreadcrumbComponent";
-import "../pages/components/SharedPages.css";
+import "../SharedPages.css";
 
 const ProductForListPreviewComponent = ({
   addToCartReduxAction,
@@ -32,17 +17,12 @@ const ProductForListPreviewComponent = ({
   getUser,
 }) => {
   const [showCartMessage, setShowCartMessage] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const [qty, setQty] = useState(1);
 
   const [selectedProduct, setSelectedProduct] = useState("choose-product");
   const [selectedStock, setSelectedStock] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const [userNameEmail, setUserNameEmail] = useState();
-  const [productName, setProductName] = useState();
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const [isLogedIn, serIsLogedIn] = useState(Object.keys(userInfo).length > 0)
 
@@ -123,8 +103,7 @@ const ProductForListPreviewComponent = ({
       );
     }
   }
-  //react-image-lightbox -ends here
-  // quote price using
+
   useEffect(() => {
     getUser()
       .then((data) => {
@@ -137,7 +116,6 @@ const ProductForListPreviewComponent = ({
       .catch((err) => console.log(err));
   }, []);
 
-  // table first letter capitalized
   function capitalizeFirstLetter(string) {
     return string
       ? string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()

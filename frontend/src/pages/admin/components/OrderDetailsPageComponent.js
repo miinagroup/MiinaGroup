@@ -7,22 +7,17 @@ import {
   ListGroup,
   Modal,
   Button,
-  ListGroupItem,
 } from "react-bootstrap";
-import CartItemForOrderComponent from "../../../components/CartItemForOrderComponent";
-import { useParams, useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
-import { useReactToPrint } from "react-to-print";
+import CartItemForOrderComponent from "../../../components/Cart/CartItemForOrderComponent";
+import { useParams } from "react-router-dom";
+import {useEffect, useState } from "react";
 import DeliveryNotePrint from "../../../components/Pdfs/DeliveryNotePrint";
 import PickingPackingPrint from "../../../components/Pdfs/PickingPackingPrint";
 import InvoicePrint from "../../../components/Pdfs/InvoicePrint";
 import ProformaInvoicePrint from "../../../components/Pdfs/ProformaInvoicePrint";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import { pdf } from "@react-pdf/renderer";
-import SendInvoice from "../../../components/SendEmail/SendInvoice";
-import { emptyCart } from "../../../redux/actions/cartActions";
 import { useSelector, useDispatch } from "react-redux";
-import axios, { isCancel } from "axios";
+import axios from "axios";
 
 const OrderDetailsPageComponent = ({
   getOrder,
@@ -267,34 +262,6 @@ const OrderDetailsPageComponent = ({
     }, 500);
   };
 
-  /* ************* Print PDF documents ************* */
-  // 老的单一的打印发票的，合并到下面的新的了
-  const printInv = async () => {
-    const blob = await pdf(
-      <InvoicePrint
-        cartItems={cartItems}
-        invoiceNumber={invoiceNumber}
-        userInfo={userInfo}
-        purchaseNumber={purchaseNumber}
-        cartSubtotal={cartSubtotal}
-        invoiceDate={deliveredAt}
-        dueDays={dueDays}
-        selectedDeliverySite={selectedDeliverySite}
-        companyAccount={companyAccount}
-        taxAmount={taxAmount}
-        isPaid={btnMarkAsPaid}
-      />
-    ).toBlob();
-
-    const url = URL.createObjectURL(blob);
-
-    window.open(
-      url,
-      "_blank",
-      "width=1200,height=800,scrollbars=yes,toolbar=no,location=no"
-    );
-  };
-  // updated one 提取共同因素
   const openPDFInPopup = async (documentComponent, fileName) => {
     const blob = await pdf(documentComponent).toBlob();
     const url = URL.createObjectURL(blob);

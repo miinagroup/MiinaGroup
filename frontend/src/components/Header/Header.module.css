@@ -48,10 +48,7 @@ button {
   cursor: pointer;
   transition: all 0.5s ease-in-out;
   position: relative;
-}
-
-.menuItem span:hover {
-  color: #dba162;
+  color: #483F55;
 }
 
 .search {
@@ -117,7 +114,7 @@ button {
 }
 
 .dropdown {
-  background-color: rgba(219, 161, 98, 0.25);
+  background-color: #DBA162;
   padding: 15px 15px;
   border-radius: 5px;
   position: absolute;
@@ -127,12 +124,17 @@ button {
   top: 35px;
   left: 0;
   width: 300px;
+  color: #483f55;
 
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
   z-index: 10;
+}
+
+.aboutMenu {
+  color: #483f55;
 }
 
 .aboutMenuItem:hover + .dropdown,
@@ -225,7 +227,7 @@ button {
 
 .category {
   position: relative;
-  padding: 10px;
+  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -259,6 +261,13 @@ button {
   display: flex;
   gap: 5px;
   align-items: center;
+}
+
+.aboutMenu:hover {
+  color: white;
+  background-color: #B97F4E;
+  border-radius: 3px;
+
 }
 
 .subcategoryItem {

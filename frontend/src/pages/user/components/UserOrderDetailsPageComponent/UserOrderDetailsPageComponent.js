@@ -1,5 +1,4 @@
 import {
-  Container,
   Row,
   Col,
   Form,
@@ -9,7 +8,7 @@ import {
   Modal,
   ListGroupItem
 } from "react-bootstrap";
-import CartItemForUserOrderComponent from "../../../../components/CartItemForUserOrderComponent";
+import CartItemForUserOrderComponent from "../../../../components/Cart/CartItemForUserOrderComponent";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "../invoicePDF.css";
@@ -17,7 +16,7 @@ import styles from "./UserOrderDetailsPageComponent.module.css";
 import InvoicePrint from "../../../../components/Pdfs/InvoicePrint";
 import DeliveryNotePrint from "../../../../components/Pdfs/DeliveryNotePrint";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { emptyCart, fetchCartItemsLogin } from "../../../../redux/actions/cartActions";
+import { emptyCart } from "../../../../redux/actions/cartActions";
 import { useSelector } from "react-redux";
 
 function titleCase(str) {

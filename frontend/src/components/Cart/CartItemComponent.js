@@ -1,8 +1,6 @@
 import { Row, Col, ListGroup, Form } from "react-bootstrap";
-import RemoveFromCartComponent from "./RemoveFromCartComponent";
+import RemoveFromCartComponent from "../Utils/RemoveFromCartComponent";
 import { useState, useEffect } from "react";
-
-import React from "react";
 
 const CartItemComponent = ({
   item,

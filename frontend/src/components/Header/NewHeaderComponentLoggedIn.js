@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Nav, Badge, } from "react-bootstrap";
 import axios from "axios";
 import { logout } from "../../redux/actions/userActions";
-import { fetchCartItemsLogin } from "../../redux/actions/cartActions";
 import {
   addToCart,
   removeFromCart,
   editQuantity,
+  fetchCartItemsLogin
 } from "../../redux/actions/cartActions";
 import CartDropDown from "../../pages/user/components/CartDropDown";
-import FetchAuthFromServer from "../FetchAuthFromServer";
-// import HamburgerMenu from "../../pages/mobile/components/HeaderComponent/HamburgerMenu";
+import FetchAuthFromServer from "../Utils/FetchAuthFromServer";
 import styles from "./Header.module.css";
 
 const mainCategories = [
@@ -160,10 +159,10 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
           <span className={styles.aboutMenuItem}>ABOUT US</span>
           <div className={styles.dropdown}>
             <button onClick={goToAboutSection}>
-              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} /><span>Who Miina Group is</span></div>
+              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Who Miina Group is</div>
             </button>
             <button onClick={goToTeamSection}>
-              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} /><span>Miina Group Team</span></div>
+              <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Miina Group Team</div>
             </button>
           </div>
         </div>

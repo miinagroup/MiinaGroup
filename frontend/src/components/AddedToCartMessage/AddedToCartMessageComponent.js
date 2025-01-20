@@ -1,6 +1,7 @@
 import { Alert } from "react-bootstrap";
-import "./AddedToCartMessageComponent.css";
 import { useState, useEffect } from "react";
+
+import "./AddedToCartMessageComponent.css";
 
 const AddedToCartMessageComponent = ({
   showCartMessage,

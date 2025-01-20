@@ -1,4 +1,4 @@
-import ProductListPageComponent from "./components/ProductListPageComponent";
+import ProductListPageComponent from "../components/PagesComponents/ProductListPageComponent";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";

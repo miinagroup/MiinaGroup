@@ -1,7 +1,7 @@
 import React from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import { Row, Container, Card, Col } from "react-bootstrap";
-import "../pages/general.css";
+import { Container, Col } from "react-bootstrap";
+import "../../pages/general.css";
 
 const ProductCategoriesComponent = ({
   category,
