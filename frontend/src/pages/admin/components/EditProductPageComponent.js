@@ -119,8 +119,6 @@ const EditProductPageComponent = ({
   const updateDynamicPrice = (index, field, value, item) => {
     const newDynamicPrices = { ...dynamicPrices };
 
-    console.log(newDynamicPrices[index], index, value, item);
-
     if (!newDynamicPrices[index]) {
       newDynamicPrices[index] = {
         purchaseprice: item.purchaseprice,
@@ -146,8 +144,6 @@ const EditProductPageComponent = ({
   const updateDynamicPriceNewStockItem = (index, field, value) => {
     const newDynamicPrices = { ...dynamicPrices };
 
-    console.log(newDynamicPrices[index], index, value);
-
     if (!newDynamicPrices[index]) {
       newDynamicPrices[index] = {
         purchaseprice: 0,
@@ -156,7 +152,6 @@ const EditProductPageComponent = ({
       };
     }
     newDynamicPrices[index][field] = value;
-
     newDynamicPrices[index][field] = value;
 
     if (
@@ -174,9 +169,6 @@ const EditProductPageComponent = ({
 
   const handlePriceChange = (index, value) => {
     const newDynamicPrices = { ...dynamicPrices };
-
-    console.log(newDynamicPrices[index], index, value);
-
     newDynamicPrices[index] = {
       ...newDynamicPrices[index],
       calculatedPrice: parseFloat(value),
@@ -188,7 +180,6 @@ const EditProductPageComponent = ({
     event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget;
-
     const stock = [];
     for (
       let i = 0;
@@ -196,11 +187,6 @@ const EditProductPageComponent = ({
       i++
     ) {
       const _id = document.getElementsByName(`_id-${i}`)[0].value;
-      const count = parseInt(document.getElementsByName(`count-${i}`)[0].value);
-      const replenishment = parseInt(
-        document.getElementsByName(`replenishment-${i}`)[0].value
-      );
-
       let price;
 
       if (dynamicPrices[i]?.calculatedPrice) {
@@ -217,23 +203,16 @@ const EditProductPageComponent = ({
         purchaseprice = document.getElementsByName(`purchaseprice-${i}`)[0]
           .value;
       }
-
       const attrs = document.getElementsByName(`attrs-${i}`)[0].value;
-      const uom = document.getElementsByName(`uom-${i}`)[0].value;
-      const barcode = document.getElementsByName(`barcode-${i}`)[0].value;
       const mnasku = document.getElementsByName(`mnasku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
-      const finalCount = replenishment ? count + replenishment : count;
 
       stock.push({
         _id,
-        count: finalCount,
         price,
         purchaseprice,
         attrs,
-        uom,
-        barcode,
         mnasku,
         suppliersku,
       });
@@ -241,10 +220,7 @@ const EditProductPageComponent = ({
 
     const stockNew = [];
     for (let i = 0; i < document.querySelectorAll(".stockNew").length; i++) {
-      const count = document.getElementsByName(`newCount-${i}`)[0].value;
-
       let price;
-
       if (dynamicPrices[i + stockLength]?.calculatedPrice) {
         price = dynamicPrices[i + stockLength].calculatedPrice;
       } else {
@@ -252,67 +228,28 @@ const EditProductPageComponent = ({
       }
       const purchaseprice = dynamicPrices[i + stockLength].purchaseprice;
       const attrs = document.getElementsByName(`newAttrs-${i}`)[0].value;
-      const uom = document.getElementsByName(`newUom-${i}`)[0].value;
-      const barcode = document.getElementsByName(`newBarcode-${i}`)[0].value;
       const mnasku = document.getElementsByName(`newMnasku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`newSuppliersku-${i}`)[0]
         .value;
       stockNew.push({
-        count,
         price,
         purchaseprice,
         attrs,
-        uom,
-        barcode,
         mnasku,
         suppliersku,
       });
     }
-
     const formInputs = {
       name: form.name.value,
       description: form.description.value,
       saleunit: form.saleunit.value,
-      max: form.Max.value,
-      sortOrder: form.sortOrder.value,
       displayPrice: form.displayPrice.value,
-      supplier: form.supplier.value,
       category: form.category.value,
-      expireDate: form.expireDate.value,
       editedBy: userInfo.name + " " + userInfo.lastName,
       attributesTable: [],
       tags: form.tags.value,
       stock: [...stock, ...stockNew],
     };
-
-    let newExpireDate = form.expireDate.value.trim();
-    const currentExpireDate = product.expireDate || "";
-
-    if (
-      (newExpireDate !== currentExpireDate &&
-        validateExpireDate(newExpireDate)) ||
-      !currentExpireDate
-    ) {
-      formInputs.expireDate = moment(
-        newExpireDate,
-        "HH:mm:ss DD/MM/YYYY"
-      ).isValid()
-        ? moment(newExpireDate, "HH:mm:ss DD/MM/YYYY").format(
-          "00:00:00 DD/MM/YYYY"
-        )
-        : "";
-    } else {
-      const today = moment().startOf("day");
-      const enteredDate = moment(newExpireDate, "HH:mm:ss DD/MM/YYYY");
-
-      if (!enteredDate.isValid() || enteredDate.isBefore(today)) {
-        formInputs.expireDate = today
-          .add(29, "days")
-          .format("00:00:00 DD/MM/YYYY");
-      } else {
-        formInputs.expireDate = enteredDate.format("00:00:00 DD/MM/YYYY");
-      }
-    }
 
     const priceError = formInputs.stock.some(
       (item) => item.price >= formInputs.displayPrice / formInputs.saleunit
@@ -345,7 +282,6 @@ const EditProductPageComponent = ({
     setValidated(true);
   };
 
-  //此处我们只是把attributes设置到main category里面
   useEffect(() => {
     let categoryOfEditedProduct = categories?.find(
       (item) => item.name === product.category
@@ -364,13 +300,10 @@ const EditProductPageComponent = ({
         setAttributesFromDb(mainCategoryOfEditedProductAllData.attrs);
       }
     }
-    // attri table 的数据读取
     setAttributesTable(product.attrs);
-    //
     setCategoryChoosen(product.category);
   }, [product]);
 
-  // 当main categories 改变的话，对应的atrributes框内的内容也会相应改变。
   const changeCategory = (e) => {
     const highLevelCategory = e.target.value.split("/")[0];
     const highLevelCategoryAllData = categories?.find(
@@ -382,13 +315,10 @@ const EditProductPageComponent = ({
       setAttributesFromDb([]);
     }
 
-    //
     setCategoryChoosen(e.target.value);
   };
 
-  // 选择attributes之后，显示在attri table 里
   const attributeValueSelected = (e) => {
-    //如果a target value is not choose attribute value， then
     if (e.target.value !== "Choose attribute value") {
       setAttributesTableWrapper(attrKey.current.value, e.target.value);
     }
@@ -415,24 +345,20 @@ const EditProductPageComponent = ({
     });
   };
 
-  // setAttributesTable（这里的都是call back）， talbe.filter（这里的都是filter的call back）
   const deleteAttribute = (key) => {
     setAttributesTable((table) => table.filter((item) => item.key !== key));
   };
 
-  // 防止输入attri后，按下enter，直接跳转回product list
   const checkKeyDown = (e) => {
     if (e.code === "Enter") e.preventDefault();
   };
 
-  // 13 好像是enter
   const newAttrKeyHandler = (e) => {
     e.preventDefault();
     setNewAttrKey(e.target.value);
     addNewAttributeManually(e);
   };
 
-  // 好像是输入 新的attri，回车，然后会显示在列表里？？？？？？
   const newAttrValueHandler = (e) => {
     e.preventDefault();
     setNewAttrValue(e.target.value);
@@ -442,11 +368,9 @@ const EditProductPageComponent = ({
   const addNewAttributeManually = (e) => {
     if (e.keyCode && e.keyCode === 13) {
       if (newAttrKey && newAttrValue) {
-        // 把新的attr写入数据库
         reduxDispatch(
           saveAttributeToCatDoc(newAttrKey, newAttrValue, categoryChoosen)
         );
-        // 232章
         setAttributesTableWrapper(newAttrKey, newAttrValue);
         e.target.value = "";
         createNewAttrKey.current.value = "";
@@ -486,13 +410,13 @@ const EditProductPageComponent = ({
   };
 
   return (
-    <Container fluid>
+    <Container style={{ paddingBottom: "100px" }} fluid>
       <Row className="justify-content-md-center mt-5 content-container ">
         <Col md={1}>
           <GoBackButton />
         </Col>
         <Col md={6}>
-          <h1>Edit product</h1>
+          <h1>EDIT PRODUCT</h1>
           <Form
             noValidate
             validated={validated}
@@ -537,24 +461,10 @@ const EditProductPageComponent = ({
                 <div key={item._id}>
                   <>
                     <span className="stockExisting text-primary">
-                      Product: {index + 1}
+                      Stock : {index + 1}
                     </span>
                     <Row>
                       <React.Fragment>
-                        <Form.Group
-                          as={Col}
-                          md="2"
-                          className="mb-3"
-                          controlId={`formBasicCount-${index}`}
-                        >
-                          <Form.Label>Count</Form.Label>
-                          <Form.Control
-                            name={`count-${index}`}
-                            required
-                            type="number"
-                            defaultValue={item.count}
-                          />
-                        </Form.Group>
                         <Form.Group
                           as={Col}
                           md="2"
@@ -574,19 +484,6 @@ const EditProductPageComponent = ({
                           as={Col}
                           md="2"
                           className="mb-3"
-                          controlId={`formBasicReplenishment-${index}`}
-                        >
-                          <Form.Label>Replenishment</Form.Label>
-                          <Form.Control
-                            name={`replenishment-${index}`}
-                            type="number"
-                            placeholder="Enter Count"
-                          />
-                        </Form.Group>
-                        <Form.Group
-                          as={Col}
-                          md="2"
-                          className="mb-3"
                           controlId={`formBasicAttrs-${index}`}
                         >
                           <Form.Label>Attrs</Form.Label>
@@ -595,44 +492,59 @@ const EditProductPageComponent = ({
                             required
                             type="text"
                             defaultValue={item.attrs}
-                          />
-                        </Form.Group>
-                        <Form.Group
-                          as={Col}
-                          md="2"
-                          className="mb-3"
-                          controlId={`formBasicUom-${index}`}
-                        >
-                          <Form.Label>UOM</Form.Label>
-                          <Form.Control
-                            name={`uom-${index}`}
-                            required
-                            type="text"
-                            defaultValue={item.uom}
+
                           />
                         </Form.Group>
                         <Form.Group
                           as={Col}
                           md="3"
                           className="mb-3"
-                          controlId={`formBasicBarcde-${index}`}
+                          controlId={`formBasicMargin-${index}`}
                         >
-                          <Form.Label>Barcode</Form.Label>
+                          <Form.Label>Margin (%)</Form.Label>
                           <Form.Control
-                            name={`barcode-${index}`}
-                            type="text"
-                            defaultValue={item.barcode}
+                            name={`margin-${index}`}
+                            type="number"
+                            defaultValue={(((item.price - item.purchaseprice) * 100) / item.price).toFixed(2)}
+                            onChange={(e) =>
+                              updateDynamicPrice(
+                                index,
+                                "margin",
+                                parseFloat(e.target.value),
+                                item
+                              )
+                            }
                           />
                         </Form.Group>
-                        <Form.Group as={Col} md="1" className="mb-3">
-                          <i
-                            className="bi bi-trash mt-3"
-                            // onClick={() => setSelectedStock(item)}
-                            onClick={() => handleRemoveStock(index)}
-                            style={{
-                              cursor: "pointer",
-                            }}
-                          ></i>
+                        <Form.Group
+                          as={Col}
+                          md="3"
+                          className="mb-3"
+                          controlId={`formBasicMNASKU-${index}`}
+                        >
+                          <Form.Label>Miina SKU</Form.Label>
+                          <Form.Control
+                            name={`mnasku-${index}`}
+                            required
+                            type="text"
+                            defaultValue={item.mnasku}
+
+                          />
+                        </Form.Group>
+                        <Form.Group
+                          as={Col}
+                          md="3"
+                          className="mb-3"
+                          controlId={`formBasicSupplierSKU-${index}`}
+                        >
+                          <Form.Label>Supplier SKU</Form.Label>
+                          <Form.Control
+                            name={`suppliersku-${index}`}
+                            required
+                            type="text"
+                            defaultValue={item.suppliersku}
+
+                          />
                         </Form.Group>
                       </React.Fragment>
                     </Row>
@@ -687,242 +599,12 @@ const EditProductPageComponent = ({
                             }
                           />
                         </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicMargin-${index}`}
-                        >
-                          <Form.Label>Margin (%)</Form.Label>
-                          <Form.Control
-                            name={`margin-${index}`}
-                            type="number"
-                            onChange={(e) =>
-                              updateDynamicPrice(
-                                index,
-                                "margin",
-                                parseFloat(e.target.value),
-                                item
-                              )
-                            }
-                          />
-                        </Form.Group>
-
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicMNASKU-${index}`}
-                        >
-                          <Form.Label>Miina SKU</Form.Label>
-                          <Form.Control
-                            name={`mnasku-${index}`}
-                            required
-                            type="text"
-                            defaultValue={item.mnasku}
-                          />
-                        </Form.Group>
-                        <Form.Group
-                          as={Col}
-                          md="3"
-                          className="mb-3"
-                          controlId={`formBasicSupplierSKU-${index}`}
-                        >
-                          <Form.Label>Supplier SKU</Form.Label>
-                          <Form.Control
-                            name={`suppliersku-${index}`}
-                            required
-                            type="text"
-                            defaultValue={item.suppliersku}
-                          />
-                        </Form.Group>
                       </React.Fragment>
                     </Row>
                   </>
                 </div>
               ))}
 
-            {/* add new product */}
-            {[...Array(rowCount)].map((_, index) => (
-              <>
-                <span className="stockNew text-primary">
-                  New Product: {index + 1}
-                </span>
-                <Row>
-                  <React.Fragment key={index}>
-                    <Form.Group
-                      as={Col}
-                      md="2"
-                      className="mb-3"
-                      controlId={`formBasicNewCount-${index}`}
-                    >
-                      <Form.Label>Count</Form.Label>
-                      <Form.Control
-                        name={`newCount-${index}`}
-                        required
-                        type="text"
-                      />
-                    </Form.Group>
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewAttrs-${index}`}
-                    >
-                      <Form.Label>Attrs</Form.Label>
-                      <Form.Control
-                        name={`newAttrs-${index}`}
-                        required
-                        type="text"
-                      />
-                    </Form.Group>
-                    <Form.Group
-                      as={Col}
-                      md="2"
-                      className="mb-3"
-                      controlId={`formBasicNewUom-${index}`}
-                    >
-                      <Form.Label>UOM</Form.Label>
-                      <Form.Control
-                        name={`newUom-${index}`}
-                        required
-                        type="text"
-                      />
-                    </Form.Group>
-                    <Form.Group
-                      as={Col}
-                      md="4"
-                      className="mb-3"
-                      controlId={`formBasicNewBarcde-${index}`}
-                    >
-                      <Form.Label>Barcode</Form.Label>
-                      <Form.Control name={`newBarcode-${index}`} type="text" />
-                    </Form.Group>
-                    <Form.Group as={Col} md="1" className="mb-3">
-                      <i
-                        className="bi bi-trash mt-3"
-                        onClick={handleRemoveProduct}
-                        style={{
-                          cursor: "pointer",
-                        }}
-                      ></i>
-                    </Form.Group>
-                  </React.Fragment>
-                </Row>
-                <Row>
-                  <React.Fragment key={index}>
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewPrice-${index}`}
-                    >
-                      <Form.Label className="text-danger">
-                        Product Price
-                      </Form.Label>
-                      <Form.Control
-                        name={`price-${index}`}
-                        required
-                        type="number"
-                        value={
-                          dynamicPrices[index + product.stock.length]
-                            ?.calculatedPrice ?? ""
-                        }
-                        onChange={(e) =>
-                          handlePriceChange(
-                            index + product.stock.length,
-                            e.target.value
-                          )
-                        }
-                      />
-                    </Form.Group>
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formPurchaseNewPrice-${index}`}
-                    >
-                      <Form.Label className="text-danger">
-                        Purchase Price
-                      </Form.Label>
-                      <Form.Control
-                        name={`newPurchasePrice-${index}`}
-                        required
-                        type="number"
-                        onChange={(e) =>
-                          updateDynamicPriceNewStockItem(
-                            index + product.stock.length,
-                            "purchaseprice",
-                            parseFloat(e.target.value)
-                          )
-                        }
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicMargin-${index}`}
-                    >
-                      <Form.Label>Margin (%)</Form.Label>
-                      <Form.Control
-                        name={`margin-${index}`}
-                        type="number"
-                        onChange={(e) =>
-                          updateDynamicPriceNewStockItem(
-                            index + product.stock.length,
-                            "margin",
-                            parseFloat(e.target.value)
-                          )
-                        }
-                      />
-                    </Form.Group>
-
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewMNASKU-${index}`}
-                    >
-                      <Form.Label>Miina SKU</Form.Label>
-                      <Form.Control
-                        name={`newMnasku-${index}`}
-                        required
-                        type="text"
-                      />
-                    </Form.Group>
-                    <Form.Group
-                      as={Col}
-                      md="3"
-                      className="mb-3"
-                      controlId={`formBasicNewSupplierSKU-${index}`}
-                    >
-                      <Form.Label>Supplier SKU</Form.Label>
-                      <Form.Control
-                        name={`newSuppliersku-${index}`}
-                        required
-                        type="text"
-                      />
-                    </Form.Group>
-                  </React.Fragment>
-                </Row>
-              </>
-            ))}
-            <hr />
-            <Button
-              onClick={handleNewProduct}
-              style={{
-                cursor: "hand",
-                textAlign: "center",
-                fontStyle: "italic",
-                margin: "0 auto",
-                display: "flex"
-              }}
-            >
-              Add a New Product
-            </Button>
             <hr />
             <Row>
               <Form.Group
@@ -953,76 +635,17 @@ const EditProductPageComponent = ({
                   required
                   type="number"
                   defaultValue={product.saleunit}
-                />
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                md="3"
-                className="mb-3"
-                controlId="formBasicMax"
-              >
-                <Form.Label>Max</Form.Label>
-                <Form.Control
-                  name="Max"
-                  required
-                  type="number"
-                  defaultValue={product.max}
-                />
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                md="3"
-                className="mb-3"
-                controlId="formBasicSortOrder"
-              >
-                <Form.Label>Sort Order</Form.Label>
-                <Form.Control
-                  name="sortOrder"
-                  type="number"
-                  defaultValue={product.sortOrder}
-                  required
+                  disabled
                 />
               </Form.Group>
             </Row>
-
-            <Row>
-              <Form.Group
-                as={Col}
-                md="6"
-                className="mb-3"
-                controlId="formBasicSupplier"
-              >
-                <Form.Label>Supplier</Form.Label>
-                <Form.Control
-                  name="supplier"
-                  required
-                  type="text"
-                  defaultValue={product.supplier}
-                />
-              </Form.Group>
-              <Form.Group
-                as={Col}
-                md="6"
-                className="mb-3"
-                controlId="formBasicExpireDate"
-              >
-                <Form.Label>
-                  Expire Date (hh:mm:ss 28/06/2023) / "remove" to delete
-                </Form.Label>
-                <Form.Control
-                  name="expireDate"
-                  type="string"
-                  defaultValue={product.expireDate}
-                />
-              </Form.Group>
-            </Row>
-
             <Form.Group className="mb-3" controlId="formBasicCategory">
               <Form.Label>Category</Form.Label>
               <Form.Select
                 required
                 name="category"
                 aria-label="Default select example"
+                disabled
                 onChange={changeCategory}
               >
                 {/* 自动选择产品本身的category */}
@@ -1050,6 +673,7 @@ const EditProductPageComponent = ({
                 name="tags"
                 type="text"
                 defaultValue={product.tags}
+                disabled
               />
             </Form.Group>
 
@@ -1139,49 +763,9 @@ const EditProductPageComponent = ({
                         src={image.path ?? null}
                         fluid
                       />
-                      <i
-                        style={onHover}
-                        onClick={() =>
-                          imageDeleteHandler(image.path, id).then((data) =>
-                            setImageRemoved(!imageRemoved)
-                          )
-                        }
-                        className="bi bi-x text-danger"
-                      ></i>
                     </Col>
                   ))}
               </Row>
-              <Form.Control
-                type="file"
-                multiple
-                onChange={(e) => {
-                  setIsUploading("upload files in progress ...");
-                  if (process.env.NODE_ENV === "dev") {
-                    // TODO: change to !==  ===
-                    uploadImagesApiRequest(e.target.files, id)
-                      .then((data) => {
-                        setIsUploading("upload file completed");
-                        setImageUploaded(!imageUploaded);
-                      })
-                      .catch((er) =>
-                        setIsUploading(
-                          er.response.data.message
-                            ? er.response.data.message
-                            : er.response.data
-                        )
-                      );
-                  } else {
-                    uploadImagesCloudinaryApiRequest(e.target.files, id);
-                    setIsUploading(
-                      "upload file completed. wait for the result take effect, refresh also if neccassry"
-                    );
-                    setTimeout(() => {
-                      setImageUploaded(!imageUploaded);
-                    }, 5000);
-                  }
-                }}
-              />
-              {isUploading}
             </Form.Group>
             {/* ********* Description PDF ********* */}
             <Form.Group controlId="formFileMultiplePDF" className="mb-3 mt-3">
@@ -1193,67 +777,11 @@ const EditProductPageComponent = ({
                     return (
                       <Col key={idx} style={{ position: "relative" }} xs={3}>
                         <i className="bi bi-file-pdf">{pdfName}</i>{" "}
-                        <i
-                          style={onHover}
-                          onClick={() =>
-                            pdfDeleteHandler(pdf.path, id).then((data) =>
-                              setPdfRemoved(!pdfRemoved)
-                            )
-                          }
-                          className="bi bi-x text-danger"
-                        ></i>
                       </Col>
                     );
                   })}
               </Row>
-              <Form.Control
-                type="file"
-                multiple
-                onChange={(e) => {
-                  setIsUploadingPdf("upload files in progress ...");
-                  if (process.env.NODE_ENV === "dev") {
-                    // TODO: change to !==
-                    uploadPdfApiRequest(e.target.files, id)
-                      .then((data) => {
-                        setIsUploadingPdf("upload file completed");
-                        setPdfUploaded(!pdfUploaded);
-                      })
-                      .catch((er) =>
-                        setIsUploadingPdf(
-                          er.response.data.message
-                            ? er.response.data.message
-                            : er.response.data
-                        )
-                      );
-                  } else {
-                    uploadPdfCloudinaryApiRequest(e.target.files, id);
-                    setIsUploadingPdf(
-                      "upload file completed. wait for the result take effect, refresh also if neccassry"
-                    );
-                    setTimeout(() => {
-                      setPdfUploaded(!pdfUploaded);
-                    }, 5000);
-                  }
-                }}
-              />
-              {isUploadingPdf}
             </Form.Group>
-            <Row>
-              <Form.Group
-                as={Col}
-                md="12"
-                className="mb-3"
-                controlId="formBasicStandards"
-              >
-                <Form.Label>Standards</Form.Label>
-                <Form.Control
-                  name="standards"
-                  // required
-                  type="text"
-                  defaultValue={product?.standards}
-                />
-              </Form.Group>
-            </Row>
 
             <Button className="mb-3" variant="primary" type="submit">
               UPDATE

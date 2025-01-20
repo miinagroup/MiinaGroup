@@ -56,20 +56,17 @@ const EditProductShortInforComponent = ({
   const [pdfUploaded, setPdfUploaded] = useState(false);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
 
-  //显示 atrri 对应的 vale
   const attrVal = useRef(null);
   const attrKey = useRef(null);
   const createNewAttrKey = useRef(null);
   const createNewAttrVal = useRef(null);
 
   const setValuesForAttrFromDbSelectForm = (e) => {
-    // 如果不等于choose attribute的话，就var 一个 selectedAttr
     if (e.target.value !== "Choose attribute") {
       var selectedAttr = attributesFromDb.find(
         (item) => item.key === e.target.value
       );
       let valuesForAttrKeys = attrVal.current;
-      // 如果选择的attri有东西，就remove attrikey的value，然后添加对应的新value
       if (selectedAttr && selectedAttr.value.length > 0) {
         while (valuesForAttrKeys.options.length) {
           valuesForAttrKeys.remove(0);
@@ -84,14 +81,7 @@ const EditProductShortInforComponent = ({
   };
 
   const { id } = useParams();
-
   const navigate = useNavigate();
-
-  /*   useEffect(() => {
-      fetchProduct(id)
-        .then((product) => setProduct(product))
-        .catch((er) => console.log(er));
-    }, [id, pdfRemoved, pdfUploaded]); */
 
   useEffect(() => {
     fetchProduct(id)
@@ -103,7 +93,6 @@ const EditProductShortInforComponent = ({
     event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget;
-
     const stock = [];
     for (
       let i = 0;
@@ -112,29 +101,20 @@ const EditProductShortInforComponent = ({
     ) {
       const _id = document.getElementsByName(`_id-${i}`)[0].value;
       const count = parseInt(document.getElementsByName(`count-${i}`)[0].value);
-      const replenishment = parseInt(
-        document.getElementsByName(`replenishment-${i}`)[0].value
-      );
       const price = document.getElementsByName(`price-${i}`)[0].value;
       const purchaseprice = document.getElementsByName(`purchaseprice-${i}`)[0]
         .value;
       const attrs = document.getElementsByName(`attrs-${i}`)[0].value;
-      const uom = document.getElementsByName(`uom-${i}`)[0].value;
-      const barcode = document.getElementsByName(`barcode-${i}`)[0].value;
       const mnasku = document.getElementsByName(`mnasku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`suppliersku-${i}`)[0]
         .value;
 
-      const finalCount = replenishment ? count + replenishment : count;
-
       stock.push({
         _id,
-        count: finalCount,
+        count,
         price,
         purchaseprice,
         attrs,
-        uom,
-        barcode,
         mnasku,
         suppliersku,
       });
@@ -148,8 +128,6 @@ const EditProductShortInforComponent = ({
         `newPurchasePrice-${i}`
       )[0].value;
       const attrs = document.getElementsByName(`newAttrs-${i}`)[0].value;
-      const uom = document.getElementsByName(`newUom-${i}`)[0].value;
-      const barcode = document.getElementsByName(`newBarcode-${i}`)[0].value;
       const mnasku = document.getElementsByName(`newMnasku-${i}`)[0].value;
       const suppliersku = document.getElementsByName(`newSuppliersku-${i}`)[0]
         .value;
@@ -159,21 +137,15 @@ const EditProductShortInforComponent = ({
         price,
         purchaseprice,
         attrs,
-        uom,
-        barcode,
         mnasku,
         suppliersku,
       });
     }
-    // check if stockNew is an array
-    /* if (Array.isArray(stockNew) && stockNew.length > 0) {
-      stock.push(...stockNew);
-    } */
+
     const formInputs = {
       name: form.name.value,
       editedBy: userInfo.name + " " + userInfo.lastName,
       saleunit: form.saleunit.value,
-      max: form.Max.value,
       sortOrder: form.sortOrder.value,
       displayPrice: form.displayPrice.value,
       supplier: form.supplier.value,
@@ -332,7 +304,7 @@ const EditProductShortInforComponent = ({
   return (
     <Container fluid>
       <Row className="justify-content-md-center m-0">
-        <h1>Edit product</h1>
+        <h1>EDIT PRODUCT</h1>
         <Form
           noValidate
           validated={validated}
@@ -363,7 +335,7 @@ const EditProductShortInforComponent = ({
               <div key={item._id}>
                 <>
                   <span className="stockExisting text-primary">
-                    Product: {index + 1}
+                    Stock : {index + 1}
                   </span>
                   <Row>
                     <React.Fragment>
@@ -372,6 +344,7 @@ const EditProductShortInforComponent = ({
                         md="2"
                         className="mb-3"
                         controlId={`formBasicCount-${index}`}
+                        hidden
                       >
                         <Form.Label>Count</Form.Label>
                         <Form.Control
@@ -400,19 +373,6 @@ const EditProductShortInforComponent = ({
                         as={Col}
                         md="2"
                         className="mb-3"
-                        controlId={`formBasicReplenishment-${index}`}
-                      >
-                        <Form.Label>Replenishment</Form.Label>
-                        <Form.Control
-                          name={`replenishment-${index}`}
-                          type="number"
-                          placeholder="Enter Count"
-                        />
-                      </Form.Group>
-                      <Form.Group
-                        as={Col}
-                        md="2"
-                        className="mb-3"
                         controlId={`formBasicAttrs-${index}`}
                       >
                         <Form.Label>Attrs</Form.Label>
@@ -421,43 +381,38 @@ const EditProductShortInforComponent = ({
                           required
                           type="text"
                           defaultValue={item.attrs}
-                        />
-                      </Form.Group>
-                      <Form.Group
-                        as={Col}
-                        md="2"
-                        className="mb-3"
-                        controlId={`formBasicUom-${index}`}
-                      >
-                        <Form.Label>UOM</Form.Label>
-                        <Form.Control
-                          name={`uom-${index}`}
-                          required
-                          type="text"
-                          defaultValue={item.uom}
+                          disabled
                         />
                       </Form.Group>
                       <Form.Group
                         as={Col}
                         md="3"
                         className="mb-3"
-                        controlId={`formBasicBarcde-${index}`}
+                        controlId={`formBasicMNASKU-${index}`}
                       >
-                        <Form.Label>Barcode</Form.Label>
+                        <Form.Label>Miina SKU</Form.Label>
                         <Form.Control
-                          name={`barcode-${index}`}
+                          name={`mnasku-${index}`}
+                          required
                           type="text"
-                          defaultValue={item.barcode}
+                          defaultValue={item.mnasku}
+                          disabled
                         />
                       </Form.Group>
-                      <Form.Group as={Col} md="1" className="mb-3">
-                        <i
-                          className="bi bi-trash mt-3"
-                          onClick={() => handleRemoveStock(index)}
-                          style={{
-                            cursor: "pointer",
-                          }}
-                        ></i>
+                      <Form.Group
+                        as={Col}
+                        md="3"
+                        className="mb-3"
+                        controlId={`formBasicSupplierSKU-${index}`}
+                      >
+                        <Form.Label>Supplier SKU</Form.Label>
+                        <Form.Control
+                          name={`suppliersku-${index}`}
+                          required
+                          type="text"
+                          defaultValue={item.suppliersku}
+                          disabled
+                        />
                       </Form.Group>
                     </React.Fragment>
                   </Row>
@@ -498,185 +453,14 @@ const EditProductShortInforComponent = ({
                           defaultValue={item.purchaseprice}
                         />
                       </Form.Group>
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        className="mb-3"
-                        controlId={`formBasicMNASKU-${index}`}
-                      >
-                        <Form.Label>Miina SKU</Form.Label>
-                        <Form.Control
-                          name={`mnasku-${index}`}
-                          required
-                          type="text"
-                          defaultValue={item.mnasku}
-                        />
-                      </Form.Group>
-                      <Form.Group
-                        as={Col}
-                        md="3"
-                        className="mb-3"
-                        controlId={`formBasicSupplierSKU-${index}`}
-                      >
-                        <Form.Label>Supplier SKU</Form.Label>
-                        <Form.Control
-                          name={`suppliersku-${index}`}
-                          required
-                          type="text"
-                          defaultValue={item.suppliersku}
-                        />
-                      </Form.Group>
+
                     </React.Fragment>
                   </Row>
+                  <hr></hr>
                 </>
               </div>
             ))}
-
-          {/* add new product */}
-          {[...Array(rowCount)].map((_, index) => (
-            <>
-              <span className="stockNew text-primary">
-                New Product: {index + 1}
-              </span>
-              <Row>
-                <React.Fragment key={index}>
-                  <Form.Group
-                    as={Col}
-                    md="2"
-                    className="mb-3"
-                    controlId={`formBasicNewCount-${index}`}
-                  >
-                    <Form.Label>Count</Form.Label>
-                    <Form.Control
-                      name={`newCount-${index}`}
-                      required
-                      type="text"
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    as={Col}
-                    md="3"
-                    className="mb-3"
-                    controlId={`formBasicNewAttrs-${index}`}
-                  >
-                    <Form.Label>Attrs</Form.Label>
-                    <Form.Control
-                      name={`newAttrs-${index}`}
-                      required
-                      type="text"
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    as={Col}
-                    md="2"
-                    className="mb-3"
-                    controlId={`formBasicNewUom-${index}`}
-                  >
-                    <Form.Label>UOM</Form.Label>
-                    <Form.Control
-                      name={`newUom-${index}`}
-                      required
-                      type="text"
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    as={Col}
-                    md="4"
-                    className="mb-3"
-                    controlId={`formBasicNewBarcde-${index}`}
-                  >
-                    <Form.Label>Barcode</Form.Label>
-                    <Form.Control name={`newBarcode-${index}`} type="text" />
-                  </Form.Group>
-                  <Form.Group as={Col} md="1" className="mb-3">
-                    <i
-                      className="bi bi-trash mt-3"
-                      onClick={handleRemoveProduct}
-                      style={{
-                        cursor: "pointer",
-                      }}
-                    ></i>
-                  </Form.Group>
-                </React.Fragment>
-              </Row>
-              <Row>
-                <React.Fragment key={index}>
-                  <Form.Group
-                    as={Col}
-                    md="3"
-                    className="mb-3"
-                    controlId={`formBasicNewPrice-${index}`}
-                  >
-                    <Form.Label className="text-danger">
-                      Product Price
-                    </Form.Label>
-
-                    <Form.Control
-                      name={`newPrice-${index}`}
-                      required
-                      type="number"
-                      step="0.01"
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    as={Col}
-                    md="3"
-                    className="mb-3"
-                    controlId={`formBasicPurchasePrice-${index}`}
-                  >
-                    <Form.Label className="text-danger">
-                      Purchase Price
-                    </Form.Label>
-                    <Form.Control
-                      name={`newPurchasePrice-${index}`}
-                      required
-                      type="number"
-                      step="0.01"
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    as={Col}
-                    md="3"
-                    className="mb-3"
-                    controlId={`formBasicNewMNASKU-${index}`}
-                  >
-                    <Form.Label>Miina SKU</Form.Label>
-                    <Form.Control
-                      name={`newMnasku-${index}`}
-                      required
-                      type="text"
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    as={Col}
-                    md="3"
-                    className="mb-3"
-                    controlId={`formBasicNewSupplierSKU-${index}`}
-                  >
-                    <Form.Label>Supplier SKU</Form.Label>
-                    <Form.Control
-                      name={`newSuppliersku-${index}`}
-                      required
-                      type="text"
-                    />
-                  </Form.Group>
-                </React.Fragment>
-              </Row>
-            </>
-          ))}
-
-          <hr />
-          <p
-            onClick={handleNewProduct}
-            style={{
-              cursor: "pointer",
-              textAlign: "center",
-              fontStyle: "italic",
-            }}
-          >
-            Add New Product
-          </p>
-          <hr />
+          <hr></hr>
 
           <Row>
             <Form.Group
@@ -706,20 +490,7 @@ const EditProductShortInforComponent = ({
                 required
                 type="number"
                 defaultValue={product.saleunit}
-              />
-            </Form.Group>
-            <Form.Group
-              as={Col}
-              md="3"
-              className="mb-3"
-              controlId="formBasicMax"
-            >
-              <Form.Label>Max</Form.Label>
-              <Form.Control
-                name="Max"
-                required
-                type="number"
-                defaultValue={product.max}
+                disabled
               />
             </Form.Group>
             <Form.Group
@@ -734,10 +505,10 @@ const EditProductShortInforComponent = ({
                 type="number"
                 required
                 defaultValue={product.sortOrder}
+                disabled
               />
             </Form.Group>
           </Row>
-
           <Row>
             <Form.Group
               as={Col}
@@ -751,6 +522,7 @@ const EditProductShortInforComponent = ({
                 required
                 type="text"
                 defaultValue={product.supplier}
+                disabled
               />
             </Form.Group>
             <Form.Group
@@ -758,6 +530,7 @@ const EditProductShortInforComponent = ({
               md="6"
               className="mb-3"
               controlId="formBasicExpireDate"
+              hidden
             >
               <Form.Label>
                 Expire Date (hh:mm:ss 28/06/2023) / "remove" to delete
@@ -777,6 +550,7 @@ const EditProductShortInforComponent = ({
               name="category"
               aria-label="Default select example"
               onChange={changeCategory}
+              disabled
             >
               <option value="Choose category">Choose category</option>
               {categories?.map((category, idx) => {

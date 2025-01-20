@@ -8,10 +8,10 @@ import "react-medium-image-zoom/dist/styles.css";
 import { useSelector, useDispatch, connect } from "react-redux";
 import axios from "axios";
 import moment from "moment-timezone";
-import FilterComponent from "../FilterQueryResultOptions/FilterComponent";
-import { getCategories } from "../../redux/actions/categoryActions";
-import EditProductShortInforComponent from "../../pages/admin/components/EditProductShortInforComponent";
-import LoginRegisterPage from "../../pages/LoginRegisterPage";
+import FilterComponent from "../../../components/FilterQueryResultOptions/FilterComponent";
+import { getCategories } from "../../../redux/actions/categoryActions";
+import EditProductShortInforComponent from "../../admin/components/EditProductShortInforComponent";
+import LoginRegisterPage from "../../LoginRegisterPage";
 import "../SharedPages.css";
 import ProductDescription from "./ui/ProductDescription/ProductDescription";
 import AdminProductPanel from "./ui/AdminProductPanel/AdminProductPanel";
@@ -221,6 +221,7 @@ const ProductDetailsPageComponent = ({
     setQty(newValue);
   };
 
+
   const expireDate = product.expireDate;
   const formattedExpireDate = expireDate?.slice(9);
 
@@ -232,6 +233,8 @@ const ProductDetailsPageComponent = ({
 
   const currentDate = moment.tz("Australia/Perth");
   const diff = dateCalculation.diff(currentDate, "days");
+
+
 
   // table first letter capitalized
   function capitalizeFirstLetter(string) {
@@ -246,6 +249,7 @@ const ProductDetailsPageComponent = ({
     setShow(false);
   };
   const handleShow = () => setShow(true);
+
 
   const fetchProduct = async (productId) => {
     const { data } = await axios.get(`/api/products/get-one/${productId}`);
@@ -431,8 +435,21 @@ const ProductDetailsPageComponent = ({
                               ) : ("")}
                               <table className="productTable">
                                 <tr>
+                                  <td className="colKey"><h6>Stock Level:</h6></td>
+                                  <td className="colValue"><h6>{stockLevel}</h6></td>
+                                </tr>
+                                <tr>
                                   <td className="colKey"><h6>Supplier Code:</h6></td>
                                   <td className="colValue"><h6>{supplierCode}</h6></td>
+                                </tr>
+                                <tr>
+                                  <td className="colKey"><h6>Supplier:</h6></td>
+                                  <td className="colValue"><h6>{product.supplier}{" "}<i
+                                    onClick={() => brandSearchHandler()}
+                                    className="bi bi-box-arrow-in-right"
+                                    style={{ cursor: "pointer" }}
+                                  ></i></h6>
+                                  </td>
                                 </tr>
                                 <tr>
                                   <td className="colKey"><h6>Margin:</h6></td>

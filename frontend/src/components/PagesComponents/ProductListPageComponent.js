@@ -4,8 +4,8 @@ import ProductForListComponent from "../../components/Product/ProductForListComp
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import FilterComponent from "../../components/FilterQueryResultOptions/FilterComponent";
-import BreadcrumbComponent from "../../components/FilterQueryResultOptions/BreadcrumbComponent";
+import FilterComponent from "../FilterQueryResultOptions/FilterComponent";
+import BreadcrumbComponent from "../FilterQueryResultOptions/BreadcrumbComponent";
 import ProductCategoriesComponent from "../../components/Product/ProductCategoriesComponent";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../SharedPages.css";
@@ -263,8 +263,8 @@ const ProductListPageComponent = ({
             ) : null}</>
             :
             <>
-              <InfiniteScroll dataLength={searchedData.length} next={fetchData} hasMore={hasMore} 
-              loader={<Spinner animation="border" role="status" variant="success" ></Spinner>} endMessage={<p className="mx-4"><b>No more products to load</b></p>}>
+              <InfiniteScroll dataLength={searchedData.length} next={fetchData} hasMore={hasMore}
+                loader={<Spinner animation="border" role="status" variant="success" ></Spinner>} endMessage={<p className="mx-4"><b>No more products to load</b></p>}>
                 <Row className="m-2" xs={1} md={2} lg={3} xl={4} xxl={5}>
                   {searchedData?.map((product, index) => {
                     return (

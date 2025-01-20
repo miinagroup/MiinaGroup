@@ -678,11 +678,9 @@ const adminUpdateProduct = async (req, res, next) => {
         product.stock.push({
           _id: _id,
           attrs: attrs || "",
-          uom: uom.toUpperCase() || "",
           count: count || 0,
           price: price || 0,
           purchaseprice: purchaseprice || 0,
-          barcode: barcode || "",
           mnasku: mnasku || "",
           suppliersku: suppliersku || ""
         });
