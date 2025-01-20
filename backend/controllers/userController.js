@@ -263,8 +263,6 @@ const loginUserResponse = async (res, user, { doNotLogout }) => {
     user.email,
     user.isAdmin,
     user.verified,
-    user.siteSku,
-    user.siteVerified,
     user.isSuperAdmin,
     user.isSales,
     user.isSalesAdmin,
@@ -287,8 +285,6 @@ const loginUserResponse = async (res, user, { doNotLogout }) => {
       verified: user.verified,
       location: user.location,
       company: user.company,
-      siteSku: user.siteSku,
-      siteVerified: user.siteVerified,
       isSuperAdmin: user.isSuperAdmin,
       accounts: user.accounts,
       isSales: user.isSales,
@@ -427,8 +423,6 @@ const updateUserProfile = async (req, res, next) => {
       deliveryAddress,
       state,
       postCode,
-      siteSku,
-      siteVerified,
       abn
     } = req.body;
 
@@ -443,8 +437,6 @@ const updateUserProfile = async (req, res, next) => {
     user.deliveryAddress = deliveryAddress || user.deliveryAddress;
     user.state = state || user.state;
     user.postCode = postCode || user.postCode;
-    user.siteSku = siteSku || user.siteSku;
-    user.siteVerified = siteVerified || user.siteVerified;
     user.abn = abn || user.abn;
 
     await user.save();
@@ -459,8 +451,6 @@ const updateUserProfile = async (req, res, next) => {
         deliveryAddress: user.deliveryAddress,
         billAddress: user.billAddress,
         isAdmin: user.isAdmin,
-        siteSku: user.siteSku,
-        siteVerified: user.siteVerified,
         location: user.location,
         abn: user.abn,
         role: user.role

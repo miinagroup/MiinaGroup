@@ -22,43 +22,30 @@ function VerifySiteComponent({ show, onHide, userSites, refreshUserInfo }) {
     setSelectedSite(site);
   };
 
-  // console.log(userSites);
-  // console.log(selectedSite);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const siteSku = selectedSite.siteSku;
     const location = selectedSite.name;
-    const siteVerified = true;
 
-    // console.log(email);
     try {
       setSubmitting(true);
       setMessage("");
       setSuccessMessage("");
       const response = await axios.put("/api/users/profile", {
-        siteSku,
         location,
-        siteVerified,
       });
 
       if (response.status === 200) {
         const updatedUserInfo = response.data.userUpdated;
-
         const currentUserInfo = JSON.parse(localStorage.getItem("userInfo"));
-
         const newUserInfo = {
           ...currentUserInfo,
-          siteSku: updatedUserInfo.siteSku,
-          siteVerified: updatedUserInfo.siteVerified,
           location: updatedUserInfo.location,
         };
 
         localStorage.setItem("userInfo", JSON.stringify(newUserInfo));
 
-        
         setSuccessMessage(response.data.message);
         setTimeout(() => {
           setSuccessMessage("Your site has been set successfully. Redirecting...");

@@ -507,7 +507,7 @@ const CreateProductPageComponent = ({
                       className="mb-3"
                       controlId={`formBasicMNASKU-${index}`}
                     >
-                      <Form.Label>CTL SKU</Form.Label>
+                      <Form.Label>Miina SKU</Form.Label>
                       <Form.Control
                         name={`mnasku-${index}`}
                         required

@@ -99,8 +99,6 @@ const UserProfilePageComponent = ({
           const currentUserInfo = JSON.parse(localStorage.getItem("userInfo"));
           const newUserInfo = {
             ...currentUserInfo,
-            siteSku: updatedUserInfo.siteSku,
-            siteVerified: updatedUserInfo.siteVerified,
             location: updatedUserInfo.location,
           };
 
@@ -229,7 +227,7 @@ const UserProfilePageComponent = ({
 
 
             <Row className="mb-3">
-            <Form.Group className="mb-3" as={Col} md="4" controlId="formBasicAbn">
+              <Form.Group className="mb-3" as={Col} md="4" controlId="formBasicAbn">
                 <Form.Label>ABN</Form.Label>
                 <MaskedInput
                   mask={abnMask}
@@ -253,7 +251,7 @@ const UserProfilePageComponent = ({
             </Row>
 
             <Row>
-            <Form.Group as={Col} md="4" controlId="formBasicCompany">
+              <Form.Group as={Col} md="4" controlId="formBasicCompany">
                 <Form.Label>Company</Form.Label>
                 <Form.Control
                   type="text"

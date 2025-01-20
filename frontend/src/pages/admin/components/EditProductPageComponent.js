@@ -715,7 +715,7 @@ const EditProductPageComponent = ({
                           className="mb-3"
                           controlId={`formBasicMNASKU-${index}`}
                         >
-                          <Form.Label>CTL SKU</Form.Label>
+                          <Form.Label>Miina SKU</Form.Label>
                           <Form.Control
                             name={`mnasku-${index}`}
                             required
@@ -886,7 +886,7 @@ const EditProductPageComponent = ({
                       className="mb-3"
                       controlId={`formBasicNewMNASKU-${index}`}
                     >
-                      <Form.Label>CTL SKU</Form.Label>
+                      <Form.Label>Miina SKU</Form.Label>
                       <Form.Control
                         name={`newMnasku-${index}`}
                         required

@@ -28,7 +28,6 @@ const UserProfilePage = () => {
     role,
     state,
     postCode,
-    siteSku,
     abn
   ) => {
     const { data } = await axios.put("/api/users/profile", {
@@ -42,7 +41,6 @@ const UserProfilePage = () => {
       role,
       state,
       postCode,
-      siteSku,
       abn
     });
     setUserUpdated(data.success)
@@ -65,19 +63,19 @@ const UserProfilePage = () => {
   return (
     <div className={`${styles.userProfilePageComponentWrapper}`}>
       <div>
-         <UserLinksComponent />
+        <UserLinksComponent />
       </div>
 
-        <UserProfilePageComponent
-          updateUserApiRequest={updateUserApiRequest}
-          fetchUser={fetchUser}
-          getdeliveryBooks={getdeliveryBooks}
-          userInfoFromRedux={userInfo}
-          setReduxUserState={setReduxUserState}
-          reduxDispatch={reduxDispatch}
-          localStorage={window.localStorage}
-          sessionStorage={window.sessionStorage}
-        />
+      <UserProfilePageComponent
+        updateUserApiRequest={updateUserApiRequest}
+        fetchUser={fetchUser}
+        getdeliveryBooks={getdeliveryBooks}
+        userInfoFromRedux={userInfo}
+        setReduxUserState={setReduxUserState}
+        reduxDispatch={reduxDispatch}
+        localStorage={window.localStorage}
+        sessionStorage={window.sessionStorage}
+      />
     </div>
   );
 };

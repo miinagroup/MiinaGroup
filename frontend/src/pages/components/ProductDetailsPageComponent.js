@@ -111,38 +111,10 @@ const ProductDetailsPageComponent = ({
   useEffect(() => {
     if (product.stock && product.stock.length === 1) {
       const singleStockItem = product.stock[0];
-      const siteSku = userData.siteSku;
-
-      if (siteSku in singleStockItem) {
-        const filteredStockItem = Object.keys(singleStockItem).reduce(
-          (acc, key) => {
-            if (
-              key === "_id" ||
-              key === "attrs" ||
-              key === "count" ||
-              key === "purchaseprice" ||
-              key === "price" ||
-              key === "barcode" ||
-              key === "suppliersku" ||
-              key === "mnasku" ||
-              key === "sales" ||
-              key === siteSku
-            ) {
-              acc[key] = singleStockItem[key];
-            }
-            return acc;
-          },
-          {}
-        );
-
-        setSelectedProduct(singleStockItem.attrs);
-        setSelectedStock(filteredStockItem);
-      } else {
-        setSelectedProduct(singleStockItem.attrs);
-        setSelectedStock(singleStockItem);
-      }
+      setSelectedProduct(singleStockItem.attrs);
+      setSelectedStock(singleStockItem);
     }
-  }, [product, userData.siteSku, edit]);
+  }, [product, edit]);
 
   const handleProductChange = (event) => {
     const attrs = event.target.value;
@@ -150,8 +122,6 @@ const ProductDetailsPageComponent = ({
 
     if (attrs !== "Please-Select") {
       const stockItem = product.stock.find((item) => item.attrs === attrs);
-
-      const siteSku = userData?.siteSku;
 
       if (stockItem) {
         const selectedStockWithOneSku = Object.keys(stockItem).reduce(
@@ -166,8 +136,7 @@ const ProductDetailsPageComponent = ({
               key === "barcode" ||
               key === "suppliersku" ||
               key === "mnasku" ||
-              key === "sales" ||
-              key === siteSku
+              key === "sales"
             ) {
               acc[key] = stockItem[key];
             }

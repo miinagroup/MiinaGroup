@@ -53,7 +53,6 @@ const EditDeliveryBookComponent = ({
             const deliveryAddress = document.getElementsByName(
                 `deliveryAddress-${i}`
             )[0].value;
-            //const siteSku = document.getElementsByName(`siteSku-${i}`)[0].value;
             const storeEmail = document.getElementsByName(`storeEmail-${i}`)[0].value;
 
             sites.push({

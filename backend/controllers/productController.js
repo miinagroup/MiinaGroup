@@ -77,8 +77,6 @@ const getProductsVisitor = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
   try {
-    const userSiteSku = req.user.siteSku;
-
     let query = {};
     let queryCondition = false;
     let priceQueryCondition = {};
@@ -205,8 +203,7 @@ const getProducts = async (req, res, next) => {
             { name: regexPattern },
             { supplier: regexPattern },
             { "stock.mnasku": regexPattern },
-            { "stock.suppliersku": regexPattern },
-            { [`stock.${userSiteSku}`]: regexPattern },
+            { "stock.suppliersku": regexPattern }
           ],
         };
       }

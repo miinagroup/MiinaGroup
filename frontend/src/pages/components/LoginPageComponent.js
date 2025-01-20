@@ -62,8 +62,7 @@ const LoginPageComponent = ({
             reduxDispatch(setReduxUserState(res.userLoggedIn));
           }
           if (
-            res.success === "user logged in" &&
-            !res.userLoggedIn.siteVerified
+            res.success === "user logged in"
           ) {
             setEmail(res.userLoggedIn.email);
             setShouldRenderVerifySiteModal(true);
@@ -142,13 +141,6 @@ const LoginPageComponent = ({
   useEffect(() => {
     const verificationPending = localStorage.getItem("verificationPending");
 
-    if (userInfo.siteVerified) {
-      localStorage.removeItem("verificationPending");
-      setTimeout(() => {
-        window.location.href = "/home";
-      }, 500);
-    }
-
     if (verificationPending) {
       setEmail(userInfo.email);
       setShouldRenderVerifySiteModal(true);
@@ -216,7 +208,7 @@ const LoginPageComponent = ({
                     size="sm"
                     role="status"
                     aria-hidden="true"
-                    variant="success" 
+                    variant="success"
                   />
                 ) : (
                   ""

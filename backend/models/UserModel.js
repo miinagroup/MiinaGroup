@@ -64,10 +64,6 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    siteSku: {
-      type: String,
-      required: false,
-    },
     isAdmin: {
       type: Boolean,
       required: true,
@@ -133,7 +129,6 @@ const userSchema = mongoose.Schema(
       required: false,
     },
     verified: { type: Boolean, default: false },
-    siteVerified: { type: Boolean, default: false },
     editeHistroys: [
       {
         operator: {

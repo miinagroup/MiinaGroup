@@ -1,4 +1,4 @@
-import { Row, Col,  Container,  ListGroup,  Button,  Form,  Modal } from "react-bootstrap";
+import { Row, Col, Container, ListGroup, Button, Form, Modal } from "react-bootstrap";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -8,14 +8,11 @@ import "react-medium-image-zoom/dist/styles.css";
 import { useSelector, useDispatch, connect } from "react-redux";
 import axios from "axios";
 import moment from "moment-timezone";
-
 import FilterComponent from "../../../components/filterQueryResultOptions/FilterComponent";
 import { getCategories } from "../../../redux/actions/categoryActions";
 import EditProductShortInforComponent from "../../admin/components/EditProductShortInforComponent";
 import LoginRegisterPage from "../../LoginRegisterPage";
-
 import "../SharedPages.css";
-
 import ProductDescription from "./ui/ProductDescription/ProductDescription";
 import AdminProductPanel from "./ui/AdminProductPanel/AdminProductPanel";
 import PleaseSelect from "./ui/PleaseSelect/PleaseSelect";
@@ -55,7 +52,7 @@ const ProductDetailsPageComponent = ({
     setModalType(type);
     setShowLoginModal(true);
   };
-  
+
   const { categories } = useSelector((state) => state.getCategories);
   const dispatch = useDispatch();
 
@@ -73,38 +70,10 @@ const ProductDetailsPageComponent = ({
   useEffect(() => {
     if (product.stock && product.stock.length === 1) {
       const singleStockItem = product.stock[0];
-      const siteSku = userData.siteSku;
-
-      if (siteSku in singleStockItem) {
-        const filteredStockItem = Object.keys(singleStockItem).reduce(
-          (acc, key) => {
-            if (
-              key === "_id" ||
-              key === "attrs" ||
-              key === "count" ||
-              key === "purchaseprice" ||
-              key === "price" ||
-              key === "barcode" ||
-              key === "suppliersku" ||
-              key === "ctlsku" ||
-              key === "sales" ||
-              key === siteSku
-            ) {
-              acc[key] = singleStockItem[key];
-            }
-            return acc;
-          },
-          {}
-        );
-
-        setSelectedProduct(singleStockItem.attrs);
-        setSelectedStock(filteredStockItem);
-      } else {
-        setSelectedProduct(singleStockItem.attrs);
-        setSelectedStock(singleStockItem);
-      }
+      setSelectedProduct(singleStockItem.attrs);
+      setSelectedStock(singleStockItem);
     }
-  }, [product, userData.siteSku, edit]);
+  }, [product, edit]);
 
   const handleProductChange = (event) => {
     const attrs = event.target.value;
@@ -112,9 +81,6 @@ const ProductDetailsPageComponent = ({
 
     if (attrs !== "Please-Select") {
       const stockItem = product.stock.find((item) => item.attrs === attrs);
-
-      const siteSku = userData?.siteSku;
-
       if (stockItem) {
         const selectedStockWithOneSku = Object.keys(stockItem).reduce(
           (acc, key) => {
@@ -127,9 +93,8 @@ const ProductDetailsPageComponent = ({
               key === "price" ||
               key === "barcode" ||
               key === "suppliersku" ||
-              key === "ctlsku" ||
-              key === "sales" ||
-              key === siteSku
+              key === "mnasku" ||
+              key === "sales"
             ) {
               acc[key] = stockItem[key];
             }
@@ -150,7 +115,7 @@ const ProductDetailsPageComponent = ({
   useEffect(() => {
     if (selectedProduct !== "Please-Select" && selectedStock) {
       setStockPrice(selectedStock.price);
-      setstockCode(selectedStock.ctlsku);
+      setstockCode(selectedStock.mnasku);
       setsupplierCode(selectedStock.suppliersku);
       setStockLevel(selectedStock.count);
     }
@@ -336,7 +301,7 @@ const ProductDetailsPageComponent = ({
           supplier: product.supplier,
           poCartProducts: [
             {
-              ctlsku: selectedStock.ctlsku,
+              mnasku: selectedStock.mnasku,
               quantity: qty,
               purchaseprice: selectedStock.purchaseprice,
               suppliersku: selectedStock.suppliersku,
@@ -362,7 +327,7 @@ const ProductDetailsPageComponent = ({
       });
 
       item.poCartProducts.forEach((product, productIndex) => {
-        const requiredProductFields = ['ctlsku', 'quantity', 'purchaseprice', 'suppliersku', 'attrs', 'uom'];
+        const requiredProductFields = ['mnasku', 'quantity', 'purchaseprice', 'suppliersku', 'attrs', 'uom'];
         requiredProductFields.forEach((field) => {
           if (product[field] === undefined || product[field] === null) {
             missingFields.push(`${field}`);
@@ -393,8 +358,18 @@ const ProductDetailsPageComponent = ({
 
   const [catList, setCatList] = useState([])
   useEffect(() => {
-    if (product.category !== "" || product.category !== undefined) {
-      setCatList(product?.category?.split("/"))
+    if (product.category !== "" && product.category !== undefined) {
+      const input = product.category;
+      const parts = input.split("/");
+
+      let result = [];
+      let currentPath = "";
+
+      for (let i = 0; i < parts.length; i++) {
+        currentPath = currentPath ? `${currentPath}/${parts[i]}` : parts[i];
+        result.push({ name: parts[i], link: currentPath });
+      }
+      setCatList(result);
     }
   }, [product]);
 
@@ -415,7 +390,7 @@ const ProductDetailsPageComponent = ({
 
             {/* ************   Product Pictures Display Carousel  ***************  */}
             <Col lg={4} className="m-1 product-detail-page-info-image">
-              <ImageGallery items={images} showPlayButton={false}  />
+              <ImageGallery items={images} showPlayButton={false} />
             </Col>
 
             {/* ************   Product Details  ***************  */}
@@ -424,45 +399,13 @@ const ProductDetailsPageComponent = ({
                 catList ? (
                   <>
                     <span className="categoryHD">
-                      {catList[0] ? (
-                        <a href={`/product-list?categoryName=${catList[0]}`}>{catList[0]}</a>
-                      ) : ("")}
-                      {catList[1] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}`}>{catList[1]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[2] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}`}>{catList[2]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[3] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}`}>{catList[3]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[4] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}`}>{catList[4]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[5] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}&sixCategoryName=${catList[5]}`}>{catList[5]}</a>
-                        </>
-                      ) : ("")}
-                      {catList[6] ? (
-                        <>
-                          <label>&nbsp; /&nbsp; </label>
-                          <a href={`/product-list?categoryName=${catList[0]}&subCategoryName=${catList[1]}&childCategoryName=${catList[2]}&fourCategoryName=${catList[3]}&fiveCategoryName=${catList[4]}&sixCategoryName=${catList[5]}&sevenCategoryName=${catList[6]}`}>{catList[6]}</a>
-                        </>
-                      ) : ("")}
+                      {
+                        catList.map((category, index) => (
+                          <a href={`/product-list?categoryPath=${category.link}`} key={index}>
+                            {category.name} <label>&nbsp; / &nbsp; </label>
+                          </a>
+                        ))
+                      }
                     </span>
                   </>
                 ) : ("")
@@ -473,11 +416,8 @@ const ProductDetailsPageComponent = ({
                   <ListGroup.Item>
                     <div className="product-detail-page-title">{product.name}</div>
                     {userData.isAdmin === true && <AdminProductPanel handleShow={handleShow} selectedProduct={selectedProduct} poCartBtnText={poCartBtnText} addToPOCartCheck={addToPOCartCheck} />}
-
                     <PleaseSelect selectedProduct={selectedProduct} product={product} handleProductChange={handleProductChange} />
-
                     <br />
-
                     <Row hidden={selectedProduct === "Please-Select"} className="product-details-page-description">
                       <Col>
                         <h6>Product Code: {stockCode}</h6>
@@ -669,7 +609,7 @@ const ProductDetailsPageComponent = ({
 
 
               {/* ************   Product details with download pdf  ***************  */}
-                <ProductDescription product={product}  />
+              <ProductDescription product={product} />
             </Col>
           </Row>
         </Col>
@@ -693,7 +633,7 @@ const ProductDetailsPageComponent = ({
         <LoginRegisterPage modalType={modalType} />
       </Modal>
     </Container >
-    </>);
+  </>);
 };
 
 export default connect()(ProductDetailsPageComponent);

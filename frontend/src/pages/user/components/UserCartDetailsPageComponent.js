@@ -242,14 +242,6 @@ const UserCartDetailsPageComponent = ({
       );
   }, [userInfo._id]);
 
-  useEffect(() => {
-    if (!userInfo.siteVerified) {
-      console.log("Site not verified, showing modal...");
-      setShouldRenderVerifySiteModal(true);
-      setShowVerifySiteModal(true);
-    }
-  }, [userInfo]);
-
   const orderHandler = () => {
     const orderData = {
       orderTotal: {

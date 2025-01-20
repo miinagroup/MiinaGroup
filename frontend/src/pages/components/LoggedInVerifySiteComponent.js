@@ -29,16 +29,6 @@ function LoggedInVerifySiteComponent({
       );
   }, []);
 
-  useEffect(() => {
-    const currentUserInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (currentUserInfo.siteVerified === true) {
-      localStorage.removeItem("verificationPending");
-      setTimeout(() => {
-        window.location.href = "/home";
-      }, 500);
-    }
-  }, []);
-
   const handleClose = () => {
     onHide();
     setMessage("");
@@ -66,9 +56,7 @@ function LoggedInVerifySiteComponent({
     e.preventDefault();
     e.stopPropagation();
 
-    const siteSku = selectedSite.siteSku;
     const location = selectedSite.name;
-    const siteVerified = true;
     const company = userSites.companyName;
 
     // console.log(email);
@@ -78,9 +66,7 @@ function LoggedInVerifySiteComponent({
       setSuccessMessage("");
       const response = await axios.put("/api/users/profile", {
         company,
-        siteSku,
         location,
-        siteVerified,
       });
 
       if (response.status === 200) {
@@ -90,8 +76,6 @@ function LoggedInVerifySiteComponent({
 
         const newUserInfo = {
           ...currentUserInfo,
-          siteSku: updatedUserInfo.siteSku,
-          siteVerified: updatedUserInfo.siteVerified,
           location: updatedUserInfo.location,
         };
 

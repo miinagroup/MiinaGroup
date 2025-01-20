@@ -124,7 +124,7 @@ const adminUpdateDeliveryBook = async (req, res, next) => {
     if (sites.length > 0) {
       deliveryBook.sites = [];
       sites.map((item) => {
-        const { name, billingAddress, deliveryAddress, siteSku, storeEmail } = item;
+        const { name, billingAddress, deliveryAddress, storeEmail } = item;
         deliveryBook.sites.push({
           name: name || "",
           billingAddress: billingAddress || "",
@@ -190,8 +190,7 @@ const addNewSiteToDeliveryBook = async (req, res, next) => {
     const newSite = {
       name: location,
       billingAddress,
-      deliveryAddress,
-      siteSku: `${location.toLowerCase().replace(/\s+/g, '')}Sku`
+      deliveryAddress
     };
 
     deliveryBook.sites.push(newSite);
