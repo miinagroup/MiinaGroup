@@ -13,7 +13,6 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
   const [productSearch, setProductSearch] = useState("")
   const [filterValue, setFilterValue] = useState("");
   const [sorting, setSorting] = useState({ field: "createdAt", order: "desc" });
@@ -124,7 +123,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
       (currentPage - 1) * ITEMS_PER_PAGE,
       (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE
     );
-  }, [orders, ordersByCompany, currentPage, search, sorting, productSearch]);
+  }, [orders, ordersByCompany, currentPage, sorting, productSearch]);
 
   // order items Modal and Back Order
   const [show, setShow] = useState(false);

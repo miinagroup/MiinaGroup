@@ -109,7 +109,6 @@ export const removeFromCart =
   (id, qty, price) => async (dispatch, getState) => {
     try {
       const { data } = await axios.delete("/api/cart/delete/" + id);
-      // console.log("购物车-移除产品",id);
       dispatch({
         type: actionTypes.REMOVE_FROM_CART,
         payload: { id: id, qty: qty, price: price },

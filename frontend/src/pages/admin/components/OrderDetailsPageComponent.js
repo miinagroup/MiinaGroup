@@ -104,6 +104,7 @@ const OrderDetailsPageComponent = ({
     getOrder(id)
       .then((order) => {
         setOrder(order);
+        setCartItems(order.cartItems);
         setUserInfo(order.user);
         setBackOrderStatus(order.backOrder);
         setPaymentMethod(order.paymentMethod);
@@ -473,7 +474,7 @@ const OrderDetailsPageComponent = ({
           )
         );
     } else {
-      setInvSentButton("Something Went Wrong! Contact Tech Team!!!");
+      setInvSentButton("Error!!!");
     }
   };
 
@@ -587,7 +588,7 @@ const OrderDetailsPageComponent = ({
           )
         );
     } else {
-      setProformaInvSentButton("Something Went Wrong! Contact Tech Team!!!");
+      setProformaInvSentButton("Error!!!");
     }
   };
 
@@ -615,13 +616,13 @@ const OrderDetailsPageComponent = ({
             sendDeliveryNotice(userInfo?.email, purchaseNumber, trackLink)
               .then((res) => {
                 if (res.message === "Email sent successfully") {
-                  setorderDeliveredButton(res.message);
+                  setorderDeliveredButton("Email Sent!!!");
                   setIsDelivered(true);
                 } else if (res.message === "Skipping send email in Dev") {
-                  setorderDeliveredButton(res.message);
+                  setorderDeliveredButton("Skipping Email!!!");
                   setIsDelivered(true);
                 } else {
-                  setorderDeliveredButton("ERROR!!! Contact ENZO");
+                  setorderDeliveredButton("ERROR!!!");
                 }
               })
               .catch((er) => {
@@ -1212,7 +1213,7 @@ const OrderDetailsPageComponent = ({
           </ListGroup>
           <br />
 
-          <ListGroup hidden={userData?.accounts !== true}>
+          <ListGroup hidden={userData?.isAdmin !== true || order?.isDelivered !== true}>
             <ListGroup.Item className="p-1 ps-2">
               <h5 className="m-0">Accounts Use Only:</h5>
             </ListGroup.Item>
@@ -1223,6 +1224,7 @@ const OrderDetailsPageComponent = ({
                 label="Mark As Paid"
                 onChange={handleMarkPaid}
                 disabled={btnMarkAsPaid}
+
               />
             </ListGroup.Item>
             {!deliveredButtonDisabled ? (

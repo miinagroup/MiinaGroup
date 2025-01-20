@@ -624,18 +624,18 @@ const UserCartDetailsPageComponent = ({
                         </span>
                       </PDFDownloadLink>
                     </div>
-                    <div className="d-flex justify-content-end">
+                    {/* <div className="d-flex justify-content-end">
                       <Button
                         type="button"
                         onClick={removeAllItems}
-                        variant="primary" 
+                        variant="primary"
                         size="sm"
                         style={{ fontSize: "12px" }}
                         className="mobile-visibility"
                       >
                         Empty Cart <i className="bi bi-trash" />
                       </Button>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div >
@@ -656,7 +656,7 @@ const UserCartDetailsPageComponent = ({
                           />
                           <InputGroup.Text
                             id="basic-addon2"
-                            style={{ border: "none", borderLeft: "1px solid #DBA162" , borderRadius: "1px", fontSize: "12px" , background: "#DBA162", color: "#483F55"}}
+                            style={{ border: "none", borderLeft: "1px solid #DBA162", borderRadius: "1px", fontSize: "12px", background: "#DBA162", color: "#483F55" }}
                           >
                             @{userEmail}
                           </InputGroup.Text>
@@ -666,8 +666,8 @@ const UserCartDetailsPageComponent = ({
                         </Form.Control.Feedback>
                       </ListGroup.Item>
                       <div className="d-grid gap-2">
-                          <QuoeteManagementApproval quotePriceData={quotePriceData} />
-                        </div>
+                        <QuoeteManagementApproval quotePriceData={quotePriceData} />
+                      </div>
 
                     </ListGroup>
                   </div>

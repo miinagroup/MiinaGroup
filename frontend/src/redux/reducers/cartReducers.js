@@ -16,10 +16,6 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.FETCH_CART_ITEMS_LOGIN:
       const fetchedCartItems = action.payload;
-      const initialItemsCount = fetchedCartItems.reduce(
-        (count, item) => count + Number(item.cartProducts[0].quantity),
-        0
-      );
       const calculateInitialSubtotal = fetchedCartItems.reduce(
         (totalNet, cartItem) => {
           const itemPrice = new Decimal(cartItem.cartProducts[0].price);
@@ -109,8 +105,6 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
         return rawTax.toDecimalPlaces(2, Decimal.ROUND_DOWN);
       })(roundedCartSubtotal);
 
-      const finalTotalAmountAddCart =
-        roundedCartSubtotal.plus(adjustedTaxAddCart);
       const roundedFinalTotalAmountAddCart =
         calculateTotalAmount(roundedCartSubtotal, adjustedTaxAddCart);
 
@@ -127,10 +121,6 @@ export const cartReducer = (state = CART_INITIAL_STATE, action) => {
 
       const removedItem = state.cartItems.find(
         (x) => x.cartProducts[0]._id === action.payload.id
-      );
-      const remainingItemsCount = updatedCartItems.reduce(
-        (acc, item) => acc + Number(item.cartProducts[0].quantity),
-        0
       );
 
       const remainingCartSubtotal = updatedCartItems.reduce((acc, item) => {
