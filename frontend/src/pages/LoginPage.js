@@ -16,10 +16,11 @@ const loginUserApiRequest = async (email, password, doNotLogout, ipAddress) => {
   if (!data.userLoggedIn.isAdmin) {
     const userId = data.userLoggedIn._id;
     const userName = data.userLoggedIn.name;
-    const userCompany = data.userLoggedIn.company; var today = new Date();
-    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var localDateTime = date + ' ' + time;
+    const userCompany = data.userLoggedIn.company; 
+    let today = new Date();
+    let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let localDateTime = date + ' ' + time;
     const time_now = new Date();
     time_now.setMinutes(time_now.getMinutes() + 15);
     localStorage.setItem('trackDataScheduledLogoutTime', time_now)

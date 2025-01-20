@@ -113,12 +113,11 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
       });
     }
 
-    var productArray = []
+    let productArray = []
     computedOrders?.map((order) => {
       productArray.push(order)
     })
     setTotalProducts(productArray.length)
-    //Current Page slice
     return productArray.slice(
       (currentPage - 1) * ITEMS_PER_PAGE,
       (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE

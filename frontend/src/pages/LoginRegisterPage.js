@@ -24,16 +24,16 @@ const LoginRegisterPage = ({ modalType }) => {
       const userId = data.userLoggedIn._id;
       const userName = data.userLoggedIn.name + " " + data.userLoggedIn.lastName;
       const userCompany = data.userLoggedIn.company;
-      var today = new Date();
-      var date =
+      let today = new Date();
+      let date =
         today.getFullYear() +
         "-" +
         (today.getMonth() + 1) +
         "-" +
         today.getDate();
-      var time =
+        let time =
         today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      var localDateTime = date + " " + time;
+        let localDateTime = date + " " + time;
       const local_Time = new Date();
       local_Time.setMinutes(local_Time.getMinutes() + 30);
       localStorage.setItem("trackDataScheduledLogoutTime", local_Time);

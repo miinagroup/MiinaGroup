@@ -378,7 +378,7 @@ const ProformaInvoicePrint = (invPrintData) => {
   const dueDays = invPrintData.dueDays;
   const deliverySite = invPrintData.selectedDeliverySite;
   const companyAccount = invPrintData.companyAccount;
-  var counter = 0;
+  let counter = 0;
 
   const formatNumber = (number) =>
     new Intl.NumberFormat("en-US", {

@@ -200,7 +200,7 @@ const RegisterPageComponent = ({
       setShowLocation(false);
       setShowAbn(false)
     } else {
-      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (!email.match(mailformat)) {
         alert("Invalid email format")
       } else {

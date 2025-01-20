@@ -3,30 +3,12 @@ import {
   Col,
   Container,
   Form,
-  Button,
-  CloseButton,
-  Table,
-  Alert,
-  Image,
+  Button
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import React, { useState, useEffect, Fragment, useRef } from "react";
 import { useParams } from "react-router-dom";
-//当更改了产品信息，就navigate去product list page
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import CurrencyInput from "react-currency-input-field";
-import axios from "axios";
+import { useSelector } from "react-redux";
 
-const onHover = {
-  cursor: "pointer",
-  position: "absolute",
-  left: "5px",
-  top: "-10px",
-  transform: "scale(2.7)",
-};
-
-//需要的变量，以及随后会用到的功能
 const EditProductShortInforComponent = ({
   categories,
   fetchProduct,
@@ -50,38 +32,15 @@ const EditProductShortInforComponent = ({
   const [newAttrValue, setNewAttrValue] = useState(false);
   const [imageRemoved, setImageRemoved] = useState(false);
   const [pdfRemoved, setPdfRemoved] = useState(false);
-  const [isUploading, setIsUploading] = useState("");
-  const [isUploadingPdf, setIsUploadingPdf] = useState("");
+
   const [imageUploaded, setImageUploaded] = useState(false);
   const [pdfUploaded, setPdfUploaded] = useState(false);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
 
-  const attrVal = useRef(null);
   const attrKey = useRef(null);
   const createNewAttrKey = useRef(null);
   const createNewAttrVal = useRef(null);
-
-  const setValuesForAttrFromDbSelectForm = (e) => {
-    if (e.target.value !== "Choose attribute") {
-      var selectedAttr = attributesFromDb.find(
-        (item) => item.key === e.target.value
-      );
-      let valuesForAttrKeys = attrVal.current;
-      if (selectedAttr && selectedAttr.value.length > 0) {
-        while (valuesForAttrKeys.options.length) {
-          valuesForAttrKeys.remove(0);
-        }
-        valuesForAttrKeys.options.add(new Option("Choose attribute value"));
-        selectedAttr.value.map((item) => {
-          valuesForAttrKeys.add(new Option(item));
-          return "";
-        });
-      }
-    }
-  };
-
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProduct(id)
@@ -224,16 +183,10 @@ const EditProductShortInforComponent = ({
     setCategoryChoosen(e.target.value);
   };
 
-  const attributeValueSelected = (e) => {
-    if (e.target.value !== "Choose attribute value") {
-      setAttributesTableWrapper(attrKey.current.value, e.target.value);
-    }
-  };
-
   const setAttributesTableWrapper = (key, val) => {
     setAttributesTable((attr) => {
       if (attr.length !== 0) {
-        var keyExistsInOldTable = false;
+        let keyExistsInOldTable = false;
         let modifiedTable = attr.map((item) => {
           if (item.key === key) {
             keyExistsInOldTable = true;
@@ -251,54 +204,8 @@ const EditProductShortInforComponent = ({
     });
   };
 
-  const deleteAttribute = (key) => {
-    setAttributesTable((table) => table.filter((item) => item.key !== key));
-  };
-
   const checkKeyDown = (e) => {
     if (e.code === "Enter") e.preventDefault();
-  };
-
-  const newAttrKeyHandler = (e) => {
-    e.preventDefault();
-    setNewAttrKey(e.target.value);
-    addNewAttributeManually(e);
-  };
-
-  const newAttrValueHandler = (e) => {
-    e.preventDefault();
-    setNewAttrValue(e.target.value);
-    addNewAttributeManually(e);
-  };
-
-  const addNewAttributeManually = (e) => {
-    if (e.keyCode && e.keyCode === 13) {
-      if (newAttrKey && newAttrValue) {
-        reduxDispatch(
-          saveAttributeToCatDoc(newAttrKey, newAttrValue, categoryChoosen)
-        );
-        setAttributesTableWrapper(newAttrKey, newAttrValue);
-        e.target.value = "";
-        createNewAttrKey.current.value = "";
-        createNewAttrVal.current.value = "";
-        setNewAttrKey(false);
-        setNewAttrValue(false);
-      }
-    }
-  };
-
-  const [rowCount, setRowCount] = useState(0);
-  const handleNewProduct = () => {
-    setRowCount(rowCount + 1);
-  };
-  const handleRemoveProduct = () => {
-    setRowCount(rowCount - 1);
-  };
-
-  const handleRemoveStock = (index) => {
-    const newStock = [...product.stock];
-    newStock.splice(index, 1);
-    setProduct({ ...product, stock: newStock });
   };
 
   return (

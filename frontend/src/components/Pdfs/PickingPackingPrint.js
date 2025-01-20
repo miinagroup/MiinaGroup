@@ -315,9 +315,8 @@ const PickingPackingPrint = (cartItems) => {
     const dueDays = cartItems.dueDays;
     const deliverySite = cartItems.selectedDeliverySite;
     const companyAccount = cartItems.companyAccount;
-    var counter = 0;
-    // console.log("invcart", InvCartItems)
-    // console.log("Delivery Note selectedDeliverySite", cartItems);
+    let counter = 0;
+
 
     function splitArrayIntoChunks(arr, chunkSize) {
         const result = [];

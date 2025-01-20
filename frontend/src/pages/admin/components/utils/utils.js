@@ -13,7 +13,7 @@ export const changeCategory = (e, categories, setAttributesFromDb, setCategoryCh
 
   export const setValuesForAttrFromDbSelectForm = (e, attrVal, attributesFromDb) => {
     if (e.target.value !== "Choose attribute") {
-      var selectedAttr = attributesFromDb.find(
+      let selectedAttr = attributesFromDb.find(
         (item) => item.key === e.target.value
       );
       let valuesForAttrKeys = attrVal.current;
@@ -33,7 +33,7 @@ export const changeCategory = (e, categories, setAttributesFromDb, setCategoryCh
   export const setAttributesTableWrapper = (key, val, setAttributesTable) => {
       setAttributesTable((attr) => {
           if (attr.length !== 0) {
-              var keyExistsInOldTable = false;
+              let keyExistsInOldTable = false;
               let modifiedTable = attr.map(item => {
                   if (item.key === key) {
                       keyExistsInOldTable = true;

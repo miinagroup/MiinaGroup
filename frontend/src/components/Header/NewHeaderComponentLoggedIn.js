@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Nav, Badge, } from "react-bootstrap";
 import axios from "axios";
@@ -53,6 +54,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
   const itemsCount = useSelector((state) => state.cart.itemsCount);
   const cartSubtotal = useSelector((state) => state.cart.cartSubtotal);
   const navigate = useNavigate();
+  const location = useLocation();
   const subcategories = useSelector((state) => state.getCategories.subcategories);
 
   const submitHandler = (e) => {
@@ -105,6 +107,19 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
     return roles.some((role) => isAuth[role.trim()]);
   };
 
+  
+  const handleClickGoToSection = (goToSectionFunction) => {
+    if (location.pathname === '/') {
+      goToSectionFunction();
+    } else {
+      navigate('/', { replace: true });
+      setTimeout(() => {
+        goToSectionFunction();
+      }, 100);
+    }
+  };
+
+
   return <div className={styles.header}>
     <div className={styles.headerWrapper}>
       <div className={styles.menu}>
@@ -130,18 +145,11 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
                           {subcategories[category.link]?.sort().map((subcategory, index) => (
                             <a
                               href={`/product-list?categoryPath=${category.link}/${subcategory}`}
-                              key={index}
+                              key={subcategory}
                               className={styles.subcategoryItem}
                             >
-                              {/* <img src="/images/SubmarkPurple.png" alt="Miina Group Logo" className={styles.logoTag} /> */}
-                              {/* <div className={styles.logoTag}>
-                                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 637.2 528.26">
-                                            <path fill="currentColor" d="M221.88,488.64c-.35-.26-.69-.56-1.06-.77-15.37-8.86-31.47-16.01-48.73-20.31-13.36-3.33-26.98-4.19-40.71-3.34-11.34.71-22.61,2.01-33.85,3.61-2.29.33-4.56.82-6.84,1.22-2.14.38-3.5-.1-3.93-1.35-.41-1.17.39-2.88,2.19-3.56,2.68-1.01,5.45-1.89,8.26-2.38,15.92-2.78,31.92-4.93,48.15-4.54,10.19.25,20.22,1.63,30.11,4.06.39.1.77.2,1.16.27.14.02.3-.05.75-.14-.72-.33-1.21-.6-1.74-.78-14.45-5-29.22-8.84-44.35-11.04-15.49-2.25-31.04-4.12-46.57-6.12-3.17-.41-6.36-.65-9.54-.99-.71-.08-1.42-.22-2.11-.4-.91-.23-1.81-.77-1.68-1.74.11-.75.7-1.71,1.35-2.05.94-.49,2.14-.71,3.22-.68,4.07.12,8.15.28,12.21.61,6.29.51,12.57,1.16,18.85,1.75,21.51,2.03,42.84,5.04,63.56,11.5,21.34,6.65,41.11,16.31,58.77,30.11,2.95,2.3,5.78,4.75,8.87,6.97-.7-.81-1.39-1.62-2.1-2.42-22.6-25.63-49.54-45.38-80.58-59.6-13.65-6.25-27.33-12.45-40.99-18.69-1.23-.56-2.47-1.15-3.58-1.92-1.27-.88-1.59-2.1-1.09-3.1.51-1.04,1.54-1.44,3.11-.88,3.46,1.23,6.94,2.44,10.29,3.93,13.96,6.16,27.96,12.22,41.77,18.71,15.38,7.23,29.69,16.31,43.19,26.64.5.38,1.02.75,1.86.86-.52-.59-1.02-1.18-1.55-1.75-9.07-9.72-18.93-18.6-29.25-26.98-9.25-7.51-18.4-15.14-27.59-22.72-.99-.81-1.97-1.64-2.86-2.56-.55-.56-1.03-1.24-1.33-1.96-.38-.91-.36-1.92.41-2.68.8-.79,1.8-1.12,2.85-.6,1.07.52,2.15,1.08,3.09,1.8,6.7,5.19,13.39,10.39,20.02,15.67,12.58,10.02,24.85,20.39,35.98,32.04,12.8,13.39,24.13,27.95,34.56,43.23.48.71.98,1.41,1.76,1.97-.12-.35-.21-.71-.36-1.04-7.51-16.61-16.42-32.36-28.38-46.23-21.27-24.68-46.79-43.66-76.59-56.83-9.93-4.39-20.03-8.42-30.04-12.64-1.1-.46-2.21-.95-3.22-1.58-.91-.58-1.52-1.48-1.12-2.65.4-1.14,1.38-1.59,2.48-1.48,1.18.12,2.39.32,3.49.73,8.74,3.3,17.48,6.59,26.17,10.03,19.16,7.58,36.76,17.92,52.98,30.59,17.84,13.95,33.33,30.09,45.41,49.35,1.01,1.61,1.99,3.23,3.29,4.69-.34-.77-.68-1.54-1.04-2.3-12.92-28.02-30.86-52.41-53.38-73.46z" />
-                                          </svg>
-                                          </div> */}
                               <div className={styles.logoTagSubcategory}>
                               <img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />
-
                               </div>
                               {subcategory}
                             </a>
@@ -158,22 +166,22 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
         <div className={styles.menuItem}>
           <span className={styles.aboutMenuItem}>ABOUT US</span>
           <div className={styles.dropdown}>
-            <button onClick={goToAboutSection}>
+            <button onClick={() => handleClickGoToSection(goToAboutSection)}>
               <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Who Miina Group is</div>
             </button>
-            <button onClick={goToTeamSection}>
+            <button onClick={() => handleClickGoToSection(goToTeamSection)}>
               <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Miina Group Team</div>
             </button>
           </div>
         </div>
-        <button onClick={goToContactSection}><div className={styles.menuItem}><span>CONTACT</span></div></button>
+        <button onClick={() => handleClickGoToSection(goToContactSection)}><div className={styles.menuItem}><span>CONTACT</span></div></button>
       </div>
-      <div className={styles.logoTaglineWrapper} onClick={() => { navigate("/") }}>
+      <a className={styles.logoTaglineWrapper} href="/">
         <img src="/svg/PrimaryLogoColour.svg" alt="Miina Group Logo" className={styles.logo} />
         <div className={styles.tagline}>
           Walking and Working on Country, safely
         </div>
-      </div>
+        </a>
 
       <div className={styles.logRegNew}>
         <div className={`${styles.search}`}>
@@ -186,14 +194,13 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
           <button className={styles.iconNew}
             onClick={submitHandler}
           >
-            <i class="bi bi-search fs-4"></i></button>
+            <i className="bi bi-search fs-4"></i></button>
         </div>
 
         <div className={`${styles.headerNewBtns} ${styles.headerNewBtnsLoggedIn}`}>
           <Nav className={styles.user_cart}>
             {/* *********** User Icon *********** */}
             {userInfo.isAdmin ? (
-              <>
                 <div className="users_initial_dropdown">
                   <div className={`Avtbox_admin`}>
                     <a href="/admin/orders" className="Avtbox_users_initial">
@@ -242,9 +249,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
                     </div>
                   </div>
                 </div>
-              </>
             ) : (
-              <>
                 <div className={`users_initial_dropdown ${styles.newHeaderLogInIcon}`}>
                   <div className={`Avtbox ${styles.Avtbox}`}>
                     <a
@@ -278,7 +283,6 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
                     </div>
                   </div>
                 </div>
-              </>
             )}
 
 
@@ -328,11 +332,16 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
 
 
   </div>
-
-
-
-
-
 }
+
+NewHeaderComponentLoggedIn.propTypes = {
+  goToAboutSection: PropTypes.func.isRequired,
+  goToTeamSection: PropTypes.func.isRequired,
+  goToContactSection: PropTypes.func.isRequired,
+  setIsOpenModal: PropTypes.func.isRequired,
+  showSidebar: PropTypes.func.isRequired,
+  toggleShowSidebar: PropTypes.func.isRequired,
+  onClickBtn: PropTypes.func.isRequired,
+};
 
 export default NewHeaderComponentLoggedIn;

@@ -380,13 +380,7 @@ const CartPrint = (cartItems) => {
   const InvCartItems = cartItems.cartItems;
   const InvUserInfo = cartItems.userInfo;
   const InvAddress = cartItems.userAddress;
-  var counter = 0;
-
-  /*   console.log("InvCartItems", InvCartItems);
-    console.log("InvUserInfo", InvUserInfo);
-    console.log("InvAddress", InvAddress);
-    console.log("cart items", cartItems); */
-  //console.log("InvAddress", InvAddress.deliveryAddress);
+  let counter = 0;
 
   function splitArrayIntoChunks(arr, chunkSize) {
     const result = [];

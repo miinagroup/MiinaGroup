@@ -374,7 +374,7 @@ const InvoicePrint = (invPrintData) => {
   const deliverySite = invPrintData.selectedDeliverySite;
   const companyAccount = invPrintData.companyAccount;
   const isPaid = invPrintData.isPaid;
-  var counter = 0;
+  let counter = 0;
 
   const formatNumber = (number) =>
     new Intl.NumberFormat("en-US", {

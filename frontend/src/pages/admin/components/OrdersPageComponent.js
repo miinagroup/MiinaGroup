@@ -168,7 +168,7 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   });
 
   //Purchased products list.
-  var orderProductsList = [];
+  let orderProductsList = [];
   ordersData.map((order) => {
     order.cartItems.map((item) => { });
   });

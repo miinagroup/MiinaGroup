@@ -27,7 +27,6 @@ const ProductListPageComponent = ({
   const [productCategories, setProductCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [categoriesFromFilter, setCategoriesFromFilter] = useState({});
   const [paginationLinksNumber, setPaginationLinksNumber] = useState(null);
   const [pageNum, setPageNum] = useState(null);
   const [userNameEmail, setUserNameEmail] = useState();

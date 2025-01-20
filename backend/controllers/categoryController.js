@@ -118,13 +118,13 @@ const saveAttr = async (req, res, next) => {
     const category = categoryChoosen.split("/")[0];
     const categoryExists = await Category.findOne({ name: category }).orFail();
     if (categoryExists.attrs.length > 0) {
-      var keyDoesNotExistsInDatabase = true;
+      let keyDoesNotExistsInDatabase = true;
       categoryExists.attrs.map((item, idx) => {
         if (item.key === key) {
           keyDoesNotExistsInDatabase = false;
-          var copyAttributeValues = [...categoryExists.attrs[idx].value];
+          let copyAttributeValues = [...categoryExists.attrs[idx].value];
           copyAttributeValues.push(val);
-          var newAttributeValues = [...new Set(copyAttributeValues)]; // Set ensures unique values
+          let newAttributeValues = [...new Set(copyAttributeValues)]; // Set ensures unique values
           categoryExists.attrs[idx].value = newAttributeValues;
         }
       });

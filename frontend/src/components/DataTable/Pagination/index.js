@@ -25,7 +25,7 @@ const PaginationComponent = ({
 
   currentPage = Number(currentPage);
 
-  var [params] = useSearchParams();
+  let [params] = useSearchParams();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);

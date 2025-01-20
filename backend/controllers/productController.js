@@ -104,7 +104,7 @@ const getProducts = async (req, res, next) => {
     if (brandName) {
       queryCondition = true;
       let a = brandName.replace(/,/g, "-");
-      var regEx = new RegExp(a, "i");
+      let regEx = new RegExp(a, "i");
       brandQueryCondition = { supplier: regEx };
     }
 
@@ -774,24 +774,19 @@ const adminUpdateImages = async (req, res, next) => {
 
 const adminUpdateTags = async (req, res, next) => {
   try {
-    // const id = req.params.id;
-    // const tags = req.body.tags;
-    // console.log(id, tags);
-    var bulk = Product.collection.initializeUnorderedBulkOp();
+    let bulk = Product.collection.initializeUnorderedBulkOp();
     const tagsArray = req.body.completeArray
     tagsArray?.forEach((tag) => {
       bulk.find({
         _id: ObjectId(tag.id),
-        //tags: { $exists: false } // Check if `tags` field is not present 
       }).updateOne(
         {
-          $set: { tags: tag.tags }  // Add the `tags` field
+          $set: { tags: tag.tags }
         },
-        { upsert: true } // Insert document if not found
+        { upsert: true }
       );
     })
 
-    // Execute bulk operation only if there are pending operations
     if (bulk.length > 0) {
       bulk.execute((err, result) => {
         if (err) {
@@ -873,8 +868,8 @@ const adminUpload = async (req, res, next) => {
     }
 
     for (let image of imagesTable) {
-      var fileName = uuidv4() + path.extname(image.name);
-      var uploadPath = uploadDirectoryImage + "/" + fileName;
+      let fileName = uuidv4() + path.extname(image.name);
+      let uploadPath = uploadDirectoryImage + "/" + fileName;
       product.images.push({ path: "/images/products/" + fileName });
       image.mv(uploadPath, function (err) {
         if (err) {
@@ -930,7 +925,7 @@ const adminUploadPdf = async (req, res, next) => {
     }
 
     for (let pdf of pdfsTable) {
-      var uploadPath = uploadDirectoryPdf + "/" + pdf.name;
+      let uploadPath = uploadDirectoryPdf + "/" + pdf.name;
       product.pdfs.push({ path: "/images/documents/" + pdf.name });
       pdf.mv(uploadPath, function (err) {
         if (err) {

@@ -13,19 +13,9 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect, Fragment, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import CurrencyInput from "react-currency-input-field";
-import axios from "axios";
 import moment from "moment";
 import GoBackButton from "./GoBackButton";
-
-const onHover = {
-  cursor: "pointer",
-  position: "absolute",
-  left: "5px",
-  top: "-10px",
-  transform: "scale(2.7)",
-};
+import { useSelector } from "react-redux";
 
 const EditProductPageComponent = ({
   categories,
@@ -48,19 +38,16 @@ const EditProductPageComponent = ({
     error: "",
   });
 
-  const [attributesFromDb, setAttributesFromDb] = useState([]); // for select lists
-  const [attributesTable, setAttributesTable] = useState([]); // for html table
-  const [categoryChoosen, setCategoryChoosen] = useState("Choose category"); // 输入categories
-  const [newAttrKey, setNewAttrKey] = useState(false); // 输入attri新值
+  const [attributesFromDb, setAttributesFromDb] = useState([]);
+  const [attributesTable, setAttributesTable] = useState([]);
+  const [categoryChoosen, setCategoryChoosen] = useState("Choose category");
+  const [newAttrKey, setNewAttrKey] = useState(false);
   const [newAttrValue, setNewAttrValue] = useState(false);
-  const [imageRemoved, setImageRemoved] = useState(false); //联动之后，remove iamge了会refreshing page
-  const [pdfRemoved, setPdfRemoved] = useState(false); //联动之后，remove iamge了会refreshing page
-  const [isUploading, setIsUploading] = useState(""); // showing the message and the real time done
-  const [isUploadingPdf, setIsUploadingPdf] = useState(""); // showing the message and the real time done
-  const [imageUploaded, setImageUploaded] = useState(false); // use to changing the state and refreshing the page
-  const [pdfUploaded, setPdfUploaded] = useState(false); // use to changing the state and refreshing the page
+  const [imageRemoved, setImageRemoved] = useState(false);
+  const [pdfRemoved, setPdfRemoved] = useState(false);
+  const [imageUploaded, setImageUploaded] = useState(false);
+  const [pdfUploaded, setPdfUploaded] = useState(false);
   const userInfo = useSelector((state) => state.userRegisterLogin.userInfo);
-  //显示 atrri 对应的 vale
   const attrVal = useRef(null);
   const attrKey = useRef(null);
   const createNewAttrKey = useRef(null);
@@ -69,7 +56,7 @@ const EditProductPageComponent = ({
   const [stockLength, setStockLength] = useState(0);
   const setValuesForAttrFromDbSelectForm = (e) => {
     if (e.target.value !== "Choose attribute") {
-      var selectedAttr = attributesFromDb.find(
+      let selectedAttr = attributesFromDb.find(
         (item) => item.key === e.target.value
       );
       let valuesForAttrKeys = attrVal.current;
@@ -126,32 +113,6 @@ const EditProductPageComponent = ({
         calculatedPrice: item.price,
       };
     }
-    newDynamicPrices[index][field] = value;
-
-    if (
-      newDynamicPrices[index].purchaseprice &&
-      newDynamicPrices[index].margin
-    ) {
-      newDynamicPrices[index].calculatedPrice = (
-        newDynamicPrices[index].purchaseprice /
-        (1 - newDynamicPrices[index].margin / 100)
-      ).toFixed(2);
-    }
-
-    setDynamicPrices(newDynamicPrices);
-  };
-
-  const updateDynamicPriceNewStockItem = (index, field, value) => {
-    const newDynamicPrices = { ...dynamicPrices };
-
-    if (!newDynamicPrices[index]) {
-      newDynamicPrices[index] = {
-        purchaseprice: 0,
-        margin: 0,
-        calculatedPrice: 0,
-      };
-    }
-    newDynamicPrices[index][field] = value;
     newDynamicPrices[index][field] = value;
 
     if (
@@ -327,7 +288,7 @@ const EditProductPageComponent = ({
   const setAttributesTableWrapper = (key, val) => {
     setAttributesTable((attr) => {
       if (attr.length !== 0) {
-        var keyExistsInOldTable = false;
+        let keyExistsInOldTable = false;
         let modifiedTable = attr.map((item) => {
           if (item.key === key) {
             keyExistsInOldTable = true;
@@ -351,62 +312,6 @@ const EditProductPageComponent = ({
 
   const checkKeyDown = (e) => {
     if (e.code === "Enter") e.preventDefault();
-  };
-
-  const newAttrKeyHandler = (e) => {
-    e.preventDefault();
-    setNewAttrKey(e.target.value);
-    addNewAttributeManually(e);
-  };
-
-  const newAttrValueHandler = (e) => {
-    e.preventDefault();
-    setNewAttrValue(e.target.value);
-    addNewAttributeManually(e);
-  };
-
-  const addNewAttributeManually = (e) => {
-    if (e.keyCode && e.keyCode === 13) {
-      if (newAttrKey && newAttrValue) {
-        reduxDispatch(
-          saveAttributeToCatDoc(newAttrKey, newAttrValue, categoryChoosen)
-        );
-        setAttributesTableWrapper(newAttrKey, newAttrValue);
-        e.target.value = "";
-        createNewAttrKey.current.value = "";
-        createNewAttrVal.current.value = "";
-        setNewAttrKey(false);
-        setNewAttrValue(false);
-      }
-    }
-  };
-
-  // add new product attrs in Stock
-  const [rowCount, setRowCount] = useState(0);
-  const handleNewProduct = () => {
-    setRowCount(rowCount + 1);
-  };
-  const handleRemoveProduct = () => {
-    setRowCount(rowCount - 1);
-  };
-
-  const handleRemoveStock = (index) => {
-    const newStock = [...product.stock];
-    newStock.splice(index, 1);
-
-    const newDynamicPrices = Object.keys(dynamicPrices).reduce((acc, key) => {
-      const currentIndex = parseInt(key);
-      if (currentIndex > index) {
-        acc[currentIndex - 1] = dynamicPrices[currentIndex];
-      } else if (currentIndex < index) {
-        acc[currentIndex] = dynamicPrices[currentIndex];
-      }
-      return acc;
-    }, {});
-
-    setDynamicPrices(newDynamicPrices);
-    setProduct({ ...product, stock: newStock });
-    setStockLength(newStock.length);
   };
 
   return (
@@ -648,7 +553,6 @@ const EditProductPageComponent = ({
                 disabled
                 onChange={changeCategory}
               >
-                {/* 自动选择产品本身的category */}
                 <option value="Choose category">Choose category</option>
                 {categories?.map((category, idx) => {
                   return product.category === category.name ? (
@@ -669,7 +573,6 @@ const EditProductPageComponent = ({
                 Tags / Keywords
               </Form.Label>
               <Form.Control
-                // onKeyUp={newCategoryHandler}
                 name="tags"
                 type="text"
                 defaultValue={product.tags}
@@ -677,7 +580,6 @@ const EditProductPageComponent = ({
               />
             </Form.Group>
 
-            {/* attributes */}
             {attributesFromDb.length > 0 && (
               <Row className="mt-5">
                 <Col md={6}>
@@ -718,7 +620,6 @@ const EditProductPageComponent = ({
             )}
 
             <Row>
-              {/* 如果attribute table有东西 */}
               {attributesTable && attributesTable.length > 0 && (
                 <Table hover>
                   <thead>

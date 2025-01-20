@@ -315,10 +315,7 @@ const InvoicePrint = (cartItems) => {
     const dueDays = cartItems.dueDays;
     const deliverySite = cartItems.selectedDeliverySite;
     const companyAccount = cartItems.companyAccount;
-    var counter = 0;
-    // console.log("invcart", InvCartItems)
-    // console.log("Delivery Note selectedDeliverySite", InvUserInfo);
-
+    let counter = 0;
     function splitArrayIntoChunks(arr, chunkSize) {
         const result = [];
         for (let i = 0; i < arr.length; i += chunkSize) {

@@ -20,8 +20,8 @@ import { emptyCart } from "../../../../redux/actions/cartActions";
 import { useSelector } from "react-redux";
 
 function titleCase(str) {
-  var splitStr = str.toLowerCase().split(' ');
-  for (var i = 0; i < splitStr.length; i++) {
+  let splitStr = str.toLowerCase().split(' ');
+  for (let i = 0; i < splitStr.length; i++) {
     splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
   }
   return splitStr.join(' ');
@@ -119,7 +119,6 @@ const UserOrderDetailsPageComponent = ({
           if (data.paymentMethod === "Invoice") {
             setOrderButtonMessage("Thanks for your order");
           } else if (data.paymentMethod === "PayPal") {
-            /* setButtonDisabled(true); */
             setOrderButtonMessage(
               "To pay for your order click one of the buttons below"
             );

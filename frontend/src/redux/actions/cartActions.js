@@ -158,7 +158,7 @@ export const fetchCartItemsLogin = () => async (dispatch) => {
     // Safely check for nested properties
     const cartItems = data && data.data && data.data.cart && data.data.cart.cartItems ? data.data.cart.cartItems : [];
     const cart = data?.data?.cart
-    var updatedCartItems = []
+    let updatedCartItems = []
     updatedCartItems = cartItems
     dispatch({
       type: actionTypes.FETCH_CART_ITEMS_LOGIN,

@@ -36,10 +36,10 @@ const registerUserApiRequest = async (
     abn
   });
   sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
-  var today = new Date();
-  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var localDateTime = date + ' ' + time;
+  let today = new Date();
+  let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  let localDateTime = date + ' ' + time;
   localStorage.setItem('trackData', JSON.stringify({ "user": email, "loginTime": localDateTime }));
 
   return data;
