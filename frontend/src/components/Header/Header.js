@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Modal } from "react-bootstrap";
 import LoginRegisterPage from "../../pages/LoginRegisterPage";
@@ -39,6 +39,7 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
   const [show, setShow] = useState(false);
   const [modalType, setModalType] = useState("LoginForm");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const subcategories = useSelector((state) => state.getCategories.subcategories);
 
@@ -58,6 +59,19 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
       navigate(`/product-list?searchQuery=${searchQuery}`);
     }
   };
+
+
+  const handleClickGoToSection = (goToSectionFunction) => {
+    if (location.pathname === '/') {
+      goToSectionFunction();
+    } else {
+      navigate('/', { replace: true });
+      setTimeout(() => {
+        goToSectionFunction();
+      }, 100);
+    }
+  };
+
 
   return <div className={styles.header}>
     <div className={styles.headerWrapper}>
@@ -107,15 +121,15 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
         <div className={styles.menuItem}>
           <span className={styles.aboutMenuItem}>ABOUT US</span>
           <div className={styles.dropdown}>
-            <button onClick={goToAboutSection}>
+            <button onClick={() => handleClickGoToSection(goToAboutSection)}>
               <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Who Miina Group is</div>
             </button>
-            <button onClick={goToTeamSection}>
+            <button onClick={() => handleClickGoToSection(goToTeamSection)}>
               <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Miina Group Team</div>
             </button>
           </div>
         </div>
-        <button onClick={goToContactSection}><div className={styles.menuItem}>CONTACT</div></button>
+        <button onClick={() => handleClickGoToSection(goToContactSection)}><div className={styles.menuItem}>CONTACT</div></button>
       </div>
       <div className={styles.logoTaglineWrapper} onClick={() => { navigate("/") }}>
         <img src="/svg/PrimaryLogoColour.svg" alt="Miina Group Logo" className={styles.logo} />
