@@ -1,17 +1,3 @@
-
-/* const nodemailer = require('nodemailer');
-
-const sendQuoteEmail = async (to, subject, text, attachments) => {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'techctlaustralia@gmail.com',
-      pass: 'CTLadmin007',
-    },
-  });
-
- */
-
 let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {

@@ -41,56 +41,6 @@ export const uploadImagesCloudinaryApiRequest = (images, quoteId, index) => {
 }
 
 
-
-
-
-/* export const uploadImagesCloudinaryApiRequest = (images, quoteId) => {
-    const url = "https://api.cloudinary.com/v1_1/dxvwresim/image/upload";
-    const formData = new FormData();
-    for (let i = 0; i < images.length; i++) {
-        let file = images[i];
-        formData.append("file", file);
-        formData.append("upload_preset", "clientQuoteImage");
-        fetch(url, {
-            method: "POST",
-            body: formData,
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            axios.post("/api/quotes/upload?cloudinary=true&quoteId=" + quoteId, data);
-            console.log(data);
-
-        })
-    }
-} */
-
-/* export const uploadImagesCloudinaryApiRequest = (images) => {
-    const url = "https://api.cloudinary.com/v1_1/dxvwresim/image/upload";
-    const promises = [];
-  
-    for (let i = 0; i < images.length; i++) {
-      const formData = new FormData();
-      formData.append("file", images[i]);
-      formData.append("upload_preset", "clientQuoteImage");
-      
-      promises.push(
-        fetch(url, {
-          method: "POST",
-          body: formData,
-        })
-        .then(response => response.json())
-        .then(data => data.secure_url)
-      );
-    }
-  
-    return Promise.all(promises);
-  };
-   */
-
-  
-
 export const uploadPdfApiRequest = async (pdfs, productId) => {
     const formData = new FormData();
     Array.from(pdfs).forEach((pdf) => {

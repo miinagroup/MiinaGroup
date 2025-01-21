@@ -59,7 +59,6 @@ const LoginRegisterPage = ({ modalType }) => {
     mobile,
     location,
     company,
-    role,
     deliveryAddress,
     billAddress,
     abn
@@ -73,7 +72,6 @@ const LoginRegisterPage = ({ modalType }) => {
       mobile,
       location,
       company,
-      role,
       deliveryAddress,
       billAddress,
       abn

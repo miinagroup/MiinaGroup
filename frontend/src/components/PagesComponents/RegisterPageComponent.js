@@ -103,7 +103,6 @@ const RegisterPageComponent = ({
     const mobile = form.phone.value;
     const location = userLocation;
     const company = userCompany;
-    const role = userRole === "other role" ? otherRole : userRole;
     const deliveryAddress = "new user";
     const billAddress = "new user";
     const abn = abnNum;
@@ -119,7 +118,6 @@ const RegisterPageComponent = ({
       mobile &&
       location &&
       company &&
-      role &&
       deliveryAddress &&
       billAddress &&
       form.password.value === form.confirmPassword.value &&
@@ -135,7 +133,6 @@ const RegisterPageComponent = ({
         mobile,
         location,
         company,
-        role,
         deliveryAddress,
         billAddress,
         abn
@@ -159,7 +156,6 @@ const RegisterPageComponent = ({
             form.password.value = "";
             form.location.value = "";
             form.company.value = "";
-            form.role.value = "";
             form.abn.value = "";
             setValidated(false);
             setEmailSent(true);
@@ -422,7 +418,6 @@ const RegisterPageComponent = ({
               <Row></Row>
 
               {show ? (
-                <>
                   <Row className="mb-3" >
                     <Form.Group as={Col} md="6" controlId="formBasicCompany">
                       <Form.Label>Company</Form.Label>
@@ -474,9 +469,7 @@ const RegisterPageComponent = ({
                       </Form.Control.Feedback>
                     </Form.Group>}
                   </Row>
-                </>
               ) : showLocation ? (
-                <>
                   <Row className="mb-3" >
                     <Form.Group as={Col} md="6" controlId="formBasicCompany">
 
@@ -514,7 +507,6 @@ const RegisterPageComponent = ({
                       </InputGroup>
                     </Form.Group>
                   </Row>
-                </>
               ) : ("")}
 
               {showAbn ? (

@@ -31,10 +31,8 @@ const registerUser = async (req, res, next) => {
       mobile,
       location,
       company,
-      role,
       deliveryAddress,
       billAddress,
-      mobileRegistration,
       abn
     } = req.body;
     if (
@@ -47,7 +45,6 @@ const registerUser = async (req, res, next) => {
         mobile &&
         location &&
         company &&
-        role &&
         deliveryAddress &&
         billAddress &&
         abn
@@ -71,7 +68,6 @@ const registerUser = async (req, res, next) => {
         mobile,
         location,
         company,
-        role,
         deliveryAddress,
         billAddress,
         abn
@@ -123,7 +119,6 @@ const registerUser = async (req, res, next) => {
           mobile: user.mobile,
           location: user.location,
           company: user.company,
-          role: user.role,
           deliveryAddress: user.deliveryAddress,
           billAddress: user.billAddress,
           mobileLogin: true,
@@ -161,7 +156,6 @@ const loginUser = async (req, res, next) => {
       password,
       doNotLogout,
       mobileNotificationToken,
-      mobileLogin,
     } = req.body;
     if (!(rawEmail && password)) {
       return res.status(400).send("All inputs are required");
@@ -414,7 +408,6 @@ const updateUserProfile = async (req, res, next) => {
     const {
       name,
       lastName,
-      email,
       phone,
       mobile,
       location,

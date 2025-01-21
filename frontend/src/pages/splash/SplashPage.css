@@ -52,9 +52,8 @@
 
 
 /* ************* Unfortunately ************* */
-.CTLunfortunately {
-  /* background-image:
-    url("../../public/images/DeepBlueBackground.png"); */
+.unfortunatelyPage {
+  background-color: rgba(219, 161, 98, 0.25);
   background-size: cover;
   background-repeat: no-repeat;
   margin-bottom: -226px;
@@ -64,4 +63,12 @@
 
 .btnUnfor {
   margin-top: -15%;
+  background-color: #521712;
+  border: 1px solid #521712;
+}
+
+.btnUnfor:hover {
+  background-color: transparent;
+  border: 1px solid #521712;
+  color:#521712;
 }

@@ -4,7 +4,8 @@ import './SplashPage.css'
 const Unfortunately = () => {
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center CTLunfortunately ">
+    <div className="green-line"></div>
+      <div className="d-flex justify-content-center align-items-center unfortunatelyPage ">
         <button
           type="button"
           className="btn btn-primary btnUnfor"

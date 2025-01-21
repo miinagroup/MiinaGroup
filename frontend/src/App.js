@@ -13,7 +13,6 @@ import ProductListPage from "./pages/ProductListPage";
 import Unfortunately from "./pages/splash/unfortunately";
 
 /* import LoginRegisterPage from "./pages/LoginRegisterPage"; */
-import LoginRegisterPage from "./pages/LoginRegisterPage";
 import SplashPage from "./pages/splash/SplashPage";
 import CartPage from "./pages/CartPage";
 import FaqPage from "./pages/FaqPage";
@@ -48,20 +47,16 @@ import ScrollToTop from "./utils/ScrollToTop";
 //components
 import PDFPreviewForVisitor from "./pages/user/components/HomePageForVisitors/PDFPreviewForVisitor.js";
 import HomePageForVisitorNew from "./pages/HomePageForVisitorNew.js";
-import CreditApplication from "./pages/user/components/FooterComponents.js/CreditApplication.js";
-import SupplieCodeOfConduct from "./pages/user/components/FooterComponents.js/SupplieCodeOfConduct.js";
 import ProtectedRoutesFilterComponent from "./components/Routes/ProtectedRoutesFilterComponent.js";
 
 
 function App() {
   return (
-    <>
       <Router>
         <ScrollToTop />
         <Routes>
           <Route path="/login" element={<SplashPage />} />
           <Route path="/register" element={<SplashPage />} />
-          <Route path="/loginRegister" element={<LoginRegisterPage />} />
           <Route path="/pdfpreview" element={<PDFPreviewForVisitor />} />
           <Route path="/user/:id/verify/:token" element={<EmailVerify />} />
           <Route path="/user/:id/resetPassword/:token" element={<ResetPassword />} />
@@ -72,8 +67,6 @@ function App() {
             <Route path="/TermsConditions" element={<TermsConditions />} />
             <Route path="/privacypolicy" element={<PrivacyPolicy />} />
             <Route path="/goodsreturnform" element={<GoodsReturnForm />} />
-            <Route path="/applycreaditaccount" element={<CreditApplication />} />
-            <Route path="/scodeofc" element={<SupplieCodeOfConduct />} />
             <Route path="/" element={<HomePageForVisitorNew />} />
             <Route path="/product-list" element={<ProductListPage />} />
             <Route path="/product-details/:id" element={<ProductDetailsPage />} />
@@ -154,7 +147,6 @@ function App() {
           <Route path="*" element="Page not exists 404" />
         </Routes>
       </Router>
-    </>
   );
 }
 
