@@ -3,10 +3,12 @@ import React from "react";
 const CartItemForUserPreviewComponent = ({ item }) => {
 
   return (
-    <>
-      <tbody>
+      <tbody style={{
+        color: "#483F55",
+        border: "1px solid #DBA162"
+      }}>
         <tr>
-          <td style={{ width: "10%" }}>
+          <td style={{ width: "10%", padding:"10px 10px 10px 10px" }}>
             <img
               crossOrigin="anonymous"
               src={item.image ? item.image ?? null : null}
@@ -14,16 +16,12 @@ const CartItemForUserPreviewComponent = ({ item }) => {
               alt="s"
             />
           </td>
-          <td style={{ width: "25%" }}>
-            <a href={`/product-details/${item.productId}`}>
-              <strong
-                className="text-uppercase"
+          <td style={{ width: "25%", padding:"0px 25px 0px 0px"  }}>
+            <a href={`/product-details/${item.productId}`} className="text-uppercase"
                 style={{
-                  color: "#1E4881",
-                }}
-              >
+                  color: "#483F55",
+                }}>
                 {item.name} - ({item.cartProducts[0].attrs})
-              </strong>
             </a>
           </td>
           <td style={{ width: "10%" }}>
@@ -35,7 +33,6 @@ const CartItemForUserPreviewComponent = ({ item }) => {
           <td style={{ width: "10%" }}>{item.cartProducts[0].backOrder}</td>
         </tr>
       </tbody>
-    </>
   );
 };
 

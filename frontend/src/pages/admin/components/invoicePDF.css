@@ -61,18 +61,26 @@
 
 .empty_cart_btn {
     border-radius: 0;
-    background-color: #1e4881;
-    border: 1px solid #1e4881;
+    background-color: #521712;
+    border: 1px solid #521712;
     color: white;
     float: right;
+    border-radius: 5px;
 }
 
 .empty_cart_btn:hover {
-    color: #1e4881;
-    border: 1px solid #1e4881;
+    color: #521712;
+    border: 1px solid #521712;
     background-color: white;
 }
 
+.empty_cart_btn:hover i {
+    color: #521712;
+}
+
+.empty_cart_btn i {
+    color: white;
+}
 
 .download_cart_btn {
     color: white;
@@ -96,7 +104,10 @@
     width: 200%;
     margin-left: -50%;
     margin-top: 20%;
+    padding: 20px 25px;
+    background-color: #F6E7D8;
 }
+
 
 /**************User Events Preview***************/
 .userEvents_preview_items .modal-content {
@@ -165,13 +176,6 @@
         width: 100%;
     }
 }
-
-
-/* .product_replenishment_items .modal-content {
-    width: 150%;
-    margin-top: 20%;
-    margin-left: -25%;
-} */
 
 
 .no-wrap-td {

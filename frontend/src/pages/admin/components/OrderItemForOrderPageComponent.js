@@ -21,17 +21,18 @@ const OrderItemForOrderPageComponent = (id) => {
   }, [id]);
 
   return (
-    <table style={{ width: "95%", marginLeft: "3%", marginTop: "2%", marginBottom: "2%" }}>
-      <thead>
+    <table className="preview-order-table">
+      <thead style={{
+                  color: "#483F55",
+                }}>
         <tr>
-          <th style={{ width: "10%" }}></th>
-          <th style={{ width: "25%" }}>Product</th>
-          {/* <th style={{ width: "10%" }}>Client SKU</th> */}
-          <th style={{ width: "10%" }}>MNASKU</th>
-          <th style={{ width: "10%" }}>Unit Price</th>
-          <th style={{ width: "9%" }}>Order Qty</th>
-          <th style={{ width: "11%" }}>Supplied Qty</th>
-          <th style={{ width: "10%" }}>Back Order</th>
+          <th className="pt-2 pb-2" style={{ width: "10%" }}></th>
+          <th className="pt-2 pb-2" style={{ width: "25%" }}>Product</th>
+          <th className="pt-2 pb-2" style={{ width: "10%" }}>MNASKU</th>
+          <th className="pt-2 pb-2" style={{ width: "10%" }}>Unit Price</th>
+          <th className="pt-2 pb-2" style={{ width: "9%" }}>Order Qty</th>
+          <th className="pt-2 pb-2" style={{ width: "11%" }}>Supplied Qty</th>
+          <th className="pt-2 pb-2" style={{ width: "10%" }}>Back Order</th>
         </tr>
       </thead>
       {cartItems.map((item, idx) => (

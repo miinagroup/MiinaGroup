@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import GoBackButton from "./GoBackButton";
 import { useSelector } from "react-redux";
+import styles from "../AdminPagesStyles.module.css";
 
 const EditProductPageComponent = ({
   categories,
@@ -684,11 +685,11 @@ const EditProductPageComponent = ({
               </Row>
             </Form.Group>
 
-            <Button className="mb-3" variant="primary" type="submit">
+            <Button className={styles.btnRedColor} type="submit">
               UPDATE
             </Button>
 
-            <Link to="/admin/products" className="btn btn-secondary mb-3 ms-5">
+            <Link to="/admin/products" className="btn btn-secondary mb-0 ms-5">
               Cancel
             </Link>
             <p></p>

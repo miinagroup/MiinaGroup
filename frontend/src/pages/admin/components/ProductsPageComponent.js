@@ -8,6 +8,7 @@ import "../../../pages/general.css";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
 import { useSelector } from "react-redux";
+import styles from "../AdminPagesStyles.module.css";
 
 const ProductsPageComponent = ({
   fetchProducts,
@@ -260,12 +261,12 @@ const ProductsPageComponent = ({
   };
 
   return (
-    <Row className="content-container m-5">
+    <div className={styles.adminProductsWrapper}>
       <Col md={2}>
         <AdminLinksComponent />
       </Col>
       <Col md={10}>
-        <h1>
+        <h1 className={styles.title}>
           PRODUCTS
         </h1>
         <div className="row">
@@ -401,13 +402,14 @@ const ProductsPageComponent = ({
             <Button
               onClick={(e) => exportToExcel("products_List")}
               style={{ cursor: "pointer", fontSize: 14 }}
+              className={styles.btnGreenColor}
             >
               Excel Export
             </Button>
           </div>
         </div>
       </Col>
-    </Row >
+    </div>
   );
 };
 

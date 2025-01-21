@@ -1,6 +1,6 @@
+import { useState, useEffect } from "react";
 import { Row, Col, ListGroup, Form } from "react-bootstrap";
 import RemoveFromCartComponent from "../Utils/RemoveFromCartComponent";
-import { useState, useEffect } from "react";
 
 const CartItemComponent = ({
   item,
@@ -37,7 +37,6 @@ const CartItemComponent = ({
   });
 
   return (
-    <>
       <ListGroup.Item className="cart-item">
         <Row className="cart-item-row">
           <Col md={1}>
@@ -95,7 +94,6 @@ const CartItemComponent = ({
           </Col>
         </Row>
       </ListGroup.Item>
-    </>
   );
 };
 

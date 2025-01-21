@@ -9,12 +9,13 @@ import {
 import CartItemComponent from "../../../components/Cart/CartItemComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { pdf } from "@react-pdf/renderer";
+import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import CartPrint from "../../../components/Pdfs/CartPrint";
 import axios from "axios";
 import "./invoicePDF.css";
 import { titleCase } from "../../user/utils/utils";
+
+import styles from "../AdminPagesStyles.module.css";
 
 const AdminCartDetailsPageComponent = ({
   cartItems,
@@ -43,7 +44,6 @@ const AdminCartDetailsPageComponent = ({
   const [users, setUsers] = useState([]);
   const [userNameEmail, setUserNameEmail] = useState();
   const [userName, setUserName] = useState();
-  const [managerEmail, setManagerEmail] = useState();
   const [base64Data, setBase64Data] = useState([]);
   const [adminDeliveryBooks, setAdminDeliveryBooks] = useState();
   const [adminDeliverySites, setAdminDeliverySites] = useState([]);
@@ -304,11 +304,6 @@ const AdminCartDetailsPageComponent = ({
       .catch((err) => console.log(err));
   };
 
-  /* 修改支付方式的vale */
-  const choosePayment = (e) => {
-    setPaymentMethod(e.target.value);
-  };
-
   const enterPurchaseNum = (e) => {
     setPurchaseNumber(e.target.value);
     setButtonDisabled(false);
@@ -322,18 +317,12 @@ const AdminCartDetailsPageComponent = ({
     setOrderNote(e.target.value);
   };
 
-  const enterManagerEmail = (e) => {
-    setManagerEmail(e.target.value + `@${userEmail}`);
-  };
-
   const removeAllItems = () => {
     reduxDispatch(emptyCart());
     setTimeout(() => {
       window.location.href = "/product-list";
     }, 1000);
   };
-
-  const userEmail = userInfo.email?.split("@")[1];
 
   const generatePdf = async () => {
     try {
@@ -365,14 +354,6 @@ const AdminCartDetailsPageComponent = ({
     generatePdf();
   }, [cartItems]);
 
-  const quotePriceData = {
-    ...userNameEmail,
-    cartItems,
-    cartSubtotal,
-    managerEmail,
-    base64Data,
-  };
-
   const truncateToTwo = (num) => {
     return Math.trunc(num * 100) / 100;
   };
@@ -400,8 +381,9 @@ const AdminCartDetailsPageComponent = ({
 
   return (
     <>
-      <Container>
-        <Row className="mt-4">
+    <div className="green-line"></div>
+      <div className={`${styles.adminCartDetailsPageWrapper} admin-cart-details-page`}>
+        <Row>
           <div
             style={{
               display: "flex",
@@ -409,11 +391,11 @@ const AdminCartDetailsPageComponent = ({
               justifyContent: "space-between",
             }}
           >
-            <h1>CART DETAILS (ADMIN)</h1>
+            <h1 className={styles.title}>CART DETAILS (ADMIN)</h1>
           </div>
-          <Col md={9}>
+          <Col md={9} >
             <ListGroup>
-              <ListGroup.Item className="mt-1">
+              <ListGroup.Item className={styles.adminCartItem}>
                 <Row>
                   <Col md={4}>
                     <Form.Label className="fw-bold">Company Name:</Form.Label>
@@ -423,6 +405,7 @@ const AdminCartDetailsPageComponent = ({
                       aria-label="Default select example"
                       onChange={changeCompanyName}
                       className="p-0 ps-2"
+                      style={{ backgroundColor: "rgba(219, 161, 98, 0.25)", border: "1px solid #DBA162" }}
                     >
                       {companyList &&
                         companyList.map((company, idx) => {
@@ -449,6 +432,7 @@ const AdminCartDetailsPageComponent = ({
                       onChange={changeUserName}
                       className="p-0 ps-2"
                       value={userList?.name}
+                      style={{ backgroundColor: "rgba(219, 161, 98, 0.25)", border: "1px solid #DBA162" }}
                     >
                       <option value={userList.name}>Select a name</option>
                       {userNameList &&
@@ -475,6 +459,7 @@ const AdminCartDetailsPageComponent = ({
                       onChange={changeDeliverySite}
                       className="p-0 ps-2"
                       value={adminSelectedDeliverySite}
+                      style={{ backgroundColor: "rgba(219, 161, 98, 0.25)", border: "1px solid #DBA162" }}
                     >
                       {deliverySiteListSorted &&
                         deliverySiteListSorted
@@ -501,7 +486,7 @@ const AdminCartDetailsPageComponent = ({
             <ListGroup.Item className="mt-2">
               <Row>
                 <Col md={12}>
-                  <ListGroup>
+                  <ListGroup className="cart-items-list">
                     {cartItems.map((item, idx) => (
                       <CartItemComponent
                         item={item}
@@ -538,7 +523,8 @@ const AdminCartDetailsPageComponent = ({
                       />
                     }
                     fileName={userInformation.name + "'s Cart"}
-                    className="btn btn-success p-0 ps-1 pe-1 ms-3 me-3 download_cart_btn"
+                    className="btn p-1 ps-1 pe-1 ms-3 me-3"
+                    style={{backgroundColor: "#999A47"}}
                   >
                     <span>
                       Download Cart <i className="bi bi-file-earmark-pdf"></i>
@@ -550,7 +536,7 @@ const AdminCartDetailsPageComponent = ({
             <br />
             <ListGroup className="">
               <ListGroup.Item className="p-1 ps-2">
-                <h4 className="m-0">Order Summary</h4>
+                <h4 className="m-0 p-1">Order Summary</h4>
               </ListGroup.Item>
               <ListGroup.Item className="p-1 ps-2">
                 <p className="p-0 m-0">
@@ -658,7 +644,8 @@ const AdminCartDetailsPageComponent = ({
                     size="sm"
                     onClick={orderHandler}
                     disabled={purchaseNumber?.length < 1}
-                    className="btn btn-success p-0 ps-1 pe-1 download_cart_btn"
+                    className="btn p-1 ps-1 pe-1  ms-3 me-3 download_cart_btn"
+                    style={{backgroundColor: "#999A47", border: "1px solid #999A47"}}
                   >
                     Confirm Order
                   </button>
@@ -668,8 +655,8 @@ const AdminCartDetailsPageComponent = ({
             <br />
           </Col>
         </Row>
-      </Container>
-    </>
+      </div>
+      </>
   );
 };
 

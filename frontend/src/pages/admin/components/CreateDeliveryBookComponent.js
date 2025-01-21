@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MaskedInput from 'react-text-mask';
 import GoBackButton from "./GoBackButton";
+import styles from "../AdminPagesStyles.module.css";
 
 const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
   const [validated, setValidated] = useState(false);
@@ -95,7 +96,7 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
   };
 
   return (
-    <Container>
+    <Container style={{paddingBottom: "200px"}}>
       <Row className="justify-content-md-center mt-5 content-container">
         <Row>
           <Col md={1}>
@@ -235,7 +236,7 @@ const CreateDeliveryBookComponent = ({ createDeliveryBookApiRequest }) => {
               </p>
               <hr />
 
-              <Button variant="primary" type="submit">
+              <Button className={styles.btnRedColor} type="submit">
                 Create
               </Button>
 

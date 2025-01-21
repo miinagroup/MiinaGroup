@@ -19,6 +19,8 @@ import { pdf } from "@react-pdf/renderer";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
+import styles from "../AdminPagesStyles.module.css";
+
 const OrderDetailsPageComponent = ({
   getOrder,
   getUser,
@@ -78,7 +80,6 @@ const OrderDetailsPageComponent = ({
   const [selectedDeliverySite, setSelectedDeliverySite] = useState();
   const [editLocation, setEditLocation] = useState(false);
   const [trackLink, setTrackLink] = useState("");
-  const [clicked, setClicked] = useState(false);
   const [backOrderStatus, setBackOrderStatus] = useState(false);
   const [buttonText, setButtonText] = useState("Create");
   const reOrderItemsCheck = useSelector((state) => state.cart.cartItems);
@@ -280,10 +281,10 @@ const OrderDetailsPageComponent = ({
   };
 
   const PDFPopupButton = ({ documentComponent, fileName, loadingText }) => (
-    <ListGroup.Item className="p-1 ps-2">
+    <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: "transparent"}}>
       <div className="d-grid gap-2">
         <Button
-          className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button"
+          className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`}
           onClick={() => openPDFInPopup(documentComponent, fileName)}
         >
           {loadingText}
@@ -480,7 +481,6 @@ const OrderDetailsPageComponent = ({
   };
 
   const [proformaInvData, setProformaInvData] = useState();
-  //const invBillingAddress = selectedDeliverySite?.billingAddress;
 
   useEffect(() => {
     generateProformaPdf();
@@ -830,11 +830,12 @@ const OrderDetailsPageComponent = ({
   }
 
   return (
-    <Container fluid style={{ width: "80%" }}>
+    <>
+    <div className="green-line"></div>
+    <div className={styles.orderDetailsPageWrapper}>
       <Row className="mt-4">
-        <h1>ORDER DETAILS</h1>
+        <h1 className={styles.title}>ORDER DETAILS</h1>
         <Col md={9}>
-          <br />
           <Row>
             <Col md={6} className="mb-0">
               <b>Name</b>: {userInfo?.name} {userInfo?.lastName}{" "}
@@ -849,7 +850,7 @@ const OrderDetailsPageComponent = ({
                       <i
                         onClick={handleEditLocation}
                         className="bi bi-pencil-square"
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", color: "#DBA162" }}
                       ></i>
                     </>
                   ) : (
@@ -858,7 +859,7 @@ const OrderDetailsPageComponent = ({
                       <i
                         className="bi bi-folder-check"
                         onClick={saveEditLocation}
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", color: "#DBA162" }}
                       ></i>{" "}
                     </>
                   )}
@@ -894,7 +895,7 @@ const OrderDetailsPageComponent = ({
               </ListGroup.Item>
             </Col>
             <Col md={6} className="mb-0">
-              <h5>ORDER STATUS:</h5>
+              <h5 style={{color: "#521712"}}>ORDER STATUS:</h5>
               <Alert
                 className="mt-1 p-0 ps-2 mb-1"
                 variant={isDelivered ? "success" : "danger"}
@@ -954,15 +955,17 @@ const OrderDetailsPageComponent = ({
             </Col>
           </Row>
           <br />
+          <div style={{display: "flex", gap: "10px", alignItems: "center"}}>
           <h3>
             ORDER ITEMS
-            {edit === false ? (
+          </h3>
+          {edit === false ? (
               <>
                 {" "}
                 <i
                   onClick={handleEdit}
                   className="bi bi-pencil-square"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", color: "#DBA162" }}
                 ></i>
               </>
             ) : (
@@ -970,31 +973,31 @@ const OrderDetailsPageComponent = ({
                 {" "}
                 <button
                   id="btn_InvoiceNumber"
-                  className="pe-1 ps-1 p-0 m-0 fs-6"
+                  className="pe-2 ps-2 pb-1 fs-6"
+                  style={{backgroundColor: "#521712", color: "white", borderRadius: "5px"}}
                   onClick={saveEdit}
                 >
                   save
                 </button>{" "}
               </>
             )}
-          </h3>
+            </div>
 
           <ListGroup variant="flush">
-            <table style={{ width: "100%" }} className="mt-1">
+            <table style={{ width: "100%", color: "#483F55"}} className={`mt-1 ${styles.tableSpacing}`} >
               <thead>
                 <tr>
-                  <th style={{ width: "6%" }}></th>
-                  <th style={{ width: "22%" }}>Product</th>
-                  <th style={{ width: "8%" }}>MNASKU</th>
-                  <th style={{ width: "7%" }}>Unit Price</th>
-                  <th style={{ width: "7%" }}>Order Qty</th>
-                  <th style={{ width: "7%" }}>Supplied Qty</th>
-                  <th style={{ width: "7%" }}>Back Order</th>
-                  <th style={{ width: "5%" }}> </th>
+                  <th className="pb-2 pt-2" style={{ width: "6%" }}></th>
+                  <th className="pb-2 pt-2 ps-2" style={{ width: "25%" }}>Product</th>
+                  <th className="pb-2 pt-2" style={{ width: "10%"}}>MNASKU</th>
+                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Unit Price</th>
+                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Order Qty</th>
+                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Supplied Qty</th>
+                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Back Order</th>
+                  <th className="pb-2 pt-2" style={{ width: "5%" }}></th>
                 </tr>
               </thead>
               {cartItems && cartItems.map((item, idx) => {
-
                 return (<CartItemForOrderComponent
                   key={idx}
                   index={idx}
@@ -1016,40 +1019,36 @@ const OrderDetailsPageComponent = ({
           </ListGroup>
         </Col>
         <Col md={3}>
-          <label>
-            <u>
-              <a href="/admin/orders">Go to All Orders </a>
-            </u>
-          </label>
+            <div className={styles.btnGoToOrders}><a href="/admin/orders">Go to All Orders</a></div>
           <ListGroup>
-            <ListGroup.Item className="p-1 ps-2">
-              <h3>ORDER SUMMARY</h3>
+            <ListGroup.Item className="p-2 ps-2" style={{backgroundColor: 'transparent'}}>
+              <h3 style={{color: "#483F55"}}>ORDER SUMMARY</h3>
             </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
               Item Price:{" "}
               <span className="fw-bold float-end">
                 {" "}
                 $ {taxAmount ? orderNetAmount : nonGSTPrice}
               </span>
             </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
               Total GST{" "}
               <span className="fw-bold float-end">
                 $ {taxAmount ? TAX : GST}
               </span>
             </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
               Invoice Amount:{" "}
               <span className="fw-bold text-danger float-end">
                 $ {incGSTPrice}
               </span>
             </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
               PO Number: <span className="fw-bold">{purchaseNumber}</span>
             </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
               <tr>
-                <td style={{ width: "40%" }}>Invoice Number :</td>
+                <td style={{ width: "40%", color: "#483F55" }}>Invoice Number :</td>
                 <td>
                   <Form.Control
                     type="text"
@@ -1065,7 +1064,7 @@ const OrderDetailsPageComponent = ({
                     disabled={editInvoiceNumber === false}
                   />
                 </td>
-                <td style={{ width: "10%" }}>
+                <td style={{ width: "10%", color: "#DBA162" }}>
                   {editInvoiceNumber === false ? (
                     <>
                       {" "}
@@ -1089,13 +1088,13 @@ const OrderDetailsPageComponent = ({
                 </td>
               </tr>
             </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
               Admin Note: {adminNote ? null : "N/A"}
               {adminNote ? <span className="fw-bold">{adminNote}</span> : null}
               <i
                 onClick={handleShow}
                 className="bi bi-pencil-square ms-2"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", color: "#DBA162" }}
               ></i>
             </ListGroup.Item>
             <PDFPopupButton
@@ -1116,12 +1115,11 @@ const OrderDetailsPageComponent = ({
               fileName={"PL" + invoiceNumber}
               loadingText="Print Picking List"
             />
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
               <div className="d-grid gap-2">
                 <Button
-                  className="p-0 m-0 w-50"
+                  className={`p-0 m-0 w-50 ${deliveredButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
                   onClick={handleShowTrackLink}
-                  variant={deliveredButtonDisabled ? "secondary" : "success"}
                   type="button"
                 >
                   {orderDeliveredButton}
@@ -1129,8 +1127,8 @@ const OrderDetailsPageComponent = ({
               </div>
             </ListGroup.Item>
             {!deliveredButtonDisabled ? (
-              <ListGroup.Item className="p-1 ps-2">
-                <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Delivery Note</Button>
+              <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
+                <Button className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`} disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Delivery Note</Button>
               </ListGroup.Item>
             ) : (
               <PDFPopupButton
@@ -1156,6 +1154,7 @@ const OrderDetailsPageComponent = ({
             <ListGroup.Item
               className="p-1 ps-2"
               hidden={backOrderStatus === false}
+              style={{backgroundColor: 'transparent'}}
             >
               <div className="d-grid gap-2">
                 <Button
@@ -1181,10 +1180,10 @@ const OrderDetailsPageComponent = ({
           <br />
 
           <ListGroup hidden={userData?.isAdmin !== true || order?.isDelivered !== true}>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
               <h5 className="m-0">Accounts Use Only:</h5>
             </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2">
+            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
               <Form.Check
                 type="switch"
                 id="isPaid"
@@ -1196,11 +1195,11 @@ const OrderDetailsPageComponent = ({
             </ListGroup.Item>
             {!deliveredButtonDisabled ? (
               <>
-                <ListGroup.Item className="p-1 ps-2">
-                  <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Invoice</Button>
+                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
+                  <Button className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`} disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Invoice</Button>
                 </ListGroup.Item>
-                <ListGroup.Item className="p-1 ps-2">
-                  <Button className="p-0 m-0 pe-2 ps-2 w-50 " variant="secondary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Send Invoice</Button>
+                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
+                  <Button className="p-0 m-0 pe-2 ps-2 w-50 " variant="secondary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Send Invoice !</Button>
                 </ListGroup.Item>
               </>
             ) : (
@@ -1224,26 +1223,24 @@ const OrderDetailsPageComponent = ({
                   fileName={invoiceNumber}
                   loadingText="Print Invoice"
                 />
-                <ListGroup.Item className="p-1 ps-2">
+                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
                   <div className="d-grid gap-2">
                     <Button
-                      className="p-0 m-0 w-50"
+                      className={`p-0 m-0 w-50 ${sentProformaInvButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
                       onClick={
                         sentInvButtonDisabled
                           ? () => sendInvoiceEmail(invData)
                           : handleSentInv
                       }
-                      variant={sentInvButtonDisabled ? "secondary" : "success"}
                       type="button"
                       disabled={sendingInv}
                     >
                       {sendingInv ? "Sending..." : invSentButton}{" "}
                       <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
-                      {/* {`(${order?.invHasSent})`} */}
                     </Button>
                   </div>
                 </ListGroup.Item>
-                <ListGroup.Item className="p-1 ps-2">
+                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
                   <div className="d-grid gap-2">
                     <Form.Control
                       type="text"
@@ -1253,6 +1250,7 @@ const OrderDetailsPageComponent = ({
                       onChange={handleChangeEmailAddress}
                       value={emailAddress}
                       isInvalid={!isEmailValid}
+                      placeholder="test@gmail.com"
                     />
                     {!isEmailValid && (
                       <Alert variant="danger" className="mt-2">
@@ -1260,7 +1258,7 @@ const OrderDetailsPageComponent = ({
                       </Alert>
                     )}
                     <Button
-                      className="p-0 m-0 w-50"
+                      className={`p-0 m-0 w-50 ${styles.btnRedColor}`}
                       onClick={() => sendInvoiceEmailManually(invData)}
                       type="button"
                       disabled={sendingInvManually}
@@ -1275,10 +1273,10 @@ const OrderDetailsPageComponent = ({
           <br />
           <div style={{ height: "100px" }}>
             <ListGroup>
-              <ListGroup.Item>
+              <ListGroup.Item style={{backgroundColor: 'transparent'}}>
                 <h5 className="m-0">Proforma Invoice</h5>
               </ListGroup.Item>
-              <ListGroup.Item>
+              <ListGroup.Item style={{backgroundColor: 'transparent'}}>
                 <Form.Check
                   type="switch"
                   id="proforma-switch"
@@ -1305,16 +1303,15 @@ const OrderDetailsPageComponent = ({
                   fileName={invoiceNumber}
                   loadingText="Print P.Invoice"
                 />
-                <ListGroup.Item className="p-1 ps-2">
+                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
                   <div className="d-grid gap-2">
                     <Button
-                      className="p-0 m-0 w-50"
+                      className={`p-0 m-0 w-50 ${sentProformaInvButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
                       onClick={
                         sentProformaInvButtonDisabled
                           ? () => sendProformaInvoiceEmail(invData)
                           : handleSentProformaInv
                       }
-                      variant={sentProformaInvButtonDisabled ? "secondary" : "success"}
                       type="button"
                       disabled={sendingInv}
                     >
@@ -1393,8 +1390,6 @@ const OrderDetailsPageComponent = ({
                 Cancel
               </Button>
             </Modal.Body>
-            {/*             <Modal.Footer className="p-0 d-flex justify-content-between">
-            </Modal.Footer> */}
           </Modal>
 
           {/* edit order note modal */}
@@ -1432,7 +1427,8 @@ const OrderDetailsPageComponent = ({
           </Modal>
         </Col>
       </Row>
-    </Container >
+    </div >
+    </>
   );
 };
 

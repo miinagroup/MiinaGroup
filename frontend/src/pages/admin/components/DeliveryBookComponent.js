@@ -2,6 +2,7 @@ import { Row, Col, Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AdminLinksComponent from "../../../components/Admin/AdminLinksComponent";
 import { useState, useEffect } from "react";
+import styles from "../AdminPagesStyles.module.css";
 
 const DeliveryBookComponent = ({ fetchDeliveryBooks, deleteDeliveryBook }) => {
   const [deliveryBooks, setDeliveryBooks] = useState([]);
@@ -23,7 +24,6 @@ const DeliveryBookComponent = ({ fetchDeliveryBooks, deleteDeliveryBook }) => {
       .then((res) => setDeliveryBooks(res))
       .catch((er) => {
         if (er.code === "ERR_CANCELED") {
-          // console.log("Fetch request was cancelled");
         } else if (er.response) {
           console.log(
             er.response.data.message
@@ -47,8 +47,7 @@ const DeliveryBookComponent = ({ fetchDeliveryBooks, deleteDeliveryBook }) => {
           COMPANY BOOKS{" "}
           <LinkContainer to="/admin/create-new-deliveryBook">
             <Button
-              variant="success"
-              className="m-0 me-4 ms-4 p-0 pe-1 ps-1"
+              className={`m-0 me-4 ms-4 p-0 pe-1 ps-1 ${styles.btnGreenColor}`}
               size="lg"
             >
               New

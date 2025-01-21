@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import styles from "../AdminPagesStyles.module.css";
 
 const GoBackButton = () => {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ const GoBackButton = () => {
         navigate(-1);
     };
   return (
-    <Button className="CTL_btn" onClick={goBack}>
+    <Button className={styles.btnGreenColor} onClick={goBack}>
       Go Back
     </Button>
   );

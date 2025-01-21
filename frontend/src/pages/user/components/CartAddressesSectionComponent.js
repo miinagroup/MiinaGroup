@@ -28,7 +28,7 @@ const CartAddressesSectionComponent = ({
         className="p-2 ps-3 pe-3"
       >
         <Form.Label className="fw-bold">Location / Site</Form.Label>
-        {deliveryBooks && <Form.Select value={selectedIndex} onChange={(e) => handleSelect(e)} style={{background: "transparent"}}>
+        {deliveryBooks && <Form.Select value={selectedIndex} onChange={(e) => handleSelect(e)} style={{backgroundColor: "transparent"}}>
           {deliveryBooks[0]?.sites?.map((site, index) => {
             return <option value={index}>{site.name.toUpperCase()}</option>
           })}

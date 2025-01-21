@@ -1,9 +1,9 @@
 import { Row, Col, Container, Form, Button } from "react-bootstrap";
-import React, { useState, useEffect, Fragment, useRef } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import MaskedInput from 'react-text-mask';
 import GoBackButton from "./GoBackButton";
-
+import styles from "../AdminPagesStyles.module.css";
 
 const EditDeliveryBookComponent = ({
     updateDeliveryBookApiRequest,
@@ -140,6 +140,7 @@ const EditDeliveryBookComponent = ({
     };
 
     return (
+        <div className={styles.editDeliveryBookWrapper}>
         <Container>
             <Row className="justify-content-md-center mt-5 content-container">
                 <Col md={1}>
@@ -394,22 +395,22 @@ const EditDeliveryBookComponent = ({
                         </p>
                         <hr />
 
-                        <Button className="mb-3" variant="primary" type="submit">
+                        <Button type="submit" className={styles.btnRedColor}>
                             UPDATE
                         </Button>
 
                         <Link
                             to="/admin/deliveryBooks"
-                            className="btn btn-secondary mb-3 ms-5"
+                            className="btn btn-secondary mb-0 ms-5"
                         >
                             Cancel
                         </Link>
-                        <p></p>
                         {updateDeliveryBookResponseState.error ?? ""}
                     </Form>
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 };
 

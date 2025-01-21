@@ -1,14 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Row, Col, Form, Button, ListGroup, ButtonGroup, ListGroupItem } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import {
     TableHeader,
-    Pagination,
     Search,
     PaginationPopUp,
 } from "../../../components/DataTable";
 import axios from "axios";
 import { pdf } from "@react-pdf/renderer";
-import { useNavigate } from "react-router-dom";
 import OverdueInvoicesPrint from "../../../components/Pdfs/OverdueInvoicesPrint";
 
 import "./invoicePDF.css";
@@ -33,7 +31,6 @@ const InvoicesOverDuePageComponent = ({
     const [billingAddress, setBillingAddress] = useState({});
     const [userEmail, setUserEmail] = useState("");
 
-    const navigate = useNavigate();
 
     const uniqueCompanies = useMemo(() => {
         const companyNames = new Set(
@@ -104,10 +101,6 @@ const InvoicesOverDuePageComponent = ({
         const formattedPast60Amount = past60Amount.toFixed(2);
         const formattedPast90Amount = past90Amount.toFixed(2);
 
-        // console.log("past30Amount", formattedPast30Amount);
-        // console.log("past60Amount", formattedPast60Amount);
-        // console.log("companyCurrentTotalAmount", companyCurrentTotalAmount);
-
         setPast30TotalAmount(formattedPast30Amount);
         setPast60TotalAmount(formattedPast60Amount);
         setPast90TotalAmount(formattedPast90Amount);
@@ -150,21 +143,6 @@ const InvoicesOverDuePageComponent = ({
         }
     };
 
-    const numberOfSelectedInvoices = selectedInvoices.length;
-
-    const handleDownload = () => {
-        selectedInvoices.sort((a, b) => {
-            return a.deliveredAt - b.deliveredAt;
-        });
-        console.log(
-            "overDueInv",
-            numberOfSelectedInvoices,
-            companyCurrentTotalAmount,
-            past30TotalAmount,
-            past60TotalAmount,
-            selectedInvoices
-        );
-    };
 
     /* *************** data table *************** */
 
@@ -243,8 +221,6 @@ const InvoicesOverDuePageComponent = ({
         );
     }, [overDueInv, currentPage, search, sorting, companyFilter]);
 
-    // console.log(filterInvoicesByCompany(overDueInv, companyFilter), invData);
-
     const openPDFInPopup = async (documentComponent, fileName) => {
 
         const firstInoviceCompany = selectedInvoices[0]?.userCompany;
@@ -319,14 +295,11 @@ const InvoicesOverDuePageComponent = ({
         const { data } = await axios.get(
             "/api/deliveryBooks/deliveryBook/" + userEmail
         );
-        // console.log(data);
         return data;
     };
 
-    // console.log(billingAddress, selectedInvoices);
 
     return (
-        <>
             <div>
                 <div class="d-flex justify-content-between">
                     <div>
@@ -369,13 +342,6 @@ const InvoicesOverDuePageComponent = ({
                             ? "Select All"
                             : "Deselect All"}
                     </button>
-                    {/* <button
-                        type="button"
-                        className="btn btn-outline-primary me-2 p-0 pe-1 ps-1"
-                        onClick={() => handleDownload()}
-                    >
-                        Download Overdue Report
-                    </button> */}
                     <PDFPopupButton
                         documentComponent={
                             <OverdueInvoicesPrint
@@ -443,7 +409,6 @@ const InvoicesOverDuePageComponent = ({
                     onPageChange={(page) => setCurrentPage(page)}
                 />
             </div>
-        </>
     );
 };
 

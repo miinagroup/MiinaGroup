@@ -4,6 +4,7 @@ import AdminLinksComponent from "../../../components/Admin/AdminLinksComponent";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import FetchAuthFromServer from "../../../components/Utils/FetchAuthFromServer";
+import styles from "../AdminPagesStyles.module.css";
 
 const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
   const [users, setUsers] = useState([]);
@@ -207,8 +208,7 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
             <Col md={1}>
               <Button
                 onClick={resetFilters}
-                variant="success"
-                className="m-0 p-0 pe-1 ps-1"
+                className={`m-0 p-0 pe-1 ps-1 ${styles.btnGreenColor}`}
               >
                 Reset Filters
               </Button>

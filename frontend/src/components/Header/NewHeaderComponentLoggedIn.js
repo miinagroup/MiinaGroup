@@ -339,7 +339,7 @@ NewHeaderComponentLoggedIn.propTypes = {
   goToTeamSection: PropTypes.func.isRequired,
   goToContactSection: PropTypes.func.isRequired,
   setIsOpenModal: PropTypes.func.isRequired,
-  showSidebar: PropTypes.func.isRequired,
+  showSidebar: PropTypes.bool.isRequired,
   toggleShowSidebar: PropTypes.func.isRequired,
   onClickBtn: PropTypes.func.isRequired,
 };

@@ -156,7 +156,7 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
         <NewHeaderComponentLoggedIn 
         setIsOpenModal={setIsOpenModalCatalogue}
         goToAboutSection={goToAboutSection}
-        goToPromotionSection={goToTeamSection}
+        goToTeamSection={goToTeamSection}
         goToContactSection={goToContactSection}
         showSidebar={showSidebar}
         toggleShowSidebar={toggleShowSidebar}

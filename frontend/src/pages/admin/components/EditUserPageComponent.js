@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import GoBackButton from "./GoBackButton";
 import FetchAuthFromServer from "../../../components/Utils/FetchAuthFromServer";
 import MaskedInput from 'react-text-mask';
+import styles from "../AdminPagesStyles.module.css"
 
 const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
   const [validated, setValidated] = useState(false);
@@ -134,7 +135,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
 
 
   return (
-    <Container>
+    <Container style={{paddingBottom: "200px"}}>
       <Row className="justify-content-md-center mt-5 content-container">
         <Col md={1}>
           <GoBackButton />
@@ -331,7 +332,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
                 </Col>
               </Row>
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button type="submit" className={styles.btnRedColor}>
               UPDATE
             </Button>
             {updateUserResponseState.error}

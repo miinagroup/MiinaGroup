@@ -59,16 +59,11 @@ const CartItemForOrderComponent = ({
     }
   };
   const backOrderQuantity = item.cartProducts[0].quantity - qty;
-  const itemPrice = item.cartProducts[0].price.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 
   return (
-    <>
-      <tbody>
+      <tbody style={{backgroundColor: "#DBA162"}}>
         <tr>
-          <td style={{ width: "7%" }}>
+          <td style={{ width: "6%" }}>
             <img
               crossOrigin="anonymous"
               src={item.image ? item.image ?? null : null}
@@ -76,16 +71,9 @@ const CartItemForOrderComponent = ({
               alt="s"
             />
           </td>
-          <td style={{ width: "25%" }}>
-            <a href={`/product-details/${item.productId}`}>
-              <strong
-                className="text-uppercase"
-                style={{
-                  color: item.cartProducts[0].backOrder > 0 && backOrderStatus === true ? "red" : "#1E4881",
-                }}
-              >
+          <td style={{ width: "25%"}} className="ps-2 pe-5">
+            <a href={`/product-details/${item.productId}`} className="text-uppercase" style={{color: item.cartProducts[0].backOrder > 0 && backOrderStatus === true ? "red" : "#483F55"}}>
                 {item.name} - ({item.cartProducts[0].attrs})
-              </strong>
             </a>
           </td>
           <td style={{ width: "10%" }}>
@@ -101,6 +89,7 @@ const CartItemForOrderComponent = ({
               onChange={handlePriceChange}
               value={edit === false ? item.cartProducts[0].price : price}
               disabled={edit === false}
+              style={{border: "1px solid #521712", width: "100px"}}
             />
           </td>
           <td style={{ width: "10%" }}>
@@ -111,6 +100,7 @@ const CartItemForOrderComponent = ({
               className="form-control"
               value={item.cartProducts[0].quantity}
               disabled={orderCreated}
+              style={{border: "1px solid #521712", width: "100px"}}
             />
           </td>
           <td style={{ width: "10%" }}>
@@ -123,6 +113,7 @@ const CartItemForOrderComponent = ({
               onChange={handleChange}
               value={edit === false ? item.cartProducts[0].suppliedQty : qty}
               disabled={edit === false}
+              style={{border: "1px solid #521712", width: "100px"}}
             />
           </td>
           <td style={{ width: "10%" }}>
@@ -135,6 +126,7 @@ const CartItemForOrderComponent = ({
                   : backOrderQuantity
               }
               disabled={orderCreated}
+              style={{border: "1px solid #521712", width: "100px"}}
             />
           </td>
           <td style={{ width: "5%" }}>
@@ -148,7 +140,6 @@ const CartItemForOrderComponent = ({
           </td>
         </tr>
       </tbody>
-    </>
   );
 };
 

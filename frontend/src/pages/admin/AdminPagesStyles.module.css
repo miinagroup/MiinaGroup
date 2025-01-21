@@ -1,0 +1,83 @@
+.adminCartDetailsPageWrapper {
+    background-color: rgba(219, 161, 98, 0.25);
+    padding: 50px 100px 300px 100px;
+}
+
+.title {
+    font-family: "GloriaHallelujah";
+    color: #483F55;
+    margin-bottom: 50px;
+}
+
+.adminCartItem {
+    background-color: rgba(219, 161, 98, 0.25);
+}
+
+.orderDetailsPageWrapper {
+     color:#483F55;
+     background-color: rgba(219, 161, 98, 0.25);
+    padding: 50px 100px 350px 100px;
+}
+
+.btnGoToOrders {
+     padding: 5px 5px;
+}
+
+
+.btnGoToOrders a {
+    color: #521712;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btnGoToOrders:hover a {
+    color: #DBA162;
+}
+
+.btnRedColor {
+    background-color: #521712 !important;
+    color: white !important;
+    border: 1px solid transparent !important;
+}
+
+.btnRedColor:hover {
+    background-color: white !important;
+    color: #521712 !important;
+    border: 1px solid #521712 !important;
+}
+
+.btnGreenColor {
+    background-color: #999A47 !important;
+    color: white !important;
+    border: 1px solid transparent !important;
+}
+
+.btnGreenColor:hover {
+    background-color: white !important;
+    color: #999A47 !important;
+    border: 1px solid #999A47 !important;
+}
+
+.tableSpacing {
+    border-spacing: 0 5px;
+    border-collapse: separate;
+  }
+
+  .tableSpacing tbody {
+    border-radius: 20px;
+    padding: 5px 5px;
+
+  }
+
+  .adminProductsWrapper {
+     padding: 100px 50px 350px 25px;
+     display: flex;
+     gap: 25px;
+     justify-content: center;
+  }
+
+  .editDeliveryBookWrapper {
+     padding-bottom: 350px;
+  }

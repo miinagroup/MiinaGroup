@@ -31,6 +31,11 @@ a {
   pointer-events: none;
 }
 
+.active>.page-link, .page-link.active{
+   background-color: #521712 !important;
+   border: 1px solid #521712 !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -146,4 +151,13 @@ li:hover {
    background-color: #999A47 !important;
    border-bottom: 1px solid white !important;
    color: #483F55 !important;
+}
+
+.admin-links .nav-link {
+  background-color: transparent !important;
+}
+
+.admin-links .navbar-nav .nav-link.active {
+  background-color: #999A47 !important;
+  color: #fff !important;
 }

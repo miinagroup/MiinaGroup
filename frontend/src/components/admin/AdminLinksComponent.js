@@ -94,9 +94,9 @@ const AdminLinksComponent = () => {
 
   return (
     <>
-      <Navbar className="user_side_navBar">
+      <Navbar className="user_side_navBar admin-links">
         <Nav className="flex-column user_side_nav">
-          <Nav.Link style={{ color: "black" }} disabled>
+          <Nav.Link disabled>
             ADMIN:
           </Nav.Link>
 
@@ -131,8 +131,8 @@ const AdminLinksComponent = () => {
         onClick={() => setOpenClientVersion(!openClientVersion)}
         style={{ cursor: "pointer" }}
       >
-        <Nav className="flex-column user_side_nav">
-          <Nav.Link style={{ color: "black" }} disabled>
+        <Nav className="flex-column user_side_nav admin-links">
+          <Nav.Link disabled>
             My Profile:
           </Nav.Link>
 

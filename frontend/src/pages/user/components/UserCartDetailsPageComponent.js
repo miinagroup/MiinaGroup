@@ -615,18 +615,6 @@ const UserCartDetailsPageComponent = ({
                         </span>
                       </PDFDownloadLink>
                     </div>
-                    {/* <div className="d-flex justify-content-end">
-                      <Button
-                        type="button"
-                        onClick={removeAllItems}
-                        variant="primary"
-                        size="sm"
-                        style={{ fontSize: "12px" }}
-                        className="mobile-visibility"
-                      >
-                        Empty Cart <i className="bi bi-trash" />
-                      </Button>
-                    </div> */}
                   </div>
 
                   <div >

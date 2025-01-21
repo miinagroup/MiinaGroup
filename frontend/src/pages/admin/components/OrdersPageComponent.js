@@ -8,6 +8,7 @@ import "./invoicePDF.css";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
 import {  useSelector } from "react-redux";
+import styles from "../AdminPagesStyles.module.css";
 
 const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   const [orders, setOrders] = useState([]);
@@ -211,7 +212,6 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     orders.map((order) => {
       const month = new Date(order.createdAt).getMonth();
       const year = new Date(order.createdAt).getFullYear();
-      // console.log(thisYear, year, thisMonth, month);
       if (month === thisMonth && year === thisYear) {
         totalValue = totalValue + order.orderTotal.cartSubtotal
 
@@ -265,9 +265,9 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
             </div>
             <div className="col-md-3">
               <Button
-                variant="success"
                 onClick={(e) => exportToExcel(fileName)}
                 style={{ cursor: "pointer", fontSize: 14 }}
+                className={styles.btnGreenColor}
               >
                 Excel Export Orders
               </Button>

@@ -1,9 +1,11 @@
 const CartItemForOrderPreviewComponent = ({ item, backOrderStatus }) => {
   return (
-    <>
-      <tbody>
+    <tbody style={{
+      color: "#483F55",
+      border: "1px solid #DBA162"
+    }}>
         <tr>
-          <td style={{ width: "10%" }}>
+          <td style={{ width: "10%", padding:"10px 10px 10px 10px" }}>
             <img
               crossOrigin="anonymous"
               src={item.image ? item.image ?? null : null}
@@ -11,16 +13,12 @@ const CartItemForOrderPreviewComponent = ({ item, backOrderStatus }) => {
               alt="s"
             />
           </td>
-          <td style={{ width: "25%" }}>
-            <a href={`/product-details/${item.productId}`}>
-              <strong
-                className="text-uppercase"
+          <td style={{ width: "25%", padding:"0px 25px 0px 0px"  }}>
+            <a href={`/product-details/${item.productId}`} className="text-uppercase"
                 style={{
                   color: item.cartProducts[0].backOrder > 0 && backOrderStatus === true ? "red" : "#1E4881",
-                }}
-              >
+                }}>
                 {item.name} - ({item.cartProducts[0].attrs})
-              </strong>
             </a>
           </td>
 
@@ -33,7 +31,6 @@ const CartItemForOrderPreviewComponent = ({ item, backOrderStatus }) => {
           <td style={{ width: "10%" }}>{item.cartProducts[0].backOrder}</td>
         </tr>
       </tbody>
-    </>
   );
 };
 
