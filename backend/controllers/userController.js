@@ -77,8 +77,8 @@ const registerUser = async (req, res, next) => {
       if (
         (email.endsWith("@slrltd.com") ||
           email.endsWith("@silverlakeresources.com.au") ||
-          email.endsWith("@red5limited.com.au") ||
-          email.endsWith("@red5limited.com.au") ||
+          // email.endsWith("@red5limited.com.au") ||
+          // email.endsWith("@red5limited.com.au") ||
           email.endsWith("@vaultminerals.com") ||
           email.endsWith("@westgold.com.au") ||
           email.endsWith("@ctlservices.com.au") ||

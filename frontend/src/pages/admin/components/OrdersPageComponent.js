@@ -7,7 +7,7 @@ import OrderItemForOrderPageComponent from "./OrderItemForOrderPageComponent";
 import "./invoicePDF.css";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "../AdminPagesStyles.module.css";
 
 const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
@@ -171,7 +171,12 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
   //Purchased products list.
   let orderProductsList = [];
   ordersData.map((order) => {
-    order.cartItems.map((item) => { });
+    order.cartItems.map((item) => {
+      const { cartProducts, ...restOfItem } = item;
+      const combinedItem = { ...restOfItem, ...cartProducts[0] };
+      const { productId, image, saleunit, _idcount, supplierssku, quoteId, ...filteredItem } = combinedItem;
+      orderProductsList.push(filteredItem);
+    });
   });
 
   //Export to Excel

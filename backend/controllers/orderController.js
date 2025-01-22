@@ -525,23 +525,18 @@ const updateAdminNote = async (req, res, next) => {
 
 const deleteOrder = async (req, res, next) => {
   try {
-    const { isAdmin, isSuperAdmin, email } = req.user;
-
+    const { isAdmin, email } = req.user;
     const order = await Order.findById(req.params.orderId).orFail();
-
-    if (isAdmin && !isSuperAdmin) {
+    if (!isAdmin) {
       const editHistoryEntry = {
         operator: email,
         editedAt: new Date(),
         function: 'delete order'
       };
-
       order.editeHistroys.push(editHistoryEntry);
       await order.save();
-
       return res.status(403).json({ message: "You do not have permission to delete orders." });
     }
-
     await order.remove();
     res.send("order deleted");
   } catch (err) {
