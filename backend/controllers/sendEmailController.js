@@ -406,7 +406,7 @@ const newUserNoticeToMiina = async ({
   if (process.env.NODE_ENV !== "development") {
     try {
       console.log(
-        "newUserNoticeToJosh req.body",
+        "newUserNoticeToMiina req.body",
         email,
         name,
         lastName,

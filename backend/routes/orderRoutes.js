@@ -30,9 +30,7 @@ const {
   deleteOrder,
   orderSalesToProduct,
   getSupplier,
-  // adminUpdateOrderClientSku,
   updateApprovedPO,
-  // adminBulkUpdateClientSkus
 } = require("../controllers/orderController");
 
 // user routes
@@ -65,8 +63,6 @@ router.put("/updateAdminNote/:id", updateAdminNote);
 router.put("/markAsBackOrder/:id", markAsBackOrder);
 router.put("/markAsPaid/:id", markAsPaid);
 router.put("/orderSalesToProduct", orderSalesToProduct);
-// router.put("/admin/updateClientSku/:id", adminUpdateOrderClientSku);
-// router.put("/admin/bulkUpdateClientSkus/:id", adminBulkUpdateClientSkus);
 
 
 module.exports = router;

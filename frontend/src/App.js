@@ -10,7 +10,6 @@ import "./fonts/HelveticaNeueRoman.otf";
 // publicly available pages:
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import ProductListPage from "./pages/ProductListPage";
-import Unfortunately from "./pages/splash/unfortunately";
 
 /* import LoginRegisterPage from "./pages/LoginRegisterPage"; */
 import SplashPage from "./pages/splash/SplashPage";
@@ -52,101 +51,100 @@ import ProtectedRoutesFilterComponent from "./components/Routes/ProtectedRoutesF
 
 function App() {
   return (
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/login" element={<SplashPage />} />
-          <Route path="/register" element={<SplashPage />} />
-          <Route path="/pdfpreview" element={<PDFPreviewForVisitor />} />
-          <Route path="/user/:id/verify/:token" element={<EmailVerify />} />
-          <Route path="/user/:id/resetPassword/:token" element={<ResetPassword />} />
+    <Router>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/login" element={<SplashPage />} />
+        <Route path="/register" element={<SplashPage />} />
+        <Route path="/pdfpreview" element={<PDFPreviewForVisitor />} />
+        <Route path="/user/:id/verify/:token" element={<EmailVerify />} />
+        <Route path="/user/:id/resetPassword/:token" element={<ResetPassword />} />
 
-          <Route element={<ProtectedRoutesComponent role="visitor" />}>
-            <Route path="/unfortunately" element={<Unfortunately />} />
-            <Route path="/FaqPage" element={<FaqPage />} />
-            <Route path="/TermsConditions" element={<TermsConditions />} />
-            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-            <Route path="/goodsreturnform" element={<GoodsReturnForm />} />
-            <Route path="/" element={<HomePageForVisitorNew />} />
-            <Route path="/product-list" element={<ProductListPage />} />
-            <Route path="/product-details/:id" element={<ProductDetailsPage />} />
-          </Route>
+        <Route element={<ProtectedRoutesComponent role="visitor" />}>
+          <Route path="/FaqPage" element={<FaqPage />} />
+          <Route path="/TermsConditions" element={<TermsConditions />} />
+          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/goodsreturnform" element={<GoodsReturnForm />} />
+          <Route path="/" element={<HomePageForVisitorNew />} />
+          <Route path="/product-list" element={<ProductListPage />} />
+          <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+        </Route>
 
 
-          {/* publicly available routes: */}
-          <Route element={<ProtectedRoutesComponent role="user" />}>
-            <Route path="/" element={<HomePageForVisitorNew />} />
-            <Route path="/product-list" element={<ProductListPage />} />
-            <Route path="/product-details/:id" element={<ProductDetailsPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="*" element="Page not exists 404" />
-          </Route>
-
-          {/* user protected routes: */}
-          <Route element={<ProtectedRoutesComponent admin={false} />}>
-            <Route path="/user" element={<UserProfilePage />} />
-            <Route path="/user/password" element={<UserPasswordPage />} />
-            <Route path="/user/my-orders" element={<UserOrdersPage />} />
-            <Route path="/user/cart-details" element={<UserCartDetailsPage />} />
-            <Route path="/user/order-details/:id" element={<UserOrderDetailsPage />} />
-          </Route>
-
-          {/* admin protected routes: */}
-          <Route
-            element={
-              <ProtectedRoutesComponent admin={true} userPrevent={true} />
-            }
-          >
-            <Route path="/admin/users" element={<AdminUsersPage />} />
-            <Route
-              path="/admin/edit-user/:id"
-              element={<AdminEditUserPage />}
-            />
-            <Route
-              path="/admin/cart-details"
-              element={<AdminCartDetailsPage />}
-            />
-            <Route
-              path="/admin/deliveryBooks"
-              element={<AdminDeliveryBook />}
-            />
-            <Route
-              path="/admin/edit-deliveryBook/:id"
-              element={<AdminEditDeliveryBook />}
-            />
-            <Route
-              path="/admin/create-new-deliveryBook"
-              element={<AdminCreateDeliveryBookPage />}
-            />
-            <Route path="/admin/products" element={<AdminProductsPage />} />
-            <Route
-              path="/admin/create-new-product"
-              element={<AdminCreateProductPage />}
-            />
-            <Route
-              path="/admin/edit-product/:id"
-              element={<AdminEditProductPage />}
-            />
-            <Route path="/admin/orders" element={<AdminOrdersPage />} />
-
-            <Route
-              path="/admin/orders"
-              element={
-                <ProtectedRoutesFilterComponent
-                  permissionKey="isSales"
-                  route={AdminOrdersPage}
-                />
-              }
-            />
-            <Route
-              path="/admin/order-details/:id"
-              element={<AdminOrderDetailsPage />}
-            />
-          </Route>
-
+        {/* publicly available routes: */}
+        <Route element={<ProtectedRoutesComponent role="user" />}>
+          <Route path="/" element={<HomePageForVisitorNew />} />
+          <Route path="/product-list" element={<ProductListPage />} />
+          <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route path="*" element="Page not exists 404" />
-        </Routes>
-      </Router>
+        </Route>
+
+        {/* user protected routes: */}
+        <Route element={<ProtectedRoutesComponent admin={false} />}>
+          <Route path="/user" element={<UserProfilePage />} />
+          <Route path="/user/password" element={<UserPasswordPage />} />
+          <Route path="/user/my-orders" element={<UserOrdersPage />} />
+          <Route path="/user/cart-details" element={<UserCartDetailsPage />} />
+          <Route path="/user/order-details/:id" element={<UserOrderDetailsPage />} />
+        </Route>
+
+        {/* admin protected routes: */}
+        <Route
+          element={
+            <ProtectedRoutesComponent admin={true} userPrevent={true} />
+          }
+        >
+          <Route path="/admin/users" element={<AdminUsersPage />} />
+          <Route
+            path="/admin/edit-user/:id"
+            element={<AdminEditUserPage />}
+          />
+          <Route
+            path="/admin/cart-details"
+            element={<AdminCartDetailsPage />}
+          />
+          <Route
+            path="/admin/deliveryBooks"
+            element={<AdminDeliveryBook />}
+          />
+          <Route
+            path="/admin/edit-deliveryBook/:id"
+            element={<AdminEditDeliveryBook />}
+          />
+          <Route
+            path="/admin/create-new-deliveryBook"
+            element={<AdminCreateDeliveryBookPage />}
+          />
+          <Route path="/admin/products" element={<AdminProductsPage />} />
+          <Route
+            path="/admin/create-new-product"
+            element={<AdminCreateProductPage />}
+          />
+          <Route
+            path="/admin/edit-product/:id"
+            element={<AdminEditProductPage />}
+          />
+          <Route path="/admin/orders" element={<AdminOrdersPage />} />
+
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoutesFilterComponent
+                permissionKey="isSales"
+                route={AdminOrdersPage}
+              />
+            }
+          />
+          <Route
+            path="/admin/order-details/:id"
+            element={<AdminOrderDetailsPage />}
+          />
+        </Route>
+
+        <Route path="*" element="Page not exists 404" />
+      </Routes>
+    </Router>
   );
 }
 

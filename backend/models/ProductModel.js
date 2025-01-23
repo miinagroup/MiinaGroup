@@ -8,11 +8,6 @@ const pdfSchema = mongoose.Schema({
   path: { type: String, required: false },
 });
 
-// const clientSkuSchema = new mongoose.Schema({
-//   name: { type: String, required: false, unique: true },
-//   number: { type: String, required: false }
-// });
-
 const productSchema = mongoose.Schema(
   {
     name: {

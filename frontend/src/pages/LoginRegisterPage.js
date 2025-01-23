@@ -31,9 +31,9 @@ const LoginRegisterPage = ({ modalType }) => {
         (today.getMonth() + 1) +
         "-" +
         today.getDate();
-        let time =
+      let time =
         today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        let localDateTime = date + " " + time;
+      let localDateTime = date + " " + time;
       const local_Time = new Date();
       local_Time.setMinutes(local_Time.getMinutes() + 30);
       localStorage.setItem("trackDataScheduledLogoutTime", local_Time);
@@ -77,7 +77,6 @@ const LoginRegisterPage = ({ modalType }) => {
       abn
     });
     sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
-
     setUserDetails(data.userCreated)
     return data;
   };
@@ -87,7 +86,7 @@ const LoginRegisterPage = ({ modalType }) => {
     return data;
   };
 
-  const getAlldeliveryBooks = async (email) => {
+  const getAlldeliveryBooks = async () => {
     const { data } = await axios.get("/api/deliveryBooks");
     return data;
   };
@@ -122,7 +121,7 @@ const LoginRegisterPage = ({ modalType }) => {
                   loginUserApiRequest={loginUserApiRequest}
                   reduxDispatch={reduxDispatch}
                   setReduxUserState={setReduxUserState}
-                  getdeliveryBooks={getdeliveryBooks}
+                  getAlldeliveryBooks={getAlldeliveryBooks}
                 />
                 <br />
               </Tab>

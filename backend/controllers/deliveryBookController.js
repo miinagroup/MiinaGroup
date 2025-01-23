@@ -12,15 +12,6 @@ const getAdminDeliveryBook = async (req, res, next) => {
   }
 };
 
-/* const getDeliveryBook = async (req, res, next) => {
-    try {
-        const userEmail = req.params.email?.split("@")[1];
-        const deliveryBooks = await DeliveryBook.find({ emailHost: userEmail }).orFail();
-        res.json(deliveryBooks);
-    } catch (error) {
-        next(error);
-    }
-}; */
 const getAllDeliveryBook = async (req, res, next) => {
   try {
     const deliveryBooks = await DeliveryBook.find({}).orFail();

@@ -9,7 +9,7 @@ const {
   sendVerificationEmail,
   sendResetPasswordEmail,
 } = require("../utils/sendEmail");
-const { newUserNoticeToJosh } = require("./sendEmailController");
+const { newUserNoticeToMiina } = require("./sendEmailController");
 
 const getUsers = async (req, res, next) => {
   try {
@@ -59,6 +59,20 @@ const registerUser = async (req, res, next) => {
     } else {
       // 用hashedPasswrod把password加密
       const hashedPassword = hashPassword(password);
+      const deliveryBooks = await DeliveryBook.find({});
+      let selectedDeliveryAddress = ""
+      let selectedBillingAddress = ""
+      deliveryBooks.some(company =>
+        company.sites.some(site => {
+          if (site.name?.toUpperCase() === location?.toUpperCase()) {
+            selectedBillingAddress = site.billingAddress;
+            selectedDeliveryAddress = site.deliveryAddress;
+            return true; // Breaks out of the inner loop once a match is found
+          }
+          return false;
+        })
+      );
+
       const user = await User.create({
         name,
         lastName,
@@ -68,36 +82,24 @@ const registerUser = async (req, res, next) => {
         mobile,
         location,
         company,
-        deliveryAddress,
-        billAddress,
+        deliveryAddress: selectedDeliveryAddress,
+        billAddress: selectedBillingAddress,
         abn
       });
 
       // verify email address if end with registered companies
-      if (
-        (email.endsWith("@slrltd.com") ||
-          email.endsWith("@silverlakeresources.com.au") ||
-          // email.endsWith("@red5limited.com.au") ||
-          // email.endsWith("@red5limited.com.au") ||
-          email.endsWith("@vaultminerals.com") ||
-          email.endsWith("@westgold.com.au") ||
-          email.endsWith("@ctlservices.com.au") ||
-          email.endsWith("@ctlaus.com") ||
-          email.endsWith("@focusminerals.com.au") ||
-          email.endsWith("@evolutionmining.com")) &&
-        email !== "Mekins@slrltd.com"
-      ) {
+      if (!deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain)))) {
         const token = await new Token({
           userId: user._id,
           token: crypto.randomBytes(32).toString("hex"),
           category: "verifyEmail",
         }).save();
-        const url = `${process.env.BASE_URL}user/${user.id}/verify/${token.token}`;
 
+        const url = `${process.env.BASE_URL}user/${user.id}/verify/${token.token}`;
         await sendVerificationEmail(user.email, "Verify Email", url);
       }
 
-      await newUserNoticeToJosh({
+      await newUserNoticeToMiina({
         email: user.email,
         name: user.name,
         abn: user.abn,
@@ -132,21 +134,10 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-const VERIFICATION_EMAIL_DOMAINS = new Set([
-  "@slrltd.com",
-  "@ctlservices.com.au",
-  "@ctlaus.com",
-  "@focusminerals.com.au",
-  "@evolutionmining.com",
-  "@westgold.com.au",
-  "@vaultminerals.com"
-]);
 
-function requiresVerification(email) {
+function requiresVerification(email, deliveryBooks) {
   console.log("I am here to verify email step 1");
-  return [...VERIFICATION_EMAIL_DOMAINS].some((domain) =>
-    email.endsWith(domain)
-  );
+  return (deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain))))
 }
 
 const loginUser = async (req, res, next) => {
@@ -170,19 +161,6 @@ const loginUser = async (req, res, next) => {
     console.log("I found a user");
     if (user && comparePasswords(password, user.password)) {
       console.log("I am here compare password!");
-      const skipIpAddressCheck =
-        email.endsWith("ctlservices.com.au") ||
-        email.endsWith("ctlaus.com") ||
-        email.endsWith("@focusminerals.com.au") ||
-        password === process.env.CTL_ADMIN_TEST_VIEW_PASSWORD;
-
-      if (
-        !skipIpAddressCheck &&
-        user.ipAddress &&
-        user.ipAddress !== ipAddress
-      ) {
-        return res.status(403).send("Access denied from this IP address");
-      }
 
       let cookieParams = {
         httpOnly: true,
@@ -202,8 +180,9 @@ const loginUser = async (req, res, next) => {
         await User.updateOne({ _id: user._id }, { $set: updateData });
       }
 
+      const deliveryBooks = await DeliveryBook.find({});
       // Verify Email
-      if (!user.verified && requiresVerification(email)) {
+      if (!user.verified && requiresVerification(email, deliveryBooks)) {
         console.log("I am here to verify email");
         let token = await Token.findOne({
           userId: user._id,
@@ -221,7 +200,7 @@ const loginUser = async (req, res, next) => {
 
         return res
           .status(400)
-          .send({ message: "An Email sent to your account please verify" });
+          .send({ message: "Your verification is incomplete!! Check your emails" });
       }
 
       if (user.verified) {

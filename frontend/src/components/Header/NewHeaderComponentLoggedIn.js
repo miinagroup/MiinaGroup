@@ -74,7 +74,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
 
   useEffect(() => {
     reduxDispatch(fetchCartItemsLogin());
-    setUseIsAdmin(userInfo.isAdmin);
+    setUseIsAdmin(userInfo?.isAdmin);
     getCart()
       .then((cart) => setUserCart(cart.data.cart))
       .catch((er) => console.log(er));
@@ -107,7 +107,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
     return roles.some((role) => isAuth[role.trim()]);
   };
 
-  
+
   const handleClickGoToSection = (goToSectionFunction) => {
     if (location.pathname === '/') {
       goToSectionFunction();
@@ -141,20 +141,20 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
                           <path fill="currentColor" d="M0.991804 7.20499C0.439537 7.20952 -0.00449316 7.66089 3.3617e-05 8.21315C0.00456039 8.76542 0.45593 9.20945 1.0082 9.20492L0.991804 7.20499ZM26.712 8.70133C27.0993 8.30762 27.0942 7.67448 26.7004 7.28717L20.2845 0.975581C19.8908 0.588271 19.2577 0.59346 18.8704 0.987172C18.4831 1.38088 18.4883 2.01403 18.882 2.40134L24.585 8.01164L18.9747 13.7147C18.5874 14.1084 18.5926 14.7415 18.9863 15.1288C19.38 15.5161 20.0131 15.511 20.4005 15.1172L26.712 8.70133ZM1.0082 9.20492L26.0074 9.00001L25.991 7.00008L0.991804 7.20499L1.0082 9.20492Z" />
                         </svg>
                       </div>
-                        <div className={styles.subcategories}>
-                          {subcategories[category.link]?.sort().map((subcategory, index) => (
-                            <a
-                              href={`/product-list?categoryPath=${category.link}/${subcategory}`}
-                              key={subcategory}
-                              className={styles.subcategoryItem}
-                            >
-                              <div className={styles.logoTagSubcategory}>
+                      <div className={styles.subcategories}>
+                        {subcategories[category.link]?.sort().map((subcategory, index) => (
+                          <a
+                            href={`/product-list?categoryPath=${category.link}/${subcategory}`}
+                            key={subcategory}
+                            className={styles.subcategoryItem}
+                          >
+                            <div className={styles.logoTagSubcategory}>
                               <img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />
-                              </div>
-                              {subcategory}
-                            </a>
-                          ))}
-                        </div>
+                            </div>
+                            {subcategory}
+                          </a>
+                        ))}
+                      </div>
                     </>
                   )}
                 </div>
@@ -181,7 +181,7 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
         <div className={styles.tagline}>
           Walking and Working on Country, safely
         </div>
-        </a>
+      </a>
 
       <div className={styles.logRegNew}>
         <div className={`${styles.search}`}>
@@ -200,89 +200,95 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
         <div className={`${styles.headerNewBtns} ${styles.headerNewBtnsLoggedIn}`}>
           <Nav className={styles.user_cart}>
             {/* *********** User Icon *********** */}
-            {userInfo.isAdmin ? (
-                <div className="users_initial_dropdown">
-                  <div className={`Avtbox_admin`}>
-                    <a href="/admin/orders" className="Avtbox_users_initial">
-                      {`${userInfo.name?.charAt(
-                        0
-                      )}${userInfo.lastName?.charAt(0)}`}
-                    </a>
-                  </div>
-                  <div className="users_dropdown">
-                    <div className="users_row">
-                      <div className="users_column">
-                        {adminLinks.map((link) => {
-                          if (hasAccess(link.access)) {
-                            return (
-                              <li key={link.title} to={link.link}>
-                                <a href={link.link} className="hd_c">
-                                  {link.title}
-                                </a>
-                              </li>
-                            );
-                          }
-                        })}
-                        <li>
-                          <a href="/admin/orders" className="hd_c">
-                            Orders
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/admin/products" className="hd_c">
-                            Products
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/admin/users" className="hd_c">
-                            Users
-                          </a>
-                        </li>
-                        <li
-                          className="hd_c"
-                          onClick={() => dispatch(logout())}
-                          style={{ cursor: "pointer" }}
-                        >
-                          Log out
-                        </li>
-                      </div>
+            {userInfo?.isAdmin ? (
+              <div className="users_initial_dropdown">
+                <div className={`Avtbox_admin`}>
+                  <a href="/admin/orders" className="Avtbox_users_initial">
+
+                    {
+                      userInfo?.name !== "" && userInfo?.name !== undefined ? (
+                        `${userInfo.name?.charAt(0)}${userInfo.lastName?.charAt(0)}`
+                      ) : ""}
+                  </a>
+                </div>
+                <div className="users_dropdown">
+                  <div className="users_row">
+                    <div className="users_column">
+                      {adminLinks.map((link) => {
+                        if (hasAccess(link.access)) {
+                          return (
+                            <li key={link.title} to={link.link}>
+                              <a href={link.link} className="hd_c">
+                                {link.title}
+                              </a>
+                            </li>
+                          );
+                        }
+                      })}
+                      <li>
+                        <a href="/admin/orders" className="hd_c">
+                          Orders
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/admin/products" className="hd_c">
+                          Products
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/admin/users" className="hd_c">
+                          Users
+                        </a>
+                      </li>
+                      <li
+                        className="hd_c"
+                        onClick={() => dispatch(logout())}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Log out
+                      </li>
                     </div>
                   </div>
                 </div>
+              </div>
             ) : (
-                <div className={`users_initial_dropdown ${styles.newHeaderLogInIcon}`}>
-                  <div className={`Avtbox ${styles.Avtbox}`}>
-                    <a
-                      href="/user/my-orders"
-                      className="Avtbox_users_initial"
-                    >
-                      {`${userInfo.name?.charAt(0)}${userInfo.lastName?.charAt(0)}`}
-                    </a>
-                  </div>
-                  <div className="users_dropdown">
-                    <div className="users_row">
-                      <div className="users_column">
-                        <li>
-                          <a href="/user" className="hd_c">
-                            My Profile
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/user/my-orders" className="hd_c">
-                            Orders
-                          </a>
-                        </li>
-                        <li
-                          className="hd_c"
-                          onClick={() => logOutUser()}
-                          style={{ cursor: "pointer" }}
-                        >
-                          Log out
-                        </li>
-                      </div>
+              <div className={`users_initial_dropdown ${styles.newHeaderLogInIcon}`}>
+                <div className={`Avtbox ${styles.Avtbox}`}>
+                  <a
+                    href="/user/my-orders"
+                    className="Avtbox_users_initial"
+                  >
+                    {
+                      userInfo?.name !== "" && userInfo?.name !== undefined ? (
+                        `${userInfo.name?.charAt(0)}${userInfo.lastName?.charAt(0)}`
+                      ) : ""}
+
+                  </a>
+                </div>
+                <div className="users_dropdown">
+                  <div className="users_row">
+                    <div className="users_column">
+                      <li>
+                        <a href="/user" className="hd_c">
+                          My Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/user/my-orders" className="hd_c">
+                          Orders
+                        </a>
+                      </li>
+                      <li
+                        className="hd_c"
+                        onClick={() => logOutUser()}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Log out
+                      </li>
                     </div>
                   </div>
                 </div>
+              </div>
             )}
 
 

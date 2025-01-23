@@ -524,11 +524,6 @@ const InvoicePrint = (cartItems) => {
                                                         {item.cartProducts[0].mnasku}
                                                     </Text>
                                                 </View>
-                                                {/* <View style={styles.tableColHeaderShort}>
-                                                    <Text style={styles.tableColBillItem}>
-                                                        {item.cartProducts[0].currentClientSku?.number}
-                                                    </Text>
-                                                </View> */}
                                                 <View style={styles.tableColHeaderCenter}>
                                                     <Text style={styles.tableColBillItem}>{item.name.toUpperCase() + ` (${item?.cartProducts[0].attrs})`}</Text>
                                                 </View>
@@ -557,11 +552,6 @@ const InvoicePrint = (cartItems) => {
                                                         {item.cartProducts[0].mnasku}
                                                     </Text>
                                                 </View>
-                                                {/* <View style={styles.tableColHeaderShort}>
-                                                    <Text style={styles.tableColBillItem}>
-                                                        {item.cartProducts[0].currentClientSku?.number}
-                                                    </Text>
-                                                </View> */}
                                                 <View style={styles.tableColHeaderCenter}>
                                                     <Text style={styles.tableColBillItem}>{item.name.toUpperCase() + ` (${item?.cartProducts[0].attrs})`}</Text>
                                                 </View>
@@ -635,11 +625,6 @@ const InvoicePrint = (cartItems) => {
                                                                     {item.cartProducts[0].mnasku}
                                                                 </Text>
                                                             </View>
-                                                            {/* <View style={styles.tableColHeaderShort}>
-                                                                <Text style={styles.tableColBillItem}>
-                                                                    {item.cartProducts[0].currentClientSku?.number}
-                                                                </Text>
-                                                            </View> */}
                                                             <View style={styles.tableColHeaderCenter}>
                                                                 <Text style={styles.tableColBillItem}>
                                                                     {item.name.toUpperCase() + ` (${item?.cartProducts[0].attrs})`}
@@ -671,11 +656,6 @@ const InvoicePrint = (cartItems) => {
                                                                 {item.cartProducts[0].mnasku}
                                                             </Text>
                                                         </View>
-                                                        {/* <View style={styles.tableColHeaderShort}>
-                                                            <Text style={styles.tableColBillItem}>
-                                                                {item.cartProducts[0].currentClientSku?.number}
-                                                            </Text>
-                                                        </View> */}
                                                         <View style={styles.tableColHeaderCenter}>
                                                             <Text style={styles.tableColBillItem}>
                                                                 {item.name.toUpperCase() + ` (${item?.cartProducts[0].attrs})`}

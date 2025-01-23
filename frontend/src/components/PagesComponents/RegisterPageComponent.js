@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MaskedInput from 'react-text-mask';
 import {
   Alert,
@@ -38,11 +38,34 @@ const RegisterPageComponent = ({
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/]
   const [deliveryBookData, setDeliveryBookData] = useState();
   const [userSites, setUserSites] = useState([])
+  const emailRef = useRef();
+  const [welcomeNote, setWelcomeNote] = useState(false)
 
   const handleConfirmPassword = (e) => {
     const { value } = e.target;
     setConfirmPassword(value);
     setPasswordsMatch(value === password);
+  };
+
+  const handleFocus = () => {
+    const email = emailRef.current.value
+
+    if (email === "" || email === null) {
+      setShow(false);
+      setShowLocation(false);
+      setShowAbn(false)
+    } else {
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (!email.match(mailformat)) {
+        alert("Invalid email format")
+      } else {
+        setShow(true);
+        setShowAbn(false);
+        const emailHost = email.split("@")[1];
+        const tempCompany = emailHost.split(".")[0];
+        setUserDetails(emailHost);
+      }
+    }
   };
 
   useEffect(() => {
@@ -145,7 +168,7 @@ const RegisterPageComponent = ({
           });
           reduxDispatch(setReduxUserState(data.userCreated));
           if (isValidEmail(email)) {
-            window.location.href = "/unfortunately";
+            setWelcomeNote(true)
           } else {
             setUserCompany("")
             setUserLocation("")
@@ -156,7 +179,7 @@ const RegisterPageComponent = ({
             form.password.value = "";
             form.location.value = "";
             form.company.value = "";
-            form.abn.value = "";
+            // showAbn ? form.abn.value = "" : "";
             setValidated(false);
             setEmailSent(true);
           }
@@ -228,7 +251,6 @@ const RegisterPageComponent = ({
   const handleChangeRole = (e) => {
     setUserRole(e.target.value)
   }
-
   return (
     <Container>
       <Row className="mt-4 justify-content-md-center">
@@ -282,6 +304,7 @@ const RegisterPageComponent = ({
                       placeholder="Email"
                       aria-describedby="inputGroupPrepend"
                       onBlur={handleEmail}
+                      ref={emailRef}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
@@ -401,6 +424,7 @@ const RegisterPageComponent = ({
                   placeholder="Confirm Password"
                   minLength={6}
                   onChange={handleConfirmPassword}
+                  onFocus={handleFocus}
                   isInvalid={!passwordsMatch}
                 />
 
@@ -418,95 +442,95 @@ const RegisterPageComponent = ({
               <Row></Row>
 
               {show ? (
-                  <Row className="mb-3" >
-                    <Form.Group as={Col} md="6" controlId="formBasicCompany">
-                      <Form.Label>Company</Form.Label>
-                      <InputGroup hasValidation>
-                        <Form.Control
-                          type="text"
-                          name="company"
-                          placeholder="Company"
-                          value={userCompany}
-                          aria-describedby="inputGroupPrepend"
-                          required
-                          disabled
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please mention company name.{" "}
-                        </Form.Control.Feedback>
-                      </InputGroup>
-                    </Form.Group>
-
-                    <Form.Group as={Col} md="6" controlId="formBasicLocation">
-                      <Form.Label>Location</Form.Label>
-                      <Form.Select
-                        required
-                        name="location"
-                        onChange={handleChangeLocation}
-                        style={{ textTransform: "capitalize" }}
-                      >
-                        <option>--Select Site--</option>
-                        {
-                          selectedSites.sites?.map((site, idx) => (
-                            <option key={idx} value={site} style={{ textTransform: "capitalize" }}>
-                              {site.toLowerCase()}
-                            </option>))
-                        }
-                      </Form.Select>
-                    </Form.Group>
-
-                    {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
+                <Row className="mb-3" >
+                  <Form.Group as={Col} md="6" controlId="formBasicCompany">
+                    <Form.Label>Company</Form.Label>
+                    <InputGroup hasValidation>
                       <Form.Control
-                        required
                         type="text"
-                        name="otherRole"
-                        placeholder="Job Title"
-                        onChange={handleOtherRole}
-                        value={otherRole}
+                        name="company"
+                        placeholder="Company"
+                        value={userCompany}
+                        aria-describedby="inputGroupPrepend"
+                        required
+                        disabled
                       />
                       <Form.Control.Feedback type="invalid">
-                        Please mention your Job Title.{" "}
+                        Please mention company name.{" "}
                       </Form.Control.Feedback>
-                    </Form.Group>}
-                  </Row>
+                    </InputGroup>
+                  </Form.Group>
+
+                  <Form.Group as={Col} md="6" controlId="formBasicLocation">
+                    <Form.Label>Location</Form.Label>
+                    <Form.Select
+                      required
+                      name="location"
+                      onChange={handleChangeLocation}
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      <option>--Select Site--</option>
+                      {
+                        selectedSites.sites?.map((site, idx) => (
+                          <option key={idx} value={site} style={{ textTransform: "capitalize" }}>
+                            {site.toLowerCase()}
+                          </option>))
+                      }
+                    </Form.Select>
+                  </Form.Group>
+
+                  {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicRole" className="mt-3">
+                    <Form.Control
+                      required
+                      type="text"
+                      name="otherRole"
+                      placeholder="Job Title"
+                      onChange={handleOtherRole}
+                      value={otherRole}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please mention your Job Title.{" "}
+                    </Form.Control.Feedback>
+                  </Form.Group>}
+                </Row>
               ) : showLocation ? (
-                  <Row className="mb-3" >
-                    <Form.Group as={Col} md="6" controlId="formBasicCompany">
+                <Row className="mb-3" >
+                  <Form.Group as={Col} md="6" controlId="formBasicCompany">
 
-                      <InputGroup hasValidation>
-                        <Form.Control
-                          type="text"
-                          name="company"
-                          placeholder="Company"
-                          value={userCompany}
-                          onChange={handleInputChange}
-                          aria-describedby="inputGroupPrepend"
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please mention company name.{" "}
-                        </Form.Control.Feedback>
-                      </InputGroup>
-                    </Form.Group>
+                    <InputGroup hasValidation>
+                      <Form.Control
+                        type="text"
+                        name="company"
+                        placeholder="Company"
+                        value={userCompany}
+                        onChange={handleInputChange}
+                        aria-describedby="inputGroupPrepend"
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Please mention company name.{" "}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
 
-                    <Form.Group as={Col} md="6" controlId="formBasicLocation">
-                      <InputGroup hasValidation>
-                        <Form.Control
-                          type="text"
-                          name="location"
-                          placeholder="Site"
-                          value={userLocation}
-                          aria-describedby="inputGroupPrepend"
-                          required
-                          style={{ textTransform: "capitalize" }}
-                        />
+                  <Form.Group as={Col} md="6" controlId="formBasicLocation">
+                    <InputGroup hasValidation>
+                      <Form.Control
+                        type="text"
+                        name="location"
+                        placeholder="Site"
+                        value={userLocation}
+                        aria-describedby="inputGroupPrepend"
+                        required
+                        style={{ textTransform: "capitalize" }}
+                      />
 
-                        <Form.Control.Feedback type="invalid">
-                          Please enter site location.{" "}
-                        </Form.Control.Feedback>
-                      </InputGroup>
-                    </Form.Group>
-                  </Row>
+                      <Form.Control.Feedback type="invalid">
+                        Please enter site location.{" "}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+                </Row>
               ) : ("")}
 
               {showAbn ? (
@@ -568,10 +592,9 @@ const RegisterPageComponent = ({
           <Alert
             show={
               registerUserResponseState &&
-              registerUserResponseState.success === "User created"
+              registerUserResponseState.success === "User created" && !welcomeNote
             }
             variant="info"
-
           >
             A verification email has been sent to your registered email
             address. Please make sure to check your junk/spam folder as well.
@@ -587,6 +610,18 @@ const RegisterPageComponent = ({
           : (
             ""
           )}
+        <Alert
+          show={
+            registerUserResponseState &&
+            registerUserResponseState.success === "User created" && welcomeNote
+
+          }
+          variant="info"
+        >
+          Thank you for registering with Miina Group!<br />
+          Our team will reach out to you shortly to verify your details and complete the registration process.
+
+        </Alert>
       </Row>
     </Container >
   );

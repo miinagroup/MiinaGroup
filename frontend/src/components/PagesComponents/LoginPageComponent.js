@@ -1,4 +1,4 @@
-import {Container,Row,Col,Form,Button,Alert,InputGroup,} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert, InputGroup, } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
@@ -9,7 +9,7 @@ const LoginPageComponent = ({
   loginUserApiRequest,
   reduxDispatch,
   setReduxUserState,
-  getdeliveryBooks,
+  getAlldeliveryBooks
 }) => {
   const [validated, setValidated] = useState(false);
   const [loginUserResponseState, setLoginUserResponseState] = useState({
@@ -21,20 +21,30 @@ const LoginPageComponent = ({
   const [ipAddress, setIpAddress] = useState("");
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const [showModal, setShowModal] = useState(false);
-
   const [showVerifySiteModal, setShowVerifySiteModal] = useState(false);
-  const [shouldRenderVerifySiteModal, setShouldRenderVerifySiteModal] =
-    useState(false);
+  const [shouldRenderVerifySiteModal, setShouldRenderVerifySiteModal] = useState(false);
+  const [deliveryBookData, setDeliveryBookData] = useState();
+  const [userSites, setUserSites] = useState([])
 
   const currentUrl = window.location.href;
+  useEffect(() => {
+    getAlldeliveryBooks().then((data) => {
+      setDeliveryBookData(data);
+      const userSitesData = data.map(company => ({
+        company: company.companyName,
+        sites: company.sites.map(site => site.name),
+        abn: company.abn || "",
+        emailHost: company.emailHost
+      }))
+      setUserSites(userSitesData)
+    })
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget.elements;
-
     const email = form.email.value;
     const password = form.password.value;
     const doNotLogout = true;
@@ -90,16 +100,9 @@ const LoginPageComponent = ({
     }
 
     setValidated(true);
-
     event.preventDefault();
 
-    if (
-      email.endsWith("@slrltd.com") ||
-      email.endsWith("@focusminerals.com.au") ||
-      email.endsWith("@ctlservices.com.au") ||
-      email.endsWith("@ctlaus.com") ||
-      email.endsWith("@evolutionmining.com")
-    ) {
+    if (userSites.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain)))) {
       fetch("https://api.ipify.org?format=json")
         .then((response) => response.json())
         .then((data) => setIpAddress(data.ip));

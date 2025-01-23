@@ -188,25 +188,14 @@ const getProducts = async (req, res, next) => {
       console.log("Performing regex search for:", searchQuery);
       const regexPattern = new RegExp(searchQuery.replace(/["']/g, ""), "i");
 
-      if ((req.user.email.includes("ctlservices.com.au")) || (req.user.email.includes("ctlaus.com"))) {
-        searchCondition = {
-          $or: [
-            { name: regexPattern },
-            { supplier: regexPattern },
-            { "stock.mnasku": regexPattern },
-            { "stock.suppliersku": regexPattern }
-          ],
-        };
-      } else {
-        searchCondition = {
-          $or: [
-            { name: regexPattern },
-            { supplier: regexPattern },
-            { "stock.mnasku": regexPattern },
-            { "stock.suppliersku": regexPattern }
-          ],
-        };
-      }
+      searchCondition = {
+        $or: [
+          { name: regexPattern },
+          { supplier: regexPattern },
+          { "stock.mnasku": regexPattern },
+          { "stock.suppliersku": regexPattern }
+        ],
+      };
 
       const results = await Product.find(searchCondition);
       console.log("Results:", results.length);
@@ -326,22 +315,6 @@ const getProducts = async (req, res, next) => {
           });
         }
       }
-    }
-
-    let suppliersCondition = {};
-
-    if (req.user.email.endsWith("@slrltd.com") ||
-      req.user.email.endsWith("@silverlakeresources.com.au") ||
-      req.user.email.endsWith("@red5limited.com.au") ||
-      req.user.email.endsWith("@ctlservices.com.au") ||
-      req.user.email.endsWith("@ctlaus.com") ||
-      req.user.email.endsWith("@focusminerals.com.au") ||
-      req.user.email.endsWith("@evolutionmining.com")) {
-      queryCondition = true;
-      suppliersCondition = {};
-    } else {
-      queryCondition = true;
-      suppliersCondition = { supplier: { $nin: excludedSuppliers } };
     }
 
     if (queryCondition) {
@@ -1520,34 +1493,15 @@ const searchProducts = async (req, res, next) => {
 
       let searchCondition = {}
 
-      if (req.user?.email.endsWith("@slrltd.com") ||
-        req.user?.email.endsWith("@silverlakeresources.com.au") ||
-        req.user?.email.endsWith("@red5limited.com.au") ||
-        req.user?.email.endsWith("@ctlservices.com.au") ||
-        req.user?.email.endsWith("@ctlaus.com") ||
-        req.user?.email.endsWith("@focusminerals.com.au") ||
-        req.user?.email.endsWith("@evolutionmining.com")) {
+      const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
+      productFound = productFound.concat(supplierMatches);
+      productFound = _.uniqBy(productFound, 'id');
 
-        const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
-        productFound = productFound.concat(supplierMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-        if (productFound.length < 250) {
-          const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
-          productFound = productFound.concat(nameMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
-      } else {
-        const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
-        productFound = productFound.concat(supplierMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-        if (productFound.length < 250) {
-          const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
-          productFound = productFound.concat(nameMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
+      if (productFound.length < 250) {
+        const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
+        productFound = productFound.concat(nameMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
 
       const filetredProducts = _.uniqBy(productFound, 'id');
       const productsPerPage = getProductsbyPage(pageNum, filetredProducts);
@@ -1562,28 +1516,10 @@ const searchProducts = async (req, res, next) => {
       const regExact = query.map(term => new RegExp(`(^|[^a-zA-Z0-9])${term.replace(/\s/g, '\\s*')}([^a-zA-Z0-9]|$)s?`, "i"));
       const regExactQueries = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
       const supplierFilters = query.map(term => (new RegExp(`^${term.replace(/\s/g, '\\s*')}$`, 'i')));
-
-      if (req.user?.email.endsWith("@slrltd.com") ||
-        req.user?.email.endsWith("@silverlakeresources.com.au") ||
-        req.user?.email.endsWith("@red5limited.com.au") ||
-        req.user?.email.endsWith("@ctlservices.com.au") ||
-        req.user?.email.endsWith("@ctlaus.com") ||
-        req.user?.email.endsWith("@focusminerals.com.au") ||
-        req.user?.email.endsWith("@evolutionmining.com")) {
-
-        const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
-        productFound = productFound.concat(tagsMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-      } else {
-        const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
-        productFound = productFound.concat(tagsMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-      }
-
+      const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
+      productFound = productFound.concat(tagsMatches);
+      productFound = _.uniqBy(productFound, 'id');
       const keywords = regNormal.map(regex => regex.source); // Get the raw keyword from the regex
-
       const sortedProducts = productFound.sort((a, b) => {
         // Check how many keywords occur in `category`, `name`, or `description` for each product
         const aCount = keywords.filter(keyword =>
@@ -1784,35 +1720,15 @@ const searchProductsForVisitor = async (req, res, next) => {
       const supplierFilter = new RegExp(`^${searchQuery}$`, 'i')
 
       let searchCondition = {}
+      const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
+      productFound = productFound.concat(supplierMatches);
+      productFound = _.uniqBy(productFound, 'id');
 
-      if (req.user?.email.endsWith("@slrltd.com") ||
-        req.user?.email.endsWith("@silverlakeresources.com.au") ||
-        req.user?.email.endsWith("@red5limited.com.au") ||
-        req.user?.email.endsWith("@ctlservices.com.au") ||
-        req.user?.email.endsWith("@ctlaus.com") ||
-        req.user?.email.endsWith("@focusminerals.com.au") ||
-        req.user?.email.endsWith("@evolutionmining.com")) {
-
-        const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
-        productFound = productFound.concat(supplierMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-        if (productFound.length < 250) {
-          const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
-          productFound = productFound.concat(nameMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
-      } else {
-        const supplierMatches = await Product.find({ "supplier": regNormal }).limit(250);
-        productFound = productFound.concat(supplierMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-        if (productFound.length < 250) {
-          const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
-          productFound = productFound.concat(nameMatches);
-        }
-        productFound = _.uniqBy(productFound, 'id');
+      if (productFound.length < 250) {
+        const nameMatches = await Product.find({ "name": regExact }).limit(250 - productFound.length);
+        productFound = productFound.concat(nameMatches);
       }
+      productFound = _.uniqBy(productFound, 'id');
 
       const filetredProducts = _.uniqBy(productFound, 'id').filter((product) => !excludedSuppliers.includes(product.supplier));;
       const productsPerPage = getProductsbyPage(pageNum, filetredProducts);
@@ -1829,28 +1745,11 @@ const searchProductsForVisitor = async (req, res, next) => {
       const regExact = query.map(term => new RegExp(`(^|[^a-zA-Z0-9])${term.replace(/\s/g, '\\s*')}([^a-zA-Z0-9]|$)s?`, "i"));
       const regExactQueries = query.map(term => new RegExp(`\\b${term.replace(/\s/g, '\\s*')}s?\\b`, "i"));
       const supplierFilters = query.map(term => (new RegExp(`^${term.replace(/\s/g, '\\s*')}$`, 'i')));
-
-      if (req.user?.email.endsWith("@slrltd.com") ||
-        req.user?.email.endsWith("@silverlakeresources.com.au") ||
-        req.user?.email.endsWith("@red5limited.com.au") ||
-        req.user?.email.endsWith("@ctlservices.com.au") ||
-        req.user?.email.endsWith("@ctlaus.com") ||
-        req.user?.email.endsWith("@focusminerals.com.au") ||
-        req.user?.email.endsWith("@evolutionmining.com")) {
-
-        const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
-        productFound = productFound.concat(tagsMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-      } else {
-        const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
-        productFound = productFound.concat(tagsMatches);
-        productFound = _.uniqBy(productFound, 'id');
-
-      }
+      const tagsMatches = await Product.find({ $and: regNormal.map(regex => ({ tags: regex })) }).limit(250);
+      productFound = productFound.concat(tagsMatches);
+      productFound = _.uniqBy(productFound, 'id');
 
       const keywords = regNormal.map(regex => regex.source); // Get the raw keyword from the regex
-
       const sortedProducts = productFound.sort((a, b) => {
         // Check how many keywords occur in `category`, `name`, or `description` for each product
         const aCount = keywords.filter(keyword =>

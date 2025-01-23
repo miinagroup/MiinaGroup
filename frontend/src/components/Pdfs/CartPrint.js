@@ -411,15 +411,7 @@ const CartPrint = (cartItems) => {
   //Area needs editing in future as we get more clients -- starts here
   const deliverDate = new Date(cartItems.invoiceDate);
   if (InvUserInfo.email) {
-    if (InvUserInfo.email.split("@")[1] === "slrltd.com") {
-      if (cartItems.cartSubtotal < 20000) {
-        deliverDate.setDate(deliverDate.getDate() + 7);
-      } else {
-        deliverDate.setDate(deliverDate.getDate() + 30);
-      }
-    } else if (InvUserInfo.email.split("@")[1] === "focusminerals.com.au") {
-      deliverDate.setDate(deliverDate.getDate() + 30);
-    }
+    deliverDate.setDate(deliverDate.getDate() + 30);
   }
   const deliveryDate = new Date(deliverDate).toLocaleString("en-AU", {
     day: "numeric",

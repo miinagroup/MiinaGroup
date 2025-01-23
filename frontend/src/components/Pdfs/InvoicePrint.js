@@ -517,10 +517,6 @@ const InvoicePrint = (invPrintData) => {
                 </View>
                 <View style={styles.tableColHeaderSide1}>
                   <View style={styles.tableCellBillBox}>
-                    {/* <Text> {companyHost === "slrltd.com" ?
-                      "7 Days from INV Date" :
-                      "30 Days from INV Date"}
-                    </Text> */}
                     {<Text>{dueDays} Days from INV Date</Text>}
                   </View>
                   <View style={styles.tableRow3}>
@@ -530,29 +526,6 @@ const InvoicePrint = (invPrintData) => {
                     <Text>Perth Warehouse</Text>
                   </View>
                 </View>
-                {/* <View style={styles.tableColHeaderCenter}>
-                  <View style={styles.tableRow2}>
-                    <View style={styles.tableCellHeaderLeft}>
-                      <View style={styles.tableCellBillBoxExtra}>
-                        <Text>CTL Australia Pty LTD</Text>
-                        <Text>BSB : 036-231</Text>
-                        <Text>ACC : 585602</Text>
-                        <Text>Westpac Bank</Text>
-                      </View>
-                    </View>
-                    <View style={styles.tableCellHeaderSales}>
-                      <View style={styles.tableCellBillBox}>
-                        <Text>7 Days from INV Date</Text>
-                      </View>
-                      <View style={styles.tableRow3}>
-                        <Text>    Dispatch From :</Text>
-                      </View>
-                      <View style={styles.tableCellBillBox}>
-                        <Text>Perth Warehouse</Text>
-                      </View>
-                    </View>
-                  </View>
-                </View> */}
                 <View style={styles.tableColHeaderSide}>
                   <Text style={styles.tableCellBill}>{deliverySite?.name}</Text>
                   <Text style={styles.tableCellBill}>
