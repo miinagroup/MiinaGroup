@@ -1,4 +1,3 @@
-/* get User require from user model */
 const User = require("../models/UserModel");
 const DeliveryBook = require("../models/DeliveryBookModel");
 const { hashPassword, comparePasswords } = require("../utils/hashPassword");

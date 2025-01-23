@@ -9,11 +9,9 @@ const cartRoutes = require("./cartRoutes")
 const deliveryBookRoutes = require("./deliveryBookRoutes")
 
 const jwt = require("jsonwebtoken");
-/* logout */
 app.get("/logout", (req, res) => {
     return res.clearCookie("access_token").send("access token cleared");
 });
-/* login */
 app.get("/get-token", (req, res) => {
     try {
         const accessToken = req.cookies["access_token"];

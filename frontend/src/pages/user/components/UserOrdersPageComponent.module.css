@@ -4,12 +4,13 @@
     color:#483F55
 }
 
+
 .searchPaginationWrapper {
     width: 100%; 
     display: flex;
     justify-content: space-between;
     padding: 25px 0px;
-}
+} 
 
 .title {
     font-family: "GloriaHallelujah";
@@ -120,5 +121,24 @@
 .userOrdersMobileMenu {
     width: 90%;
     margin: 0 auto;
+}
+
+.userOrdersMobileInfo a {
+    color:#DBA162 !important;
+}
+
+
+@media (max-width: 575px) {
+    .searchPaginationWrapper {
+        display: none;
+    }
+
+    .ordersWrapper {
+         padding: 0px 25px 25px 25px;
+    }
+
+    .title {
+         font-size: 22px;
+    }
 }
 

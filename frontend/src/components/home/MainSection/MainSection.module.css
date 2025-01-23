@@ -141,8 +141,10 @@
 .swiper {
     max-height: 380px;
     padding: 50px 50px 25px 75px !important;
-    margin:  0 auto;
     background-color: rgba(219, 161, 98, 0.45);
+
+    width: 100%;
+    display: block;
 }
 
 .defaultDescription {
@@ -161,4 +163,107 @@
      right: 125px;
      z-index: 1;
      opacity: 50%;
+}
+
+.mobile {
+     display: none;
+}
+
+@media (max-width: 575px) {
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+   }
+   
+
+    .categories {
+         flex-direction: column;
+    }
+
+    .categoriesList {
+        font-size: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        margin:  0 auto;
+        justify-content: center;
+    }
+
+    .categoryItem {
+         padding: 5px 10px;
+    }
+
+    .highlighted {
+        padding: 5px 10px;
+        color: #999A47;
+        border: 1px solid #999A47;
+        border-bottom: none;
+        border-top: none;
+ 
+    }
+
+    .title {
+        padding-top: 35px;
+        margin-bottom: 15px;
+        font-size: 24px;
+      }
+
+      .text {
+         width: 100%;
+         max-width: 325px;
+         font-size: 12px;
+         line-height: 18px;
+        margin:  0 auto;
+        margin-bottom: 25px;
+        text-align: center
+      }
+
+      .mark {
+         width: 25px;
+      }
+
+      .card {
+        font-size: 12px;
+        max-width: 200px;
+        padding: 25px 10px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* margin:  0 auto; */
+      }
+
+      .logoPlant {
+         width: 35px;
+      }
+
+      .swiper {
+        padding: 25px 25px !important;
+        max-width: 100%;
+   }
+
+   .defaultDescription {
+    height: 210px;
+    padding: 25px 25px;
+    font-size: 12px;
+   }
+
+   .FamilyEmblemWhite {
+     max-width: 120px;
+     right: 0px;
+     top: 50px;
+   }
+
+    .categoriesList a {
+     text-decoration: none;
+     color:#483F55;
+   }
+
+   .categoriesList .highlighted {
+    text-decoration: underline;
+    color:#999A47;
+  }
+
 }

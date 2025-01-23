@@ -67,7 +67,6 @@ const SendInvoice = (invDate) => {
 
         config
       );
-      console.log(res.data);
       setIsSending(false);
       setFormData({
         from: "",
@@ -80,7 +79,6 @@ const SendInvoice = (invDate) => {
     }
   };
   return (
-    <>
       <div className="container">
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="form-group">
@@ -96,7 +94,6 @@ const SendInvoice = (invDate) => {
           </div>
         </form>
       </div>
-    </>
   );
 };
 

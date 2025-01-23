@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./MainSection.module.css";
 
 import { Navigation, Pagination, Scrollbar, A11y, Grid } from 'swiper/modules';
@@ -55,6 +55,7 @@ const MainSection = () => {
       We carefully select every supplier to align with our core values, ensuring we consistently deliver the highest level of service and products to clients across the Pilbara and surrounding regions.<br />
     </p>
     <div>
+    <div className="green-line"></div>
       <div className={styles.categories}>
         <ul className={styles.categoriesList}>
           {mainCategories.map(category => {
@@ -63,21 +64,32 @@ const MainSection = () => {
               className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
               onClick={() => setSelectedCategory(category.link)}
             >
-              <img src="/svg/SubmarkGreen.svg" alt="Miina Plant" className={styles.mark} />
+              <img src="/svg/SubmarkGreen.svg" alt="Miina Plant" className={`${styles.mark} ${styles.desktop}`} />
               <span>{category.label}</span>
             </li>
           })}
-        </ul>
+        </ul> 
 
         {subcategories[selectedCategory] ? <Swiper
           modules={[Navigation, Pagination, Scrollbar, A11y, Grid]}
-          slidesPerView={3}
-          grid={{
-            rows: 2,
-          }}
-          spaceBetween={25}
           className={styles.swiper}
-          navigation
+          breakpoints={{
+            320: {
+              slidesPerView: 2,
+              grid: {
+                rows: 2,
+              },
+              spaceBetween: 25,
+            },
+            1024: {
+              slidesPerView:3 ,
+          grid: {
+            rows: 2,
+           },
+           spaceBetween: 25,
+           navigation: true
+            }
+          }}
         >
           {subcategories[selectedCategory].sort().map((subcategory, index) => (
             <SwiperSlide key={index}>
@@ -92,7 +104,7 @@ const MainSection = () => {
         </Swiper>
           : <div className={styles.defaultDescription}> Some Description About this Category</div>}
       </div>
-
+      <div className="green-line"></div>
     </div>
 
   </div>

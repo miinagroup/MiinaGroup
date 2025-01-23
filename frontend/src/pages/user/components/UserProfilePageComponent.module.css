@@ -97,16 +97,18 @@
 
 @media(max-width: 480px) {
     .userProfilePageComponentWrapper {
-        margin: 15px 15px !important;
+        margin: 0px 0px !important;
+        padding-bottom: 150px;
     }
 
     .userProfilePageComponent {
-        padding: 0px;
+        padding: 25px 25px;
         width: 100% !important;
     }
 
     .userProfilePageComponent h1 {
         font-size: 18px;
+        margin-bottom: 25px;
     }
 
     .userProfilePageComponent input, .userProfilePageComponent div {
@@ -129,6 +131,26 @@
 
     .userQuotesPageWrapper h1 {
         font-size: 18px;
+    }
+
+    .userNavBarLinksWrapper {
+         gap: 0px !important;
+         flex-wrap: wrap;
+         justify-content: space-around;
+    }
+
+    .navLink {
+         font-size: 20px !important;
+    }
+
+    .imageBackground {
+        width: 150px;
+    }
+
+    .notification {
+         font-size: 14px;
+         margin-top: 10px;
+         padding: 0px 0px;
     }
 
 

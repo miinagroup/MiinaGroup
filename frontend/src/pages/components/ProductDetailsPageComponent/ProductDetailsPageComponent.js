@@ -16,6 +16,8 @@ import "../SharedPages.css";
 import ProductDescription from "./ui/ProductDescription/ProductDescription";
 import AdminProductPanel from "./ui/AdminProductPanel/AdminProductPanel";
 import PleaseSelect from "./ui/PleaseSelect/PleaseSelect";
+import { mainCategories } from "../../constants.js";
+import styles from "../home/MainSection/MainSection.module.css";
 
 const ProductDetailsPageComponent = ({
   addToCartReduxAction,
@@ -378,7 +380,20 @@ const ProductDetailsPageComponent = ({
     <div className="green-line"></div>
     <Container className="content-container product-detail-page" fluid>
       <Row className="product-detail-page-row">
-        <Col xxl={2} xl={3} lg={3} md={3}>
+      <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
+              {mainCategories.map(category => {
+                return <a
+                  key={category.label}
+                  // className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
+                  // onClick={() => setSelectedCategory(category.link)}
+                  href={`/product-list?categoryPath=${category.link}`}
+                >
+                  {category.label}
+                </a>
+              })}
+        </div>
+        <div className={`green-line ${styles.mobile}`}></div>
+        <Col xxl={2} xl={3} lg={3} md={3} className="desktop">
           <ListGroup variant="flush">
             <ListGroup.Item>
               <FilterComponent />

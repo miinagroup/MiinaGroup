@@ -53,35 +53,15 @@ const INITIAL_STATE = {
         return totalPrice + productPrice;
       }, 0)
       : 0,
-    /*       cartSubtotal: cartItemsInLocalStorage
-      ? cartItemsInLocalStorage.reduce((totalPrice, cartItem) => {
-          const productPrice = cartItem.cartProducts.reduce(
-            (price, product) => {
-              const originalPrice = product.price;
-              const taxAmount = originalPrice * 0.1;
-              const roundedTax = parseFloat(taxAmount.toFixed(2));
-              const totalPricePerProduct = (originalPrice + roundedTax).toFixed(2);
-              return price + totalPricePerProduct * product.quantity;
-            },
-            0
-          );
-          return totalPrice + productPrice;
-        }, 0)
-      : 0, */
-
   },
   userRegisterLogin: { userInfo: userInfoInLocalStorage },
   getCategories: {
     categories: categoriesInLocalStorage,
     subcategories: subcategoriesInLocalStorage,
   },
-  // getCategories: categoriesInLocalStorage,
-  // getSubcategories: subcategoriesInLocalStorage,
   products: productsInLocalStorage
 };
 
-// console.log('cartItemsInLocalStorage',cartItemsInLocalStorage);
-// console.log('INITIAL_STATE',INITIAL_STATE);
 
 const middleware = [thunk];
 const store = createStore(

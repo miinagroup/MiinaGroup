@@ -137,7 +137,6 @@ export const editQuantity = (id, qty) => async (dispatch, getState) => {
 
 /* ****** EMPTY_CART ****** */
 export const emptyCart = () => async (dispatch) => {
-  // 不要用clear 要用 removeItem，这个 clear 会移除所有的 localStorage
   try {
     const { data } = await axios.delete("/api/cart/remove");
     localStorage.removeItem("cart");
@@ -155,7 +154,6 @@ export const fetchCartItemsLogin = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/cart");
 
-    // Safely check for nested properties
     const cartItems = data && data.data && data.data.cart && data.data.cart.cartItems ? data.data.cart.cartItems : [];
     const cart = data?.data?.cart
     let updatedCartItems = []

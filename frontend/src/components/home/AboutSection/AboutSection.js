@@ -17,8 +17,8 @@ const AboutSection = () => {
                 </p>
             </div>
             <div className={styles.aboutImages} >
-                <img className={styles.aboutImagesOne} src="/images/image_about_2.jpg" alt="The Pannawonica area" />
-                <img className={styles.aboutImagesTwo} src="/images/image_about_1.jpg" alt="The Pannawonica area" />
+                <div className={styles.aboutImagesOne}><img src="/images/image_about_2.jpg" alt="The Pannawonica area" /></div>
+                <div className={styles.aboutImagesTwo}><img src="/images/image_about_1.jpg" alt="The Pannawonica area" /></div>
             </div>
         </div>
         <img className={styles.aboutImageBottom} src="/images/SubmarkGreen.png" alt="Submark Green" />

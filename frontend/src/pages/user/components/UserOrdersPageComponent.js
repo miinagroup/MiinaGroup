@@ -94,8 +94,6 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
           )
       );
     }
-    //Sorting products
-    // as localeCompare only can compare String, we have to update it as below.
     if (sorting.field) {
       const reversed = sorting.order === "asc" ? 1 : -1;
       computedOrders = computedOrders.sort((a, b) => {
@@ -107,7 +105,6 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
         } else if (typeof fieldA === "string" && typeof fieldB === "string") {
           return reversed * fieldA.localeCompare(fieldB);
         } else {
-          // If field types are different, compare their string representations
           return reversed * String(fieldA).localeCompare(String(fieldB));
         }
       });
@@ -124,7 +121,6 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
     );
   }, [orders, ordersByCompany, currentPage, sorting, productSearch]);
 
-  // order items Modal and Back Order
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -148,7 +144,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
         <UserLinksComponent />
         <div className={styles.ordersWrapper}>
           <h1 className={styles.title}>MY ORDERS</h1>
-          <div className={styles.searchPaginationWrapper}>
+          <div className={`${styles.searchPaginationWrapper} desktop`}>
             <Pagination
               total={totalProducts}
               itemsPerPage={ITEMS_PER_PAGE}
@@ -162,7 +158,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
               }}
             />
           </div>
-          <table className={`table ${styles.ordersTable}`}>
+          <table className={`table ${styles.ordersTable} desktop`}>
             <TableHeader
               headers={productHeaders}
               onSorting={(field, order) => setSorting({ field, order })}
@@ -234,42 +230,9 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
                 ))) : ""}
             </tbody>
           </table>
-          <div className="row">
-            <div className="col-md-6">
-              <Pagination
-                total={totalProducts}
-                itemsPerPage={ITEMS_PER_PAGE}
-                currentPage={currentPage}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <Modal show={show} onHide={handleClose} className="order_preview_items">
-        <UserOrderItemForOrderPageComponent id={selectedOrderId} />
-      </Modal>
 
-      {/* <div className={`${styles.userOrdersMobileWrapper} mobile`}>
-        <Col md={2} className={styles.userOrdersMobileMenu}>
-          <UserLinksComponent />
-        </Col>
-        <h5>MY ORDERS</h5>
-        <Tabs defaultActiveKey="PRODUCTS"
-          transition={false}
-          id="noanim-tab-example"
-          className={styles.userOrdersMobileTabs}
-        >
-          <Tab eventKey="PRODUCTS" title="PRODUCT ORDERS">
-            <div className={styles.userOrdersMobileSearch}>
-              <Search
-                onSearch={(value) => {
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
-            {productData && productData?.map((order, idx) => {
+          {productData && productData?.map((order, idx) => {
               return (
                 <>
                   <div className={styles.userOrdersMobile}>
@@ -299,7 +262,10 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
                 </>
               )
             })}
-            <div className={styles.userOrdersMobilePagination}>
+
+
+          <div className="row">
+            <div className="col-md-6">
               <Pagination
                 total={totalProducts}
                 itemsPerPage={ITEMS_PER_PAGE}
@@ -307,9 +273,13 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
                 onPageChange={(page) => setCurrentPage(page)}
               />
             </div>
-          </Tab>
-        </Tabs>
-      </div> */}
+          </div>
+        </div>
+      </div>
+
+      <Modal show={show} onHide={handleClose} className="order_preview_items">
+        <UserOrderItemForOrderPageComponent id={selectedOrderId} />
+      </Modal>
     </>
   );
 };

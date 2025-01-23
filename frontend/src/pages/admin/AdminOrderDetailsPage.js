@@ -53,12 +53,6 @@ const sendProformaInv = async (id) => {
   }
 };
 
-/* const updateBackOrder = async (orderId, itemId, suppliedQty) => {
-    const { data } = await axios.put("/api/orders/updateBackOrder/" + orderId, itemId, suppliedQty);
-    if (data) {
-        return data;
-    }
-} */
 const updateBackOrder = async (orderId, itemId, price, suppliedQty) => {
   const { data } = await axios.put(
     "/api/orders/updateBackOrder/" + orderId + "/" + itemId,
@@ -138,7 +132,6 @@ const AdminOrderDetailsPage = () => {
       updateAdminNote={updateAdminNote}
       adminCreateOrder={adminCreateOrder}
       fetchProduct={fetchProduct}
-    // updateOrderClientCurrentSku={updateOrderClientCurrentSku}
     />
   );
 };

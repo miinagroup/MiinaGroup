@@ -94,12 +94,10 @@
     background-color: white;
 }
 
-/* ********* edit order name ********* */
 .edite_order_name .modal-content {
     margin-top: 60%;
 }
 
-/* ********* order items preview ********* */
 .order_preview_items .modal-content {
     width: 200%;
     margin-left: -50%;
@@ -108,8 +106,6 @@
     background-color: #F6E7D8;
 }
 
-
-/**************User Events Preview***************/
 .userEvents_preview_items .modal-content {
     width: 300%;
     margin-left: -90%;
@@ -118,7 +114,6 @@
     overflow-y: scroll;
 }
 
-/* ********* PaymentPageComponent ********* */
 .QBs_Payment_total_amount {
     float: right;
     margin-right: 16%;
@@ -128,8 +123,6 @@
     float: right;
     margin-right: 5%;
 }
-
-
 
 .table_overflow_hidden {
     max-width: 100%;
@@ -155,7 +148,6 @@
     flex: 0 0 auto;
 }
 
-/* ********* ProductsPage Replenishment ********* */
 .product_replenishment_items .modal-content {
     margin-top: 20%;
 }

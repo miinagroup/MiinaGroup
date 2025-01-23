@@ -215,7 +215,6 @@ const ProductForListPreviewComponent = ({
                   <Col className="mt-2 preview-product-row-col">
                     <Container className="border border-light border-5 preview-product-row-container">
                       <div className="m-2">
-                        {/* <span className="fw-bold m-1">DESCRIPTION:</span> */}
                         <div
                           className="m-1"
                           style={{
@@ -247,10 +246,8 @@ const ProductForListPreviewComponent = ({
                                                 tableItem.split(":");
                                               return (
                                                 <tr key={tableIndex}>
-                                                  <td /* style={{ whiteSpace: 'nowrap' }} */
-                                                  >
+                                                  <td>
                                                     {key.toUpperCase()}
-                                                    {/* {capitalizeFirstLetter(key.trimStart())} */}
                                                   </td>
                                                   <td
                                                     style={{ width: "100%" }}
@@ -284,7 +281,7 @@ const ProductForListPreviewComponent = ({
                                 } else if (item.includes("^")) {
                                   const tableItems = item
                                     .split("^")
-                                    .filter(Boolean); // remove empty strings from the array
+                                    .filter(Boolean);
                                   return (
                                     <>
                                       {tableItems.map(
@@ -308,7 +305,6 @@ const ProductForListPreviewComponent = ({
                                     </>
                                   );
                                 }
-                                // If the first character is "<", format the string in bold and uppercase, removing the "<"
                                 if (item.charAt(0) === "<") {
                                   return (
                                     <div key={index}>

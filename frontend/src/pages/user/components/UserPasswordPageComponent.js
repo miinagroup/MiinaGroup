@@ -55,7 +55,6 @@ const UserPasswordPageComponent = () => {
   };
 
   return (
-    <>
       <div className={styles.passwordChangeWrapper}>
         <img alt="Miina Group Family Emblem" src="/images/FamilyEmblemWhite.png" className={styles.emblem}/>
         <div>
@@ -78,7 +77,6 @@ const UserPasswordPageComponent = () => {
           )}
         </div>
       </div>
-    </>
   );
 };
 

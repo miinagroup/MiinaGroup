@@ -30,13 +30,7 @@ const AdminCartDetailsPage = () => {
     return data;
   };
 
-  // const createOrder = async (orderData) => {
-  //   const { data } = await axios.post("/api/orders", { ...orderData });
-  //   return data;
-  // }
-
   const adminCreateOrder = async (orderData) => {
-    console.log(orderData);
     const { data } = await axios.post("/api/orders/adminCreateOrder", { ...orderData });
     return data;
   }

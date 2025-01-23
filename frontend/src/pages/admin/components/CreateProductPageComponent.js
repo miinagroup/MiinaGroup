@@ -6,9 +6,8 @@ import {
   Button,
   CloseButton
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   changeCategory,
@@ -192,12 +191,10 @@ const CreateProductPageComponent = ({
         setIsCreating("to many files");
         return;
       }
-      console.log("formInputs", formInputs);
       createProductApiRequest(formInputs)
         .then((data) => {
           if (images) {
             if (process.env.NODE_ENV === "dev") {
-              // TODO: change to !==  ===
               uploadImagesApiRequest(images, data.productId)
                 .then((res) => { })
                 .catch((er) =>
@@ -213,7 +210,6 @@ const CreateProductPageComponent = ({
           }
           if (pdfs) {
             if (process.env.NODE_ENV === "dev") {
-              // to do: change to !==
               uploadPdfApiRequest(pdfs, data.productId)
                 .then((res) => { })
                 .catch((er) =>
@@ -230,7 +226,6 @@ const CreateProductPageComponent = ({
           if (data.message === "product created") navigate("/admin/products");
         })
         .catch((er) => {
-          console.log("error", er);
           setCreateProductResponseState({
             error: er.response.data.message
               ? er.response.data.message
@@ -243,7 +238,6 @@ const CreateProductPageComponent = ({
   };
 
   const uploadHandlerImage = (e) => {
-    console.log(e.target.files);
     setImages(e.target.files);
   };
 
@@ -333,9 +327,6 @@ const CreateProductPageComponent = ({
     <Container>
       <Row className="justify-content-md-center mt-5 content-container ">
         <Col md={1}>
-          {/*           <Link to="/admin/products" className="btn btn-info my-3">
-            Go Back
-          </Link> */}
           <GoBackButton />
         </Col>
         <Col md={8}>
@@ -369,7 +360,6 @@ const CreateProductPageComponent = ({
               className="mb-3"
               controlId="formBasicSupplier"
             >
-              {/* <Form.Control name="create_MNASKU" type="button" /> */}
             </Form.Group>
 
             {[...Array(rowCount)].map((_, index) => (
@@ -681,13 +671,11 @@ const CreateProductPageComponent = ({
                 Tags / Keywords
               </Form.Label>
               <Form.Control
-                // onKeyUp={newCategoryHandler}
                 name="tags"
                 type="text"
               />
             </Form.Group>
             <Form.Group controlId="formFileMultiple" className="mb-3 mt-3">
-              {/* ********* Image upload ********* */}
               <Form.Label>Images</Form.Label>
 
               <div
@@ -711,7 +699,6 @@ const CreateProductPageComponent = ({
                 }}
               />
               {isCreating}
-              {/* ********* Description PDF ********* */}
               <br />
               <Form.Label>Description PDF</Form.Label>
               <Form.Control

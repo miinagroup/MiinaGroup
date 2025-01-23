@@ -14,6 +14,9 @@ import {
 import CartDropDown from "../../pages/user/components/CartDropDown";
 import FetchAuthFromServer from "../Utils/FetchAuthFromServer";
 import styles from "./Header.module.css";
+import HamburgerMenu from "../Hamburger/HamburgerMenu";
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Accordion from 'react-bootstrap/Accordion';
 
 const mainCategories = [
   {
@@ -56,6 +59,8 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
   const navigate = useNavigate();
   const location = useLocation();
   const subcategories = useSelector((state) => state.getCategories.subcategories);
+  const [showOffcanvasMenu, setShowOffcanvasMenu] = useState(false);
+
 
   const submitHandler = (e) => {
     if (e.keyCode && e.keyCode !== 13) return;
@@ -81,12 +86,14 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
   }, [userInfo]);
 
 
-  /* ********* User Logout ******** */
   const logOutUser = () => {
     dispatch(logout());
   };
 
   const isAuth = FetchAuthFromServer();
+
+  const handleCloseOffcanvasMenu = () => setShowOffcanvasMenu(false);
+  const handleShowOffcanvasMenu = () => setShowOffcanvasMenu(true);
 
   const adminLinks = [
     {
@@ -122,8 +129,8 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
 
   return <div className={styles.header}>
     <div className={styles.headerWrapper}>
-      <div className={styles.menu}>
-        <div className={styles.menuItem}>
+    <div className={`${styles.menu} ${styles.desktop}`}>
+    <div className={styles.menuItem}>
           <span className={styles.catalogueMenuItem}>CATALOGUE</span>
           <div className={styles.catalogueDropdown}>
             {mainCategories.map((category) => {
@@ -184,6 +191,54 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
       </a>
 
       <div className={styles.logRegNew}>
+      <HamburgerMenu toggleShowSidebar={handleShowOffcanvasMenu} />
+          <Offcanvas show={showOffcanvasMenu} onHide={handleCloseOffcanvasMenu} className={styles.offcanvasMenu}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title className={styles.offcanvasTitle}>Menu</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+          <Accordion defaultActiveKey="0" className={styles.headerAccordion}>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header className={styles.accordionHeader}>CATALOGUE</Accordion.Header>
+              <Accordion.Body className={styles.accordionBody}>
+              {mainCategories.map((category) => {
+              return (
+                <div className={styles.category} key={category.link}>
+                  <a href={`/product-list?categoryPath=${category.link}`} className={styles.categoryPath}>
+                    <img src="/images/SubmarkGreen.png" alt="Miina Group Logo" className={styles.logoTag} />
+                    <div>{category.label}</div>
+                  </a>
+                </div>
+              );
+            })}
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header className={styles.accordionHeader}>ABOUT US</Accordion.Header>
+              <Accordion.Body className={styles.accordionBody}>
+                <button onClick={() => {
+                  handleClickGoToSection(goToAboutSection)
+                  handleCloseOffcanvasMenu()
+                }}>
+                  <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Who Miina Group is</div>
+                </button>
+                <button onClick={() => {
+                  handleClickGoToSection(goToTeamSection)
+                  handleCloseOffcanvasMenu()
+                  }}>
+                  <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Miina Group Team</div>
+                </button>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="2">
+              <Accordion.Header className={styles.accordionHeader}><button onClick={() => {
+                handleClickGoToSection(goToContactSection)
+                handleCloseOffcanvasMenu()
+                }}><div className={styles.menuItem}>CONTACT</div></button></Accordion.Header>
+            </Accordion.Item>
+          </Accordion>
+          </Offcanvas.Body>
+        </Offcanvas>
         <div className={`${styles.search}`}>
           <input
             placeholder="Search 1000+ products"
@@ -291,9 +346,6 @@ const NewHeaderComponentLoggedIn = ({ setIsOpenModal, goToAboutSection, goToTeam
               </div>
             )}
 
-
-
-            {/* *********** Cart and Dropdown *********** */}
             <div className="cart_dropdown">
               <div className={`miningCart ${styles.miningCart}`}>
                 <a

@@ -6,15 +6,11 @@ const PDFPreviewForVisitor = () => {
   useEffect(() => {
     const path = window.location.search;
     const pathSegment = path.split('?')[1];
-    console.log("pathSegment", pathSegment);
     if (pathSegment) {
       const constructedUrl = `https://ctladmin.b-cdn.net/CTLDocuments/${pathSegment}`;
       setPdfUrl(constructedUrl);
     }
   }, []);
-
-
-
 
   return (
     <iframe

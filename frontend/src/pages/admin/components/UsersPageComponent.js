@@ -50,7 +50,6 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
       })
       .catch((er) => {
         if (er.code === "ERR_CANCELED") {
-          // console.log("Fetch request was cancelled");
         } else if (er.response) {
           console.log(
             er.response.data.message
@@ -134,8 +133,7 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
     setLocationFilter("");
     setSearchTerm("");
     setShowUnverified(false);
-  };
-  //console.log(filteredUsers);
+  }; 
   return (
     <Row className="content-container m-5">
       <Col md={2}>
@@ -231,8 +229,6 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Email</th>
-              {/* <th>Phone</th>
-              <th>Mobile</th> */}
               <th>Company</th>
               <th>Location</th>
               <th>
@@ -249,8 +245,6 @@ const UsersPageComponent = ({ fetchUsers, deleteUser }) => {
                 <td>{user.name}</td>
                 <td>{user.lastName}</td>
                 <td>{user.email}</td>
-                {/* <td>{user.phone}</td>
-                <td>{user.mobile}</td> */}
                 <td>{user.company}</td>
                 <td>{user.location}</td>
                 <td>

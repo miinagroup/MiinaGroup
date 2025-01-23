@@ -21,7 +21,6 @@ const deleteProduct = async (productId) => {
 
 const productReplenishment = async (barcode, suppliersku, replenishment) => {
   try {
-    console.log(barcode, suppliersku, replenishment);
     const { data } = await axios.put(`/api/products/admin/replenishment`, {
       barcode, suppliersku, replenishment
     });
@@ -34,7 +33,6 @@ const productReplenishment = async (barcode, suppliersku, replenishment) => {
 
 const productStockTake = async (barcode, count) => {
   try {
-    console.log(barcode, count);
     const { data } = await axios.put(`/api/products/admin/stocktake`, {
       barcode, count
     });

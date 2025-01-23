@@ -18,7 +18,7 @@ const ProductDetailsPage = () => {
       const { data } = await axios.get(`/api/users/profile/${userInfo._id}`);
       return data;
     }
-    return null; // Return null if userInfo._id doesn't exist
+    return null;
   };
 
   const createQuote = async (formInputs) => {
@@ -28,7 +28,6 @@ const ProductDetailsPage = () => {
 
   const addToPOCartHandler = async (poCartItems) => {
     const { data } = await axios.post("/api/poCart/add", { poCartItems });
-    console.log("addToPOCartHandler", data);
     return data;
   }
 

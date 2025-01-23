@@ -97,3 +97,71 @@
 .card:nth-of-type(2) {
     margin-top: 150px;
 }
+
+
+@media (max-width: 575px) {
+    .team {
+        padding: 25px 25px;
+    }
+
+    .title {
+        font-size: 24px;
+        padding-top: 25px;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .teamInfo {
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .name {
+        font-size: 20px;
+    }
+
+    .role {
+        font-size: 16px;
+    }
+
+    .card {
+         padding: 10px 25px;
+    }
+
+    .emblem { 
+        width: 150px;
+        right: -45px;
+    }
+
+    .info { 
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .photo {
+         max-width: 150px;
+    }
+
+    .infoWrapper {
+        font-size: 12px;
+    }
+
+    .biographyItems {
+         gap: 0px;
+         align-items: center;
+         margin-bottom: 25px;
+    }
+
+    .biographyItem {
+         font-size: 12px;
+         align-items: center;
+    }
+
+    .card:nth-of-type(2) {
+        margin-top: 25px;
+    }
+
+    .icon {
+         width: 15px;
+    }
+}

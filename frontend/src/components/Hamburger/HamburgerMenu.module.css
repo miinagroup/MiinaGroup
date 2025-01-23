@@ -1,7 +1,7 @@
 
   .hamburger {
     width: 30px;
-    height: 30px;
+    /* height: 30px; */
     position: relative;
     display: flex;
     justify-content: center;
@@ -16,9 +16,9 @@
     width: 30px;
     height: 4px;
     transform: translateY(-10px);
-    box-shadow: 0 10px #1e4881;
+    box-shadow: 0 10px #483F55;
     transition: 0.3s;
-    background-color: #1e4881;
+    background-color: #483F55;
     border-radius: 2px;
   }
   
@@ -27,7 +27,7 @@
     position: absolute;
     width: 30px;
     height: 4px;
-    background-color: #1e4881;
+    background-color: #483F55;
     transform: translateY(10px);
     transition: 0.3s;
     border-radius: 2px;
@@ -40,18 +40,18 @@
   
   .hamburger.clicked::before {
     transform: translateY(0px) rotate(45deg);
-    box-shadow: 0 0px #1e4881;
+    box-shadow: 0 0px #483F55;
   }
   
   .hamburger.clicked::after {
     transform: translateY(0px) rotate(-45deg);
-    box-shadow: 0 0px #1e4881;
+    box-shadow: 0 0px #483F55;
   }
 
   .sidebar {
     width: 100%;
     max-width: 300px;
-    background-color: #1e4881;
+    background-color: #483F55;
     opacity: 0.9;
     color: #fff;
   }
@@ -133,5 +133,15 @@
 
   .rfq_button {
     display: none;
+  }
+
+  .mobile {
+     display: none;
+  }
+
+  @media (max-width: 575px) {
+    .mobile {
+      display: flex;
+   }
   }
 

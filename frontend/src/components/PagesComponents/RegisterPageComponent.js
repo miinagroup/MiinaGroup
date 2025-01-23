@@ -25,7 +25,6 @@ const RegisterPageComponent = ({
     userCreated: null
   });
 
-  // confirm password validation
   const [password, setPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -113,7 +112,6 @@ const RegisterPageComponent = ({
     }
   };
 
-  // submit form
   const handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -184,7 +182,6 @@ const RegisterPageComponent = ({
             setEmailSent(true);
           }
         })
-        // incase some error写一个catch error的function
         .catch((er) => {
           setRegisterUserResponseState({
             error: er.response.data.message
@@ -200,18 +197,11 @@ const RegisterPageComponent = ({
   };
 
 
-  /* **************** Show Password **************** */
   const [showPassword, setShowPassword] = useState(false);
 
   const [show, setShow] = useState(false);
   const [showAbn, setShowAbn] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-  };
   const [showLocation, setShowLocation] = useState(false);
-  const handleCloseLocation = () => {
-    setShowLocation(false);
-  };
   const handleEmail = (e) => {
     const email = e.target.value
     if (email === "" || email === null) {
@@ -248,9 +238,8 @@ const RegisterPageComponent = ({
   const handleOtherRole = (e) => {
     setOtherRole(e.target.value);
   }
-  const handleChangeRole = (e) => {
-    setUserRole(e.target.value)
-  }
+
+
   return (
     <Container>
       <Row className="mt-4 justify-content-md-center">
@@ -258,7 +247,6 @@ const RegisterPageComponent = ({
         {registerUserResponseState.userCreated === null || registerUserResponseState.error === "user exists" ?
 
           <Col md={6} className="w-100">
-            {/* <h2>Register</h2> */}
             <Form
               noValidate
               validated={validated}
@@ -277,7 +265,6 @@ const RegisterPageComponent = ({
                   <Form.Control.Feedback type="invalid">
                     Please enter first name.{" "}
                   </Form.Control.Feedback>
-                  {/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
                 </Form.Group>
 
                 <Form.Group as={Col} md="6" controlId="formBasicLastName">

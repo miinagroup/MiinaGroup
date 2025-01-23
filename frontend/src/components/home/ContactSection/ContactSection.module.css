@@ -3,7 +3,6 @@
     font-size: 20px;
     background-color: rgba(219, 161, 98, 0.25);
     padding: 0px 50px 150px 50px;
-    /* text-align: center; */
     position: relative;
     overflow: hidden;
 }
@@ -124,4 +123,79 @@ label {
     border-radius: 10px;
     width: 100%;
     max-width: 145px;
+}
+
+@media (max-width: 575px) {
+    .contacts {
+        padding: 0px 25px 25px 25px;
+    }
+    .contactsAcknowledgement {
+         flex-direction: column;
+         gap: 25px;
+         margin-bottom: 25px;
+    }
+
+    .logoTaglineWrapper {
+         text-align: center;
+    }
+
+    .logo {
+        max-width: 200px;
+    }
+
+    .tagline {
+         font-size: 12px;
+    }
+
+    .acknowledgement {
+        max-width: 320px;
+        font-size: 14px;
+    }
+
+    .title { 
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+         font-size: 14px;
+         margin-bottom: 25px;
+    }
+
+    .backgroundEmblem {
+         display: none;
+    }
+
+    .requestForm {
+        padding: 10px 15px;
+        gap: 5px;
+    }
+
+    .requestForm label {
+        font-size: 14px;
+
+    }
+
+    .requestForm input {
+         padding: 0px 0px 2px 10px;
+    }
+
+    .requestForm textarea {
+        padding: 5px 0px 0px 10px;
+   }
+
+   .newRequestFormBtn {
+     font-size: 12px;
+     padding: 5px 0px;
+     max-width: 120px;
+   }
+
+   .requestForm  input::placeholder {
+    font-size: 12px;
+   }
+
+   .requestForm  textarea::placeholder {
+    font-size: 12px;
+   }
+
 }

@@ -129,7 +129,6 @@ const ProductsPageComponent = ({
       .then((res) => setProducts(res))
       .catch((er) => {
         if (er.code === "ERR_CANCELED") {
-          // console.log("Fetch request was cancelled");
         } else if (er.response) {
           console.log(
             er.response.data.message

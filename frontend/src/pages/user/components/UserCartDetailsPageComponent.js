@@ -651,7 +651,7 @@ const UserCartDetailsPageComponent = ({
                     </ListGroup>
                   </div>
                 </div>
-                <div className="desktop">
+                <div>
                   <Button
                     type="button"
                     onClick={removeAllItems}

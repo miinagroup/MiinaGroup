@@ -167,9 +167,6 @@ const CartPrint = (cartItems) => {
       paddingTop: 3,
     },
 
-
-    //************************************* */
-
     tableItemChunk: {
       paddingLeft: 50,
       paddingBottom: 5,
@@ -408,7 +405,6 @@ const CartPrint = (cartItems) => {
     hour12: true,
   });
 
-  //Area needs editing in future as we get more clients -- starts here
   const deliverDate = new Date(cartItems.invoiceDate);
   if (InvUserInfo.email) {
     deliverDate.setDate(deliverDate.getDate() + 30);
@@ -421,10 +417,8 @@ const CartPrint = (cartItems) => {
     minute: "numeric",
     hour12: true,
   });
-  //Area needs editing in future as we get more clients -- ends here
 
   return (
-    <>
       <Document id={cartItems.invoiceNumber}>
         <Page style={styles.body} size="A4" orientation="landscape">
           {/* ******* header ******* */}
@@ -507,7 +501,6 @@ const CartPrint = (cartItems) => {
                 <View style={styles.tableColHeaderShort}><Text style={styles.tableColBillItemHeader}>Unit Price</Text></View>
                 <View style={styles.tableColHeaderShort}><Text style={styles.tableColBillItemHeader}>Net Amount</Text></View>
                 <View style={styles.tableColHeaderShort}><Text style={styles.tableColBillItemHeader}>GST</Text></View>
-                {/* <View style={styles.tableColHeaderSideTotal}><Text>Total Inc. GST</Text></View> */}
               </View>
               {firstItems.map((item, idx) => {
                 return idx % 2 == 0 ? (
@@ -553,37 +546,7 @@ const CartPrint = (cartItems) => {
                         <Text style={styles.tableColBillItemRight}>
                           10% {"  "}
                         </Text>
-                        {/* <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              (item.cartProducts[0].price *
-                                item.cartProducts[0].quantity *
-                                10) /
-                              100
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text> */}
                       </View>
-                      {/* <View style={styles.tableColHeaderSideTotal}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              item.cartProducts[0].price *
-                              item.cartProducts[0].quantity +
-                              (item.cartProducts[0].price *
-                                item.cartProducts[0].quantity *
-                                10) /
-                              100
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View> */}
                     </View>
                   </>
                 ) : (
@@ -629,37 +592,7 @@ const CartPrint = (cartItems) => {
                         <Text style={styles.tableColBillItemRight}>
                           10% {"  "}
                         </Text>
-                        {/* <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              (item.cartProducts[0].price *
-                                item.cartProducts[0].quantity *
-                                10) /
-                              100
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text> */}
                       </View>
-                      {/* <View style={styles.tableColHeaderSideTotal}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              item.cartProducts[0].price *
-                              item.cartProducts[0].quantity +
-                              (item.cartProducts[0].price *
-                                item.cartProducts[0].quantity *
-                                10) /
-                              100
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View> */}
                     </View>
                   </>
                 );
@@ -769,11 +702,6 @@ const CartPrint = (cartItems) => {
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItemHeader}>GST</Text>
                       </View>
-                      {/* <View style={styles.tableColHeaderSideTotal}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Total Inc. GST
-                        </Text>
-                      </View> */}
                     </View>
                     {chunk.map((item, idx) => {
                       return idx % 2 == 0 ? (
@@ -826,37 +754,7 @@ const CartPrint = (cartItems) => {
                               <Text style={styles.tableColBillItem}>
                                 10% {"  "}
                               </Text>
-                              {/* <Text style={styles.tableColBillItem}>
-                                ${" "}
-                                {item.cartProducts[0].price
-                                  ? (
-                                    (item.cartProducts[0].price *
-                                      item.cartProducts[0].quantity *
-                                      10) /
-                                    100
-                                  )
-                                    .toFixed(2)
-                                    .toLocaleString()
-                                  : ""}
-                              </Text> */}
                             </View>
-                            {/* <View style={styles.tableColHeaderSideTotal}>
-                              <Text style={styles.tableColBillItem}>
-                                ${" "}
-                                {item.cartProducts[0].price
-                                  ? (
-                                    item.cartProducts[0].price *
-                                    item.cartProducts[0].quantity +
-                                    (item.cartProducts[0].price *
-                                      item.cartProducts[0].quantity *
-                                      10) /
-                                    100
-                                  )
-                                    .toFixed(2)
-                                    .toLocaleString()
-                                  : ""}
-                              </Text>
-                            </View> */}
                           </View>
                         </>
                       ) : (
@@ -908,37 +806,7 @@ const CartPrint = (cartItems) => {
                             <Text style={styles.tableColBillItem}>
                               10% {"  "}
                             </Text>
-                            {/* <Text style={styles.tableColBillItem}>
-                              ${" "}
-                              {item.cartProducts[0].price
-                                ? (
-                                  (item.cartProducts[0].price *
-                                    item.cartProducts[0].quantity *
-                                    10) /
-                                  100
-                                )
-                                  .toFixed(2)
-                                  .toLocaleString()
-                                : ""}
-                            </Text> */}
                           </View>
-                          {/* <View style={styles.tableColHeaderSideTotal}>
-                            <Text style={styles.tableColBillItem}>
-                              ${" "}
-                              {item.cartProducts[0].price
-                                ? (
-                                  item.cartProducts[0].price *
-                                  item.cartProducts[0].quantity +
-                                  (item.cartProducts[0].price *
-                                    item.cartProducts[0].quantity *
-                                    10) /
-                                  100
-                                )
-                                  .toFixed(2)
-                                  .toLocaleString()
-                                : ""}
-                            </Text>
-                          </View> */}
                         </View>
                       );
                     })}
@@ -1008,7 +876,6 @@ const CartPrint = (cartItems) => {
           </React.Fragment>
         ))}
       </Document>
-    </>
   );
 };
 

@@ -133,9 +133,6 @@ const getProducts = async (req, res, next) => {
       sort = { [sortOpt[0]]: Number(sortOpt[1]) };
     }
 
-    /* ******* search function ******* */
-
-    // 第九版 searchQuery
     const searchQuery = req.params.searchQuery || "";
     let searchQueryCondition = {};
     let select = {};

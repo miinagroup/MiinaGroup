@@ -6,7 +6,6 @@ export const uploadImagesApiRequest = async (images, quoteId) => {
     formData.append("images", image);
   });
   const { data } = await axios.post("/api/quotes/upload?quoteId=" + quoteId, formData);
-  console.log(formData);
   return data;
 };
 

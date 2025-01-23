@@ -14,7 +14,7 @@ const HamburgerMenu = ({toggleShowSidebar, showSidebar}) => {
     }, [showSidebar])
 
     return (
-      <div ref={menuRef} onClick={toggleShowSidebar} className={styles.hamburger}></div>
+      <div ref={menuRef} onClick={toggleShowSidebar} className={`${styles.hamburger} ${styles.mobile}`}></div>
     )
 }
 

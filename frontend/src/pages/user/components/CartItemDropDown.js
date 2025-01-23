@@ -37,7 +37,6 @@ const CartItemDropDown = ({
   });
 
   return (
-    <>
       <ListGroup.Item className="cartDropDownComponentItem">
         <Row className="cartDropDownComponent_container">
           <Col md={2}>
@@ -84,7 +83,6 @@ const CartItemDropDown = ({
               style={{background: "transparent", border: "1px solid #DBA162"}}
             />
           </Col>
-          {/* delete button trash */}
           <Col md={1} className="remove_from_cart_btn">
             <CartItemDropDownRemoveFromCart
               orderCreated={orderCreated}
@@ -99,7 +97,6 @@ const CartItemDropDown = ({
           </Col>
         </Row>
       </ListGroup.Item>
-    </>
   );
 };
 

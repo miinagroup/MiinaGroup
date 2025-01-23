@@ -94,23 +94,19 @@
     background-color: white;
 }
 
-/* ********* edit order name ********* */
 .edite_order_name .modal-content {
     margin-top: 60%;
 }
 
-/************** add ownership ********************/
 .add_ownership .modal-content {
     margin-top: 60%;
 }
 
-/************** User_Quote_List_Tabs ********************/
 .User_Quote_List_Tabs .nav-link.active {
     background-color: #1e4881;
     font-weight: bold;
     color: #fff;
     box-shadow: inset 0 0 0 1px #1e4881;
-
 }
 
 .User_Quote_List_Tabs .nav-link {
@@ -119,11 +115,6 @@
     background-color: rgb(243, 243, 243);
     box-shadow: inset 0 0 0 1px #d2dce6;
 }
-
-
-
-
-/************** USER SIDE NAV ********************/
 
 .navbar-nav .nav-link.active {
     background-color: #5c8dd1;
@@ -367,7 +358,7 @@ p {
     .userCartDetailPage  {
         font-size: 12px;
         width: 100%;
-        max-width: 350px;
+        padding: 25px 25px 150px 25px;
     }
 
     .userCartDetailPage h1,  .userCartDetailPage h4 {
@@ -393,11 +384,15 @@ p {
     .userCartDetailPage .form-control-container {
          width: 100%;
          max-width: 150px;
+         margin:  0 auto;
     }
 
     .userCartDetailPage .remove-from-cart{
         width: 100%;
         max-width: 150px;
+        margin:  0 auto;
+        margin-top: 10px;
+
     }
 
     .userCartDetailPage button,
@@ -411,7 +406,7 @@ p {
     }
 
     .userCartDetailPage .list-group-item{
-        padding: 0px 25px;
+        padding: 25px 25px;
         margin-top: 0px !important;
         padding-bottom: 10px;
     }
@@ -425,6 +420,17 @@ p {
     .download_cart_btn_wrapper {
         max-width: 150px !important;
     }
+
+    .userCartDetailPage div {
+        width: 100%;
+        /* text-align: center; */
+    }
+
+    .cart-item-row {
+         margin:  0 auto;
+         text-align: center;
+    }
+
 }
 
 

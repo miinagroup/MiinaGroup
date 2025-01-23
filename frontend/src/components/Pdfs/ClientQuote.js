@@ -448,9 +448,7 @@ const ClientQuote = (quotePrintData) => {
   }
 
   const [firstItems, ...otherChunks] = splitQuoteList(quoteListProducts);
-  // console.log(firstItems);
   return (
-    <>
       <Document id={1}>
         <Page style={styles.body} size="A4" orientation="landscape">
           <View style={styles.table}>
@@ -468,8 +466,6 @@ const ClientQuote = (quotePrintData) => {
                 <Text style={styles.tableCellBill}>Josh Collins</Text>
                 <Text style={styles.tableCellBill}>0498 139 213</Text>
                 <Text style={styles.tableCellBill}>admin@ctlaus.com</Text>
-                {/* <Text style={styles.tableCellBill}>W : ctlaus.com</Text> */}
-                {/* <Text style={styles.tableCellBill}>ABN : 12 609 518 809</Text> */}
               </View>
             </View>
 
@@ -515,9 +511,6 @@ const ClientQuote = (quotePrintData) => {
                       <Text style={styles.tableCellBill} >{quoteExpiresDate}</Text>
                     </View>
                   </View>
-                  {/* <View style={styles.tableCellBillBoxDate}>
-                    
-                  </View> */}
                   <View style={styles.tableRow3}>
                     <Text> Quote No :</Text>
                   </View>
@@ -927,7 +920,6 @@ const ClientQuote = (quotePrintData) => {
           </React.Fragment>
         ))}
       </Document >
-    </>
   );
 };
 

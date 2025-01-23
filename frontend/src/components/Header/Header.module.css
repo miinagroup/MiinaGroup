@@ -101,9 +101,6 @@ button {
   border: none;
   background-color: transparent;
   color: #483f55;
-}
-
-.logRegNew button {
   padding: 0px;
 }
 
@@ -212,7 +209,6 @@ button {
   top: 0;
   width: 100%;
   min-width: 400px;
-  width: 350px;
 
   background-color: #dba162;
   padding: 10px 15px;
@@ -240,9 +236,6 @@ button {
   align-items: center;
 }
 
-.subcategories {
-  background: #B97F4E;
-}
 
 .subcategories a {
   color: #483f55;
@@ -291,4 +284,111 @@ button {
 
 .user_cart {
   gap: 25px;
+}
+
+.btnsLogReg {
+   display: flex;
+   gap: 10px;
+}
+
+.mobile {
+   display: none;
+}
+
+@media (max-width: 575px) {
+  .desktop {
+     display: none;
+  }
+
+  .header {
+     padding: 10px 25px;
+  }
+
+  .headerWrapper {
+     flex-direction: column;
+  }
+
+  .logo {
+     max-width: 100px;
+  }
+
+  .tagline {
+     font-size: 12px;
+     margin-top: -5px;
+  }
+
+  .logRegNew {
+    width: 100%;
+    max-width: 350px;
+    justify-content: center;
+  }
+
+  .logoTaglineWrapper {
+     margin-bottom: 10px;
+  }
+
+  .search {
+     font-size: 10px;
+     max-width: 235px;
+     margin-left: 15px;
+  }
+
+  .inputSearch {
+    padding: 5px 5px;
+  }
+
+  .iconNew i {
+     font-size: 14px !important;
+  }
+
+  .offcanvasMenu {
+    background-color: #DBA162;
+  }
+
+  .headerAccordion {
+     background-color: transparent;
+     gap: 10px !important;
+  }
+
+  .headerAccordion .accordionHeader {
+    margin-top: 0px !important;
+  }
+  
+  .accordionHeader button, .accordionBody {
+    background-color: rgba(219, 161, 98, 0.25) !important;
+  }
+
+  .accordionHeader{
+    font-family: "GloriaHallelujah";
+    color:#483F55;
+  }
+
+  .offcanvasTitle {
+    font-family: "GloriaHallelujah";
+    color:#483F55;
+
+  }
+
+  .aboutMenu:hover {
+    padding: 5px 20px 5px 5px;
+    background-color: #DBA162;
+  }
+
+  .user_cart {
+    gap: 0px;
+}
+
+.headerNewBtns {
+  gap: 0px;
+  max-width: 70px;
+  justify-content: center;
+}
+
+.Avtbox {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  font-size: 1rem;
+}
+
 }

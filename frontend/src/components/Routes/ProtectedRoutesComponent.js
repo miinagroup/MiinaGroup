@@ -128,46 +128,40 @@ const ProtectedRoutesComponent = ({ admin, userPrevent }) => {
   }
   else if (isAuth === undefined || !isAuth) {
     return (
-      <>
-        <div
-          // style={{paddingBottom: "110px"}}
-          style={{ position: "relative" }}
-        >
-          <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
-          <div style={{ minHeight: "100vh" }}>
-            <Outlet />
-          </div>
-          <ScrollButton />
-          <Footer />
-        </div>
-      </>
+      <div 
+      style={{position: "relative"}}
+      >
+        <Header goToAboutSection={goToAboutSection} goToTeamSection={goToTeamSection} goToContactSection={goToContactSection} />
+        <div style={{minHeight: "100vh"}}>
+        <Outlet  />
+      </div>
+      <ScrollButton />
+      <Footer />
+      </div>
     );
   } else {
     if (userPrevent && isAdmin !== admin) {
       return <Navigate to="/user/my-orders" replace />;
     } else {
-      return (
-        <>
-          <div
-            // style={{paddingBottom: "110px", backgroundColor:"rgba(219, 161, 98, 0.25)" }}
-            style={{ position: "relative" }}
-          >
-            <NewHeaderComponentLoggedIn
-              setIsOpenModal={setIsOpenModalCatalogue}
-              goToAboutSection={goToAboutSection}
-              goToTeamSection={goToTeamSection}
-              goToContactSection={goToContactSection}
-              showSidebar={showSidebar}
-              toggleShowSidebar={toggleShowSidebar}
-              onClickBtn={onClickBtn} />
-            <div style={{ minHeight: "100vh" }}>
-              <Outlet />
-            </div>
-            <Footer />
-            <ScrollButton />
-          </div>
-        </>
-      );
+    return (
+      <div 
+      style={{position: "relative"}}
+      >
+        <NewHeaderComponentLoggedIn 
+        setIsOpenModal={setIsOpenModalCatalogue}
+        goToAboutSection={goToAboutSection}
+        goToTeamSection={goToTeamSection}
+        goToContactSection={goToContactSection}
+        showSidebar={showSidebar}
+        toggleShowSidebar={toggleShowSidebar}
+        onClickBtn={onClickBtn} />
+        <div style={{minHeight: "100vh"}}>
+        <Outlet  />
+      </div>
+        <Footer />
+        <ScrollButton />
+        </div>
+    );
     }
   }
 };

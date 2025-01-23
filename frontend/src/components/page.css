@@ -170,3 +170,24 @@
 .users_initial_dropdown:hover .users_dropdown {
   display: block;
 }
+
+@media (max-width: 575px)  {
+  .Avtbox_admin {
+    height: 50px;
+    width: 45px;
+    font-size: 1rem;
+  }
+
+  .miningCart svg {
+    width: 25px;
+  }
+
+  .cart_dropdown:hover .cart_dropdown_box {
+    display: none;
+  }
+
+  .users_dropdown {
+    right: 10px;
+    font-size: 14px;
+  }
+}

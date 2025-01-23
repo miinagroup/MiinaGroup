@@ -390,7 +390,6 @@ const OrderDetailsPageComponent = ({
 
   const sendInvoiceEmailManually = async (invData) => {
     if (emailAddress && emailAddress.trim() !== "") {
-      console.log("email", emailAddress);
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       setIsEmailValid(emailPattern.test(emailAddress));
       if (emailPattern.test(emailAddress)) {

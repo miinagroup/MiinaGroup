@@ -8,14 +8,7 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
-/* 
-  invoiceNumber,
-  userInfo,
-  purchaseNumber,
-  cartSubtotal,
-  invoiceDate,
-  selectedDeliverySite
-*/
+
 const ProformaInvoicePrint = (invPrintData) => {
   const styles = StyleSheet.create({
     page: {
@@ -395,21 +388,6 @@ const ProformaInvoicePrint = (invPrintData) => {
   const totalAmount = formatNumber(rawTotalAmount);
   const netTotalAmount = formatNumber(netTotalAmountCalculation);
 
-  /*   console.log(
-      "taxAmount:",
-      taxAmount,
-      "netTotalAmount:",
-      netTotalAmount,
-      "totalAmount:",
-      totalAmount
-    ); */
-
-  // console.log("InvinvPrintData", invPrintData);
-  // console.log("InvUserInfo", InvUserInfo);
-  // //console.log("InvAddress", InvAddress);
-  // console.log("cart items", invPrintData);
-  //console.log("companyAccount", companyAccount)
-
   function splitArrayIntoChunks(arr, chunkSize) {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
@@ -439,7 +417,6 @@ const ProformaInvoicePrint = (invPrintData) => {
     }
   );
 
-  //Area needs editing in future as we get more clients -- starts here
   const deliverDate = new Date(invPrintData.invoiceDate);
   deliverDate.setDate(deliverDate.getDate() + dueDays);
 
@@ -451,9 +428,8 @@ const ProformaInvoicePrint = (invPrintData) => {
     minute: "numeric",
     hour12: true,
   });
-  //Area needs editing in future as we get more clients -- ends here
+
   return (
-    <>
       <Document id={invPrintData.invoiceNumber}>
         <Page style={styles.body} size="A4" orientation="landscape">
           {/* ******* header ******* */}
@@ -571,7 +547,6 @@ const ProformaInvoicePrint = (invPrintData) => {
                     {deliveryDate === "Invalid Date"
                       ? "7 days"
                       : deliveryDate.split("at")[0]}
-                    {/* {deliveryDate.split("at")[0]} */}
                   </Text>
                 </View>
                 <View style={styles.tableCellHeader}>
@@ -625,11 +600,6 @@ const ProformaInvoicePrint = (invPrintData) => {
                 <View style={styles.tableColHeaderShort}>
                   <Text style={styles.tableColBillItemHeader}>GST</Text>
                 </View>
-                {/* <View style={styles.tableColHeaderSideTotal}>
-                  <Text style={styles.tableColBillItemHeader}>
-                    Total Inc. GST
-                  </Text>
-                </View> */}
               </View>
               {firstItems.map((item, idx) => {
                 return idx % 2 == 0 ? (
@@ -686,37 +656,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                       </View>
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItemRight}>10% </Text>
-                        {/* <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                                (item.cartProducts[0].price *
-                                  item.cartProducts[0].suppliedQty *
-                                  10) /
-                                100
-                              )
-                                .toFixed(2)
-                                .toLocaleString()
-                            : ""}
-                        </Text> */}
                       </View>
-                      {/* <View style={styles.tableColHeaderSideTotal}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                                item.cartProducts[0].price *
-                                  item.cartProducts[0].suppliedQty +
-                                (item.cartProducts[0].price *
-                                  item.cartProducts[0].suppliedQty *
-                                  10) /
-                                  100
-                              )
-                                .toFixed(2)
-                                .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View> */}
                     </View>
                   </>
                 ) : (
@@ -773,37 +713,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                       </View>
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItemRight}>10% </Text>
-                        {/* <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              (item.cartProducts[0].price *
-                                item.cartProducts[0].suppliedQty *
-                                10) /
-                              100
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text> */}
                       </View>
-                      {/* <View style={styles.tableColHeaderSideTotal}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              item.cartProducts[0].price *
-                              item.cartProducts[0].suppliedQty +
-                              (item.cartProducts[0].price *
-                                item.cartProducts[0].suppliedQty *
-                                10) /
-                              100
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View> */}
                     </View>
                   </>
                 );
@@ -919,11 +829,6 @@ const ProformaInvoicePrint = (invPrintData) => {
                       <View style={styles.tableColHeaderShort}>
                         <Text style={styles.tableColBillItemHeader}>GST</Text>
                       </View>
-                      {/* <View style={styles.tableColHeaderSideTotal}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Total Inc. GST
-                        </Text>
-                      </View> */}
                     </View>
                     {chunk.map((item, idx) => {
                       return idx % 2 == 0 ? (
@@ -982,37 +887,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                               <Text style={styles.tableColBillItemRight}>
                                 10%{" "}
                               </Text>
-                              {/* <Text style={styles.tableColBillItemRight}>
-                                ${" "}
-                                {item.cartProducts[0].price
-                                  ? (
-                                    (item.cartProducts[0].price *
-                                      item.cartProducts[0].suppliedQty *
-                                      10) /
-                                    100
-                                  )
-                                    .toFixed(2)
-                                    .toLocaleString()
-                                  : ""}
-                              </Text> */}
                             </View>
-                            {/* <View style={styles.tableColHeaderSideTotal}>
-                              <Text style={styles.tableColBillItemRight}>
-                                ${" "}
-                                {item.cartProducts[0].price
-                                  ? (
-                                    item.cartProducts[0].price *
-                                    item.cartProducts[0].suppliedQty +
-                                    (item.cartProducts[0].price *
-                                      item.cartProducts[0].suppliedQty *
-                                      10) /
-                                    100
-                                  )
-                                    .toFixed(2)
-                                    .toLocaleString()
-                                  : ""}
-                              </Text>
-                            </View> */}
                           </View>
                         </>
                       ) : (
@@ -1070,37 +945,7 @@ const ProformaInvoicePrint = (invPrintData) => {
                             <Text style={styles.tableColBillItemRight}>
                               10%{" "}
                             </Text>
-                            {/* <Text style={styles.tableColBillItemRight}>
-                              ${" "}
-                              {item.cartProducts[0].price
-                                ? (
-                                  (item.cartProducts[0].price *
-                                    item.cartProducts[0].suppliedQty *
-                                    10) /
-                                  100
-                                )
-                                  .toFixed(2)
-                                  .toLocaleString()
-                                : ""}
-                            </Text> */}
                           </View>
-                          {/* <View style={styles.tableColHeaderSideTotal}>
-                            <Text style={styles.tableColBillItemRight}>
-                              ${" "}
-                              {item.cartProducts[0].price
-                                ? (
-                                  item.cartProducts[0].price *
-                                  item.cartProducts[0].suppliedQty +
-                                  (item.cartProducts[0].price *
-                                    item.cartProducts[0].suppliedQty *
-                                    10) /
-                                  100
-                                )
-                                  .toFixed(2)
-                                  .toLocaleString()
-                                : ""}
-                            </Text>
-                          </View> */}
                         </View>
                       );
                     })}
@@ -1172,7 +1017,6 @@ const ProformaInvoicePrint = (invPrintData) => {
           </React.Fragment>
         ))}
       </Document>
-    </>
   );
 };
 

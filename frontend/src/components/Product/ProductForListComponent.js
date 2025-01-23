@@ -135,7 +135,7 @@ const ProductForListComponent = ({
       const { data } = await axios.get(`/api/users/profile/${userInfo._id}`);
       return data;
     }
-    return null; // Return null if userInfo._id doesn't exist
+    return null;
   };
 
   const formattedPrice = price?.toLocaleString(undefined, {
@@ -148,11 +148,10 @@ const ProductForListComponent = ({
     setQty(newValue);
   };
 
-  /* ***************** QUOTE PRICE *************** */
   useEffect(() => {
     getUser()
       .then((data) => {
-        if (data) { // Check if getUser returns a valid object
+        if (data) {
           setUserNameEmail({
             email: data.email,
             name: data.name,

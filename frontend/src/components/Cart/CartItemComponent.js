@@ -68,7 +68,7 @@ const CartItemComponent = ({
               </span>
             </p>
           </Col>
-          <Col md={2} className="form-control-container">
+          <Col md={2} className="form-control-container"> 
             <Form.Control
               type="number"
               min={item.saleunit}
@@ -80,7 +80,7 @@ const CartItemComponent = ({
               disabled={orderCreated}
             />
           </Col>
-          {/* delete button trash */}
+          
           <Col md={1} className="remove-from-cart">
             <RemoveFromCartComponent
               orderCreated={orderCreated}

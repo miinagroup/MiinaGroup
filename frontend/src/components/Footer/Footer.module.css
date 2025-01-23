@@ -24,3 +24,20 @@
      gap: 70px;
 }
 
+@media (max-width: 575px) {
+    .footer {
+         padding: 10px 25px;
+    }
+    .logoPlant {
+         max-width: 150px;
+    }
+
+    .footerLinks {
+         font-size: 12px;
+         gap: 10px;
+         flex-direction: column-reverse;
+         justify-content: flex-end;
+         align-items: flex-end;
+    }
+}
+

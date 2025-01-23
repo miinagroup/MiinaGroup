@@ -42,7 +42,6 @@ const UserProfilePage = () => {
     });
     setUserUpdated(data.success)
     setUserDetails({ "_id": userInfo._id, "userName": name + " " + lastName, "company": company, "role": role })
-    console.log(data);
 
     return data;
   };

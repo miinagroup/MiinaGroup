@@ -83,25 +83,6 @@ const TermsConditions = () => {
             <p>You understand and acknowledge that you are responsible for any User Contributions you submit or contribute, and you, not the Company, have fully responsibility for such content, including its legality, reliability, accuracy and appropriateness.</p>
             <p>We are not responsible, or liable to any third party, for the content or accuracy of any User Contributions posted by you or any other user of the Website.</p>
 
-            {/* <h5 className="terms">USER GENERATED CONTENT</h5>
-        <p>Milwaukee Tool (Australia) (“Milwaukee Tool”) regularly reaches out to social media users to seek their permission to feature chosen content on our various sites, social channels, and diverse range of promotional materials. User Generated Content (“UGC”) includes (but is not limited to) pictures, images, videos, testimonials, tweets, blog posts, product reviews, location information, YouTube content and universal social media content/comments.</p>
-        <p>All UGC must comply with the Terms of Use.</p>
-        <p>If you reply “#yesteammilwaukee” in your social media content or comments, then you agree to the Terms of Use and for Milwaukee Tool to use your UGC in the following manner:</p>
-        <ul className="terms-ul">
-            <li>Promotions on our social media accounts, websites, digital platforms and any other applicable forums; and</li>
-            <li>Using your name, social media handle and other publicly available material in connection with your image and related content</li>
-            <p>You also agree and confirm you:</p>
-            <li>are 18 years or over;</li>
-            <li>own and control the copyright and/or interest in the UGC, and it does not violate the intellectual property of another party;</li>
-            <li>have obeyed all laws and regulations associated with obtaining the UGC;</li>
-            <li>have disclosed any commercial connections or interests you have with Milwaukee Tool including if you are an employee, supplier, paid blogger or recipient of free products;</li>
-            <li>understand, acknowledge and agree that you are not entitled, nor will you be entitled in the future, to receive any payment or consideration in respect of it and agree to make no claim against Milwaukee Tool for any payments for the publication of any UGC;</li>
-            <li>consent to Milwaukee Tool using your UGC for as long as Milwaukee Tool chooses to do so without any payment to you;</li>
-            <li>acknowledge that Milwaukee Tool has no control over the UGC beyond the collection, storage, transmission and publication;</li>
-            <li>understand, acknowledge and agree Milwaukee Tool will not be liable for any claims, costs, loss or damage where the loss or damage is caused or contributed to by your acts, omissions or negligence including action for defamation, breach of privacy, or copyright. In no event shall either party be liable for any special, indirect, incidental, punitive, exemplary or consequential loss, loss of revenue, loss of profits or lost opportunity; and</li>
-            <li>will contact Milwaukee Tool by email if you no longer approve your image or content to be published at contact@milwaukeetools.com.au.</li>
-        </ul> */}
-
             <h5 className="terms">MONITORING AND ENFORCEMENT; TERMINATION</h5>
             <p>We have the right to:</p>
             <ul className="terms-ul">

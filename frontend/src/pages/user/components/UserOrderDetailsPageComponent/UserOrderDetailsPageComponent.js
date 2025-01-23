@@ -143,7 +143,6 @@ const UserOrderDetailsPageComponent = ({
     }
   };
 
-  /* paypal的一些判定 */
   const updateStateAfterOrder = (paidAt) => {
     setOrderButtonMessage("Thank you for your payment!");
     setIsPaid(paidAt);
@@ -220,7 +219,6 @@ const UserOrderDetailsPageComponent = ({
   });
 
 
-  // edite order note modal
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -238,7 +236,6 @@ const UserOrderDetailsPageComponent = ({
     updateOrderNote(id, orderNote);
   };
 
-  //assign ownership
   const saveOwnership = () => {
     setButtonText("Assigning...")
     try {
@@ -307,7 +304,6 @@ const UserOrderDetailsPageComponent = ({
   }, [usersList]);
 
 
-  // delivery site
   useEffect(() => {
     if (userInfo.email) {
       getdeliveryBooks(userInfo.email)
@@ -460,7 +456,6 @@ const UserOrderDetailsPageComponent = ({
               ) : null}
             </ListGroup>
 
-            {/* edit order note modal */}
             <Modal show={show} onHide={handleClose} className="edite_order_name">
               <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
                 <Modal.Title>Enter Order Note:</Modal.Title>
@@ -492,7 +487,7 @@ const UserOrderDetailsPageComponent = ({
                 </Button>
               </Modal.Footer>
             </Modal>
-            {/* ******* shipping information ******* */}
+
             <ListGroup className="pt-3">
               <ListGroup.Item className="p-2 ps-3">
                 <h5 className="m-0">SHIPPING INFORMATION</h5>
@@ -593,7 +588,6 @@ const UserOrderDetailsPageComponent = ({
                 ""
               )}
               {userInfo.isInvoiceViwer === true ? (
-                <>
                   <ListGroup.Item className="p-1 ps-2">
                     <div className="d-grid gap-2">
                       <PDFDownloadLink
@@ -626,13 +620,11 @@ const UserOrderDetailsPageComponent = ({
                       </PDFDownloadLink>
                     </div>
                   </ListGroup.Item>
-                </>
               ) : (
                 ""
               )}
             </ListGroup>
 
-            {/* Assign ownership */}
             <div style={{ height: "200px" }}>
               {
                 (userInfo.isSitePerson || userInfo.isSiteManager) ? (
@@ -883,7 +875,6 @@ const UserOrderDetailsPageComponent = ({
           ) : null}
         </ListGroup>
 
-        {/* edit order note modal */}
         <Modal show={show} onHide={handleClose} className="edite_order_name">
           <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
             <Modal.Title style={{color: "#483F55", fontFamily:"GloriaHallelujah"}}>Enter Order Note:</Modal.Title>
@@ -915,7 +906,7 @@ const UserOrderDetailsPageComponent = ({
             </Button>
           </Modal.Footer>
         </Modal>
-        {/* ******* shipping information ******* */}
+
         <ListGroup className={styles.UserOrderDetailsPageComponentSummary}>
           <ListGroup.Item>
             <h5>SHIPPING INFORMATION</h5>
@@ -954,7 +945,6 @@ const UserOrderDetailsPageComponent = ({
                         cartItems={cartItems}
                         invoiceNumber={invoiceNumber}
                         userInfo={userInfo}
-                        //userAddress={userAddress}
                         purchaseNumber={purchaseNumber}
                         cartSubtotal={cartSubtotal}
                         invoiceDate={createdAt}
@@ -1006,7 +996,6 @@ const UserOrderDetailsPageComponent = ({
             ""
           )}
           {userInfo.isInvoiceViwer === true ? (
-            <>
               <ListGroup.Item className="p-1 ps-2">
                 <div className="d-grid gap-2">
                   <PDFDownloadLink
@@ -1039,13 +1028,11 @@ const UserOrderDetailsPageComponent = ({
                   </PDFDownloadLink>
                 </div>
               </ListGroup.Item>
-            </>
           ) : (
             ""
           )}
         </ListGroup>
 
-        {/* Assign ownership */}
         <div style={{ height: "200px" }}>
           {
             (userInfo.isSitePerson || userInfo.isSiteManager) ? (
@@ -1059,7 +1046,6 @@ const UserOrderDetailsPageComponent = ({
                     data-target="#ownership_div"
                     aria-expanded="false"
                     aria-controls="ownership_div"
-                    //disabled={userInfo.email !== userAddress.storeEmail}
                     disabled={(order?.secondOwnerId !== " " && order?.secondOwnerId !== userInfo?._id)}
                   />
 

@@ -5,6 +5,9 @@ import { useSelector } from "react-redux";
 import { Modal } from "react-bootstrap";
 import LoginRegisterPage from "../../pages/LoginRegisterPage";
 import styles from "./Header.module.css";
+import HamburgerMenu from "../Hamburger/HamburgerMenu";
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Accordion from 'react-bootstrap/Accordion';
 
 const mainCategories = [
   {
@@ -38,6 +41,7 @@ const mainCategories = [
 const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [show, setShow] = useState(false);
+  const [showOffcanvasMenu, setShowOffcanvasMenu] = useState(false);
   const [modalType, setModalType] = useState("LoginForm");
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,6 +56,9 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
     setShow(true);
     setModalType(type)
   };
+
+  const handleCloseOffcanvasMenu = () => setShowOffcanvasMenu(false);
+  const handleShowOffcanvasMenu = () => setShowOffcanvasMenu(true);
 
   const submitHandler = (e) => {
     if (e.keyCode && e.keyCode !== 13) return;
@@ -75,7 +82,7 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
 
   return <div className={styles.header}>
     <div className={styles.headerWrapper}>
-      <div className={styles.menu}>
+      <div className={`${styles.menu} ${styles.desktop}`}>
         <div className={styles.menuItem}>
           <span className={styles.catalogueMenuItem}>CATALOGUE</span>
           <div className={styles.catalogueDropdown}>
@@ -119,7 +126,7 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
         <div className={styles.menuItem}>
           <span className={styles.aboutMenuItem}>ABOUT US</span>
           <div className={styles.dropdown}>
-            <button onClick={() => handleClickGoToSection(goToAboutSection)}>
+            <button onClick={() => {handleClickGoToSection(goToAboutSection)}}>
               <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Who Miina Group is</div>
             </button>
             <button onClick={() => handleClickGoToSection(goToTeamSection)}>
@@ -137,6 +144,54 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
         </a>
 
       <div className={styles.logRegNew}>
+        <HamburgerMenu toggleShowSidebar={handleShowOffcanvasMenu} />
+          <Offcanvas show={showOffcanvasMenu} onHide={handleCloseOffcanvasMenu} className={styles.offcanvasMenu}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title className={styles.offcanvasTitle}>Menu</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+          <Accordion defaultActiveKey="0" className={styles.headerAccordion}>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header className={styles.accordionHeader}>CATALOGUE</Accordion.Header>
+              <Accordion.Body className={styles.accordionBody}>
+              {mainCategories.map((category) => {
+              return (
+                <div className={styles.category} key={category.link}>
+                  <a href={`/product-list?categoryPath=${category.link}`} className={styles.categoryPath}>
+                    <img src="/images/SubmarkGreen.png" alt="Miina Group Logo" className={styles.logoTag} />
+                    <div>{category.label}</div>
+                  </a>
+                </div>
+              );
+            })}
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header className={styles.accordionHeader}>ABOUT US</Accordion.Header>
+              <Accordion.Body className={styles.accordionBody}>
+                <button onClick={() => {
+                  handleClickGoToSection(goToAboutSection)
+                  handleCloseOffcanvasMenu()
+                }}>
+                  <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Who Miina Group is</div>
+                </button>
+                <button onClick={() => {
+                  handleClickGoToSection(goToTeamSection)
+                  handleCloseOffcanvasMenu()
+                  }}>
+                  <div className={styles.aboutMenu}><img src="/svg/SubmarkGreen.svg" alt="Miina Group Logo" className={styles.logoTag} />Miina Group Team</div>
+                </button>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="2">
+              <Accordion.Header className={styles.accordionHeader}><button onClick={() => {
+                handleClickGoToSection(goToContactSection)
+                handleCloseOffcanvasMenu()
+                }}><div className={styles.menuItem}>CONTACT</div></button></Accordion.Header>
+            </Accordion.Item>
+          </Accordion>
+          </Offcanvas.Body>
+        </Offcanvas>
         <div className={`${styles.search}`}>
           <input
             placeholder="Search 1000+ products"
@@ -149,14 +204,18 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
           >
             <i className="bi bi-search fs-4"></i></button>
         </div>
-        <i className="bi bi-person-circle fs-4"></i>
+        <div className={styles.btnsLogReg}>
+        <i onClick={() => handleShow("LoginForm")} className={`bi bi-person-circle fs-4`}></i>
         <button
           onClick={() => handleShow("LoginForm")}
+          className={styles.desktop}
         >LogIn</button>
-        <span>/</span>
+        <span className={styles.desktop}>/</span>
         <button
           onClick={() => handleShow("RegisterForm")}
+          className={styles.desktop}
         >Register</button>
+        </div>
       </div>
     </div>
 

@@ -59,7 +59,6 @@ function LoggedInVerifySiteComponent({
     const location = selectedSite.name;
     const company = userSites.companyName;
 
-    // console.log(email);
     try {
       setSubmitting(true);
       setMessage("");

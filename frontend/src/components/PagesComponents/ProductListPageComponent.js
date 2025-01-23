@@ -9,6 +9,8 @@ import BreadcrumbComponent from "../FilterQueryResultOptions/BreadcrumbComponent
 import ProductCategoriesComponent from "../../components/Product/ProductCategoriesComponent";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../SharedPages.css";
+import { mainCategories } from "../../constants.js";
+import styles from "../home/MainSection/MainSection.module.css";
 
 const ProductListPageComponent = ({
   getProducts,
@@ -31,6 +33,7 @@ const ProductListPageComponent = ({
   const [pageNum, setPageNum] = useState(null);
   const [userNameEmail, setUserNameEmail] = useState();
   const [isAdmin, setIsAdmin] = useState();
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   var [params] = useSearchParams();
   var categoryPath = params.get("categoryPath") || "";
@@ -94,6 +97,14 @@ const ProductListPageComponent = ({
     searchQuery,
   ]);
 
+  useEffect(() => {
+    if (categoryPath) {
+      const firstPart = categoryPath.split('/')[0];
+      setSelectedCategory(firstPart);
+    } else {
+      setSelectedCategory("PPE");
+    }
+  }, [categoryPath]);
 
   const [filteredCategories, setFilteredCategories] = useState([]);
   useEffect(() => {
@@ -112,8 +123,6 @@ const ProductListPageComponent = ({
     }
   }, [productCategories, categoryPath]);
 
-
-
   useEffect(() => {
     getUser()
       .then((data) => {
@@ -122,7 +131,6 @@ const ProductListPageComponent = ({
       })
       .catch((err) => console.log(err));
   }, []);
-
 
   const [loadingTwo, setLoadingTwo] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -184,10 +192,25 @@ const ProductListPageComponent = ({
 
   return (
     <Container className="content-container products-list-component" fluid>
+      
+      <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
+              {mainCategories.map(category => {
+                return <a
+                  key={category.label}
+                  className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
+                  onClick={() => setSelectedCategory(category.link)}
+                  href={`/product-list?categoryPath=${category.link}`}
+                >
+                  {category.label}
+                </a>
+              })}
+        </div>
+        <div className={`green-line ${styles.mobile}`}></div>
+
       <BreadcrumbComponent />
       <Row>
         <Col xxl={2} xl={3} lg={3} md={3}>
-          <ListGroup variant="flush">
+          <ListGroup variant="flush" className="desktop">
             <ListGroup.Item>
               <FilterComponent />
             </ListGroup.Item>

@@ -83,7 +83,6 @@ const QuoeteManagementApproval = (quotePriceData, cartItems) => {
 
         config
       );
-      console.log(res.data);
       setIsSending(false);
       setFormData({
         from: "",

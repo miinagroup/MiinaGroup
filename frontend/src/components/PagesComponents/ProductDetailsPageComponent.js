@@ -16,6 +16,8 @@ import "../SharedPages.css";
 import ProductDescription from "./ui/ProductDescription/ProductDescription";
 import AdminProductPanel from "./ui/AdminProductPanel/AdminProductPanel";
 import PleaseSelect from "./ui/PleaseSelect/PleaseSelect";
+import { mainCategories } from "../../constants.js";
+import styles from "../home/MainSection/MainSection.module.css";
 
 const ProductDetailsPageComponent = ({
   addToCartReduxAction,
@@ -157,7 +159,6 @@ const ProductDetailsPageComponent = ({
     })
     : "";
 
-  //react-image-lightbox -starts here
   const [images, setImages] = useState([]);
   useEffect(() => {
     async function handleImages() {
@@ -202,7 +203,6 @@ const ProductDetailsPageComponent = ({
     });
   }
 
-  // quote price using -
   useEffect(() => {
     getUser()
       .then((data) => {
@@ -232,15 +232,6 @@ const ProductDetailsPageComponent = ({
 
   const currentDate = moment.tz("Australia/Perth");
   const diff = dateCalculation.diff(currentDate, "days");
-
-  // table first letter capitalized
-  function capitalizeFirstLetter(string) {
-    return string
-      ? string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
-      : "";
-  }
-
-  // Edit product Modal
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
@@ -275,12 +266,6 @@ const ProductDetailsPageComponent = ({
       window.location.reload();
     }
   }, [refresh]);
-
-  const brandSearchHandler = () => {
-    if (brandSearch) {
-      window.open(`/product-list?brandName=${brandSearch}`, "_blank");
-    }
-  };
 
   const [poCartItems, setPoCartItems] = useState([]);
   const [poCartBtnText, setPoCartBtnText] = useState("Add to PO cart");
@@ -374,7 +359,23 @@ const ProductDetailsPageComponent = ({
     <div className="green-line"></div>
     <Container className="content-container product-detail-page" fluid>
       <Row className="product-detail-page-row">
-        <Col xxl={2} xl={3} lg={3} md={3}>
+        
+      <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
+              {mainCategories.map(category => {
+                return <a
+                  key={category.label}
+                  // className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
+                  className={styles.categoryItem}
+                  // onClick={() => setSelectedCategory(category.link)}
+                  href={`/product-list?categoryPath=${category.link}`}
+                >
+                  {category.label}
+                </a>
+              })}
+        </div>
+        <div className={`green-line ${styles.mobile}`}></div>
+
+        <Col xxl={2} xl={3} lg={3} md={3} className="desktop">
           <ListGroup variant="flush">
             <ListGroup.Item>
               <FilterComponent />
@@ -384,12 +385,10 @@ const ProductDetailsPageComponent = ({
         <Col xxl={10} xl={9} lg={9} md={9} className="mb-3">
           <Row className="mt-4 product-detail-page-info-row">
 
-            {/* ************   Product Pictures Display Carousel  ***************  */}
             <Col lg={4} className="m-1 product-detail-page-info-image">
               <ImageGallery items={images} showPlayButton={false} />
             </Col>
 
-            {/* ************   Product Details  ***************  */}
             <Col lg={6} className="product-detail-page-info">
               {
                 catList ? (
@@ -422,12 +421,10 @@ const ProductDetailsPageComponent = ({
                             userData.isMarketing === true ? (
                             <>
                               {product.availability?.length > 0 ? (
-                                <>
                                   <div float="left" className="stock-items-container">
                                     <h6 className={product.availability[0].local > 10 ? "green" : "orange"}>WA Stock: {product.availability[0].local < 10 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
                                     <h6 className={product.availability[0].national > 10 ? "green" : "orange"}>National Stock: {product.availability[0].national < 10 ? "Low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
                                   </div>
-                                </>
                               ) : ("")}
                               <table className="productTable">
                                 <tr>
@@ -591,14 +588,12 @@ const ProductDetailsPageComponent = ({
               </Row>
 
 
-              {/* ************   Product details with download pdf  ***************  */}
               <ProductDescription product={product} />
             </Col>
           </Row>
         </Col>
       </Row >
 
-      {/* edit product */}
       < Modal
         show={show}
         onHide={handleClose}
