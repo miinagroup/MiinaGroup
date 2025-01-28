@@ -4,8 +4,8 @@ import ProductForListComponent from "../../components/Product/ProductForListComp
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import FilterComponent from "../FilterQueryResultOptions/FilterComponent";
-import BreadcrumbComponent from "../FilterQueryResultOptions/BreadcrumbComponent";
+import FilterComponent from "../FilterQueryResultOptions/FilterComponent.js";
+import BreadcrumbComponent from "../FilterQueryResultOptions/BreadcrumbComponent.js";
 import ProductCategoriesComponent from "../../components/Product/ProductCategoriesComponent";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../SharedPages.css";
@@ -192,20 +192,20 @@ const ProductListPageComponent = ({
 
   return (
     <Container className="content-container products-list-component" fluid>
-      
+
       <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
-              {mainCategories.map(category => {
-                return <a
-                  key={category.label}
-                  className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
-                  onClick={() => setSelectedCategory(category.link)}
-                  href={`/product-list?categoryPath=${category.link}`}
-                >
-                  {category.label}
-                </a>
-              })}
-        </div>
-        <div className={`green-line ${styles.mobile}`}></div>
+        {mainCategories.map(category => {
+          return <a
+            key={category.label}
+            className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
+            onClick={() => setSelectedCategory(category.link)}
+            href={`/product-list?categoryPath=${category.link}`}
+          >
+            {category.label}
+          </a>
+        })}
+      </div>
+      <div className={`green-line ${styles.mobile}`}></div>
 
       <BreadcrumbComponent />
       <Row>

@@ -299,7 +299,7 @@ const getProducts = async (req, res, next) => {
           }
         }
       } else {
-        if (searchWords.length === 1 && searchWords[0].startsWith("CTL")) {
+        if (searchWords.length === 1 && searchWords[0].startsWith("MNA")) {
           searchQueryCondition = {
             "stock.mnasku": {
               $regex: new RegExp(`${searchWords[0]}`, "i"),

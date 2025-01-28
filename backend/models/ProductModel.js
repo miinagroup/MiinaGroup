@@ -146,7 +146,6 @@ const productSchema = mongoose.Schema(
     ],
   },
   {
-    // 自动加时间戳
     timestamps: true,
   }
 );
@@ -154,8 +153,6 @@ const productSchema = mongoose.Schema(
 productSchema.index(
   {
     name: "text",
-    // description: "text",
-    // "stock.slrsku": "text",
     "stock.mnasku": "text",
     "stock.suppliersku": "text",
   },
@@ -164,8 +161,6 @@ productSchema.index(
     default_language: "english",
     weights: {
       name: 5,
-      // description: 2,
-      // "stock.slrsku": 1,
       "stock.mnasku": 1,
       "stock.suppliersku": 1,
     },

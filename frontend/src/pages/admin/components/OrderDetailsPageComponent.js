@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import CartItemForOrderComponent from "../../../components/Cart/CartItemForOrderComponent";
 import { useParams } from "react-router-dom";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DeliveryNotePrint from "../../../components/Pdfs/DeliveryNotePrint";
 import PickingPackingPrint from "../../../components/Pdfs/PickingPackingPrint";
 import InvoicePrint from "../../../components/Pdfs/InvoicePrint";
@@ -281,7 +281,7 @@ const OrderDetailsPageComponent = ({
   };
 
   const PDFPopupButton = ({ documentComponent, fileName, loadingText }) => (
-    <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: "transparent"}}>
+    <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: "transparent" }}>
       <div className="d-grid gap-2">
         <Button
           className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`}
@@ -830,603 +830,603 @@ const OrderDetailsPageComponent = ({
 
   return (
     <>
-    <div className="green-line"></div>
-    <div className={styles.orderDetailsPageWrapper}>
-      <Row className="mt-4">
-        <h1 className={styles.title}>ORDER DETAILS</h1>
-        <Col md={9}>
-          <Row>
-            <Col md={6} className="mb-0">
-              <b>Name</b>: {userInfo?.name} {userInfo?.lastName}{" "}
-              <b className="ms-3">Phone</b>: {userInfo?.phone} <br />
-              <b>Company</b>: {orderData.userCompany}
-              <ListGroup.Item className="p-1 ps-0 w-20">
-                <Form.Label className="fw-bold">
-                  Delivery Site:
-                  {editLocation === false ? (
-                    <>
-                      {" "}
-                      <i
-                        onClick={handleEditLocation}
-                        className="bi bi-pencil-square"
-                        style={{ cursor: "pointer", color: "#DBA162" }}
-                      ></i>
-                    </>
-                  ) : (
-                    <>
-                      {" "}
-                      <i
-                        className="bi bi-folder-check"
-                        onClick={saveEditLocation}
-                        style={{ cursor: "pointer", color: "#DBA162" }}
-                      ></i>{" "}
-                    </>
-                  )}
-                </Form.Label>
+      <div className="green-line"></div>
+      <div className={styles.orderDetailsPageWrapper}>
+        <Row className="mt-4">
+          <h1 className={styles.title}>ORDER DETAILS</h1>
+          <Col md={9}>
+            <Row>
+              <Col md={6} className="mb-0">
+                <b>Name</b>: {userInfo?.name} {userInfo?.lastName}{" "}
+                <b className="ms-3">Phone</b>: {userInfo?.phone} <br />
+                <b>Company</b>: {orderData.userCompany}
+                <ListGroup.Item className="p-1 ps-0 w-20">
+                  <Form.Label className="fw-bold">
+                    Delivery Site:
+                    {editLocation === false ? (
+                      <>
+                        {" "}
+                        <i
+                          onClick={handleEditLocation}
+                          className="bi bi-pencil-square"
+                          style={{ cursor: "pointer", color: "#DBA162" }}
+                        ></i>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <i
+                          className="bi bi-folder-check"
+                          onClick={saveEditLocation}
+                          style={{ cursor: "pointer", color: "#DBA162" }}
+                        ></i>{" "}
+                      </>
+                    )}
+                  </Form.Label>
 
-                <Form.Select
-                  required
-                  name="sites"
-                  aria-label="Default select example"
-                  onChange={changeDeliverySite}
-                  className="p-0 ps-1"
-                  disabled={editLocation === false}
-                >
-                  {deliverySites &&
-                    deliverySites.map((site, idx) => {
-                      return site.name !== "" ? (
-                        orderData.deliverySite === site.name ? (
-                          <option selected key={idx} value={site.name}>
-                            {site.name}
-                          </option>
+                  <Form.Select
+                    required
+                    name="sites"
+                    aria-label="Default select example"
+                    onChange={changeDeliverySite}
+                    className="p-0 ps-1"
+                    disabled={editLocation === false}
+                  >
+                    {deliverySites &&
+                      deliverySites.map((site, idx) => {
+                        return site.name !== "" ? (
+                          orderData.deliverySite === site.name ? (
+                            <option selected key={idx} value={site.name}>
+                              {site.name}
+                            </option>
+                          ) : (
+                            <option key={idx} value={site.name}>
+                              {site.name}
+                            </option>
+                          )
                         ) : (
                           <option key={idx} value={site.name}>
                             {site.name}
                           </option>
-                        )
-                      ) : (
-                        <option key={idx} value={site.name}>
-                          {site.name}
-                        </option>
-                      );
-                    })}
-                </Form.Select>
-              </ListGroup.Item>
-            </Col>
-            <Col md={6} className="mb-0">
-              <h5 style={{color: "#521712"}}>ORDER STATUS:</h5>
-              <Alert
-                className="mt-1 p-0 ps-2 mb-1"
-                variant={isDelivered ? "success" : "danger"}
-              >
-                {isDelivered ? (
-                  <>
-                    Shipped at{" "}
-                    {new Date(isDelivered).toLocaleString("en-AU", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                      hour12: true,
-                    })}
-                    <button>
-                      <a href={trackLink} target="_blank" rel="noreferrer">
-                        Track Shipping
-                      </a>
-                    </button>
-                  </>
-                ) : (
-                  <>Not Sent Yet</>
-                )}
-              </Alert>
-              <Alert
-                className="mt-1 p-0 ps-2 mb-1"
-                variant={order?.balance === 0 ? "success" : "danger"}
-              >
-                {order?.balance === 0 ? (
-                  <>
-                    <i className="bi bi-check-circle-fill text-success" /> Paid
-                    on: {isPaidDateString}
-                  </>
-                ) : (
-                  <>Not paid yet</>
-                )}
-              </Alert>
-              <Alert
-                className="mt-1 p-0 ps-2 mb-1"
-                variant={invoiceSent ? "success" : "danger"}
-              >
-                {invoiceSent ? (
-                  <>
-                    Inv Sent at{" "}
-                    {new Date(invoiceSent).toLocaleString("en-AU", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
-                  </>
-                ) : (
-                  <>Invoice Not Sent</>
-                )}
-              </Alert>
-            </Col>
-          </Row>
-          <br />
-          <div style={{display: "flex", gap: "10px", alignItems: "center"}}>
-          <h3>
-            ORDER ITEMS
-          </h3>
-          {edit === false ? (
-              <>
-                {" "}
-                <i
-                  onClick={handleEdit}
-                  className="bi bi-pencil-square"
-                  style={{ cursor: "pointer", color: "#DBA162" }}
-                ></i>
-              </>
-            ) : (
-              <>
-                {" "}
-                <button
-                  id="btn_InvoiceNumber"
-                  className="pe-2 ps-2 pb-1 fs-6"
-                  style={{backgroundColor: "#521712", color: "white", borderRadius: "5px"}}
-                  onClick={saveEdit}
+                        );
+                      })}
+                  </Form.Select>
+                </ListGroup.Item>
+              </Col>
+              <Col md={6} className="mb-0">
+                <h5 style={{ color: "#521712" }}>ORDER STATUS:</h5>
+                <Alert
+                  className="mt-1 p-0 ps-2 mb-1"
+                  variant={isDelivered ? "success" : "danger"}
                 >
-                  save
-                </button>{" "}
-              </>
-            )}
-            </div>
-
-          <ListGroup variant="flush">
-            <table style={{ width: "100%", color: "#483F55"}} className={`mt-1 ${styles.tableSpacing}`} >
-              <thead>
-                <tr>
-                  <th className="pb-2 pt-2" style={{ width: "6%" }}></th>
-                  <th className="pb-2 pt-2 ps-2" style={{ width: "25%" }}>Product</th>
-                  <th className="pb-2 pt-2" style={{ width: "10%"}}>MNASKU</th>
-                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Unit Price</th>
-                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Order Qty</th>
-                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Supplied Qty</th>
-                  <th className="pb-2 pt-2" style={{ width: "10%"}}>Back Order</th>
-                  <th className="pb-2 pt-2" style={{ width: "5%" }}></th>
-                </tr>
-              </thead>
-              {cartItems && cartItems.map((item, idx) => {
-                return (<CartItemForOrderComponent
-                  key={idx}
-                  index={idx}
-                  item={item}
-                  orderCreated={true}
-                  edit={edit}
-                  changeCount={changeCount}
-                  changePrice={changePrice}
-                  removeFromOrderHandler={removeFromOrderHandler}
-                  id={id}
-                  backOrderStatus={backOrderStatus}
-                  userInfo={userInfo}
-                  selectedDeliverySite={setSelectedDeliverySite}
-                  editingIndex={editingIndex}
-                  setEditingIndex={setEditingIndex}
-                />)
-              })}
-            </table>
-          </ListGroup>
-        </Col>
-        <Col md={3}>
-            <div className={styles.btnGoToOrders}><a href="/admin/orders">Go to All Orders</a></div>
-          <ListGroup>
-            <ListGroup.Item className="p-2 ps-2" style={{backgroundColor: 'transparent'}}>
-              <h3 style={{color: "#483F55"}}>ORDER SUMMARY</h3>
-            </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
-              Item Price:{" "}
-              <span className="fw-bold float-end">
-                {" "}
-                $ {taxAmount ? orderNetAmount : nonGSTPrice}
-              </span>
-            </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
-              Total GST{" "}
-              <span className="fw-bold float-end">
-                $ {taxAmount ? TAX : GST}
-              </span>
-            </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
-              Invoice Amount:{" "}
-              <span className="fw-bold text-danger float-end">
-                $ {incGSTPrice}
-              </span>
-            </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
-              PO Number: <span className="fw-bold">{purchaseNumber}</span>
-            </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
-              <tr>
-                <td style={{ width: "40%", color: "#483F55" }}>Invoice Number :</td>
-                <td>
-                  <Form.Control
-                    type="text"
-                    style={{ width: "80%" }}
-                    min="0"
-                    className="form-control pe-0"
-                    onChange={handleChangeInvoiceNumber}
-                    value={
-                      editInvoiceNumber === false
-                        ? invoiceNumber
-                        : invoiceNumber
-                    }
-                    disabled={editInvoiceNumber === false}
-                  />
-                </td>
-                <td style={{ width: "10%", color: "#DBA162" }}>
-                  {editInvoiceNumber === false ? (
+                  {isDelivered ? (
                     <>
-                      {" "}
-                      <i
-                        onClick={handleEditInvoiceNumber}
-                        className="bi bi-pencil-square"
-                        style={{ cursor: "pointer" }}
-                      ></i>
+                      Shipped at{" "}
+                      {new Date(isDelivered).toLocaleString("en-AU", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour12: true,
+                      })}
+                      <button>
+                        <a href={trackLink} target="_blank" rel="noreferrer">
+                          Track Shipping
+                        </a>
+                      </button>
                     </>
                   ) : (
-                    <>
-                      {" "}
-                      <button
-                        className="pe-1 ps-1 p-0 m-0 fs-6"
-                        onClick={saveEditInvoiceNumber}
-                      >
-                        save
-                      </button>{" "}
-                    </>
+                    <>Not Sent Yet</>
                   )}
-                </td>
-              </tr>
-            </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent', color: "#483F55"}}>
-              Admin Note: {adminNote ? null : "N/A"}
-              {adminNote ? <span className="fw-bold">{adminNote}</span> : null}
-              <i
-                onClick={handleShow}
-                className="bi bi-pencil-square ms-2"
-                style={{ cursor: "pointer", color: "#DBA162" }}
-              ></i>
-            </ListGroup.Item>
-            <PDFPopupButton
-              documentComponent={
-                <PickingPackingPrint
-                  cartItems={cartItems}
-                  invoiceNumber={invoiceNumber}
-                  userInfo={userInfo}
-                  purchaseNumber={purchaseNumber}
-                  cartSubtotal={cartSubtotal}
-                  dueDays={dueDays}
-                  invoiceDate={deliveredAt}
-                  selectedDeliverySite={selectedDeliverySite}
-                  companyAccount={companyAccount}
-                  deliveredAt={deliveredAt}
-                />
-              }
-              fileName={"PL" + invoiceNumber}
-              loadingText="Print Picking List"
-            />
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-              <div className="d-grid gap-2">
-                <Button
-                  className={`p-0 m-0 w-50 ${deliveredButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
-                  onClick={handleShowTrackLink}
-                  type="button"
+                </Alert>
+                <Alert
+                  className="mt-1 p-0 ps-2 mb-1"
+                  variant={order?.balance === 0 ? "success" : "danger"}
                 >
-                  {orderDeliveredButton}
-                </Button>
-              </div>
-            </ListGroup.Item>
-            {!deliveredButtonDisabled ? (
-              <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-                <Button className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`} disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Delivery Note</Button>
+                  {order?.balance === 0 ? (
+                    <>
+                      <i className="bi bi-check-circle-fill text-success" /> Paid
+                      on: {isPaidDateString}
+                    </>
+                  ) : (
+                    <>Not paid yet</>
+                  )}
+                </Alert>
+                <Alert
+                  className="mt-1 p-0 ps-2 mb-1"
+                  variant={invoiceSent ? "success" : "danger"}
+                >
+                  {invoiceSent ? (
+                    <>
+                      Inv Sent at{" "}
+                      {new Date(invoiceSent).toLocaleString("en-AU", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      })}
+                    </>
+                  ) : (
+                    <>Invoice Not Sent</>
+                  )}
+                </Alert>
+              </Col>
+            </Row>
+            <br />
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <h3>
+                ORDER ITEMS
+              </h3>
+              {edit === false ? (
+                <>
+                  {" "}
+                  <i
+                    onClick={handleEdit}
+                    className="bi bi-pencil-square"
+                    style={{ cursor: "pointer", color: "#DBA162" }}
+                  ></i>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <button
+                    id="btn_InvoiceNumber"
+                    className="pe-2 ps-2 pb-1 fs-6"
+                    style={{ backgroundColor: "#521712", color: "white", borderRadius: "5px" }}
+                    onClick={saveEdit}
+                  >
+                    save
+                  </button>{" "}
+                </>
+              )}
+            </div>
+
+            <ListGroup variant="flush">
+              <table style={{ width: "100%", color: "#483F55" }} className={`mt-1 ${styles.tableSpacing}`} >
+                <thead>
+                  <tr>
+                    <th className="pb-2 pt-2" style={{ width: "6%" }}></th>
+                    <th className="pb-2 pt-2 ps-2" style={{ width: "25%" }}>Product</th>
+                    <th className="pb-2 pt-2" style={{ width: "10%" }}>MNASKU</th>
+                    <th className="pb-2 pt-2" style={{ width: "10%" }}>Unit Price</th>
+                    <th className="pb-2 pt-2" style={{ width: "10%" }}>Order Qty</th>
+                    <th className="pb-2 pt-2" style={{ width: "10%" }}>Supplied Qty</th>
+                    <th className="pb-2 pt-2" style={{ width: "10%" }}>Back Order</th>
+                    <th className="pb-2 pt-2" style={{ width: "5%" }}></th>
+                  </tr>
+                </thead>
+                {cartItems && cartItems.map((item, idx) => {
+                  return (<CartItemForOrderComponent
+                    key={idx}
+                    index={idx}
+                    item={item}
+                    orderCreated={true}
+                    edit={edit}
+                    changeCount={changeCount}
+                    changePrice={changePrice}
+                    removeFromOrderHandler={removeFromOrderHandler}
+                    id={id}
+                    backOrderStatus={backOrderStatus}
+                    userInfo={userInfo}
+                    selectedDeliverySite={setSelectedDeliverySite}
+                    editingIndex={editingIndex}
+                    setEditingIndex={setEditingIndex}
+                  />)
+                })}
+              </table>
+            </ListGroup>
+          </Col>
+          <Col md={3}>
+            <div className={styles.btnGoToOrders}><a href="/admin/orders">Go to All Orders</a></div>
+            <ListGroup>
+              <ListGroup.Item className="p-2 ps-2" style={{ backgroundColor: 'transparent' }}>
+                <h3 style={{ color: "#483F55" }}>ORDER SUMMARY</h3>
               </ListGroup.Item>
-            ) : (
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent', color: "#483F55" }}>
+                Item Price:{" "}
+                <span className="fw-bold float-end">
+                  {" "}
+                  $ {taxAmount ? orderNetAmount : nonGSTPrice}
+                </span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent', color: "#483F55" }}>
+                Total GST{" "}
+                <span className="fw-bold float-end">
+                  $ {taxAmount ? TAX : GST}
+                </span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent', color: "#483F55" }}>
+                Invoice Amount:{" "}
+                <span className="fw-bold text-danger float-end">
+                  $ {incGSTPrice}
+                </span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent', color: "#483F55" }}>
+                PO Number: <span className="fw-bold">{purchaseNumber}</span>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent', color: "#483F55" }}>
+                <tr>
+                  <td style={{ width: "40%", color: "#483F55" }}>Invoice Number :</td>
+                  <td>
+                    <Form.Control
+                      type="text"
+                      style={{ width: "80%" }}
+                      min="0"
+                      className="form-control pe-0"
+                      onChange={handleChangeInvoiceNumber}
+                      value={
+                        editInvoiceNumber === false
+                          ? invoiceNumber
+                          : invoiceNumber
+                      }
+                      disabled={editInvoiceNumber === false}
+                    />
+                  </td>
+                  <td style={{ width: "10%", color: "#DBA162" }}>
+                    {editInvoiceNumber === false ? (
+                      <>
+                        {" "}
+                        <i
+                          onClick={handleEditInvoiceNumber}
+                          className="bi bi-pencil-square"
+                          style={{ cursor: "pointer" }}
+                        ></i>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <button
+                          className="pe-1 ps-1 p-0 m-0 fs-6"
+                          onClick={saveEditInvoiceNumber}
+                        >
+                          save
+                        </button>{" "}
+                      </>
+                    )}
+                  </td>
+                </tr>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent', color: "#483F55" }}>
+                Admin Note: {adminNote ? null : "N/A"}
+                {adminNote ? <span className="fw-bold">{adminNote}</span> : null}
+                <i
+                  onClick={handleShow}
+                  className="bi bi-pencil-square ms-2"
+                  style={{ cursor: "pointer", color: "#DBA162" }}
+                ></i>
+              </ListGroup.Item>
               <PDFPopupButton
                 documentComponent={
-                  <DeliveryNotePrint
+                  <PickingPackingPrint
                     cartItems={cartItems}
                     invoiceNumber={invoiceNumber}
                     userInfo={userInfo}
                     purchaseNumber={purchaseNumber}
                     cartSubtotal={cartSubtotal}
-                    invoiceDate={deliveredAt}
                     dueDays={dueDays}
+                    invoiceDate={deliveredAt}
                     selectedDeliverySite={selectedDeliverySite}
                     companyAccount={companyAccount}
                     deliveredAt={deliveredAt}
                   />
                 }
-                fileName={"DN" + invoiceNumber}
-                loadingText="Print Delivery Note"
+                fileName={"PL" + invoiceNumber}
+                loadingText="Print Picking List"
               />
-            )}
-
-            <ListGroup.Item
-              className="p-1 ps-2"
-              hidden={backOrderStatus === false}
-              style={{backgroundColor: 'transparent'}}
-            >
-              <div className="d-grid gap-2">
-                <Button
-                  onClick={handleReorderClick}
-                  className="button-shadow p-0 m-0 w-50"
-                  variant="success"
-                >
-                  Create Back Order
-                </Button>
-              </div>
-              <div className="d-grid gap-2">
-                <Button
-                  onClick={updateBackOrderStatus}
-                  className="button-shadow p-0 m-0 w-50 mt-2"
-                  variant="success"
-                  disabled={completingOrder}
-                >
-                  {completingOrder ? "Completing" : "Complete Order"}
-                </Button>
-              </div>
-            </ListGroup.Item>
-          </ListGroup>
-          <br />
-
-          <ListGroup hidden={userData?.isAdmin !== true || order?.isDelivered !== true}>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-              <h5 className="m-0">Accounts Use Only:</h5>
-            </ListGroup.Item>
-            <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-              <Form.Check
-                type="switch"
-                id="isPaid"
-                label="Mark As Paid"
-                onChange={handleMarkPaid}
-                disabled={btnMarkAsPaid}
-
-              />
-            </ListGroup.Item>
-            {!deliveredButtonDisabled ? (
-              <>
-                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-                  <Button className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`} disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Invoice</Button>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                <div className="d-grid gap-2">
+                  <Button
+                    className={`p-0 m-0 w-50 ${deliveredButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
+                    onClick={handleShowTrackLink}
+                    type="button"
+                  >
+                    {orderDeliveredButton}
+                  </Button>
+                </div>
+              </ListGroup.Item>
+              {!deliveredButtonDisabled ? (
+                <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                  <Button className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`} disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Delivery Note</Button>
                 </ListGroup.Item>
-                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-                  <Button className="p-0 m-0 pe-2 ps-2 w-50 " variant="secondary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Send Invoice !</Button>
-                </ListGroup.Item>
-              </>
-            ) : (
-              <>
+              ) : (
                 <PDFPopupButton
                   documentComponent={
-                    <InvoicePrint
+                    <DeliveryNotePrint
                       cartItems={cartItems}
                       invoiceNumber={invoiceNumber}
                       userInfo={userInfo}
                       purchaseNumber={purchaseNumber}
                       cartSubtotal={cartSubtotal}
-                      dueDays={dueDays}
                       invoiceDate={deliveredAt}
+                      dueDays={dueDays}
                       selectedDeliverySite={selectedDeliverySite}
                       companyAccount={companyAccount}
-                      taxAmount={taxAmount}
-                      isPaid={btnMarkAsPaid}
+                      deliveredAt={deliveredAt}
                     />
                   }
-                  fileName={invoiceNumber}
-                  loadingText="Print Invoice"
+                  fileName={"DN" + invoiceNumber}
+                  loadingText="Print Delivery Note"
                 />
-                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-                  <div className="d-grid gap-2">
-                    <Button
-                      className={`p-0 m-0 w-50 ${sentProformaInvButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
-                      onClick={
-                        sentInvButtonDisabled
-                          ? () => sendInvoiceEmail(invData)
-                          : handleSentInv
-                      }
-                      type="button"
-                      disabled={sendingInv}
-                    >
-                      {sendingInv ? "Sending..." : invSentButton}{" "}
-                      <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
-                    </Button>
-                  </div>
-                </ListGroup.Item>
-                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-                  <div className="d-grid gap-2">
-                    <Form.Control
-                      type="text"
-                      style={{ width: "99%" }}
-                      min="0"
-                      className="form-control pe-0"
-                      onChange={handleChangeEmailAddress}
-                      value={emailAddress}
-                      isInvalid={!isEmailValid}
-                      placeholder="test@gmail.com"
-                    />
-                    {!isEmailValid && (
-                      <Alert variant="danger" className="mt-2">
-                        Please enter a valid email address.
-                      </Alert>
-                    )}
-                    <Button
-                      className={`p-0 m-0 w-50 ${styles.btnRedColor}`}
-                      onClick={() => sendInvoiceEmailManually(invData)}
-                      type="button"
-                      disabled={sendingInvManually}
-                    >{sendingInvManually ? "Sending..." : "Send Invoice"}
-                    </Button>
-                  </div>
-                </ListGroup.Item>
-              </>
-            )}
+              )}
 
-          </ListGroup>
-          <br />
-          <div style={{ height: "100px" }}>
-            <ListGroup>
-              <ListGroup.Item style={{backgroundColor: 'transparent'}}>
-                <h5 className="m-0">Proforma Invoice</h5>
+              <ListGroup.Item
+                className="p-1 ps-2"
+                hidden={backOrderStatus === false}
+                style={{ backgroundColor: 'transparent' }}
+              >
+                <div className="d-grid gap-2">
+                  <Button
+                    onClick={handleReorderClick}
+                    className="button-shadow p-0 m-0 w-50"
+                    variant="success"
+                  >
+                    Create Back Order
+                  </Button>
+                </div>
+                <div className="d-grid gap-2">
+                  <Button
+                    onClick={updateBackOrderStatus}
+                    className="button-shadow p-0 m-0 w-50 mt-2"
+                    variant="success"
+                    disabled={completingOrder}
+                  >
+                    {completingOrder ? "Completing" : "Complete Order"}
+                  </Button>
+                </div>
               </ListGroup.Item>
-              <ListGroup.Item style={{backgroundColor: 'transparent'}}>
+            </ListGroup>
+            <br />
+
+            <ListGroup hidden={userData?.isAdmin !== true || order?.isDelivered !== true}>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                <h5 className="m-0">Accounts Use Only:</h5>
+              </ListGroup.Item>
+              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
                 <Form.Check
                   type="switch"
-                  id="proforma-switch"
-                  label="Show Proforma Invoice"
-                  onChange={handleShowProformaInvoice}
+                  id="isPaid"
+                  label="Mark As Paid"
+                  onChange={handleMarkPaid}
+                  disabled={btnMarkAsPaid}
+
                 />
               </ListGroup.Item>
-              <div hidden={showProformaInvoice === false}>
-                <PDFPopupButton
-                  documentComponent={
-                    <ProformaInvoicePrint
-                      cartItems={cartItems}
-                      invoiceNumber={invoiceNumber}
-                      userInfo={userInfo}
-                      purchaseNumber={purchaseNumber}
-                      cartSubtotal={cartSubtotal}
-                      dueDays={dueDays}
-                      invoiceDate={createdAt}
-                      selectedDeliverySite={selectedDeliverySite}
-                      companyAccount={companyAccount}
-                      taxAmount={taxAmount}
-                    />
-                  }
-                  fileName={invoiceNumber}
-                  loadingText="Print P.Invoice"
-                />
-                <ListGroup.Item className="p-1 ps-2" style={{backgroundColor: 'transparent'}}>
-                  <div className="d-grid gap-2">
-                    <Button
-                      className={`p-0 m-0 w-50 ${sentProformaInvButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
-                      onClick={
-                        sentProformaInvButtonDisabled
-                          ? () => sendProformaInvoiceEmail(invData)
-                          : handleSentProformaInv
-                      }
-                      type="button"
-                      disabled={sendingInv}
-                    >
-                      {sendingInv ? "Sending..." : proformaInvSentButton}{" "}
-                      <span hidden={!order?.proformaInvHasSent}>({order?.proformaInvHasSent})</span>{" "}
-                    </Button>
-                  </div>
-                </ListGroup.Item>
-              </div>
+              {!deliveredButtonDisabled ? (
+                <>
+                  <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                    <Button className={`p-0 m-0 pe-2 ps-2 w-50 ${styles.btnRedColor}`} disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Print Invoice</Button>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                    <Button className="p-0 m-0 pe-2 ps-2 w-50 " variant="secondary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }}>Send Invoice !</Button>
+                  </ListGroup.Item>
+                </>
+              ) : (
+                <>
+                  <PDFPopupButton
+                    documentComponent={
+                      <InvoicePrint
+                        cartItems={cartItems}
+                        invoiceNumber={invoiceNumber}
+                        userInfo={userInfo}
+                        purchaseNumber={purchaseNumber}
+                        cartSubtotal={cartSubtotal}
+                        dueDays={dueDays}
+                        invoiceDate={deliveredAt}
+                        selectedDeliverySite={selectedDeliverySite}
+                        companyAccount={companyAccount}
+                        taxAmount={taxAmount}
+                        isPaid={btnMarkAsPaid}
+                      />
+                    }
+                    fileName={invoiceNumber}
+                    loadingText="Print Invoice"
+                  />
+                  <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                    <div className="d-grid gap-2">
+                      <Button
+                        className={`p-0 m-0 w-50 ${sentProformaInvButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
+                        onClick={
+                          sentInvButtonDisabled
+                            ? () => sendInvoiceEmail(invData)
+                            : handleSentInv
+                        }
+                        type="button"
+                        disabled={sendingInv}
+                      >
+                        {sendingInv ? "Sending..." : invSentButton}{" "}
+                        <span hidden={!order?.invHasSent}>({order?.invHasSent})</span>{" "}
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                    <div className="d-grid gap-2">
+                      <Form.Control
+                        type="text"
+                        style={{ width: "99%" }}
+                        min="0"
+                        className="form-control pe-0"
+                        onChange={handleChangeEmailAddress}
+                        value={emailAddress}
+                        isInvalid={!isEmailValid}
+                        placeholder="test@gmail.com"
+                      />
+                      {!isEmailValid && (
+                        <Alert variant="danger" className="mt-2">
+                          Please enter a valid email address.
+                        </Alert>
+                      )}
+                      <Button
+                        className={`p-0 m-0 w-50 ${styles.btnRedColor}`}
+                        onClick={() => sendInvoiceEmailManually(invData)}
+                        type="button"
+                        disabled={sendingInvManually}
+                      >{sendingInvManually ? "Sending..." : "Send Invoice"}
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                </>
+              )}
+
             </ListGroup>
-          </div>
-          <br />
+            <br />
+            <div style={{ height: "100px" }}>
+              <ListGroup>
+                <ListGroup.Item style={{ backgroundColor: 'transparent' }}>
+                  <h5 className="m-0">Proforma Invoice</h5>
+                </ListGroup.Item>
+                <ListGroup.Item style={{ backgroundColor: 'transparent' }}>
+                  <Form.Check
+                    type="switch"
+                    id="proforma-switch"
+                    label="Show Proforma Invoice"
+                    onChange={handleShowProformaInvoice}
+                  />
+                </ListGroup.Item>
+                <div hidden={showProformaInvoice === false}>
+                  <PDFPopupButton
+                    documentComponent={
+                      <ProformaInvoicePrint
+                        cartItems={cartItems}
+                        invoiceNumber={invoiceNumber}
+                        userInfo={userInfo}
+                        purchaseNumber={purchaseNumber}
+                        cartSubtotal={cartSubtotal}
+                        dueDays={dueDays}
+                        invoiceDate={createdAt}
+                        selectedDeliverySite={selectedDeliverySite}
+                        companyAccount={companyAccount}
+                        taxAmount={taxAmount}
+                      />
+                    }
+                    fileName={invoiceNumber}
+                    loadingText="Print P.Invoice"
+                  />
+                  <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                    <div className="d-grid gap-2">
+                      <Button
+                        className={`p-0 m-0 w-50 ${sentProformaInvButtonDisabled ? styles.btnRedColor : styles.btnGreenColor}`}
+                        onClick={
+                          sentProformaInvButtonDisabled
+                            ? () => sendProformaInvoiceEmail(invData)
+                            : handleSentProformaInv
+                        }
+                        type="button"
+                        disabled={sendingInv}
+                      >
+                        {sendingInv ? "Sending..." : proformaInvSentButton}{" "}
+                        <span hidden={!order?.proformaInvHasSent}>({order?.proformaInvHasSent})</span>{" "}
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                </div>
+              </ListGroup>
+            </div>
+            <br />
 
-          {/* edit Track Link modal */}
-          <Modal
-            show={showTrackLink}
-            onHide={handleCloseTrackLink}
-            className="edite_order_name"
-          >
-            <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
-              <Modal.Title>Enter Tracking Link:</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="p-2 m-0">
-              <Form.Control
-                as="textarea"
-                onChange={enterTrackLink}
-                type="string"
-                name="trackLink"
-                defaultValue={trackLink}
-                required
-                aria-label="track link"
-                aria-describedby="basic-addon2"
-              />
-            </Modal.Body>
-            <Modal.Footer className="p-0 m-0">
-              <Button
-                variant="success"
-                onClick={handleMarkAsSent}
-                className="p-1 pt-0 pb-0 m-1"
-              >
-                Save Changes
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={handleCloseTrackLink}
-                className="p-1 pt-0 pb-0 m-1"
-              >
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
+            {/* edit Track Link modal */}
+            <Modal
+              show={showTrackLink}
+              onHide={handleCloseTrackLink}
+              className="edite_order_name"
+            >
+              <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
+                <Modal.Title>Enter Tracking Link:</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="p-2 m-0">
+                <Form.Control
+                  as="textarea"
+                  onChange={enterTrackLink}
+                  type="string"
+                  name="trackLink"
+                  defaultValue={trackLink}
+                  required
+                  aria-label="track link"
+                  aria-describedby="basic-addon2"
+                />
+              </Modal.Body>
+              <Modal.Footer className="p-0 m-0">
+                <Button
+                  variant="success"
+                  onClick={handleMarkAsSent}
+                  className="p-1 pt-0 pb-0 m-1"
+                >
+                  Save Changes
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={handleCloseTrackLink}
+                  className="p-1 pt-0 pb-0 m-1"
+                >
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
 
-          {/* back order modal */}
-          <Modal
-            show={showConfirmation}
-            onHide={closeModal}
-            className="Re_Order_Modal"
-          >
-            <Modal.Header className="p-0 m-2 mb-0" closeButton>
-              <span className="fw-bold p-0 m-0">Create Back Order?</span>
-            </Modal.Header>
-            <Modal.Body className="p-2 m-2 d-flex justify-content-between">
-              {/* Do you want Create the Back Order? */}
-              <Button
-                variant="success"
-                onClick={orderHandler}
-                className="ms-5 p-0 pe-1 ps-1 button-shadow"
-              >
-                {buttonText}
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={closeModal}
-                className="me-5 p-0 pe-1 ps-1 button-shadow"
-              >
-                Cancel
-              </Button>
-            </Modal.Body>
-          </Modal>
+            {/* back order modal */}
+            <Modal
+              show={showConfirmation}
+              onHide={closeModal}
+              className="Re_Order_Modal"
+            >
+              <Modal.Header className="p-0 m-2 mb-0" closeButton>
+                <span className="fw-bold p-0 m-0">Create Back Order?</span>
+              </Modal.Header>
+              <Modal.Body className="p-2 m-2 d-flex justify-content-between">
+                {/* Do you want Create the Back Order? */}
+                <Button
+                  variant="success"
+                  onClick={orderHandler}
+                  className="ms-5 p-0 pe-1 ps-1 button-shadow"
+                >
+                  {buttonText}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={closeModal}
+                  className="me-5 p-0 pe-1 ps-1 button-shadow"
+                >
+                  Cancel
+                </Button>
+              </Modal.Body>
+            </Modal>
 
-          {/* edit order note modal */}
-          <Modal show={show} onHide={handleClose} className="edite_order_name">
-            <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
-              <Modal.Title>Enter Admin Note:</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="p-2 m-0">
-              <Form.Control
-                onChange={enterAdminNote}
-                type="string"
-                name="MangerEmail"
-                defaultValue={adminNote}
-                required
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-              />
-            </Modal.Body>
-            <Modal.Footer className="p-0 m-0">
-              <Button
-                variant="success"
-                onClick={saveOrderName}
-                className="p-1 pt-0 pb-0 m-1"
-              >
-                Save Changes
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={handleClose}
-                className="p-1 pt-0 pb-0 m-1"
-              >
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </Col>
-      </Row>
-    </div >
+            {/* edit order note modal */}
+            <Modal show={show} onHide={handleClose} className="edite_order_name">
+              <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
+                <Modal.Title>Enter Admin Note:</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="p-2 m-0">
+                <Form.Control
+                  onChange={enterAdminNote}
+                  type="string"
+                  name="MangerEmail"
+                  defaultValue={adminNote}
+                  required
+                  aria-label="Recipient's username"
+                  aria-describedby="basic-addon2"
+                />
+              </Modal.Body>
+              <Modal.Footer className="p-0 m-0">
+                <Button
+                  variant="success"
+                  onClick={saveOrderName}
+                  className="p-1 pt-0 pb-0 m-1"
+                >
+                  Save Changes
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={handleClose}
+                  className="p-1 pt-0 pb-0 m-1"
+                >
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Col>
+        </Row>
+      </div >
     </>
   );
 };

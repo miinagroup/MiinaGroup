@@ -8,7 +8,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import { useSelector, useDispatch, connect } from "react-redux";
 import axios from "axios";
 import moment from "moment-timezone";
-import FilterComponent from "../FilterQueryResultOptions/FilterComponent";
+import FilterComponent from "../FilterQueryResultOptions/FilterComponent.js";
 import { getCategories } from "../../redux/actions/categoryActions";
 import EditProductShortInforComponent from "../../pages/admin/components/EditProductShortInforComponent";
 import LoginRegisterPage from "../../pages/LoginRegisterPage";
@@ -359,19 +359,19 @@ const ProductDetailsPageComponent = ({
     <div className="green-line"></div>
     <Container className="content-container product-detail-page" fluid>
       <Row className="product-detail-page-row">
-        
-      <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
-              {mainCategories.map(category => {
-                return <a
-                  key={category.label}
-                  // className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
-                  className={styles.categoryItem}
-                  // onClick={() => setSelectedCategory(category.link)}
-                  href={`/product-list?categoryPath=${category.link}`}
-                >
-                  {category.label}
-                </a>
-              })}
+
+        <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
+          {mainCategories.map(category => {
+            return <a
+              key={category.label}
+              // className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
+              className={styles.categoryItem}
+              // onClick={() => setSelectedCategory(category.link)}
+              href={`/product-list?categoryPath=${category.link}`}
+            >
+              {category.label}
+            </a>
+          })}
         </div>
         <div className={`green-line ${styles.mobile}`}></div>
 
@@ -421,10 +421,10 @@ const ProductDetailsPageComponent = ({
                             userData.isMarketing === true ? (
                             <>
                               {product.availability?.length > 0 ? (
-                                  <div float="left" className="stock-items-container">
-                                    <h6 className={product.availability[0].local > 10 ? "green" : "orange"}>WA Stock: {product.availability[0].local < 10 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
-                                    <h6 className={product.availability[0].national > 10 ? "green" : "orange"}>National Stock: {product.availability[0].national < 10 ? "Low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
-                                  </div>
+                                <div float="left" className="stock-items-container">
+                                  <h6 className={product.availability[0].local > 10 ? "green" : "orange"}>WA Stock: {product.availability[0].local < 10 ? "low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i></span><span>{product.availability[0].local}</span></>}</h6>
+                                  <h6 className={product.availability[0].national > 10 ? "green" : "orange"}>National Stock: {product.availability[0].national < 10 ? "Low stock" : <><span className="stock-item"><i class="bi bi-broadcast"></i> </span><span>{product.availability[0].national}</span></>}</h6>
+                                </div>
                               ) : ("")}
                               <table className="productTable">
                                 <tr>

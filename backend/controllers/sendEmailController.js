@@ -1,24 +1,21 @@
 const nodemailer = require("nodemailer");
 const Order = require("../models/OrderModel");
 
+
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
+  host: "mail.miinagroup.com.au",
   port: 587,
   secure: false,
   auth: {
-    user: process.env.CTLEMAIL,
-    pass: process.env.CTLEMAILPASSWORD,
+    user: process.env.NOREPLY,
+    pass: process.env.NOREPLYPASSWORD,
   },
-});
-
-const testTransporter = nodemailer.createTransport({
-  host: "mail.problematic.com.au",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.PMEMAIL,
-    pass: process.env.PMEMAILPASSWORD,
+  tls: {
+    rejectUnauthorized: false,
   },
+  // debug: true, // Enable debug output
+  // logger: true, // Log information in console
 });
 
 const managementApproval = async (req, res, next) => {
@@ -32,7 +29,7 @@ const managementApproval = async (req, res, next) => {
     }
 
     const message = {
-      from: `"no-reply Miina Group " <${process.env.CTLEMAIL}>`,
+      from: `"no-reply Miina Group " <${process.env.NOREPLY}>`,
       to: `${managerEmail}`,
       subject: `My shopping cart of $${totalPrice}`,
       text: `
@@ -62,7 +59,6 @@ const managementApproval = async (req, res, next) => {
 
 const sendInvoice = async (req, res, next) => {
   try {
-    // 因为 后面可能要改动 base64data 所以要用 let，不能用 const
     let {
       totalPrice,
       billingEmail,
@@ -87,7 +83,7 @@ const sendInvoice = async (req, res, next) => {
     }
 
     const message = {
-      from: `"no-reply Miina Group" <${process.env.CTLEMAIL}>`,
+      from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: `${billingEmail}`,
       subject: `Invoice ${invoiceNumber} from Miina Group`,
       text: `
@@ -121,7 +117,6 @@ const sendInvoice = async (req, res, next) => {
 
 const sendProformaInvoice = async (req, res, next) => {
   try {
-    // 因为 后面可能要改动 base64data 所以要用 let，不能用 const
     let {
       totalPrice,
       billingEmail,
@@ -146,7 +141,7 @@ const sendProformaInvoice = async (req, res, next) => {
     }
 
     const message = {
-      from: `"no-reply Miina Group" <${process.env.CTLEMAIL}>`,
+      from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: `${billingEmail}`,
       subject: `Proforma Invoice ${invoiceNumber} from Miina Group`,
       text: `
@@ -184,7 +179,7 @@ const newOrderRemind = async (req, res, next) => {
       const { from, PO, price } = req.body;
 
       message = {
-        from: `"no-reply Miina Group" <${process.env.CTLEMAIL}>`,
+        from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
         to: process.env.QTEMAIL,
         subject: `A new order has been placed by ${from}`,
         text: `${from} has just placed an order for $${price}, PO#: ${PO}
@@ -210,7 +205,7 @@ const deliveryNotice = async (req, res, next) => {
       const { userEmail, purchaseNumber, trackLink } = req.body;
 
       const message = {
-        from: `"no-reply Miina Group" <${process.env.CTLEMAIL}>`,
+        from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
         to: userEmail,
         subject: `P0#:${purchaseNumber} has been shipped`,
         text: purchaseNumber,
@@ -291,8 +286,7 @@ const deliveryNotice = async (req, res, next) => {
                                 <tr>
                                   <td width="100%" valign="top" align="center">
                                   <br />
-                                      <img
-                                        src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
+                                      <img src="frontend/public/svg/PrimaryLogoColour.svg"
                                         align="center"
                                         border="0"
                                         width="500"
@@ -373,7 +367,7 @@ const deliveryNotice = async (req, res, next) => {
         contain information that is confidential and privileged. If you receive
         this <span class="il">email</span> in error, please advise us
         immediately and delete it without copying the contents contained within.
-        Miina Group (including its group of companies) do not accept
+        Miina Group  do not accept
         liability for the views expressed within or the consequences of any
         computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
         without the written consent of the copyright owner.
@@ -413,11 +407,10 @@ const newUserNoticeToMiina = async ({
         company,
         location
       );
-      console.log("I am here send out new user notice to Josh");
 
       const message = {
-        from: `"New User - Miina Group" <${process.env.CTLEMAIL}>`,
-        to: `${process.env.JOSHEMAIL}`,
+        from: `"New User - Miina Group" <${process.env.NOREPLY}>`,
+        to: `${process.env.QTEMAIL}`,
         subject: `A New User ${email} from ${company} just Registered`,
         text: email,
         html: `
@@ -492,7 +485,7 @@ const newUserNoticeToMiina = async ({
                                 <td width="100%" valign="top" align="center">
                                 <br />
                                     <img
-                                      src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
+                                      src="frontend/public/svg/PrimaryLogoColour.svg"
                                       align="center"
                                       border="0"
                                       width="500"
@@ -574,7 +567,7 @@ const newUserNoticeToMiina = async ({
       contain information that is confidential and privileged. If you receive
       this <span class="il">email</span> in error, please advise us
       immediately and delete it without copying the contents contained within.
-      Miina Group (including its group of companies) do not accept
+      Miina Group do not accept
       liability for the views expressed within or the consequences of any
       computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
       without the written consent of the copyright owner.
@@ -594,54 +587,25 @@ const newUserNoticeToMiina = async ({
   }
 };
 
-
 const sendRequest = async (req, res, next) => {
   try {
-    if (req.body.categoryTypeSelectId === "quote") {
-      let file = null;
-      if (req.files && req.files.file) {
-        file = req.files.file[0];
-      }
-
-      message = {
-        from: `"no-reply Miina Group" <${process.env.CTLEMAIL}>`,
-        to: process.env.QTEMAIL,
-        subject: `Enquiry : Quote New Products: ${req.body.productName}`,
-        text: `
-      We received an Enquiry from, 
-      ${req.body.name} :  ${req.body.email},
-
-      Product : ${req.body.productName},
-      Product Brand / Product code / SKU: ${req.body.brand}
-      Product Description: ${req.body.description}`,
-      };
-
-      if (file) {
-        message.attachments = [
-          {
-            filename: file.name,
-            content: file.data,
-          },
-        ];
-      }
-
-      await transporter.sendMail(message);
-      res.status(200).json({ message: "Email sent successfully" });
-
-    } else {
-      message = {
-        from: `"no-reply Miina Group" <${process.env.CTLEMAIL}>`,
-        to: process.env.QTEMAIL,
-        subject: "Enquiry : General request",
-        text: `
+    message = {
+      from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
+      to: process.env.ENQUIRYMAIL,
+      subject: "General Enquiry",
+      text: `
       We received an Enquiry from,
-      ${req.body.name} :  ${req.body.email},
 
-      ${req.body.textarea}`,
-      };
+      Name    : ${req.body.name}
+      Email     : ${req.body.email}
+      Phone   : ${req.body.phone}
+      Enquiry : ${req.body.enquiry}
+      
+      Kind Regards,
+      The Miina Group Team`,
+    };
 
-      await transporter.sendMail(message);
-    }
+    await transporter.sendMail(message);
 
     res.status(200).json({ message: "Email sent successfully" });
 
@@ -653,7 +617,7 @@ const sendRequest = async (req, res, next) => {
 const sendNotification = async (receivingEmail, backOrderList) => {
   try {
     const message = {
-      from: `"no-reply Miina Group" <${process.env.CTLEMAIL}>`,
+      from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: `${receivingEmail}`,
       subject: `Miina Group Overdue Orders List`,
       text: `

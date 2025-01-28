@@ -3,17 +3,17 @@ const nodemailer = require("nodemailer");
 module.exports.sendVerificationEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
+      host: "mail.miinagroup.com.au",
       port: 587,
       secure: false,
       auth: {
-        user: process.env.CTLEMAIL,
-        pass: process.env.CTLEMAILPASSWORD,
+        user: process.env.NOREPLY,
+        pass: process.env.NOREPLYPASSWORD,
       },
     });
 
     await transporter.sendMail({
-      from: process.env.CTLEMAIL,
+      from: process.env.NOREPLY,
       to: email,
       subject: subject,
       text: text,
@@ -95,12 +95,12 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/signature.png"
+                                        src="frontend/public/svg/PrimaryLogoColour.svg"
                                         align="center"
                                         border="0"
                                         width="500"
                                         height="100"
-                                        alt="CTL Australia"
+                                        alt="Miina Group"
                                         style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
                                         class="CToWUd"
                                         data-bit="iit"
@@ -133,23 +133,18 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
                                         <br />
                                         <br />
                                         <br />
-                                        This verify link has
-                                        been sent because someone is attempting
-                                        to register this email with CTL Australia account.
-                                        If this was not you, please
-                                        contact 
                                         <a
-                                          href="mailto:admin@ctlaus.com"
+                                          href="mailto:Enquiries@miinagroup.com.au"
                                           target="_blank"
                                         >
-                                          admin@ctlaus.com
+                                          Enquiries@miinagroup.com.au
                                         </a>.
                                         <br />
                                         <br />
                                         <b>
                                             Thank you,
                                             <br />
-                                            The CTL Australia Team
+                                            Miina Group
                                             <br />
                                             <br />
                                             <br />
@@ -180,7 +175,7 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
         contain information that is confidential and privileged. If you receive
         this <span class="il">email</span> in error, please advise us
         immediately and delete it without copying the contents contained within.
-        CTL AUSTRALIA (including its group of companies) do not accept
+        Miina Group do not accept
         liability for the views expressed within or the consequences of any
         computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
         without the written consent of the copyright owner.
@@ -201,17 +196,17 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
 module.exports.sendResetPasswordEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
+      host: "mail.miinagroup.com.au",
       port: 587,
       secure: false,
       auth: {
-        user: process.env.CTLEMAIL,
-        pass: process.env.CTLEMAILPASSWORD,
+        user: process.env.NOREPLY,
+        pass: process.env.NOREPLY,
       },
     });
 
     await transporter.sendMail({
-      from: process.env.CTLEMAIL,
+      from: process.env.NOREPLY,
       to: email,
       subject: subject,
       text: text,
@@ -293,12 +288,12 @@ module.exports.sendResetPasswordEmail = async (email, subject, text) => {
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
+                                        src="frontend/public/svg/PrimaryLogoColour.svg"
                                         align="center"
                                         border="0"
                                         width="500"
                                         height="100"
-                                        alt="CTL Australia"
+                                        alt="Miina Group"
                                         style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
                                         class="CToWUd"
                                         data-bit="iit"
@@ -337,17 +332,17 @@ module.exports.sendResetPasswordEmail = async (email, subject, text) => {
                                         If this was not you, please
                                         contact 
                                         <a
-                                          href="mailto:admin@ctlaus.com"
+                                          href="mailto:Enquiries@miinagroup.com.au"
                                           target="_blank"
                                         >
-                                          admin@ctlaus.com
+                                          Enquiries@miinagroup.com.au
                                         </a>.
                                         <br />
                                         <br />
                                         <b>
                                             Thank you,
                                             <br />
-                                            The CTL Australia Team
+                                            Miina Group
                                             <br />
                                             <br />
                                             <br />
@@ -378,7 +373,7 @@ module.exports.sendResetPasswordEmail = async (email, subject, text) => {
         contain information that is confidential and privileged. If you receive
         this <span class="il">email</span> in error, please advise us
         immediately and delete it without copying the contents contained within.
-        CTL AUSTRALIA (including its group of companies) do not accept
+        Miina Group do not accept
         liability for the views expressed within or the consequences of any
         computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
         without the written consent of the copyright owner.
