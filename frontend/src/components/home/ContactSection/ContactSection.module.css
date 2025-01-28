@@ -1,12 +1,12 @@
 /* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.requestForm input::-webkit-outer-spin-button,
+.requestForm input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+.requestForm input[type=number] {
   -moz-appearance: textfield;
 }
 

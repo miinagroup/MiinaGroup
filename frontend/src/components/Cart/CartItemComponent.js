@@ -17,20 +17,24 @@ const CartItemComponent = ({
   }, [item]);
 
   const handleBlur = (e) => {
-    const newValue = Math.round(e.target.value / item.saleunit) * item.saleunit;
-    setQty(newValue);
+    let newValue;
+    if(e.target.value < 0) {
+      newValue = 0
+      setQty(newValue);
+    } else {
+      newValue = Math.round(e.target.value / item.saleunit) * item.saleunit;
+ setQty(newValue);
+    }
+  
+   
     if (changeCount) {
       changeCount(item.cartProducts[0]._id, newValue);
     }
   };
 
-  console.log("changeCount", changeCount)
   const handleChange = (e) => {
-    console.log(e.target.value)
     setQty(e.target.value);
-    if (changeCount) {
-      changeCount(item.cartProducts[0]._id, e.target.value);
-    }
+
   };
 
   const itemPrice = item.cartProducts[0].price.toLocaleString(undefined, {
@@ -80,6 +84,7 @@ const CartItemComponent = ({
               value={qty}
               onChange={handleChange}
               disabled={orderCreated}
+
             />
           </Col>
           

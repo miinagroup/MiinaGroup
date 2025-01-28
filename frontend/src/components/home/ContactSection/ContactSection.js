@@ -81,6 +81,7 @@ const ContactSection = () => {
                 required 
                 placeholder="(+61) 400 000 000"
                 max="12"
+                
                 />
             </div>
 

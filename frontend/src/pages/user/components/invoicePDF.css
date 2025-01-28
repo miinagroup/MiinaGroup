@@ -217,6 +217,8 @@
 .cart-item-row {
     color: #483F55 !important;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .cart-item-row a {
