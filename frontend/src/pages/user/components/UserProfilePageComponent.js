@@ -293,27 +293,6 @@ const UserProfilePageComponent = ({
                     })}
                 </Form.Select>
               </Form.Group>
-
-              <Form.Group as={Col} md="4" controlId="formBasicRole">
-                <Form.Label>Role</Form.Label>
-                <Form.Control.Feedback type="invalid">
-                  Please Select your Role.{" "}
-                </Form.Control.Feedback>
-              </Form.Group>
-              {userRole === "other role" && <Form.Group as={Col} md="6" controlId="formBasicOtherRole" className="mt-2">
-                <Form.Label></Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  name="otherRole"
-                  placeholder="Job Title"
-                  onChange={handleOtherRole}
-                  value={otherRole}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please mention your Job Title.{" "}
-                </Form.Control.Feedback>
-              </Form.Group>}
             </Row>
 
             <Row className="mt-4 ms-1 justify-content-md-left">

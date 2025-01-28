@@ -140,17 +140,20 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
 
   return (
     <>
-      <div>
+      <div className={styles.ordersPageWrapper}>
         <UserLinksComponent />
+        <div className="green-line"></div>
         <div className={styles.ordersWrapper}>
           <h1 className={styles.title}>MY ORDERS</h1>
-          <div className={`${styles.searchPaginationWrapper} desktop`}>
+          <div className={`${styles.searchPaginationWrapper}`}>
+            <div className="desktop">
             <Pagination
               total={totalProducts}
               itemsPerPage={ITEMS_PER_PAGE}
               currentPage={currentPage}
               onPageChange={(page) => setCurrentPage(page)}
             />
+            </div>
             <Search
               onSearch={(value) => {
                 setProductSearch(value);
@@ -258,7 +261,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
                       </Link>
                     </div>
                   </div>
-                  <hr />
+                  <hr className="mobile" />
                 </>
               )
             })}

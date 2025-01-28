@@ -16,6 +16,7 @@
     font-family: "GloriaHallelujah";
     font-size: 40px;
     color: #483F55;
+    text-decoration: underline;
 }
 
 .ordersTable {
@@ -49,8 +50,16 @@
 
 
 @media (max-width: 575px) {
-    .searchPaginationWrapper {
-        display: none;
+    .ordersPageWrapper {
+         padding-bottom: 150px;
+    }
+
+    .searchPaginationWrapper .form-control {
+         font-size: 10px !important;
+    }
+
+    .desktop {
+         display: none;
     }
 
     .ordersWrapper {
@@ -59,6 +68,7 @@
 
     .title {
          font-size: 22px;
+         padding-top: 25px;
     }
 
     .userOrdersMobile {
@@ -79,7 +89,7 @@
     }
     
     .userOrdersMobile {
-        padding: 15px 20px;
+        padding: 0px 10px;
     }
     
     .userOrdersMobileData {

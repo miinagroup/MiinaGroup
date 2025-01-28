@@ -1,6 +1,7 @@
 .UserOrderDetailsPageTitle {
 padding-left: 20px;
 padding-top: 10px;
+text-decoration: underline;
 }
 
 .orderDetailPageMobileProductItem {
@@ -106,4 +107,14 @@ padding-top: 10px;
         .UserOrderDetailsPageComponentSummary {
             margin: 0 auto;
         }
+
+        .UserOrderDetailsPageTitle {
+            font-family: "GloriaHallelujah";
+            color: #483F55; 
+        }
+
+        .orderDetailPageMobileProductItem, .UserOrderDetailsPageComponentSummary {
+             color:#483F55 !important;
+        }
+        
         }

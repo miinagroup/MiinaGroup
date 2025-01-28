@@ -171,6 +171,10 @@
   display: block;
 }
 
+.pagination_productlist_mobile {
+  display: none;
+}
+
 @media (max-width: 575px)  {
   .Avtbox_admin {
     height: 50px;
@@ -193,5 +197,9 @@
 
   .product-list-wrapper .form-control {
     text-align: center;
+  }
+
+  .pagination_productlist_mobile {
+     display: flex;
   }
 }

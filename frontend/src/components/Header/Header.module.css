@@ -325,6 +325,18 @@ button {
      max-width: 200px;
      text-align: center;
    }
+
+   .btnContactSidebar {
+     padding: 16px 20px;
+     font-family: "GloriaHallelujah";
+     background-color: rgba(219, 161, 98, 0.25) !important;
+     width: 100%;
+     text-align: start;
+   }
+
+   .btnContactSidebar:focus {
+     background-color: #B97F4E;
+   }
 }
 
 

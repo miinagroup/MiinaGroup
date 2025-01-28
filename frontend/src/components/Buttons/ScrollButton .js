@@ -40,12 +40,16 @@ const ScrollButton = () => {
     cursor: 'pointer',
     opacity: isVisible ? 1 : 0,
     transition: 'opacity 0.3s ease-in-out',
-    fontSize: '35px',
     backgroundColor: isHovered ? '#DBA162' : 'white',
     color: isHovered ? 'white' : '#DBA162',
     border: 'none',
     outline: 'none',
+    zIndex: "100"
   };
+
+  const iconStyle = {
+    fontSize: '35px'
+  }
 
   return (
     <button
@@ -55,7 +59,7 @@ const ScrollButton = () => {
       onMouseLeave={() => setIsHovered(false)}
       aria-label="Scroll to top"
     >
-      <i className="bi bi-arrow-up-circle-fill"></i>
+      <i className="bi bi-arrow-up-circle-fill" style={iconStyle}></i>
     </button>
   );
 };

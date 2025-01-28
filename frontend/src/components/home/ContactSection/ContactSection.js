@@ -36,7 +36,7 @@ const ContactSection = () => {
         setIsSending(false)
     }
 
-    return <div className={styles.contacts} id="request">
+    return <div className={styles.contacts}>
         <img src="/images/FamilyEmblemCream.png" alt="Family Emblem" className={styles.backgroundEmblem} />
         <div className={styles.contactsAcknowledgement}>
             <div className={styles.logoTaglineWrapper}>
@@ -47,7 +47,7 @@ const ContactSection = () => {
                 Miina Group acknowledges the traditional owners and custodians of country throughout Australia and acknowledges their continuing connection to land, waters and community. We pay our respects to the people, the cultures and the elders past, present and emerging.
             </p>
         </div>
-        <h1 className={styles.title}>Contact us</h1>
+        <h1 className={styles.title} id="request">Contact us</h1>
         <div className={styles.subtitle}>
             Didn't find what you're looking for?<br />
             We're keen to answer your questions.
@@ -63,12 +63,25 @@ const ContactSection = () => {
 
             <div>
                 <label>Email address</label>
-                <input name="email" required placeholder="Email address"></input>
+                <input  
+                type="email"  
+                name="email" 
+                required 
+                placeholder="Email address"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                title="Please enter a valid email address"
+                ></input>
             </div>
 
             <div>
                 <label>Phone</label>
-                <input name="phone" required placeholder="(+61) 400 000 000"></input>
+                <input 
+                name="phone"
+                type="number" 
+                required 
+                placeholder="(+61) 400 000 000"
+                max="12"
+                />
             </div>
 
             <div>
@@ -81,7 +94,7 @@ const ContactSection = () => {
             : <div className={styles.newRequestSent}>
                 <p>Your request has been sent. We will contact you within 24 hours.</p>
                 <button
-                    onClick={sendNewRequest}
+                    onClick={() => sendNewRequest()}
                     className={styles.newRequestFormBtn}>Send another request</button>
             </div>}
 

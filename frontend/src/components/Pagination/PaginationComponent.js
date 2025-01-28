@@ -47,7 +47,7 @@ const PaginationComponent = ({
         </LinkContainer>
       </Pagination>
       
-      <Pagination className="ms-4 mb-1 pagination_productlist mobile">
+      <Pagination className="ms-4 mb-1 pagination_productlist pagination_productlist_mobile">
         <LinkContainer to={`${url}pageNum=${Math.max(1, 0)}`}>
           <Pagination.Item disabled={pageNum <= 5}><i className="bi bi-chevron-bar-left"></i></Pagination.Item>
         </LinkContainer>

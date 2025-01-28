@@ -184,10 +184,10 @@ const Header = ({ goToAboutSection, goToTeamSection, goToContactSection }) => {
               </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="2">
-              <Accordion.Header className={styles.accordionHeader}><button onClick={() => {
+                <button className={styles.btnContactSidebar} onClick={() => {
                 handleClickGoToSection(goToContactSection)
                 handleCloseOffcanvasMenu()
-                }}><div className={styles.menuItem}>CONTACT</div></button></Accordion.Header>
+                }}><div className={styles.menuItem}>CONTACT</div></button>
             </Accordion.Item>
           </Accordion>
           </Offcanvas.Body>

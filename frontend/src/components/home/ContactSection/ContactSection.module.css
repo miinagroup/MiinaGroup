@@ -1,3 +1,15 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .contacts {
     font-family: "GloriaHallelujah";
     font-size: 20px;
@@ -113,17 +125,30 @@ label {
 }
 
 .newRequestFormBtn {
-    border: none;
+    border: 1px solid #521712;
     font-family: "HelveticaNeue";
     background-color: #521712;
     color: white;
     font-size: 16px;
     text-align: center;
-    padding: 5px 5px;
+    padding: 10px 10px;
     border-radius: 10px;
     width: 100%;
-    max-width: 145px;
+    max-width: 220px;
+    margin-top: 15px;
 }
+
+.newRequestSent {
+     text-align: center;
+     color: #483F55;
+}
+
+.newRequestFormBtn:hover {
+     background-color: transparent;
+     color:#521712;
+     border: 1px solid #521712;
+}
+
 
 @media (max-width: 1025px) {
     .tagline {
@@ -196,8 +221,8 @@ label {
 
    .newRequestFormBtn {
      font-size: 12px;
-     padding: 5px 0px;
-     max-width: 120px;
+     padding: 10px 0px;
+     max-width: 150px;
    }
 
    .requestForm  input::placeholder {

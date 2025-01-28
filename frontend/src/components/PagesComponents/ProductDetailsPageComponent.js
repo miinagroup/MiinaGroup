@@ -18,6 +18,8 @@ import AdminProductPanel from "./ui/AdminProductPanel/AdminProductPanel";
 import PleaseSelect from "./ui/PleaseSelect/PleaseSelect";
 import { mainCategories } from "../../constants.js";
 import styles from "../home/MainSection/MainSection.module.css";
+import BreadcrumbComponent from "../FilterQueryResultOptions/BreadcrumbComponent.js";
+
 
 const ProductDetailsPageComponent = ({
   addToCartReduxAction,
@@ -374,6 +376,19 @@ const ProductDetailsPageComponent = ({
           })}
         </div>
         <div className={`green-line ${styles.mobile}`}></div>
+        {
+                catList ? (
+                    <span className="categoryHD mt-2">
+                      {
+                        catList.map((category, index) => (
+                          <a href={`/product-list?categoryPath=${category.link}`} key={index}>
+                            {category.name} <label>&nbsp; / &nbsp; </label>
+                          </a>
+                        ))
+                      }
+                    </span>
+                ) : ("")
+              }
 
         <Col xxl={2} xl={3} lg={3} md={3} className="desktop">
           <ListGroup variant="flush">
@@ -390,7 +405,7 @@ const ProductDetailsPageComponent = ({
             </Col>
 
             <Col lg={6} className="product-detail-page-info">
-              {
+              {/* {
                 catList ? (
                   <>
                     <span className="categoryHD">
@@ -404,7 +419,7 @@ const ProductDetailsPageComponent = ({
                     </span>
                   </>
                 ) : ("")
-              }
+              } */}
 
               <Row>
                 <ListGroup variant="flush" className="product-detail-page-list-group">
