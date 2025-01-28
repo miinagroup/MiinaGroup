@@ -18,9 +18,13 @@
     font-size: 16px;
     line-height: 28px;
     color: rgba(72, 63, 85, 0.8);
+    margin: 0 auto;
     margin-bottom: 50px;
     z-index: 2;
     position: relative;
+    width: 100%;
+    max-width: 1000px;
+    
 }
 
 .categoriesList {
@@ -86,10 +90,15 @@
     color: white;
     background-color: #999A47;
     font-family: "HelveticaNeue";
-    padding: 50px 0px;
+    /* padding: 50px 0px; */
     text-align: center;
     border-radius: 10px;
     position: relative;
+    max-height: 150px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .card:hover .logoPlant {
     transform: scale(1.4);
@@ -153,6 +162,7 @@
     margin:  0 auto;
     background-color: rgba(219, 161, 98, 0.45);
     font-family: "HelveticaNeue";
+    max-height: 380px;
 }
 
 .FamilyEmblemWhite {
@@ -168,6 +178,22 @@
 .mobile {
      display: none;
 }
+
+@media (max-width: 1025px) {
+    .text {
+         max-width: 700px;
+    }
+
+    .categoriesList {
+         max-width: 400px;
+    }
+
+    .categoryItem, .highlighted {
+         font-size: 24px;
+         padding: 15px 15px;
+    }
+}
+
 
 @media (max-width: 575px) {
     .desktop {
@@ -189,13 +215,17 @@
         flex-wrap: wrap;
         margin:  0 auto;
         justify-content: center;
+        font-family: "GloriaHallelujah";
+        padding: 25px 0px 0px 0px;
     }
 
     .categoryItem {
+        font-size: 12px;
          padding: 5px 10px;
     }
 
     .highlighted {
+        font-size: 12px;
         padding: 5px 10px;
         color: #999A47;
         border: 1px solid #999A47;

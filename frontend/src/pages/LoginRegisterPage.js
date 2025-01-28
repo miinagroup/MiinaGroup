@@ -3,7 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setReduxUserState } from "../redux/actions/userActions";
 import RegisterPageComponent from "../components/PagesComponents/RegisterPageComponent";
-import { Container, Card, Tabs, Tab } from "react-bootstrap";
+import { Container, Card, Tabs, Tab, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 
@@ -105,9 +105,10 @@ const LoginRegisterPage = ({ modalType }) => {
   };
 
   return (
-    <>
       <Container className="LoginRegPage">
         <Card className="LoginReg">
+        <Modal.Header closeButton></Modal.Header>
+
           <Card.Body>
             <Tabs
               activeKey={selectedTab}
@@ -139,7 +140,6 @@ const LoginRegisterPage = ({ modalType }) => {
           </Card.Body>
         </Card>
       </Container>
-    </>
   );
 };
 

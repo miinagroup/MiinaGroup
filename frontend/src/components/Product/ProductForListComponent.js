@@ -83,10 +83,10 @@ const ProductForListComponent = ({
   }
 
   const addToCartHandler = async (selectedItem) => {
-    setButtonText("Adding...");
+    setButtonText("Adding");
     try {
       await reduxDispatch(addToCart(productId, qty, selectedItem));
-      setButtonText("Added!");
+      setButtonText("Added");
       setTimeout(() => setButtonText("Add"), 1000);
       setQty(saleunit);
 
@@ -239,7 +239,6 @@ const ProductForListComponent = ({
             </div>
           </div>
           {userInfo.isAdmin ? (
-            <>
               <div className="Preview_Update_Div">
                 <select
                   className="Preview_Update_Button"
@@ -258,7 +257,6 @@ const ProductForListComponent = ({
                   })}
                 </select>
               </div>
-            </>
           ) : (
             ""
           )}
@@ -289,15 +287,13 @@ const ProductForListComponent = ({
         </a>
 
         {!isUserInfo &&
-          <>
-            <div className="container">
-              <div className="row btn-group justify-content-center">
-                <div className="col-6 w-50">
+            <div className="product-for-list-component">
+                <div className="">
                   <Form.Control
                     id="item_qty"
                     type="number"
                     min={saleunit}
-                    className="form-control col-0"
+                    className="product-for-list-component-input"
                     value={qty}
                     onBlur={handleBlur}
                     onChange={(e) => setQty(e.target.value)}
@@ -305,14 +301,13 @@ const ProductForListComponent = ({
                     disabled={price === 0}
                   />
                 </div>
-                <div className="col-6 w-50">
                   {stock && stock.length !== 1 ? (
-                    <>
                       <DropdownButton
                         id="dropdown-item-button"
                         title={buttonText}
                         drop="up"
                         disabled={price === 0}
+                         className="dropdown-item-button"
                       >
                         {stock && stock.length !== 1
                           ? stock.map((stk) => (
@@ -327,25 +322,18 @@ const ProductForListComponent = ({
                           ))
                           : ""}
                       </DropdownButton>
-
-                    </>
                   ) : (
-                    <>
                       <Button
                         id="item_button"
-                        className="CTL_btn"
+                        className="CTL_btn item_button"
                         value={stock[0].attrs}
                         onClick={handleProductChange}
                         disabled={price === 0}
                       >
                         {buttonText}
                       </Button>
-                    </>
                   )}
-                </div>
-              </div>
             </div>
-          </>
         }
       </div>
       <Modal
@@ -368,7 +356,7 @@ const ProductForListComponent = ({
         </Modal.Body>
       </Modal>
       <Modal show={showLoginModal} onHide={handleClose} className="login_preview_items">
-        <LoginRegisterPage modalType={modalType} />
+      <LoginRegisterPage modalType={modalType} />
       </Modal>
     </>
   );

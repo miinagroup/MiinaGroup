@@ -99,7 +99,21 @@ margin-bottom: 0;
 .subCatFilter a {
     font-size: 14px;
 }
+
+.accordion-header>a {
+     font-size: 16px;
 }
+
+}
+
+
+@media (max-width: 1025px) {
+
+    .accordion-header>a {
+         font-size: 14px;
+    }
+    
+    }
 
 @media (max-width: 480px) {
     .breadCB {

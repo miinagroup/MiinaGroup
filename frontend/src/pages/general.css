@@ -159,7 +159,7 @@
 #item_button {
   background-color: #521712;
   border: 1px solid transparent;
-  padding: 7px 25px;
+  /* padding: 7px 25px; */
 }
 #item_button:hover {
   background-color: transparent;
@@ -202,12 +202,17 @@
 .subcategoryWrapper {
   background-color: #999A47;
   color: white;
-  padding: 50px 10px;
+  /* padding: 50px 10px; */
   margin-bottom: 35px;
   position: relative;
   text-align: center;
   border-radius: 10px;
   overflow: hidden;
+  min-height: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logoPlant {
@@ -238,6 +243,33 @@
   height: 100%;
   object-fit: contain;
   transform: translate(-50%, -50%);
+}
+
+.product-for-list-component {
+   display: flex;
+   justify-content: space-around;
+   margin-bottom: 10px;
+   align-items: center;
+}
+
+.product-for-list-component-input {
+   max-width: 80px;
+   width: 100%;
+}
+
+.dropdown-item-button, .item_button {
+  max-width: 100px;
+  width: 100%;
+}
+
+.dropdown-item-button #dropdown-item-button {
+   width: 100%;
+}
+
+@media (max-width: 575px) {
+  .subcategoryWrapper {
+    max-height: 100px;
+  }
 }
 
 @media (max-width: 575px) {
@@ -328,14 +360,34 @@
     padding: 0px;
   }
 
-  #item_button {
-     padding: 2px 5px;
-     font-size: 14px;
+  .item_button {
+     font-size: 12px !important;
+  }
+
+  .dropdown-item-button #dropdown-item-button {
+    font-size: 12px !important;
   }
 
   .btn-group {
     align-items: center;
   }
+
+  .product-for-list-component-input {
+    max-width: 40px;
+    width: 100%;
+    font-size: 12px;
+ }
+
+ .dropdown-item-button, .item_button {
+  max-width: 70px;
+  width: 100%;
+}
+
+.product-for-list-component {
+   justify-content: space-evenly;
+   align-items: center;
+   height: fit-content;
+}
 
 }
 

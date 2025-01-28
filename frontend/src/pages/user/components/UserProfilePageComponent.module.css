@@ -95,6 +95,20 @@
 }
 
 
+@media(max-width: 1025px) {
+    .userProfilePageComponent {
+        padding: 25px 25px;
+        width: 100% !important;
+    }
+
+    .notification {
+        margin-top: 25px;
+        padding: 0px 0px;
+   }
+
+}
+
+
 @media(max-width: 480px) {
     .userProfilePageComponentWrapper {
         margin: 0px 0px !important;

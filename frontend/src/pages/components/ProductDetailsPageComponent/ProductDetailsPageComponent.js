@@ -645,7 +645,8 @@ const ProductDetailsPageComponent = ({
         />
       </Modal >
       <Modal show={showLoginModal} onHide={handleCloseLoginModal} className="login_preview_items">
-        <LoginRegisterPage modalType={modalType} />
+      <Modal.Header closeButton></Modal.Header>
+      <Modal.Body><LoginRegisterPage modalType={modalType} /></Modal.Body>
       </Modal>
     </Container >
   </>);

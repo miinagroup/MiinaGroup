@@ -91,3 +91,19 @@ padding-top: 10px;
 .btnMyOrders:hover a {
     color: #521712;
 }
+
+@media (max-width: 1025px) {
+    .UserOrderDetailsPageComponentSummary {
+        margin-left: 25px;
+    }
+
+    .UserOrderDetailsPageTitle {
+        font-family: "GloriaHallelujah";
+    }
+    }
+
+    @media (max-width: 575px) {
+        .UserOrderDetailsPageComponentSummary {
+            margin: 0 auto;
+        }
+        }

@@ -295,6 +295,39 @@ button {
    display: none;
 }
 
+@media (max-width: 1025px) {
+  .header {
+    padding: 10px 25px;
+ }
+  .headerWrapper {
+    align-items: baseline;
+  }
+    .menu {
+      flex-direction: column;
+      justify-content: baseline;
+      gap: 0px;
+    }
+
+    .menu button {
+      display: flex;
+      padding: 0px 0px;
+    }
+
+    .logRegNew {
+      flex: 1;
+    }
+    .desktop {
+      display: none;
+   }
+
+   .tagline {
+     width: 100%;
+     max-width: 200px;
+     text-align: center;
+   }
+}
+
+
 @media (max-width: 575px) {
   .desktop {
      display: none;
@@ -306,6 +339,7 @@ button {
 
   .headerWrapper {
      flex-direction: column;
+     align-items: center;
   }
 
   .logo {
@@ -315,12 +349,14 @@ button {
   .tagline {
      font-size: 12px;
      margin-top: -5px;
+     max-width: 250px;
   }
 
   .logRegNew {
     width: 100%;
     max-width: 350px;
     justify-content: center;
+    flex-direction: row;
   }
 
   .logoTaglineWrapper {

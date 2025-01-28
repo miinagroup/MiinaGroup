@@ -190,4 +190,8 @@
     right: 10px;
     font-size: 14px;
   }
+
+  .product-list-wrapper .form-control {
+    text-align: center;
+  }
 }

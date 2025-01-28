@@ -24,7 +24,9 @@ const CartItemComponent = ({
     }
   };
 
+  console.log("changeCount", changeCount)
   const handleChange = (e) => {
+    console.log(e.target.value)
     setQty(e.target.value);
     if (changeCount) {
       changeCount(item.cartProducts[0]._id, e.target.value);
@@ -51,12 +53,12 @@ const CartItemComponent = ({
           </Col>
           <Col md={5}>
             <a href={`/product-details/${item.productId}`}>
-              <p>
+              <p className="cart-item-product-name">
                 <strong className="text-uppercase">{item.name}</strong>
               </p>
             </a>
           </Col>
-          <Col md={3}>
+          <Col md={3} className="cart-item-product-price-quantity">
             <p className="m-0">
               Item:{" "}
               <span className="fw-bold">{item.cartProducts[0].attrs}</span>

@@ -24,6 +24,18 @@
      gap: 70px;
 }
 
+@media (max-width: 1024px) {
+     .footer {
+          padding: 25px 25px;
+     }
+     .footerLinks {
+          gap: 10px;
+          flex-direction: column-reverse;
+          justify-content: flex-end;
+          align-items: flex-end;
+     }
+}
+
 @media (max-width: 575px) {
     .footer {
          padding: 10px 25px;

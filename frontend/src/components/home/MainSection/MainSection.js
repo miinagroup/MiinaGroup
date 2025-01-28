@@ -73,6 +73,7 @@ const MainSection = () => {
         {subcategories[selectedCategory] ? <Swiper
           modules={[Navigation, Pagination, Scrollbar, A11y, Grid]}
           className={styles.swiper}
+          navigation
           breakpoints={{
             320: {
               slidesPerView: 2,
@@ -80,6 +81,7 @@ const MainSection = () => {
                 rows: 2,
               },
               spaceBetween: 25,
+              navigate: false
             },
             1024: {
               slidesPerView:3 ,
@@ -87,7 +89,7 @@ const MainSection = () => {
             rows: 2,
            },
            spaceBetween: 25,
-           navigation: true
+           
             }
           }}
         >

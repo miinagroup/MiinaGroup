@@ -253,6 +253,15 @@ const RegisterPageComponent = ({
               onSubmit={handleSubmit}
               autoComplete="off"
             >
+              <Alert
+                show={
+                  registerUserResponseState &&
+                  registerUserResponseState.error === "user exists"
+                }
+                variant="danger"
+              >
+                User with that email already exists!
+              </Alert>
               <Row className="mb-3">
                 <Form.Group as={Col} md="6" controlId="validationCustom01">
                   <Form.Label>First name</Form.Label>
@@ -564,15 +573,6 @@ const RegisterPageComponent = ({
                 )}
                 Submit
               </Button>
-              <Alert
-                show={
-                  registerUserResponseState &&
-                  registerUserResponseState.error === "user exists"
-                }
-                variant="danger"
-              >
-                User with that email already exists!
-              </Alert>
             </Form>
           </Col>
           :

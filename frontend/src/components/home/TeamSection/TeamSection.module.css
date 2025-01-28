@@ -98,10 +98,32 @@
     margin-top: 150px;
 }
 
+@media (max-width: 1300px) {
+ .info {
+     flex-direction: column;
+ }
+
+}
+
+@media (max-width: 1025px) {
+    .teamInfo {
+        flex-direction: column;
+        gap: 0px;
+        align-items: center;
+    }
+
+    .info {
+        flex-direction: row;
+    }
+
+    .card:nth-of-type(2) {
+        margin-top: 25px;
+    }
+}
 
 @media (max-width: 575px) {
     .team {
-        padding: 25px 25px;
+        padding: 50px 25px 25px 25px;
     }
 
     .title {

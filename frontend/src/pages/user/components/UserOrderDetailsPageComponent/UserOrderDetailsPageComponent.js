@@ -341,8 +341,8 @@ const UserOrderDetailsPageComponent = ({
     <>
     <div className="green-line"></div>
       <div className="desktop userCartDetailPage">
-        <Row className="mt-4 userCartDetailPageWrapper">
-          <h1 className={styles.title}>ORDER DETAILS !</h1>
+        <Row className="mt-4">
+          <h1 className={styles.title}>ORDER DETAILS</h1>
           <Col md={9}>
             <ListGroup variant="flush">
               <table style={{ width: "100%" }} className="mt-1">

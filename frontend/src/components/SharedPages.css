@@ -343,5 +343,8 @@
     font-size: 14px;
   }
 
-
+  .addToCartQty {
+    max-width: 100px;
+  }
+  
 }

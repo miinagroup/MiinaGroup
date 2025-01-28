@@ -584,14 +584,12 @@ const UserCartDetailsPageComponent = ({
       <div className="userCartDetailPage">
         <div className="d-flex cart_detail_container userCartDetailPageWrapper">
           <div>
-            <div
-              style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
-              className="mb-1"
-            >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }} className="mb-1">
               <h1 className="cartDetailTitle">CART DETAILS</h1>
             </div>
-            <Row className="mb-4 p-0" style={{ fontSize: "12px", width: "100%", maxWidth: "915px" }}>
-              <div className="d-flex justify-content-between cart_detail_btns" style={{ width: "100%" }}>
+            <div>
+            <Row className="mb-4 p-0 cart_btn_wrapper">
+              <div className="cart_detail_btns">
                 <div className="d-flex gap-5 cart_detail_btns_email_download">
                   <div className="d-flex justify-content-between">
                     <div>
@@ -608,16 +606,24 @@ const UserCartDetailsPageComponent = ({
                         }
                         fileName={userInfo.name + "'s Cart"}
                         className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
-                        style={{ width: "100%", maxWidth: "200px", fontSize: "12px" }}
                       >
                         <span>
                           Download Cart <i className="bi bi-file-earmark-pdf"></i>
                         </span>
                       </PDFDownloadLink>
-                    </div>
                   </div>
-
-                  <div >
+                  <div className="d-flex justify-content-end">
+                        <Button
+                          type="button"
+                          onClick={removeAllItems}
+                          size="sm"
+                          className="mobile-visibility empty_cart_wrapper"
+                        >
+                          Empty Cart <i className="bi bi-trash" />
+                        </Button>
+                      </div>
+                      </div>
+                  <div>
                     <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
 
                       <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px", background: "transparent", border: "1px solid #DBA162" }}>
@@ -651,12 +657,11 @@ const UserCartDetailsPageComponent = ({
                     </ListGroup>
                   </div>
                 </div>
-                <div>
+                <div className="desktop">
                   <Button
                     type="button"
                     onClick={removeAllItems}
                     size="sm"
-                    style={{ fontSize: "12px" }}
                     className="empty_cart_wrapper"
                   >
                     Empty Cart <i className="bi bi-trash" />
@@ -664,7 +669,7 @@ const UserCartDetailsPageComponent = ({
                 </div>
               </div>
             </Row>
-            <Col md={11}>
+            <Col md={12}>
               <ListGroup className="cart-items-list mb-3">
                 {cartItems.map((item, idx) => (
                   <CartItemComponent
@@ -677,6 +682,7 @@ const UserCartDetailsPageComponent = ({
               </ListGroup>
 
             </Col>
+            </div>
           </div>
           <Col md={3} className="cart_detail_right">
             <br />

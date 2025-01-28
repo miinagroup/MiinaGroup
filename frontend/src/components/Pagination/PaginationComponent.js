@@ -46,6 +46,7 @@ const PaginationComponent = ({
           <Pagination.Item disabled={Math.ceil(pageNum / 10) === Math.ceil(paginationLinksNumber / 10)} ><i className="bi bi-chevron-bar-right"></i></Pagination.Item>
         </LinkContainer>
       </Pagination>
+      
       <Pagination className="ms-4 mb-1 pagination_productlist mobile">
         <LinkContainer to={`${url}pageNum=${Math.max(1, 0)}`}>
           <Pagination.Item disabled={pageNum <= 5}><i className="bi bi-chevron-bar-left"></i></Pagination.Item>

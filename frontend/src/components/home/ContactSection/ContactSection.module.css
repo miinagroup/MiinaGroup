@@ -125,6 +125,16 @@ label {
     max-width: 145px;
 }
 
+@media (max-width: 1025px) {
+    .tagline {
+         text-align: center;
+    }
+    .requestForm {
+         position: relative;
+         z-index: 2;
+    }
+}
+
 @media (max-width: 575px) {
     .contacts {
         padding: 0px 25px 25px 25px;

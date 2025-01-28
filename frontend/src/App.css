@@ -41,6 +41,21 @@ ul {
    border: 1px solid #521712 !important;
 }
 
+.page-link {
+  color:#521712;
+}
+
+.page-link:focus {
+  color:#521712;
+  box-shadow: none;
+
+}
+
+.modal-header {
+   border-bottom: none !important;
+   padding: 10px 10px 0px 5px !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -99,9 +114,8 @@ ul {
 
  .LoginRegPage {
   z-index: 1000;
-  margin-top: -5.5%;
+  margin-top: -5%;
   padding: 0px 0px !important;
-  
 }
 
 .LoginReg{
@@ -111,8 +125,8 @@ ul {
 .card {
   margin-top: 25px;
   display:flex;
-  background-color: #999A47;
-  
+  /* background-color: #999A47; */
+  background-color: rgba(153, 154, 71, 0.7);
 }
 
 .flex-row{
@@ -175,6 +189,14 @@ li:hover {
 .accordion-button:not(.collapsed) {
   color:#483F55 !important;
   border: none !important;
-
 }
+
+.LoginRegPage {
+  margin-top: -7%;
+}
+
+.LoginRegPage .card-body {
+   padding-top: 25px !important;
+}
+
 }
