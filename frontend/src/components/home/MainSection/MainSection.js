@@ -33,8 +33,8 @@ const mainCategories = [
 
   },
   {
-    label: "TRAVEL",
-    link: "TRAVEL",
+    label: "TRANSIT",
+    link: "TRANSIT",
     image: "/images/categoriesIcons/HAND_TOOLS.png",
     disabled: false
   }
@@ -47,7 +47,7 @@ const MainSection = () => {
   const subcategories = useSelector((state) => state.getCategories.subcategories);
 
   return <div className={styles.main}>
-    <img src="/images/FamilyEmblemWhite.png" alt="Family Emblem White" className={styles.FamilyEmblemWhite} />
+    <img src="/images/FamilyEmblemCream.png" alt="Family Emblem White" className={styles.FamilyEmblemWhite} />
     <h1 className={styles.title}> Welcome to Miina Group!</h1>
     <p className={styles.text}>
       As a local Aboriginal business, we specialise in the supply of PPE and related equipment. <br />

@@ -710,7 +710,7 @@ const UserOrderDetailsPageComponent = ({
         </Row>
       </div>
 
-      <div className="mobile">
+      <div className={`mobile ${styles.userOrderDetailPage}`}>
         <h5 className={styles.UserOrderDetailsPageTitle}>ORDER DETAILS</h5>
         <div>
           <div>
@@ -811,8 +811,7 @@ const UserOrderDetailsPageComponent = ({
                 <div>
                   <Button
                     onClick={handleReorderClick}
-                    className={styles.reorderBtn}
-                    variant="success"
+                    className={`${styles.reorderBtn} confirm-btn`}
                   >
                     Re-Order
                   </Button>

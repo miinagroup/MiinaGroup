@@ -1,0 +1,35 @@
+.categoriesList {
+   font-size: 20px;
+   display: flex;
+   flex-wrap: wrap;
+   margin:  0 auto;
+   justify-content: center;
+   font-family: "GloriaHallelujah";
+   padding: 25px 0px 0px 0px;
+   gap: 15px;
+}
+
+.categoryItem {
+   font-size: 20px;
+    padding: 5px 10px;
+}
+
+.highlighted {
+   font-size: 20px;
+   padding: 5px 10px;
+   color: #999A47;
+   border: 1px solid #999A47;
+   border-bottom: none;
+   border-top: none;
+
+}
+
+.categoriesList a {
+    text-decoration: none;
+    color:#483F55;
+  }
+
+  .categoriesList .highlighted {
+   text-decoration: underline;
+   color:#999A47;
+ }

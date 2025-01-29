@@ -46,6 +46,16 @@
      .ordersTable {
          display: none;
      }
+
+     .userOrdersMobileInfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .userOrdersMobileInfo a {
+        color:#DBA162 !important;
+    }
   }
 
 

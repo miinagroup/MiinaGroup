@@ -39,8 +39,8 @@ const FilterComponent = () => {
       link: "MERCHANDISING",
     },
     {
-      label: "TRAVEL",
-      link: "TRAVEL",
+      label: "TRANSIT",
+      link: "TRANSIT",
     }
   ];
 

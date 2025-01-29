@@ -96,6 +96,10 @@
      margin-right: 10px;
 }
 
+.userProfilePageComponentContent label {
+    color:#521712;
+}
+
 
 @media(max-width: 1025px) {
     .userProfilePageComponent {

@@ -16,9 +16,8 @@ import "../SharedPages.css";
 import ProductDescription from "./ui/ProductDescription/ProductDescription";
 import AdminProductPanel from "./ui/AdminProductPanel/AdminProductPanel";
 import PleaseSelect from "./ui/PleaseSelect/PleaseSelect";
-import { mainCategories } from "../../constants.js";
 import styles from "../home/MainSection/MainSection.module.css";
-import BreadcrumbComponent from "../FilterQueryResultOptions/BreadcrumbComponent.js";
+import CategoryMenu from "../CategoryMenu/CategoryMenu";
 
 
 const ProductDetailsPageComponent = ({
@@ -48,6 +47,7 @@ const ProductDetailsPageComponent = ({
   const [isUserInfo, setIsUserInfo] = useState(Object.keys(userInfo).length === 0);
   const [modalType, setModalType] = useState("LoginForm")
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('')
   const handleCloseLoginModal = () => {
     setShowLoginModal(false);
   };
@@ -361,20 +361,9 @@ const ProductDetailsPageComponent = ({
     <div className="green-line"></div>
     <Container className="content-container product-detail-page" fluid>
       <Row className="product-detail-page-row">
+        <CategoryMenu isMobile={true} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
-        <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
-          {mainCategories.map(category => {
-            return <a
-              key={category.label}
-              // className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
-              className={styles.categoryItem}
-              // onClick={() => setSelectedCategory(category.link)}
-              href={`/product-list?categoryPath=${category.link}`}
-            >
-              {category.label}
-            </a>
-          })}
-        </div>
+
         <div className={`green-line ${styles.mobile}`}></div>
         {
                 catList ? (
@@ -397,7 +386,7 @@ const ProductDetailsPageComponent = ({
             </ListGroup.Item>
           </ListGroup>
         </Col>
-        <Col xxl={10} xl={9} lg={9} md={9} className="mb-3">
+        <Col xxl={10} xl={9} lg={9} className="mb-3">
           <Row className="mt-4 product-detail-page-info-row">
 
             <Col lg={4} className="m-1 product-detail-page-info-image">
@@ -405,22 +394,6 @@ const ProductDetailsPageComponent = ({
             </Col>
 
             <Col lg={6} className="product-detail-page-info">
-              {/* {
-                catList ? (
-                  <>
-                    <span className="categoryHD">
-                      {
-                        catList.map((category, index) => (
-                          <a href={`/product-list?categoryPath=${category.link}`} key={index}>
-                            {category.name} <label>&nbsp; / &nbsp; </label>
-                          </a>
-                        ))
-                      }
-                    </span>
-                  </>
-                ) : ("")
-              } */}
-
               <Row>
                 <ListGroup variant="flush" className="product-detail-page-list-group">
                   <ListGroup.Item>

@@ -9,8 +9,8 @@ import BreadcrumbComponent from "../FilterQueryResultOptions/BreadcrumbComponent
 import ProductCategoriesComponent from "../../components/Product/ProductCategoriesComponent";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../SharedPages.css";
-import { mainCategories } from "../../constants.js";
 import styles from "../home/MainSection/MainSection.module.css";
+import CategoryMenu from "../CategoryMenu/CategoryMenu";
 
 const ProductListPageComponent = ({
   getProducts,
@@ -192,31 +192,19 @@ const ProductListPageComponent = ({
 
   return (
     <Container className="content-container products-list-component" fluid>
-
-      <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
-        {mainCategories.map(category => {
-          return <a
-            key={category.label}
-            className={selectedCategory === category.link ? styles.highlighted : styles.categoryItem}
-            onClick={() => setSelectedCategory(category.link)}
-            href={`/product-list?categoryPath=${category.link}`}
-          >
-            {category.label}
-          </a>
-        })}
-      </div>
+      <CategoryMenu isMobile={true} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       <div className={`green-line ${styles.mobile}`}></div>
 
       <BreadcrumbComponent />
       <Row>
-        <Col xxl={2} xl={3} lg={3} md={3}>
-          <ListGroup variant="flush" className="desktop">
+        <Col xxl={2} xl={3} lg={3} md={3}  className="desktop">
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <FilterComponent />
             </ListGroup.Item>
           </ListGroup>
         </Col>
-        <Col xxl={10} xl={9} lg={9} md={9}>
+        <Col xxl={10} xl={9} lg={9} md={9} className="product-list-page-products-layout">
           {products.length !== 0 ? (
             <Form className="m-2">
 

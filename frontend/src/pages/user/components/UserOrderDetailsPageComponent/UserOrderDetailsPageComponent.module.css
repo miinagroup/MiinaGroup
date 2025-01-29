@@ -100,6 +100,25 @@ text-decoration: underline;
 
     .UserOrderDetailsPageTitle {
         font-family: "GloriaHallelujah";
+        padding-bottom: 25px;
+        padding-top: 25px;
+        color: #483F55;
+    }
+
+    .userOrderDetailPage {
+         padding-bottom: 100px;
+    }
+
+    .orderDetailPageMobileProductItem{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .orderDetailPageMobileProductWrapper {
+         width: 100%;
+         max-width: 350px;
     }
     }
 
@@ -110,11 +129,20 @@ text-decoration: underline;
 
         .UserOrderDetailsPageTitle {
             font-family: "GloriaHallelujah";
-            color: #483F55; 
+            color: #483F55;
+            padding-bottom: 5px;
+            padding-top: 10px
         }
 
         .orderDetailPageMobileProductItem, .UserOrderDetailsPageComponentSummary {
              color:#483F55 !important;
         }
         
+        .userOrderDetailPage {
+            padding-bottom: 50px;
+       }
+
+       .orderDetailPageMobileProductItem{
+        display: block;
+    }
         }

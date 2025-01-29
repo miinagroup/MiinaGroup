@@ -98,6 +98,18 @@
     margin-top: 150px;
 }
 
+
+@media (max-width: 1440px) {
+   .teamInfo {
+    gap: 25px;
+   }
+
+   .info {
+    gap: 15px;
+   }
+   
+   }
+
 @media (max-width: 1300px) {
  .info {
      flex-direction: column;

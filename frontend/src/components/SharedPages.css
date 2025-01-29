@@ -1,11 +1,9 @@
 .addToCartBtn {
-  width: 106px;
   background-color: #521712 !important;
   border: 1px solid transparent !important;
 }
 
 .addToCartBtn:hover {
-  width: 106px;
   color: #521712 !important;
   background-color: transparent !important;
   border: 1px solid #521712 !important;
@@ -227,6 +225,22 @@
   }
 }
 
+@media (max-width: 1025px) {
+  .product-detail-page {
+    padding-bottom: 300px;
+    margin: 0 auto !important;
+  }
+
+  .product-list-page-products-layout {
+    width: 100% !important;
+  }
+
+  .product-list-wrapper {
+    justify-content: center;
+
+  }
+}
+
 @media (min-width: 992px) {
   .login_mobile {
     display: none;
@@ -239,9 +253,12 @@
   }
 }
 
-@media (max-width: 1024px) {
-  .addTocartBtn {
-    margin-left: 35px;
+@media (max-width: 1025px) {
+
+
+  .product-detail-page-info-row {
+    margin: 0 auto;
+    margin-top: 0px !important;
   }
 }
 

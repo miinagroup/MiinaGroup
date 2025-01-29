@@ -20,8 +20,8 @@ export const mainCategories = [
   
     },
     {
-      label: "TRAVEL",
-      link: "TRAVEL",
+      label: "TRANSIT",
+      link: "TRANSIT",
       image: "/images/categoriesIcons/HAND_TOOLS.png",
       disabled: false
     }
