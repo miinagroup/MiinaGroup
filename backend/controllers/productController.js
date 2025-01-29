@@ -95,6 +95,7 @@ const getProducts = async (req, res, next) => {
     let categoryPath = req.params.categoryPath || "";
     categoryPath = categoryPath.replace(/,/g, "/");
     if (categoryPath) {
+      queryCondition = true;
       let regEx = new RegExp("^" + categoryPath + "(?![\\w-])");
       categoryQueryCondition = { category: regEx };
     }
@@ -322,7 +323,6 @@ const getProducts = async (req, res, next) => {
           categoryQueryCondition,
           brandQueryCondition,
           searchQueryCondition,
-          suppliersCondition,
           ...attrsQueryCondition,
         ],
       };

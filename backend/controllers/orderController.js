@@ -187,7 +187,7 @@ const markAsBackOrder = async (req, res, next) => {
 
 const markAsPaid = async (req, res, next) => {
   try {
-    const updatedOrder = await Order.findByIdAndUpdate(req.params.id, { isPaid: req.body.isPaid });
+    const updatedOrder = await Order.findByIdAndUpdate(req.params.id, { isPaid: req.body.isPaid, balance: req.body.balance, paidAt: req.body.paidAt });
     res.json({
       updatedOrder,
       message: `Order Marked As ${req.body.isPaid}`,

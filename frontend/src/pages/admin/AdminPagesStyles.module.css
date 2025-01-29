@@ -1,84 +1,88 @@
 .adminCartDetailsPageWrapper {
-    background-color: rgba(219, 161, 98, 0.25);
-    padding: 50px 100px 300px 100px;
+  background-color: rgba(219, 161, 98, 0.25);
+  padding: 50px 100px 300px 100px;
 }
 
 .title {
-    font-family: "GloriaHallelujah";
-    color: #483F55;
-    margin-bottom: 50px;
-    text-decoration: underline;
+  font-family: "GloriaHallelujah";
+  color: #483f55;
+  margin-bottom: 50px;
+  text-decoration: underline;
 }
 
 .adminCartItem {
-    background-color: rgba(219, 161, 98, 0.25);
+  background-color: rgba(219, 161, 98, 0.25);
 }
 
 .orderDetailsPageWrapper {
-     color:#483F55;
-     background-color: rgba(219, 161, 98, 0.25);
-    padding: 50px 100px 350px 100px;
+  color: #483f55;
+  background-color: rgba(219, 161, 98, 0.25);
+  padding: 50px 100px 350px 100px;
 }
 
 .btnGoToOrders {
-     padding: 5px 5px;
+  padding: 5px 5px;
 }
 
-
 .btnGoToOrders a {
-    color: #521712;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
+  color: #521712;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .btnGoToOrders:hover a {
-    color: #DBA162;
+  color: #dba162;
 }
 
 .btnRedColor {
-    background-color: #521712 !important;
-    color: white !important;
-    border: 1px solid transparent !important;
+  background-color: #521712 !important;
+  color: white !important;
+  border: 1px solid transparent !important;
 }
 
 .btnRedColor:hover {
-    background-color: white !important;
-    color: #521712 !important;
-    border: 1px solid #521712 !important;
+  background-color: white !important;
+  color: #521712 !important;
+  border: 1px solid #521712 !important;
 }
 
 .btnGreenColor {
-    background-color: #999A47 !important;
-    color: white !important;
-    border: 1px solid transparent !important;
+  background-color: #999a47 !important;
+  color: white !important;
+  border: 1px solid transparent !important;
 }
 
 .btnGreenColor:hover {
-    background-color: white !important;
-    color: #999A47 !important;
-    border: 1px solid #999A47 !important;
+  background-color: white !important;
+  color: #999a47 !important;
+  border: 1px solid #999a47 !important;
 }
 
 .tableSpacing {
-    border-spacing: 0 5px;
-    border-collapse: separate;
-  }
+  border-spacing: 0 5px;
+  border-collapse: separate;
+}
 
-  .tableSpacing tbody {
-    border-radius: 20px;
-    padding: 5px 5px;
+.tableSpacing tbody {
+  border-radius: 20px;
+  padding: 5px 5px;
+}
 
-  }
+.adminProductsWrapper {
+  padding: 100px 50px 350px 25px;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+}
 
-  .adminProductsWrapper {
-     padding: 100px 50px 350px 25px;
-     display: flex;
-     gap: 25px;
-     justify-content: center;
-  }
+.editDeliveryBookWrapper {
+  padding-bottom: 350px;
+}
 
-  .editDeliveryBookWrapper {
-     padding-bottom: 350px;
-  }
+.labelErrors {
+  color: #c72618;
+  font-size: 12px;
+  cursor: pointer;
+}

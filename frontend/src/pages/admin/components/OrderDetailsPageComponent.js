@@ -134,7 +134,6 @@ const OrderDetailsPageComponent = ({
         }
         if (order.isPaid) {
           setBtnMarkAsPaid(true)
-          document.getElementById("isPaid").checked = true;
         }
         if (order.balance === 0) {
           setorderPaidButton("Order is Paid");
@@ -781,53 +780,61 @@ const OrderDetailsPageComponent = ({
     updateAdminNote(id, adminNote);
   };
 
-  function formatDateString(dateString) {
-    if (!dateString) {
-      return "Date not found.";
-    }
-
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    const parts = dateString.split("-");
-
-    const year = parts[0];
-    const monthIndex = parseInt(parts[1], 10) - 1;
-    const day = parts[2];
-
-    return `${day} ${months[monthIndex]} ${year}`;
-  }
-
-  const isPaidDateString = formatDateString(paidAt);
   const handleShowProformaInvoice = () => {
     setShowProformaInvoice(!showProformaInvoice)
   }
 
-  const handleMarkPaid = async () => {
-    setBtnMarkAsPaid(true)
-    try {
-      const response = await axios.put(
-        "/api/orders/markAsPaid/" + order._id,
-        { isPaid: true }
-      );
-    } catch (err) {
-      console.error("Error updating client SKU:", err);
-    }
-    setRefreshOrder(!refreshOrder);
-  }
+  const handleDateChange = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
+    if (value.length > 5) value = value.slice(0, 5) + "/" + value.slice(5, 9);
+    setPaidAt(value);
+  };
 
+  const isValidDateFormat = (date) => {
+    // Regex for DD/MM/YYYY format
+    const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    return dateRegex.test(date);
+  };
+
+  const isPastOrToday = (date) => {
+    const [day, month, year] = date.split("/").map(Number);
+    const inputDate = new Date(year, month - 1, day); // JS months are 0-based
+    const today = new Date();
+    // Remove time from today’s date for accurate comparison
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate <= today; // Ensure the date is not in the future
+  };
+
+  const convertToISO = (dateStr) => {
+    // Split the DD/MM/YYYY format
+    const [day, month, year] = dateStr.split("/").map(Number);
+    // Create a Date object (months are 0-based in JavaScript)
+    const date = new Date(year, month - 1, day);
+    // Convert to ISO 8601 format
+    return date.toISOString(); // Example output: "2023-09-25T04:55:33.762Z"
+  };
+
+  const [paymentMessage, setPaymentMessage] = useState("")
+  const handleMarkPaid = async () => {
+    if (paidAt !== undefined && isValidDateFormat(paidAt) && isPastOrToday(paidAt)) {
+      setPaymentMessage("")
+      setBtnMarkAsPaid(true)
+      try {
+        const response = await axios.put(
+          "/api/orders/markAsPaid/" + order._id,
+          { isPaid: true, balance: 0, paidAt: convertToISO(paidAt) }
+        );
+      } catch (err) {
+        console.error("Error updating client SKU:", err);
+      }
+      setRefreshOrder(!refreshOrder);
+    } else {
+      setPaymentMessage("*please enter valid payment date")
+    }
+
+  }
   return (
     <>
       <div className="green-line"></div>
@@ -920,19 +927,6 @@ const OrderDetailsPageComponent = ({
                 </Alert>
                 <Alert
                   className="mt-1 p-0 ps-2 mb-1"
-                  variant={order?.balance === 0 ? "success" : "danger"}
-                >
-                  {order?.balance === 0 ? (
-                    <>
-                      <i className="bi bi-check-circle-fill text-success" /> Paid
-                      on: {isPaidDateString}
-                    </>
-                  ) : (
-                    <>Not paid yet</>
-                  )}
-                </Alert>
-                <Alert
-                  className="mt-1 p-0 ps-2 mb-1"
                   variant={invoiceSent ? "success" : "danger"}
                 >
                   {invoiceSent ? (
@@ -949,6 +943,24 @@ const OrderDetailsPageComponent = ({
                     </>
                   ) : (
                     <>Invoice Not Sent</>
+                  )}
+                </Alert>
+                <Alert
+                  className="mt-1 p-0 ps-2 mb-1"
+                  variant={order?.balance === 0 ? "success" : "danger"}
+                >
+                  {order?.balance === 0 && order?.isPaid ? (
+                    <>
+                      <i className="bi bi-check-circle-fill text-success" /> Paid
+                      on: {new Date(paidAt).toLocaleString("en-AU", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour12: true,
+                      })}
+                    </>
+                  ) : (
+                    <>Not paid yet</>
                   )}
                 </Alert>
               </Col>
@@ -1096,24 +1108,6 @@ const OrderDetailsPageComponent = ({
                   style={{ cursor: "pointer", color: "#DBA162" }}
                 ></i>
               </ListGroup.Item>
-              <PDFPopupButton
-                documentComponent={
-                  <PickingPackingPrint
-                    cartItems={cartItems}
-                    invoiceNumber={invoiceNumber}
-                    userInfo={userInfo}
-                    purchaseNumber={purchaseNumber}
-                    cartSubtotal={cartSubtotal}
-                    dueDays={dueDays}
-                    invoiceDate={deliveredAt}
-                    selectedDeliverySite={selectedDeliverySite}
-                    companyAccount={companyAccount}
-                    deliveredAt={deliveredAt}
-                  />
-                }
-                fileName={"PL" + invoiceNumber}
-                loadingText="Print Picking List"
-              />
               <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
                 <div className="d-grid gap-2">
                   <Button
@@ -1182,16 +1176,6 @@ const OrderDetailsPageComponent = ({
               <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
                 <h5 className="m-0">Accounts Use Only:</h5>
               </ListGroup.Item>
-              <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
-                <Form.Check
-                  type="switch"
-                  id="isPaid"
-                  label="Mark As Paid"
-                  onChange={handleMarkPaid}
-                  disabled={btnMarkAsPaid}
-
-                />
-              </ListGroup.Item>
               {!deliveredButtonDisabled ? (
                 <>
                   <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
@@ -1240,34 +1224,59 @@ const OrderDetailsPageComponent = ({
                     </div>
                   </ListGroup.Item>
                   <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
-                    <div className="d-grid gap-2">
-                      <Form.Control
-                        type="text"
-                        style={{ width: "99%" }}
-                        min="0"
-                        className="form-control pe-0"
-                        onChange={handleChangeEmailAddress}
-                        value={emailAddress}
-                        isInvalid={!isEmailValid}
-                        placeholder="test@gmail.com"
-                      />
-                      {!isEmailValid && (
-                        <Alert variant="danger" className="mt-2">
-                          Please enter a valid email address.
-                        </Alert>
-                      )}
-                      <Button
-                        className={`p-0 m-0 w-50 ${styles.btnRedColor}`}
-                        onClick={() => sendInvoiceEmailManually(invData)}
-                        type="button"
-                        disabled={sendingInvManually}
-                      >{sendingInvManually ? "Sending..." : "Send Invoice"}
-                      </Button>
-                    </div>
+                    <Form.Label>Send Invoice Manually </Form.Label>
+                    <Form.Control
+                      type="text"
+                      style={{ width: "99%" }}
+                      min="0"
+                      className="form-control pe-0 mb-1"
+                      onChange={handleChangeEmailAddress}
+                      value={emailAddress}
+                      isInvalid={!isEmailValid}
+                      placeholder="test@gmail.com"
+                    />
+                    <Button
+                      className={`p-0 m-0 w-50 ${styles.btnRedColor}`}
+                      onClick={() => sendInvoiceEmailManually(invData)}
+                      type="button"
+                      disabled={sendingInvManually}
+                    >{sendingInvManually ? "Sending..." : "Send Invoice"}
+                    </Button>
+                    {!isEmailValid && (
+                      <Form.Label className={styles.labelErrors}> *please enter a valid email address.</Form.Label>
+                    )}
                   </ListGroup.Item>
                 </>
               )}
-
+              {
+                (paidAt === undefined || !order?.isPaid) ? (
+                  <>
+                    <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                      <Form.Group controlId="paymentDate">
+                        <Form.Label>Invoice Paid Date</Form.Label>
+                        <Form.Control
+                          className="form-control pe-0 mb-1"
+                          type="text"
+                          style={{ width: "99%" }}
+                          min="0"
+                          placeholder="DD/MM/YYYY"
+                          value={paidAt}
+                          onChange={handleDateChange}
+                          maxLength={10}
+                        />
+                      </Form.Group>
+                      <Button
+                        className={`p-0 m-0 w-50 ${styles.btnRedColor}`}
+                        type="button"
+                        id="isPaid"
+                        onClick={() => handleMarkPaid()}
+                        disabled={btnMarkAsPaid}
+                      >Mark As Paid</Button>
+                      <Form.Label className={styles.labelErrors}>{paymentMessage}</Form.Label>
+                    </ListGroup.Item>
+                  </>
+                ) : ("")
+              }
             </ListGroup>
             <br />
             <div style={{ height: "100px" }}>

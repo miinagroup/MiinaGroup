@@ -37,8 +37,8 @@ const OverdueInvoicesPrint = (invoicesData) => {
     },
     image: {
       position: "absolute",
-      top: 5,
-      width: "100%",
+      top: 0,
+      width: "45%",
     },
 
     table: {
@@ -459,9 +459,6 @@ const OverdueInvoicesPrint = (invoicesData) => {
   const overDueInvoiceTotal = invoicesData.totalAmount;
   const billingAddress = invoicesData.billingAddress;
   const companyCurrentTotalAmount = invoicesData.companyCurrentTotalAmount;
-
-  // console.log(typeof overDueInvoiceTotal, typeof companyCurrentTotalAmount);
-
   const totalAmountDue = overDueInvoiceTotal + companyCurrentTotalAmount;
 
   const formattedTotalAmountDue = totalAmountDue.toLocaleString("en-US", {
@@ -529,7 +526,7 @@ const OverdueInvoicesPrint = (invoicesData) => {
               <View style={styles.tableColImageHeader}>
                 <Image
                   style={styles.image}
-                  src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
+                  src="/images/miina_logo.png"
                 />
               </View>
               <View style={styles.tableColHeadingHeader}>
@@ -544,15 +541,15 @@ const OverdueInvoicesPrint = (invoicesData) => {
                   </View>
                   <View style={styles.tableColHeaderLeft}>
                     <Text style={styles.tableCellBill}>
-                      CTL Australia PTY LTD
+                      Miina Group
                     </Text>
 
-                    <Text style={styles.tableCellBill}>Perth, WA 6062</Text>
+                    <Text style={styles.tableCellBill}>Pegs Creek, WA 6714</Text>
                     <Text style={styles.tableCellBill}>
-                      Phone: 0498 139 213
+                      Phone: 0487 920 082
                     </Text>
                     <Text style={styles.tableCellBill}>
-                      ABN : 12 609 518 809
+                      ABN :  16 668 637 072
                     </Text>
                   </View>
                 </View>
@@ -587,51 +584,6 @@ const OverdueInvoicesPrint = (invoicesData) => {
                 </View>
               </View>
 
-              {/* <View style={styles.tableRow1}>
-                <View style={styles.tableCellHeaderSide}>
-                  <Text style={styles.tableColBill}>Total Amount Due</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}>Current</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}>Past 30</Text>
-                </View>
-                {/* <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}></Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}></Text>
-                </View> 
-              </View>
-
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellHeaderSide}>
-                  <Text style={styles.tableCellBillBox}>
-                    {overDueInvoiceTotal}
-                  </Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {invoiceData.wareHouse}
-                  </Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {invoiceData.currency}
-                  </Text>
-                </View>
-                {/* <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {invoiceData.orderTerm}
-                  </Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {invoiceData.requiredBy}
-                  </Text>
-                </View> 
-              </View> */}
             </View>
           </View>
           {/* ******* Product List (first page) ******* */}
@@ -813,7 +765,7 @@ const OverdueInvoicesPrint = (invoicesData) => {
                         For Statement Enquiries Please Contact :
                       </Text>
                       <Text style={styles.tableCellBillBoxSpecial}>
-                        email : accounts@ctlaus.com
+                        email : Admin@miinagroup.com.au
                       </Text>
                     </View>
                   </>
@@ -1052,7 +1004,7 @@ const OverdueInvoicesPrint = (invoicesData) => {
                               For Statement Enquiries Please Contact :
                             </Text>
                             <Text style={styles.tableCellBillBoxSpecial}>
-                              email : accounts@ctlaus.com
+                              email : Admin@miinagroup.com.au
                             </Text>
                           </View>
                         </>

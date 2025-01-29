@@ -37,8 +37,8 @@ const InvoicePrint = (invPrintData) => {
     },
     image: {
       position: "absolute",
-      top: 5,
-      width: "100%",
+      top: 0,
+      width: "45%",
     },
     image1: {
       position: "absolute",
@@ -391,21 +391,6 @@ const InvoicePrint = (invPrintData) => {
   const totalAmount = formatNumber(rawTotalAmount);
   const netTotalAmount = formatNumber(netTotalAmountCalculation);
 
-  /*   console.log(
-      "taxAmount:",
-      taxAmount,
-      "netTotalAmount:",
-      netTotalAmount,
-      "totalAmount:",
-      totalAmount
-    ); */
-
-  // console.log("InvinvPrintData", invPrintData);
-  // console.log("InvUserInfo", InvUserInfo);
-  // //console.log("InvAddress", InvAddress);
-  // console.log("cart items", invPrintData);
-  //console.log("companyAccount", companyAccount)
-
   function splitArrayIntoChunks(arr, chunkSize) {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
@@ -458,7 +443,7 @@ const InvoicePrint = (invPrintData) => {
               <View style={styles.tableColImageHeader}>
                 <Image
                   style={styles.image}
-                  src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
+                  src="/images/miina_logo.png"
                 />
               </View>
               <View style={styles.tableColHeader}>
@@ -471,12 +456,12 @@ const InvoicePrint = (invPrintData) => {
               </View>
               <View style={styles.tableColHeader}>
                 <Text style={styles.tableCellBillHeader}>TAX INVOICE</Text>
-                <Text style={styles.tableCellBill}>CTL Australia</Text>
+                <Text style={styles.tableCellBill}>Miina Group</Text>
                 <Text style={styles.tableCellBill}>
-                  E : accounts@ctlaus.com
+                  E : Admin@miinagroup.com.au
                 </Text>
-                <Text style={styles.tableCellBill}>W : www.ctlaus.com</Text>
-                <Text style={styles.tableCellBill}>ABN : 12 609 518 809</Text>
+                <Text style={styles.tableCellBill}>W : www.miinagroup.com.au</Text>
+                <Text style={styles.tableCellBill}>ABN :  16 668 637 072</Text>
               </View>
             </View>
           </View>
@@ -510,7 +495,7 @@ const InvoicePrint = (invPrintData) => {
                   </Text>
                 </View>
                 <View style={styles.tableColHeaderSide1}>
-                  <Text>CTL Australia Pty Ltd</Text>
+                  <Text>Miina Group</Text>
                   <Text>BSB : 036-231</Text>
                   <Text>ACC : 585602</Text>
                   <Text>Westpac Bank</Text>

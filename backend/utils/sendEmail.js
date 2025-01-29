@@ -4,6 +4,7 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
       host: "mail.miinagroup.com.au",
+      //host: "mail.vps4.dezyne.net",
       port: 587,
       secure: false,
       auth: {

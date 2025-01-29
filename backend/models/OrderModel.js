@@ -111,7 +111,7 @@ const orderSchema = mongoose.Schema(
       amount: { type: Number },
     },
     paidAt: {
-      type: String,
+      type: Date,
     },
     trackLink: {
       type: String,

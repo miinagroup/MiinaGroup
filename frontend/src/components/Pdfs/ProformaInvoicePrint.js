@@ -30,8 +30,8 @@ const ProformaInvoicePrint = (invPrintData) => {
     },
     image: {
       position: "absolute",
-      top: 5,
-      width: "100%",
+      top: 0,
+      width: "45%",
     },
 
     table: {
@@ -383,7 +383,6 @@ const ProformaInvoicePrint = (invPrintData) => {
   const rawTaxAmount = parseFloat(invPrintData?.taxAmount);
   const rawTotalAmount = parseFloat(invPrintData?.cartSubtotal);
   const netTotalAmountCalculation = rawTotalAmount - rawTaxAmount;
-
   const taxAmount = formatNumber(rawTaxAmount);
   const totalAmount = formatNumber(rawTotalAmount);
   const netTotalAmount = formatNumber(netTotalAmountCalculation);
@@ -430,468 +429,410 @@ const ProformaInvoicePrint = (invPrintData) => {
   });
 
   return (
-      <Document id={invPrintData.invoiceNumber}>
-        <Page style={styles.body} size="A4" orientation="landscape">
-          {/* ******* header ******* */}
-          <View style={styles.table}>
+    <Document id={invPrintData.invoiceNumber}>
+      <Page style={styles.body} size="A4" orientation="landscape">
+        {/* ******* header ******* */}
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColImageHeader}>
+              <Image
+                style={styles.image}
+                src="/images/miina_logo.png"
+              />
+            </View>
+            <View style={styles.tableColHeader}></View>
+            <View style={styles.tableColHeader1}>
+              <Text style={styles.tableCellBillHeader}>PROFORMA INVOICE</Text>
+              <Text style={styles.tableCellBill}>Miina Group</Text>
+              <Text style={styles.tableCellBill}>
+                E : Admin@miinagroup.com.au
+              </Text>
+              <Text style={styles.tableCellBill}>W : www.miinagroup.com.au</Text>
+              <Text style={styles.tableCellBill}>ABN :  16 668 637 072</Text>
+            </View>
+          </View>
+        </View>
+        <br />
+        {/* ******* header ******* */}
+        <View style={styles.tableItem}>
+          <View style={styles.tableBorder}>
+            <View style={styles.tableRow1}>
+              <View style={styles.tableColHeaderSideHead}>
+                <Text>Invoice To :</Text>
+              </View>
+              <View style={styles.tableColHeaderCenter}>
+                <View style={styles.tableRow}>
+                  <View style={styles.tableCellHeaderLeft}>
+                    <Text>Please Remit Payments To : </Text>
+                  </View>
+                  <View style={styles.tableCellHeaderSales}>
+                    <Text>Payment Terms :</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.tableColHeaderSideHead}>
+                <Text>Delivered To :</Text>
+              </View>
+            </View>
+
             <View style={styles.tableRow}>
-              <View style={styles.tableColImageHeader}>
-                <Image
-                  style={styles.image}
-                  src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
+              <View style={styles.tableColHeaderSide}>
+                <Text style={styles.tableCellBill}>
+                  {deliverySite?.billingAddress.replaceAll(",", "\n")}
+                </Text>
+              </View>
+              <View style={styles.tableColHeaderSide1}>
+                <Text>CTL Australia Pty Ltd</Text>
+                <Text>BSB : 036-231</Text>
+                <Text>ACC : 585602</Text>
+                <Text>Westpac Bank</Text>
+              </View>
+              <View style={styles.tableColHeaderSide1}>
+                <View style={styles.tableCellBillBox}>
+                  {<Text>3 Days from INV Date</Text>}
+                </View>
+                <View style={styles.tableRow3}>
+                  <Text> Dispatch From :</Text>
+                </View>
+                <View style={styles.tableCellBillBox}>
+                  <Text>Perth Warehouse</Text>
+                </View>
+              </View>
+              <View style={styles.tableColHeaderSide}>
+                <Text style={styles.tableCellBill}>{deliverySite?.name}</Text>
+                <Text style={styles.tableCellBill}>
+                  {deliverySite?.deliveryAddress.replaceAll(",", "\n")}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.tableRow1}>
+              <View style={styles.tableCellHeaderSide}>
+                <Text style={styles.tableColBill}>Account</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableColBill}>Invoice Number</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableColBill}>Invoice Date</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableColBill}>Due Date</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableColBill}>Purchase Order No.</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableColBill}>Page #</Text>
+              </View>
+            </View>
+
+            <View style={styles.tableRow}>
+              <View style={styles.tableCellHeaderSide}>
+                <Text style={styles.tableCellBillBox}>{companyAccount}</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableCellBillBox}>
+                  {invPrintData.invoiceNumber}
+                </Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableCellBillBox}>
+                  {invPrintDate.split("at")[0]}
+                </Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableCellBillBox}>
+                  {deliveryDate === "Invalid Date"
+                    ? "7 days"
+                    : deliveryDate.split("at")[0]}
+                </Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text style={styles.tableCellBillBox}>
+                  {invPrintData.purchaseNumber}
+                </Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text
+                  style={styles.pageNumbers}
+                  render={({ pageNumber, totalPages }) =>
+                    `${pageNumber} / ${totalPages}`
+                  }
                 />
               </View>
-              <View style={styles.tableColHeader}></View>
-              <View style={styles.tableColHeader1}>
-                <Text style={styles.tableCellBillHeader}>PROFORMA INVOICE</Text>
-                <Text style={styles.tableCellBill}>CTL Australia</Text>
-                <Text style={styles.tableCellBill}>
-                  E : accounts@ctlaus.com
+            </View>
+          </View>
+        </View>
+        {/* ******* Product List (first page) ******* */}
+        <View style={styles.tableItem}>
+          <View style={styles.tableBorder}>
+            <View style={styles.tableRow1}>
+              <View style={styles.tableColHeaderMedium}>
+                <Text style={styles.tableColBillItemHeader}>Item Code</Text>
+              </View>
+              <View style={styles.tableColHeaderCenter}>
+                <Text style={styles.tableColBillItemHeader}>
+                  Item Description
                 </Text>
-                <Text style={styles.tableCellBill}>W : www.ctlaus.com</Text>
-                <Text style={styles.tableCellBill}>ABN : 12 609 518 809</Text>
+              </View>
+              <View style={styles.tableColHeaderShort}>
+                <Text style={styles.tableColBillItemHeader}>Qty Order</Text>
+              </View>
+              <View style={styles.tableColHeaderShort}>
+                <Text style={styles.tableColBillItemHeader}>Qty Supply</Text>
+              </View>
+              <View style={styles.tableColHeaderShort}>
+                <Text style={styles.tableColBillItemHeader}>
+                  Back Order
+                </Text>
+              </View>
+              <View style={styles.tableColHeaderShort}>
+                <Text style={styles.tableColBillItemHeader}>Unit Price</Text>
+              </View>
+              <View style={styles.tableColHeaderShort}>
+                <Text style={styles.tableColBillItemHeader}>
+                  {" "}
+                  Net Amount{" "}
+                </Text>
+              </View>
+              <View style={styles.tableColHeaderShort}>
+                <Text style={styles.tableColBillItemHeader}>GST</Text>
               </View>
             </View>
+            {firstItems.map((item, idx) => {
+              return idx % 2 == 0 ? (
+                <>
+                  <View style={styles.tableRowProducts} key={idx}>
+                    <View style={styles.tableColHeaderMedium}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].mnasku}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderCenter}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.name.toUpperCase() +
+                          ` (${item?.cartProducts[0].attrs})`}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].quantity}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].suppliedQty}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].backOrder}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemRight}>
+                        ${" "}
+                        {item.cartProducts[0].price
+                          ? item.cartProducts[0].price
+                            .toFixed(2)
+                            .toLocaleString()
+                          : ""}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemRight}>
+                        ${" "}
+                        {item.cartProducts[0].price
+                          ? (
+                            item.cartProducts[0].price *
+                            item.cartProducts[0].suppliedQty
+                          )
+                            .toFixed(2)
+                            .toLocaleString()
+                          : ""}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemRight}>10% </Text>
+                    </View>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View style={styles.tableRowProducts1} key={idx}>
+                    <View style={styles.tableColHeaderMedium}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].mnasku}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderCenter}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.name.toUpperCase() +
+                          ` (${item?.cartProducts[0].attrs})`}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].quantity}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].suppliedQty}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItem}>
+                        {item.cartProducts[0].backOrder}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemRight}>
+                        ${" "}
+                        {item.cartProducts[0].price
+                          ? item.cartProducts[0].price
+                            .toFixed(2)
+                            .toLocaleString()
+                          : ""}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemRight}>
+                        ${" "}
+                        {item.cartProducts[0].price
+                          ? (
+                            item.cartProducts[0].price *
+                            item.cartProducts[0].suppliedQty
+                          )
+                            .toFixed(2)
+                            .toLocaleString()
+                          : ""}
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemRight}>10% </Text>
+                    </View>
+                  </View>
+                </>
+              );
+            })}
           </View>
-          <br />
-          {/* ******* header ******* */}
-          <View style={styles.tableItem}>
-            <View style={styles.tableBorder}>
-              <View style={styles.tableRow1}>
-                <View style={styles.tableColHeaderSideHead}>
-                  <Text>Invoice To :</Text>
-                </View>
-                <View style={styles.tableColHeaderCenter}>
-                  <View style={styles.tableRow}>
-                    <View style={styles.tableCellHeaderLeft}>
-                      <Text>Please Remit Payments To : </Text>
-                    </View>
-                    <View style={styles.tableCellHeaderSales}>
-                      <Text>Payment Terms :</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.tableColHeaderSideHead}>
-                  <Text>Delivered To :</Text>
-                </View>
-              </View>
+        </View>
+        <Text
+          style={styles.pageNumbers}
+          render={({ pageNumber, totalPages }) =>
+            `${pageNumber} / ${totalPages}`
+          }
+        />
 
-              <View style={styles.tableRow}>
-                <View style={styles.tableColHeaderSide}>
-                  <Text style={styles.tableCellBill}>
-                    {deliverySite?.billingAddress.replaceAll(",", "\n")}
-                  </Text>
-                </View>
-                <View style={styles.tableColHeaderSide1}>
-                  <Text>CTL Australia Pty Ltd</Text>
-                  <Text>BSB : 036-231</Text>
-                  <Text>ACC : 585602</Text>
-                  <Text>Westpac Bank</Text>
-                </View>
-                <View style={styles.tableColHeaderSide1}>
-                  <View style={styles.tableCellBillBox}>
-                    {<Text>3 Days from INV Date</Text>}
-                  </View>
-                  <View style={styles.tableRow3}>
-                    <Text> Dispatch From :</Text>
-                  </View>
-                  <View style={styles.tableCellBillBox}>
-                    <Text>Perth Warehouse</Text>
-                  </View>
-                </View>
-                <View style={styles.tableColHeaderSide}>
-                  <Text style={styles.tableCellBill}>{deliverySite?.name}</Text>
-                  <Text style={styles.tableCellBill}>
-                    {deliverySite?.deliveryAddress.replaceAll(",", "\n")}
-                  </Text>
-                </View>
+        {/* bottom total price */}
+        {otherChunks[0] ? (
+          ""
+        ) : (
+          <>
+            {" "}
+            <View style={styles.tableBorderBottom}>
+              <View style={styles.tableCellHeaderLeftBottom}>
+                <Text style={styles.tableCellBillBox}>
+                  Inv. Amount Excl. Tax
+                </Text>
               </View>
-
-              <View style={styles.tableRow1}>
-                <View style={styles.tableCellHeaderSide}>
-                  <Text style={styles.tableColBill}>Account</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}>Invoice Number</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}>Invoice Date</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}>Due Date</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}>Purchase Order No.</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableColBill}>Page #</Text>
-                </View>
-              </View>
-
-              <View style={styles.tableRow}>
-                <View style={styles.tableCellHeaderSide}>
-                  <Text style={styles.tableCellBillBox}>{companyAccount}</Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {invPrintData.invoiceNumber}
-                  </Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {invPrintDate.split("at")[0]}
-                  </Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {deliveryDate === "Invalid Date"
-                      ? "7 days"
-                      : deliveryDate.split("at")[0]}
-                  </Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text style={styles.tableCellBillBox}>
-                    {invPrintData.purchaseNumber}
-                  </Text>
-                </View>
-                <View style={styles.tableCellHeader}>
-                  <Text
-                    style={styles.pageNumbers}
-                    render={({ pageNumber, totalPages }) =>
-                      `${pageNumber} / ${totalPages}`
-                    }
-                  />
-                </View>
+              <View style={styles.tableCellBottom}>
+                <Text style={styles.tableCellBillBoxRight}>
+                  ${" "}
+                  {Number.isNaN(rawTaxAmount) ||
+                    rawTaxAmount === null ||
+                    rawTaxAmount === undefined
+                    ? formatNumber(
+                      invPrintData.cartSubtotal / 1.1
+                    ).toLocaleString()
+                    : netTotalAmount}
+                </Text>
               </View>
             </View>
-          </View>
-          {/* ******* Product List (first page) ******* */}
-          <View style={styles.tableItem}>
-            <View style={styles.tableBorder}>
-              <View style={styles.tableRow1}>
-                <View style={styles.tableColHeaderMedium}>
-                  <Text style={styles.tableColBillItemHeader}>Item Code</Text>
-                </View>
-                <View style={styles.tableColHeaderCenter}>
-                  <Text style={styles.tableColBillItemHeader}>
-                    Item Description
-                  </Text>
-                </View>
-                <View style={styles.tableColHeaderShort}>
-                  <Text style={styles.tableColBillItemHeader}>Qty Order</Text>
-                </View>
-                <View style={styles.tableColHeaderShort}>
-                  <Text style={styles.tableColBillItemHeader}>Qty Supply</Text>
-                </View>
-                <View style={styles.tableColHeaderShort}>
-                  <Text style={styles.tableColBillItemHeader}>
-                    Back Order
-                  </Text>
-                </View>
-                <View style={styles.tableColHeaderShort}>
-                  <Text style={styles.tableColBillItemHeader}>Unit Price</Text>
-                </View>
-                <View style={styles.tableColHeaderShort}>
-                  <Text style={styles.tableColBillItemHeader}>
-                    {" "}
-                    Net Amount{" "}
-                  </Text>
-                </View>
-                <View style={styles.tableColHeaderShort}>
-                  <Text style={styles.tableColBillItemHeader}>GST</Text>
-                </View>
+            <View style={styles.tableBorderBottom}>
+              <View style={styles.tableCellHeaderLeftBottom}>
+                <Text style={styles.tableCellBillBox}>Total GST</Text>
               </View>
-              {firstItems.map((item, idx) => {
-                return idx % 2 == 0 ? (
-                  <>
-                    <View style={styles.tableRowProducts} key={idx}>
-                      <View style={styles.tableColHeaderMedium}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].mnasku}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderCenter}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.name.toUpperCase() +
-                            ` (${item?.cartProducts[0].attrs})`}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].quantity}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].suppliedQty}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].backOrder}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? item.cartProducts[0].price
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              item.cartProducts[0].price *
-                              item.cartProducts[0].suppliedQty
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemRight}>10% </Text>
-                      </View>
-                    </View>
-                  </>
-                ) : (
-                  <>
-                    <View style={styles.tableRowProducts1} key={idx}>
-                      <View style={styles.tableColHeaderMedium}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].mnasku}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderCenter}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.name.toUpperCase() +
-                            ` (${item?.cartProducts[0].attrs})`}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].quantity}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].suppliedQty}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItem}>
-                          {item.cartProducts[0].backOrder}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? item.cartProducts[0].price
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemRight}>
-                          ${" "}
-                          {item.cartProducts[0].price
-                            ? (
-                              item.cartProducts[0].price *
-                              item.cartProducts[0].suppliedQty
-                            )
-                              .toFixed(2)
-                              .toLocaleString()
-                            : ""}
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemRight}>10% </Text>
-                      </View>
-                    </View>
-                  </>
-                );
-              })}
+              <View style={styles.tableCellBottom}>
+                <Text style={styles.tableCellBillBoxRight}>
+                  ${" "}
+                  {!Number.isNaN(rawTaxAmount) &&
+                    rawTaxAmount !== null &&
+                    rawTaxAmount !== undefined
+                    ? taxAmount
+                    : formatNumber(
+                      (invPrintData.cartSubtotal / 1.1) * 0.1
+                    ).toLocaleString()}
+                </Text>
+              </View>
             </View>
-          </View>
-          <Text
-            style={styles.pageNumbers}
-            render={({ pageNumber, totalPages }) =>
-              `${pageNumber} / ${totalPages}`
-            }
-          />
+            <View style={styles.tableBorderBottom}>
+              <View style={styles.tableCellHeaderLeftBottom}>
+                <Text style={styles.tableCellBillBox}>Invoice Amount</Text>
+              </View>
+              <View style={styles.tableCellBottom}>
+                <Text style={styles.tableCellBillBoxRight}>
+                  $ {totalAmount}
+                </Text>
+              </View>
+            </View>
+          </>
+        )}
+      </Page>
 
-          {/* bottom total price */}
-          {otherChunks[0] ? (
-            ""
-          ) : (
-            <>
-              {" "}
-              <View style={styles.tableBorderBottom}>
-                <View style={styles.tableCellHeaderLeftBottom}>
-                  <Text style={styles.tableCellBillBox}>
-                    Inv. Amount Excl. Tax
-                  </Text>
-                </View>
-                <View style={styles.tableCellBottom}>
-                  <Text style={styles.tableCellBillBoxRight}>
-                    ${" "}
-                    {Number.isNaN(rawTaxAmount) ||
-                      rawTaxAmount === null ||
-                      rawTaxAmount === undefined
-                      ? formatNumber(
-                        invPrintData.cartSubtotal / 1.1
-                      ).toLocaleString()
-                      : netTotalAmount}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.tableBorderBottom}>
-                <View style={styles.tableCellHeaderLeftBottom}>
-                  <Text style={styles.tableCellBillBox}>Total GST</Text>
-                </View>
-                <View style={styles.tableCellBottom}>
-                  <Text style={styles.tableCellBillBoxRight}>
-                    ${" "}
-                    {!Number.isNaN(rawTaxAmount) &&
-                      rawTaxAmount !== null &&
-                      rawTaxAmount !== undefined
-                      ? taxAmount
-                      : formatNumber(
-                        (invPrintData.cartSubtotal / 1.1) * 0.1
-                      ).toLocaleString()}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.tableBorderBottom}>
-                <View style={styles.tableCellHeaderLeftBottom}>
-                  <Text style={styles.tableCellBillBox}>Invoice Amount</Text>
-                </View>
-                <View style={styles.tableCellBottom}>
-                  <Text style={styles.tableCellBillBoxRight}>
-                    $ {totalAmount}
-                  </Text>
-                </View>
-              </View>
-            </>
-          )}
-        </Page>
-
-        {/* ******* Product List (other pages) ******* */}
-        {otherChunks.map((chunk, index) => (
-          <React.Fragment key={index}>
-            {chunk.length > 0 && (
-              <Page style={styles.body} size="A4" orientation="landscape">
-                <View style={styles.tableItemChunk}>
-                  <View style={styles.tableBorder}>
-                    <View style={styles.tableRow1}>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Item Code
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderCenter}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Item Description
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Qty Order
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Qty Supply
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Back Order
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Unit Price
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemHeader}>
-                          Net Amount
-                        </Text>
-                      </View>
-                      <View style={styles.tableColHeaderShort}>
-                        <Text style={styles.tableColBillItemHeader}>GST</Text>
-                      </View>
+      {/* ******* Product List (other pages) ******* */}
+      {otherChunks.map((chunk, index) => (
+        <React.Fragment key={index}>
+          {chunk.length > 0 && (
+            <Page style={styles.body} size="A4" orientation="landscape">
+              <View style={styles.tableItemChunk}>
+                <View style={styles.tableBorder}>
+                  <View style={styles.tableRow1}>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemHeader}>
+                        Item Code
+                      </Text>
                     </View>
-                    {chunk.map((item, idx) => {
-                      return idx % 2 == 0 ? (
-                        <>
-                          <View style={styles.tableRowProducts} key={idx}>
-                            <View style={styles.tableColHeaderShort}>
-                              <Text style={styles.tableColBillItem}>
-                                {item.cartProducts[0].mnasku}
-                              </Text>
-                            </View>
-                            <View style={styles.tableColHeaderCenter}>
-                              <Text style={styles.tableColBillItem}>
-                                {item.name.toUpperCase() +
-                                  ` (${item?.cartProducts[0].attrs})`}
-                              </Text>
-                            </View>
-                            <View style={styles.tableColHeaderShort}>
-                              <Text style={styles.tableColBillItem}>
-                                {item.cartProducts[0].quantity}
-                              </Text>
-                            </View>
-                            <View style={styles.tableColHeaderShort}>
-                              <Text style={styles.tableColBillItem}>
-                                {item.cartProducts[0].suppliedQty}
-                              </Text>
-                            </View>
-                            <View style={styles.tableColHeaderShort}>
-                              <Text style={styles.tableColBillItem}>
-                                {item.cartProducts[0].backOrder}
-                              </Text>
-                            </View>
-                            <View style={styles.tableColHeaderShort}>
-                              <Text style={styles.tableColBillItemRight}>
-                                ${" "}
-                                {item.cartProducts[0].price
-                                  ? item.cartProducts[0].price
-                                    .toFixed(2)
-                                    .toLocaleString()
-                                  : ""}
-                              </Text>
-                            </View>
-                            <View style={styles.tableColHeaderShort}>
-                              <Text style={styles.tableColBillItemRight}>
-                                ${" "}
-                                {item.cartProducts[0].price
-                                  ? (
-                                    item.cartProducts[0].price *
-                                    item.cartProducts[0].suppliedQty
-                                  )
-                                    .toFixed(2)
-                                    .toLocaleString()
-                                  : ""}
-                              </Text>
-                            </View>
-                            <View style={styles.tableColHeaderShort}>
-                              <Text style={styles.tableColBillItemRight}>
-                                10%{" "}
-                              </Text>
-                            </View>
-                          </View>
-                        </>
-                      ) : (
-                        <View style={styles.tableRowProducts1} key={idx}>
+                    <View style={styles.tableColHeaderCenter}>
+                      <Text style={styles.tableColBillItemHeader}>
+                        Item Description
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemHeader}>
+                        Qty Order
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemHeader}>
+                        Qty Supply
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemHeader}>
+                        Back Order
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemHeader}>
+                        Unit Price
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemHeader}>
+                        Net Amount
+                      </Text>
+                    </View>
+                    <View style={styles.tableColHeaderShort}>
+                      <Text style={styles.tableColBillItemHeader}>GST</Text>
+                    </View>
+                  </View>
+                  {chunk.map((item, idx) => {
+                    return idx % 2 == 0 ? (
+                      <>
+                        <View style={styles.tableRowProducts} key={idx}>
                           <View style={styles.tableColHeaderShort}>
                             <Text style={styles.tableColBillItem}>
                               {item.cartProducts[0].mnasku}
@@ -947,76 +888,134 @@ const ProformaInvoicePrint = (invPrintData) => {
                             </Text>
                           </View>
                         </View>
-                      );
-                    })}
-                  </View>
+                      </>
+                    ) : (
+                      <View style={styles.tableRowProducts1} key={idx}>
+                        <View style={styles.tableColHeaderShort}>
+                          <Text style={styles.tableColBillItem}>
+                            {item.cartProducts[0].mnasku}
+                          </Text>
+                        </View>
+                        <View style={styles.tableColHeaderCenter}>
+                          <Text style={styles.tableColBillItem}>
+                            {item.name.toUpperCase() +
+                              ` (${item?.cartProducts[0].attrs})`}
+                          </Text>
+                        </View>
+                        <View style={styles.tableColHeaderShort}>
+                          <Text style={styles.tableColBillItem}>
+                            {item.cartProducts[0].quantity}
+                          </Text>
+                        </View>
+                        <View style={styles.tableColHeaderShort}>
+                          <Text style={styles.tableColBillItem}>
+                            {item.cartProducts[0].suppliedQty}
+                          </Text>
+                        </View>
+                        <View style={styles.tableColHeaderShort}>
+                          <Text style={styles.tableColBillItem}>
+                            {item.cartProducts[0].backOrder}
+                          </Text>
+                        </View>
+                        <View style={styles.tableColHeaderShort}>
+                          <Text style={styles.tableColBillItemRight}>
+                            ${" "}
+                            {item.cartProducts[0].price
+                              ? item.cartProducts[0].price
+                                .toFixed(2)
+                                .toLocaleString()
+                              : ""}
+                          </Text>
+                        </View>
+                        <View style={styles.tableColHeaderShort}>
+                          <Text style={styles.tableColBillItemRight}>
+                            ${" "}
+                            {item.cartProducts[0].price
+                              ? (
+                                item.cartProducts[0].price *
+                                item.cartProducts[0].suppliedQty
+                              )
+                                .toFixed(2)
+                                .toLocaleString()
+                              : ""}
+                          </Text>
+                        </View>
+                        <View style={styles.tableColHeaderShort}>
+                          <Text style={styles.tableColBillItemRight}>
+                            10%{" "}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  })}
                 </View>
-                <Text
-                  style={styles.pageNumbers}
-                  render={({ pageNumber, totalPages }) =>
-                    `${pageNumber} / ${totalPages}`
-                  }
-                />
+              </View>
+              <Text
+                style={styles.pageNumbers}
+                render={({ pageNumber, totalPages }) =>
+                  `${pageNumber} / ${totalPages}`
+                }
+              />
 
-                {/* show total price in last page */}
-                {index === otherChunks.length - 1 && (
-                  <>
-                    <View style={styles.tableBorderBottom}>
-                      <View style={styles.tableCellHeaderLeftBottom}>
-                        <Text style={styles.tableCellBillBox}>
-                          Inv. Amount Excl. Tax
-                        </Text>
-                      </View>
-                      <View style={styles.tableCellBottom}>
-                        <Text style={styles.tableCellBillBoxRight}>
-                          ${" "}
-                          {Number.isNaN(rawTaxAmount) ||
-                            rawTaxAmount === null ||
-                            rawTaxAmount === undefined
-                            ? formatNumber(
-                              invPrintData.cartSubtotal / 1.1
-                            ).toLocaleString()
-                            : netTotalAmount}
-                        </Text>
-                      </View>
+              {/* show total price in last page */}
+              {index === otherChunks.length - 1 && (
+                <>
+                  <View style={styles.tableBorderBottom}>
+                    <View style={styles.tableCellHeaderLeftBottom}>
+                      <Text style={styles.tableCellBillBox}>
+                        Inv. Amount Excl. Tax
+                      </Text>
                     </View>
-                    <View style={styles.tableBorderBottom}>
-                      <View style={styles.tableCellHeaderLeftBottom}>
-                        <Text style={styles.tableCellBillBox}>Total GST</Text>
-                      </View>
-                      <View style={styles.tableCellBottom}>
-                        <Text style={styles.tableCellBillBoxRight}>
-                          ${" "}
-                          {!Number.isNaN(rawTaxAmount) &&
-                            rawTaxAmount !== null &&
-                            rawTaxAmount !== undefined
-                            ? taxAmount
-                            : formatNumber(
-                              (invPrintData.cartSubtotal / 1.1) * 0.1
-                            ).toLocaleString()}
-                        </Text>
-                      </View>
+                    <View style={styles.tableCellBottom}>
+                      <Text style={styles.tableCellBillBoxRight}>
+                        ${" "}
+                        {Number.isNaN(rawTaxAmount) ||
+                          rawTaxAmount === null ||
+                          rawTaxAmount === undefined
+                          ? formatNumber(
+                            invPrintData.cartSubtotal / 1.1
+                          ).toLocaleString()
+                          : netTotalAmount}
+                      </Text>
                     </View>
-                    <View style={styles.tableBorderBottom}>
-                      <View style={styles.tableCellHeaderLeftBottom}>
-                        <Text style={styles.tableCellBillBox}>
-                          Invoice Amount
-                        </Text>
-                      </View>
-                      <View style={styles.tableCellBottom}>
-                        <Text style={styles.tableCellBillBoxRight}>
-                          ${" "}
-                          {totalAmount}
-                        </Text>
-                      </View>
+                  </View>
+                  <View style={styles.tableBorderBottom}>
+                    <View style={styles.tableCellHeaderLeftBottom}>
+                      <Text style={styles.tableCellBillBox}>Total GST</Text>
                     </View>
-                  </>
-                )}
-              </Page>
-            )}
-          </React.Fragment>
-        ))}
-      </Document>
+                    <View style={styles.tableCellBottom}>
+                      <Text style={styles.tableCellBillBoxRight}>
+                        ${" "}
+                        {!Number.isNaN(rawTaxAmount) &&
+                          rawTaxAmount !== null &&
+                          rawTaxAmount !== undefined
+                          ? taxAmount
+                          : formatNumber(
+                            (invPrintData.cartSubtotal / 1.1) * 0.1
+                          ).toLocaleString()}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.tableBorderBottom}>
+                    <View style={styles.tableCellHeaderLeftBottom}>
+                      <Text style={styles.tableCellBillBox}>
+                        Invoice Amount
+                      </Text>
+                    </View>
+                    <View style={styles.tableCellBottom}>
+                      <Text style={styles.tableCellBillBoxRight}>
+                        ${" "}
+                        {totalAmount}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              )}
+            </Page>
+          )}
+        </React.Fragment>
+      ))}
+    </Document>
   );
 };
 

@@ -9,6 +9,7 @@ import {
     Image,
 } from "@react-pdf/renderer";
 
+
 const PickingPackingPrint = (cartItems) => {
     const styles = StyleSheet.create({
         page: {
@@ -30,8 +31,8 @@ const PickingPackingPrint = (cartItems) => {
         },
         image: {
             position: "absolute",
-            top: 5,
-            width: "100%",
+            top: 0,
+            width: "45%",
         },
 
         table: {
@@ -371,7 +372,7 @@ const PickingPackingPrint = (cartItems) => {
                             <View style={styles.tableColImageHeader}>
                                 <Image
                                     style={styles.image}
-                                    src="https://ctladmin.b-cdn.net/CTL%20Brand%20Images/letterhead1.png"
+                                    src="/images/miina_logo.png"
                                 />
                             </View>
                             <View style={styles.tableColHeader}>
@@ -379,10 +380,10 @@ const PickingPackingPrint = (cartItems) => {
                             </View>
                             <View style={styles.tableColHeader}>
                                 <Text style={styles.tableCellBillHeader}>Picking List</Text>
-                                <Text style={styles.tableCellBill}>CTL Australia</Text>
-                                <Text style={styles.tableCellBill}>E : accounts@ctlaus.com</Text>
-                                <Text style={styles.tableCellBill}>W : ctlaustralia.com.au</Text>
-                                <Text style={styles.tableCellBill}>ABN : 12 609 518 809</Text>
+                                <Text style={styles.tableCellBill}>Miina Group</Text>
+                                <Text style={styles.tableCellBill}>E : Admin@miinagroup.com.au</Text>
+                                <Text style={styles.tableCellBill}>W : www.miinagroup.com.au</Text>
+                                <Text style={styles.tableCellBill}>ABN :  16 668 637 072</Text>
                             </View>
                         </View>
                     </View>
@@ -500,7 +501,7 @@ const PickingPackingPrint = (cartItems) => {
                         <View style={styles.tableBorder}>
                             <View style={styles.tableRow1}>
                                 <View style={styles.tableColHeaderShort}>
-                                    <Text style={styles.tableColBillItemHeader}>CTL Item Code</Text>
+                                    <Text style={styles.tableColBillItemHeader}>Miina Item Code</Text>
                                 </View>
                                 <View style={styles.tableColHeaderShort}>
                                     <Text style={styles.tableColBillItemHeader}>Supplier Code</Text>
@@ -609,7 +610,7 @@ const PickingPackingPrint = (cartItems) => {
                                     <View style={styles.tableBorder}>
                                         <View style={styles.tableRow1}>
                                             <View style={styles.tableColHeaderShort}>
-                                                <Text style={styles.tableColBillItemHeader}>CTL Item Code</Text>
+                                                <Text style={styles.tableColBillItemHeader}>Miina Item Code</Text>
                                             </View>
                                             <View style={styles.tableColHeaderShort}>
                                                 <Text style={styles.tableColBillItemHeader}>Supplier Code</Text>
