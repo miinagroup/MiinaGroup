@@ -33,8 +33,8 @@ const EmailVerify = () => {
     <Fragment>
       <div className="verifyEmail">
         <img
-          src="/images/CTL-hex.png"
-          alt=""
+           src="/images/miina_logo.png"
+          alt="Miina Group Logo"
           className="verified_logo rotate linear infinite mb-5"
         />
         {validUrl ? (
