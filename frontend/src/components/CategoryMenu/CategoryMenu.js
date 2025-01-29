@@ -3,7 +3,9 @@ import { mainCategories } from "../../constants.js";
 
 const CategoryMenu = ({isMobile, selectedCategory, setSelectedCategory}) => {
 
-    return <>{isMobile && <div className={`${styles.categoriesList} category-list-links`}>
+  console.log("isMobile", isMobile)
+
+    return <div className={`${styles.categoriesList} ${styles.mobile} category-list-links`}>
     {mainCategories.map(category => {
       return <a
         key={category.label}
@@ -14,7 +16,7 @@ const CategoryMenu = ({isMobile, selectedCategory, setSelectedCategory}) => {
         {category.label}
       </a>
     })}
-  </div>}</>
+  </div>
 }
 
 export default CategoryMenu;

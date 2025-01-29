@@ -1,4 +1,13 @@
-.categoriesList {
+.mobile {
+   display: none;
+}
+
+@media(max-width: 1025px) {
+   
+   .mobile {
+       display: flex;
+   }
+   .categoriesList {
    font-size: 20px;
    display: flex;
    flex-wrap: wrap;
@@ -33,3 +42,32 @@
    text-decoration: underline;
    color:#999A47;
  }
+}
+
+@media (max-width: 475px) {
+   .categoriesList {
+      font-size: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      margin:  0 auto;
+      justify-content: center;
+      font-family: "GloriaHallelujah";
+      padding: 25px 0px 0px 0px;
+      gap: 0px
+  }
+
+  .categoryItem {
+      font-size: 12px;
+       padding: 5px 10px;
+  }
+
+  .highlighted {
+      font-size: 12px;
+      padding: 5px 10px;
+      color: #999A47;
+      border: 1px solid #999A47;
+      border-bottom: none;
+      border-top: none;
+
+  }
+}
