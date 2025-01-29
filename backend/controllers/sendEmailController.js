@@ -286,7 +286,7 @@ const deliveryNotice = async (req, res, next) => {
                                 <tr>
                                   <td width="100%" valign="top" align="center">
                                   <br />
-                                      <img src="frontend/public/svg/PrimaryLogoColour.svg"
+                                      <img src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
                                         align="center"
                                         border="0"
                                         width="500"
@@ -485,7 +485,7 @@ const newUserNoticeToMiina = async ({
                                 <td width="100%" valign="top" align="center">
                                 <br />
                                     <img
-                                      src="frontend/public/svg/PrimaryLogoColour.svg"
+                                      src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
                                       align="center"
                                       border="0"
                                       width="500"
