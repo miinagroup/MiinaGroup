@@ -100,8 +100,7 @@ const QuoeteManagementApproval = (quotePriceData, cartItems) => {
     }
   };
   return (
-    <>
-      <div className="container">
+      <div className="container email-cart-btn">
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="form-group d-flex justify-content-center email_cart_btn_wrapper">
             <button
@@ -124,7 +123,6 @@ const QuoeteManagementApproval = (quotePriceData, cartItems) => {
           </div>
         )}
       </div>
-    </>
   );
 };
 

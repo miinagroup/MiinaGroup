@@ -6,3 +6,9 @@
     z-index: 99;
     opacity: 0.9;
 }
+
+@media (max-width: 1025px) {
+    .email-cart-btn {
+        padding-right: 0px;
+    }
+}

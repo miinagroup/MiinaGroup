@@ -352,43 +352,19 @@ p {
      display: none;
 }
 
+.mobile-visibility { 
+    display: block;
 }
 
-/* @media (max-width: 821px) {
-    .userCartDetailPage .cart-item {
-        width: 33%;
-        margin: 0 auto;
-    }
-
-    .userCartDetailPage .cart-items-list {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .userCartDetailPage  div {
-        width: 100%;
-    }
-
-    .userCartDetailPage img {
-        width: 100%;
-        max-width: 250px;
-    }
-    .userCartDetailPage .form-control-container {
-        width: 100%;
-        max-width: 150px;
-   }
-
-   .userCartDetailPage .remove-from-cart{
-       width: 100%;
-       max-width: 150px;
-   }
-
-   .userCartDetailPageWrapper {
-    flex-direction: column;
+.cart_detail_btns_email_download {
+    justify-content: space-between;
+    width: 100%;
 }
-} */
 
-@media (max-width: 480px) {
+
+}
+
+@media (max-width: 575px) {
 
     .cartDetailTitle {
          text-decoration: underline;
