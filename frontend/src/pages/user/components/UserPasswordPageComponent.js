@@ -55,28 +55,28 @@ const UserPasswordPageComponent = () => {
   };
 
   return (
-      <div className={styles.passwordChangeWrapper}>
-        <img alt="Miina Group Family Emblem" src="/images/FamilyEmblemWhite.png" className={styles.emblem}/>
-        <div>
-          <h2 className={styles.title}>Change your password?</h2>
-          <p className={styles.text}>
+    <div className={styles.passwordChangeWrapper}>
+      <img alt="Miina Group Family Emblem" src="/images/FamilyEmblemWhite.png" className={styles.emblem} />
+      <div>
+        <h2 className={styles.title}>Change your password?</h2>
+        <p className={styles.text}>
           For security reasons, we need to confirm your identity.
-          <br/><br />
+          <br /><br />
           A link will be sent to your email to reset your password.
-          </p>
-          <Form noValidate onSubmit={handleSubmit} className="w-50">
-            <Button className={styles.changeBtn} type="submit">
-              {submitting ? "Submitting..." : "Submit"}
-            </Button>
-          </Form>
-          {message && (
-            <p className="error-message text-danger mt-3 mb-0">{message}</p>
-          )}
-          {successMessage && (
-            <p className="error-message mt-3 mb-0">{successMessage}</p>
-          )}
-        </div>
+        </p>
+        <Form noValidate onSubmit={handleSubmit} className="w-50">
+          <Button className={styles.changeBtn} type="submit">
+            {submitting ? "Submitting..." : "Submit"}
+          </Button>
+        </Form>
+        {message && (
+          <p className="error-message text-danger mt-3 mb-0">{message}</p>
+        )}
+        {successMessage && (
+          <p className="error-message mt-3 mb-0">{successMessage}</p>
+        )}
       </div>
+    </div>
   );
 };
 

@@ -1,8 +1,6 @@
 const nodemailer = require("nodemailer");
 const Order = require("../models/OrderModel");
 
-
-
 const transporter = nodemailer.createTransport({
   host: "mail.miinagroup.com.au",
   port: 587,
@@ -222,7 +220,7 @@ const sendInvoice = async (req, res, next) => {
       to: `${billingEmail}`,
       subject: `Invoice ${invoiceNumber} from Miina Group`,
       text: invoiceNumber,
-    html: `
+      html: `
     <div style="margin:0;padding:0">
     <div style="background-color:#f1f2ed">
       <table
@@ -378,7 +376,6 @@ const sendInvoice = async (req, res, next) => {
         },
       ],
     };
-
     // Send email
     await transporter.sendMail(message);
 
@@ -418,7 +415,7 @@ const sendProformaInvoice = async (req, res, next) => {
       to: `${billingEmail}`,
       subject: `Proforma Invoice ${invoiceNumber} from Miina Group`,
       text: invoiceNumber,
-    html: `
+      html: `
     <div style="margin:0;padding:0">
     <div style="background-color:#f1f2ed">
       <table
@@ -810,15 +807,6 @@ const newUserNoticeToMiina = async ({
 }) => {
   if (process.env.NODE_ENV !== "development") {
     try {
-      console.log(
-        "newUserNoticeToMiina req.body",
-        email,
-        name,
-        lastName,
-        company,
-        location
-      );
-
       const message = {
         from: `"New User - Miina Group" <${process.env.NOREPLY}>`,
         to: `${process.env.QTEMAIL}`,
@@ -1004,7 +992,7 @@ const sendRequest = async (req, res, next) => {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: process.env.ENQUIRYMAIL,
       subject: "General Enquiry",
-      text: email,
+      text: req.body.email,
       html: `
     <div style="margin:0;padding:0">
       <div style="background-color:#f1f2ed">
@@ -1179,8 +1167,8 @@ const sendNotification = async (receivingEmail, backOrderList) => {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: `${receivingEmail}`,
       subject: `Miina Group Overdue Orders List`,
-      text: receivingEmail ,
-    html: `
+      text: receivingEmail,
+      html: `
     <div style="margin:0;padding:0">
       <div style="background-color:#f1f2ed">
         <table

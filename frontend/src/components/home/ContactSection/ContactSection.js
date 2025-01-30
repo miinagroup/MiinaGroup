@@ -21,9 +21,6 @@ const ContactSection = () => {
         setIsSending(true)
         const form = e.target;
         const formData = new FormData(form);
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
 
         const res = await axios.post(
             "/api/sendemail/sendRequest",
@@ -68,13 +65,13 @@ const ContactSection = () => {
 
             <div>
                 <label>Email address</label>
-                <input  
-                type="email"  
-                name="email" 
-                required 
-                placeholder="Email address"
-                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
-                title="Please enter a valid email address"
+                <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="Email address"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                    title="Please enter a valid email address"
                 ></input>
             </div>
 

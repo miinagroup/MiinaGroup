@@ -11,6 +11,9 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
         user: process.env.NOREPLY,
         pass: process.env.NOREPLYPASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     await transporter.sendMail({
@@ -96,10 +99,10 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="frontend/public/svg/PrimaryLogoColour.svg"
+                                        src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
                                         align="center"
                                         border="0"
-                                        width="500"
+                                        width="200"
                                         height="100"
                                         alt="Miina Group"
                                         style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
@@ -207,7 +210,10 @@ module.exports.sendResetPasswordEmail = async (email, subject, text) => {
       secure: false,
       auth: {
         user: process.env.NOREPLY,
-        pass: process.env.NOREPLY,
+        pass: process.env.NOREPLYPASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
@@ -294,10 +300,10 @@ module.exports.sendResetPasswordEmail = async (email, subject, text) => {
                                   <td width="100%" valign="top" align="center">
                                   <br />
                                       <img
-                                        src="frontend/public/svg/PrimaryLogoColour.svg"
+                                        src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
                                         align="center"
                                         border="0"
-                                        width="500"
+                                        width="200"
                                         height="100"
                                         alt="Miina Group"
                                         style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"

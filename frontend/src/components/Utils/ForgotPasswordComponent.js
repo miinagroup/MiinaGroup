@@ -8,7 +8,7 @@ function ForgotPasswordComponent() {
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const handleClose = () => {setShow(false); setMessage(""); setSuccessMessage(""); setSubmitting(false);};
+  const handleClose = () => { setShow(false); setMessage(""); setSuccessMessage(""); setSubmitting(false); };
   const handleShow = () => setShow(true);
 
   const handleSubmit = async (e) => {
@@ -16,7 +16,6 @@ function ForgotPasswordComponent() {
     e.stopPropagation();
 
     const form = e.currentTarget;
-
     const email = form.email.value.toLowerCase();
 
     try {
@@ -50,7 +49,7 @@ function ForgotPasswordComponent() {
     } else if (response.status === 404) {
       setMessage("User not found. Please try again.");
     } else if (response.status === 401) {
-        setMessage("User email is not verified. Please contact our customer service for assistance.");
+      setMessage("User email is not verified. Please contact our customer service for assistance.");
     } else {
       setMessage("An unexpected error occurred. Please try again.");
     }
@@ -87,7 +86,7 @@ function ForgotPasswordComponent() {
                 placeholder="Enter your registered email"
               />
             </Form.Group>
-            <Button className="CTL_btn mt-3" type="submit" disabled={submitting || successMessage !==""}>
+            <Button className="CTL_btn mt-3" type="submit" disabled={submitting || successMessage !== ""}>
               {submitting ? "Submitting..." : "Submit"}
             </Button>
           </Form>

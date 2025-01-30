@@ -69,7 +69,7 @@ const ResetPassword = () => {
         setSubmitting(false);
         alert("Password reset successfully, Redirect to login page!");
         setTimeout(() => {
-          window.location.href = "/login";
+          window.location.href = "/";
         }, 2000);
       }
     } catch (error) {
@@ -97,9 +97,8 @@ const ResetPassword = () => {
                 required
               />
               <i
-                className={`fa ${
-                  showPassword ? "fa-eye" : "fa-eye-slash"
-                } password-toggle-button`}
+                className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"
+                  } password-toggle-button`}
                 onClick={togglePasswordVisibility}
                 aria-hidden="true"
               ></i>
@@ -114,9 +113,8 @@ const ResetPassword = () => {
                 required
               />
               <i
-                className={`fa ${
-                  showPassword ? "fa-eye" : "fa-eye-slash"
-                } password-toggle-button`}
+                className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"
+                  } password-toggle-button`}
                 onClick={togglePasswordVisibility}
                 aria-hidden="true"
               ></i>
