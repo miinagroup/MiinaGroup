@@ -488,8 +488,6 @@ const OverdueInvoicesPrint = (invoicesData) => {
     maximumFractionDigits: 2,
   });
 
-  //console.log(invoiceData);
-
   function splitArrayIntoChunks(arr, chunkSize) {
     const result = [];
     for (let i = 0; i < arr?.length; i += chunkSize) {
@@ -513,8 +511,6 @@ const OverdueInvoicesPrint = (invoicesData) => {
     (currentDate.getMonth() + 1) +
     "/" +
     currentDate.getFullYear();
-
-  // console.log("firstItemsAAAAA", firstItems);
 
   return (
     <>
