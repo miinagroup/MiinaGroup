@@ -5,6 +5,11 @@ import axios from "axios";
 const ContactSection = () => {
     const [isSent, setIsSent] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [phoneNum, setPhoneNum] = useState('');
+    const limit = 12;
+    const handlePhoneNumberChange = event => {
+        setPhoneNum(event.target.value.slice(0, limit));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -80,8 +85,8 @@ const ContactSection = () => {
                 type="number" 
                 required 
                 placeholder="(+61) 400 000 000"
-                max="12"
-                
+                onChange={handlePhoneNumberChange}
+                value={phoneNum}
                 />
             </div>
 

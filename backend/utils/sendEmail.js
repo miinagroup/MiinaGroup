@@ -134,6 +134,11 @@ module.exports.sendVerificationEmail = async (email, subject, text) => {
                                         <br />
                                         <br />
                                         <br />
+                                         This verify link has
+                                        been sent because someone is attempting
+                                        to reset password for account: <b> ${email} </b>.
+                                        If this was not you, please
+                                        contact 
                                         <a
                                           href="mailto:Enquiries@miinagroup.com.au"
                                           target="_blank"
