@@ -32,13 +32,148 @@ const managementApproval = async (req, res, next) => {
       from: `"no-reply Miina Group " <${process.env.NOREPLY}>`,
       to: `${managerEmail}`,
       subject: `My shopping cart of $${totalPrice}`,
-      text: `
-    The email is from: ${from},
+      text: description,
+      html: `
+    <div style="margin:0;padding:0">
+      <div style="background-color:#f1f2ed">
+        <table
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="background-color:#f1f2ed"
+        >
+          <tbody>
+            <tr>
+              <td width="17">&nbsp;</td>
+              <td valign="top" align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tbody>
+                    <tr>
+                      <td valign="top" align="center">
+                        <table
+                          align="center"
+                          width="594"
+                          cellpadding="0"
+                          cellspacing="0"
+                          border="0"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="17">&nbsp;</td>
+                              <td width="560" valign="top" align="center">
+                                <table
+                                  width="100%"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  border="0"
+                                  style="padding-top:10px"
+                                >
+                                  <tbody>
+                                    <tr></tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                              <td width="17">&nbsp;</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" align="center">
+                        <table
+                          align="center"
+                          width="594"
+                          cellpadding="0"
+                          cellspacing="0"
+                          border="0"
+                          style="background-color:#ffffff"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="17">&nbsp;</td>
+                              <td width="560" valign="top" align="center">
+                                <table
+                                  width="100%"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  border="0"
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td width="100%" valign="top" align="center">
+                                      <br />
+                                          <img
+                                            src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
+                                            align="center"
+                                            border="0"
+                                            width="200"
+                                            height="100"
+                                            alt="Miina Group"
+                                            style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
+                                            class="CToWUd"
+                                            data-bit="iit"
+                                          />
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td width="17">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td width="17">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td width="100%" valign="top" align="left">
+                                        <div style="font-family:'Helvetica Light',Helvetica,Arial,sans-serif;font-size:14px;color:#000000;line-height:20px">
+                                          <span style="font-size:14px;font-weight:normal;color:#000000">
+                                            Hi There,
+                                            </b>
+                                            <br />
+                                            The email is from: <b>${from} </b>,
+                                            <br />
+                                            <br />
+                                            This is my current purchase of: <b>$${totalPrice} </b>,
+                                            <br />
+                                            <br />
+                                            Please find the more details in attached PDF.
+                                            <br />
+                                            <br />
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-    This is my current purchase of: $${totalPrice},
-    
-    Please find the more details in attached PDF.`,
-
+        <font face="arial,helvetica,sans-serif" size="2">
+          <hr>
+            CAUTION: This <span class="il">email</span> and files included in its
+            transmission are solely intended for the use of the addressee(s) and may
+            contain information that is confidential and privileged. If you receive
+            this <span class="il">email</span> in error, please advise us
+            immediately and delete it without copying the contents contained within.
+            Miina Group do not accept
+            liability for the views expressed within or the consequences of any
+            computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
+            without the written consent of the copyright owner.
+          </hr>
+        </font>
+        <div class="yj6qo"></div>
+      </div>
+    </div>`,
       attachments: [
         {
           filename: "Cart.pdf",
@@ -86,17 +221,155 @@ const sendInvoice = async (req, res, next) => {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: `${billingEmail}`,
       subject: `Invoice ${invoiceNumber} from Miina Group`,
-      text: `
-  Hi There,
+      text: invoiceNumber,
+    html: `
+    <div style="margin:0;padding:0">
+    <div style="background-color:#f1f2ed">
+      <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="background-color:#f1f2ed"
+      >
+        <tbody>
+          <tr>
+            <td width="17">&nbsp;</td>
+            <td valign="top" align="center">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                  <tr>
+                    <td valign="top" align="center">
+                      <table
+                        align="center"
+                        width="594"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                      >
+                        <tbody>
+                          <tr>
+                            <td width="17">&nbsp;</td>
+                            <td width="560" valign="top" align="center">
+                              <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                                style="padding-top:10px"
+                              >
+                                <tbody>
+                                  <tr></tr>
+                                </tbody>
+                              </table>
+                            </td>
+                            <td width="17">&nbsp;</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top" align="center">
+                      <table
+                        align="center"
+                        width="594"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        style="background-color:#ffffff"
+                      >
+                        <tbody>
+                          <tr>
+                            <td width="17">&nbsp;</td>
+                            <td width="560" valign="top" align="center">
+                              <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td width="100%" valign="top" align="center">
+                                    <br />
+                                        <img
+                                          src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
+                                          align="center"
+                                          border="0"
+                                          width="200"
+                                          height="100"
+                                          alt="Miina Group"
+                                          style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
+                                          class="CToWUd"
+                                          data-bit="iit"
+                                        />
+                                    </td>
+                                  </tr>
 
-  Please find the attached invoice for $${totalPrice}, with the INV#: ${invoiceNumber} corresponding to your P/O#: ${purchaseNumber}.
-      
-  If you have any inquiries, please do not hesitate to contact us at: admin@miinagroup.com.au
-      
-  Kind Regards,
-  The Miina Group Team
-    `,
+                                  <tr>
+                                    <td width="17">&nbsp;</td>
+                                  </tr>
+                                  <tr>
+                                    <td width="17">&nbsp;</td>
+                                  </tr>
+                                  <tr>
+                                    <td width="100%" valign="top" align="left">
+                                      <div style="font-family:'Helvetica Light',Helvetica,Arial,sans-serif;font-size:14px;color:#000000;line-height:20px">
+                                        <span style="font-size:14px;font-weight:normal;color:#000000">
+                                          <b>
+                                          Hi There,
+                                          <br />
+                                          </b>
+                                          <br />
+                                        Please find the attached invoice for $${totalPrice}, with the INV#: ${invoiceNumber} corresponding to your P/O#: ${purchaseNumber}.
+                                          <br />
+                                          <br />
+                                          If you have any inquiries, please do not hesitate to contact us at: admin@miinagroup.com.au
+                                          <br />
+                                          <br />
+                                          <b>
+                                              Kind Regards,
+                                              <br />
+                                              The Miina Group Team
+                                              <br />
+                                              <br />
+                                          </b>
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
+      <font face="arial,helvetica,sans-serif" size="2">
+        <hr>
+          CAUTION: This <span class="il">email</span> and files included in its
+          transmission are solely intended for the use of the addressee(s) and may
+          contain information that is confidential and privileged. If you receive
+          this <span class="il">email</span> in error, please advise us
+          immediately and delete it without copying the contents contained within.
+          Miina Group do not accept
+          liability for the views expressed within or the consequences of any
+          computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
+          without the written consent of the copyright owner.
+        </hr>
+      </font>
+      <div class="yj6qo"></div>
+    </div>
+    </div>`,
       attachments: [
         {
           filename: "Invoice.pdf",
@@ -144,17 +417,155 @@ const sendProformaInvoice = async (req, res, next) => {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: `${billingEmail}`,
       subject: `Proforma Invoice ${invoiceNumber} from Miina Group`,
-      text: `
-  Hi There,
+      text: invoiceNumber,
+    html: `
+    <div style="margin:0;padding:0">
+    <div style="background-color:#f1f2ed">
+      <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="background-color:#f1f2ed"
+      >
+        <tbody>
+          <tr>
+            <td width="17">&nbsp;</td>
+            <td valign="top" align="center">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                  <tr>
+                    <td valign="top" align="center">
+                      <table
+                        align="center"
+                        width="594"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                      >
+                        <tbody>
+                          <tr>
+                            <td width="17">&nbsp;</td>
+                            <td width="560" valign="top" align="center">
+                              <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                                style="padding-top:10px"
+                              >
+                                <tbody>
+                                  <tr></tr>
+                                </tbody>
+                              </table>
+                            </td>
+                            <td width="17">&nbsp;</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top" align="center">
+                      <table
+                        align="center"
+                        width="594"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                        style="background-color:#ffffff"
+                      >
+                        <tbody>
+                          <tr>
+                            <td width="17">&nbsp;</td>
+                            <td width="560" valign="top" align="center">
+                              <table
+                                width="100%"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td width="100%" valign="top" align="center">
+                                    <br />
+                                        <img
+                                          src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
+                                          align="center"
+                                          border="0"
+                                          width="200"
+                                          height="100"
+                                          alt="Miina Group"
+                                          style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
+                                          class="CToWUd"
+                                          data-bit="iit"
+                                        />
+                                    </td>
+                                  </tr>
 
-  Please find the attached proforma invoice for $${totalPrice}, with the INV#: ${invoiceNumber} corresponding to your P/O#: ${purchaseNumber}.
-      
-  If you have any inquiries, please do not hesitate to contact us at: admin@miinagroup.com.au
-      
-  Kind Regards,
-  The Miina Group Team
-    `,
+                                  <tr>
+                                    <td width="17">&nbsp;</td>
+                                  </tr>
+                                  <tr>
+                                    <td width="17">&nbsp;</td>
+                                  </tr>
+                                  <tr>
+                                    <td width="100%" valign="top" align="left">
+                                      <div style="font-family:'Helvetica Light',Helvetica,Arial,sans-serif;font-size:14px;color:#000000;line-height:20px">
+                                        <span style="font-size:14px;font-weight:normal;color:#000000">
+                                          <b>
+                                          Hi There,
+                                          <br />
+                                          </b>
+                                          <br />
+                                          Please find the attached proforma invoice for $${totalPrice}, with the INV#: ${invoiceNumber} corresponding to your P/O#: ${purchaseNumber}.
+                                          <br />
+                                          <br />
+                                          If you have any inquiries, please do not hesitate to contact us at: admin@miinagroup.com.au
+                                          <br />
+                                          <br />
+                                          <b>
+                                              Kind Regards,
+                                              <br />
+                                              The Miina Group Team
+                                              <br />
+                                              <br />
+                                          </b>
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
+      <font face="arial,helvetica,sans-serif" size="2">
+        <hr>
+          CAUTION: This <span class="il">email</span> and files included in its
+          transmission are solely intended for the use of the addressee(s) and may
+          contain information that is confidential and privileged. If you receive
+          this <span class="il">email</span> in error, please advise us
+          immediately and delete it without copying the contents contained within.
+          Miina Group do not accept
+          liability for the views expressed within or the consequences of any
+          computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
+          without the written consent of the copyright owner.
+        </hr>
+      </font>
+      <div class="yj6qo"></div>
+    </div>
+    </div>`,
       attachments: [
         {
           filename: "ProformaInvoice.pdf",
@@ -289,7 +700,7 @@ const deliveryNotice = async (req, res, next) => {
                                       <img src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
                                         align="center"
                                         border="0"
-                                        width="500"
+                                        width="200"
                                         height="100"
                                         alt="Miina Group"
                                         style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
@@ -488,7 +899,7 @@ const newUserNoticeToMiina = async ({
                                       src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
                                       align="center"
                                       border="0"
-                                      width="500"
+                                      width="200"
                                       height="100"
                                       alt="Miina Group"
                                       style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
@@ -537,7 +948,7 @@ const newUserNoticeToMiina = async ({
                                       <b>
                                           Kind Regards,
                                           <br />
-                                          TechTeam
+                                          The Miina Group Team
                                           <br />
                                           <br />
                                       </b>
@@ -593,16 +1004,164 @@ const sendRequest = async (req, res, next) => {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: process.env.ENQUIRYMAIL,
       subject: "General Enquiry",
-      text: `
-      We received an Enquiry from,
+      text: email,
+      html: `
+    <div style="margin:0;padding:0">
+      <div style="background-color:#f1f2ed">
+        <table
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="background-color:#f1f2ed"
+        >
+          <tbody>
+            <tr>
+              <td width="17">&nbsp;</td>
+              <td valign="top" align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tbody>
+                    <tr>
+                      <td valign="top" align="center">
+                        <table
+                          align="center"
+                          width="594"
+                          cellpadding="0"
+                          cellspacing="0"
+                          border="0"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="17">&nbsp;</td>
+                              <td width="560" valign="top" align="center">
+                                <table
+                                  width="100%"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  border="0"
+                                  style="padding-top:10px"
+                                >
+                                  <tbody>
+                                    <tr></tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                              <td width="17">&nbsp;</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" align="center">
+                        <table
+                          align="center"
+                          width="594"
+                          cellpadding="0"
+                          cellspacing="0"
+                          border="0"
+                          style="background-color:#ffffff"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="17">&nbsp;</td>
+                              <td width="560" valign="top" align="center">
+                                <table
+                                  width="100%"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  border="0"
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td width="100%" valign="top" align="center">
+                                      <br />
+                                          <img
+                                            src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
+                                            align="center"
+                                            border="0"
+                                            width="200"
+                                            height="100"
+                                            alt="Miina Group"
+                                            style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
+                                            class="CToWUd"
+                                            data-bit="iit"
+                                          />
+                                      </td>
+                                    </tr>
 
-      Name    : ${req.body.name}
-      Email     : ${req.body.email}
-      Phone   : ${req.body.phone}
-      Enquiry : ${req.body.enquiry}
-      
-      Kind Regards,
-      The Miina Group Team`,
+                                    <tr>
+                                      <td width="17">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td width="17">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td width="100%" valign="top" align="left">
+                                        <div style="font-family:'Helvetica Light',Helvetica,Arial,sans-serif;font-size:14px;color:#000000;line-height:20px">
+                                          <span style="font-size:14px;font-weight:normal;color:#000000">
+                                            <b>
+                                            Hi Admin,
+                                            <br />
+                                            </b>
+                                            <br />
+                                            We received an Enquiry from
+                                            <br />
+                                            <br />
+                                            <span style="font-weight: bold;">Name:</span> ${req.body.name}
+                                            <br />
+                                            <br />
+                                            <span style="font-weight: bold;">Email:</span>${req.body.email}
+                                            <br />
+                                            <br />
+                                            <span style="font-weight: bold;">Phone:</span>${req.body.phone}
+                                            <br />
+                                            <br />
+                                            <span style="font-weight: bold;">Enquiry:</span>${req.body.enquiry}
+                                            <br />
+                                            <br />
+                                            <b>
+                                                Kind Regards,
+                                                <br />
+                                                The Miina Group Team
+                                                <br />
+                                                <br />
+                                            </b>
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <font face="arial,helvetica,sans-serif" size="2">
+          <hr>
+            CAUTION: This <span class="il">email</span> and files included in its
+            transmission are solely intended for the use of the addressee(s) and may
+            contain information that is confidential and privileged. If you receive
+            this <span class="il">email</span> in error, please advise us
+            immediately and delete it without copying the contents contained within.
+            Miina Group do not accept
+            liability for the views expressed within or the consequences of any
+            computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
+            without the written consent of the copyright owner.
+          </hr>
+        </font>
+        <div class="yj6qo"></div>
+      </div>
+    </div>`,
     };
 
     await transporter.sendMail(message);
@@ -620,18 +1179,157 @@ const sendNotification = async (receivingEmail, backOrderList) => {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
       to: `${receivingEmail}`,
       subject: `Miina Group Overdue Orders List`,
-      text: `
-  Hi Admin,
+      text: receivingEmail ,
+    html: `
+    <div style="margin:0;padding:0">
+      <div style="background-color:#f1f2ed">
+        <table
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="background-color:#f1f2ed"
+        >
+          <tbody>
+            <tr>
+              <td width="17">&nbsp;</td>
+              <td valign="top" align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tbody>
+                    <tr>
+                      <td valign="top" align="center">
+                        <table
+                          align="center"
+                          width="594"
+                          cellpadding="0"
+                          cellspacing="0"
+                          border="0"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="17">&nbsp;</td>
+                              <td width="560" valign="top" align="center">
+                                <table
+                                  width="100%"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  border="0"
+                                  style="padding-top:10px"
+                                >
+                                  <tbody>
+                                    <tr></tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                              <td width="17">&nbsp;</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" align="center">
+                        <table
+                          align="center"
+                          width="594"
+                          cellpadding="0"
+                          cellspacing="0"
+                          border="0"
+                          style="background-color:#ffffff"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="17">&nbsp;</td>
+                              <td width="560" valign="top" align="center">
+                                <table
+                                  width="100%"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  border="0"
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td width="100%" valign="top" align="center">
+                                      <br />
+                                          <img
+                                            src="https://minadmin.b-cdn.net/website/PrimaryLogoColour.png"
+                                            align="center"
+                                            border="0"
+                                            width="200"
+                                            height="100"
+                                            alt="Miina Group"
+                                            style="outline:none;text-decoration:none;display:block;font-size:8px;line-height:100%"
+                                            class="CToWUd"
+                                            data-bit="iit"
+                                          />
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td width="17">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td width="17">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                      <td width="100%" valign="top" align="left">
+                                        <div style="font-family:'Helvetica Light',Helvetica,Arial,sans-serif;font-size:14px;color:#000000;line-height:20px">
+                                          <span style="font-size:14px;font-weight:normal;color:#000000">
+                                            <b>
+                                            Hi Admin,
+                                            <br />
+                                            </b>
+                                            <br />
+                                            Please note that the following orders are overdue by more than 7 days: 
+                                            <br />
+                                            <br />
+                                              ${backOrderList}
+                                            <br />
+                                            <br />
+                                            Could you please follow up with our suppliers and provide an update to our client?
+                                            <br />
+                                            <br />
+                                            <b>
+                                          Kind Regards,
+                                          <br />
+                                          The Miina Group Team
+                                          <br />
+                                          <br />
+                                      </b>
+                                          </span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-  Please note that the following orders are overdue by more than 7 days: 
- 
-  ${backOrderList}
-
-  Could you please follow up with our suppliers and provide an update to our client?
-
-  Kind Regards,
-  The Miina Group Team
-    `
+        <font face="arial,helvetica,sans-serif" size="2">
+          <hr>
+            CAUTION: This <span class="il">email</span> and files included in its
+            transmission are solely intended for the use of the addressee(s) and may
+            contain information that is confidential and privileged. If you receive
+            this <span class="il">email</span> in error, please advise us
+            immediately and delete it without copying the contents contained within.
+            Miina Group do not accept
+            liability for the views expressed within or the consequences of any
+            computer viruses that may be transmitted with this email. The contents are also subject to copyright. No part of it should be reproduced, adapted or transmitted
+            without the written consent of the copyright owner.
+          </hr>
+        </font>
+        <div class="yj6qo"></div>
+      </div>
+    </div>`
     };
 
     // Send email
