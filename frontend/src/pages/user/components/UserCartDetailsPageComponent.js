@@ -528,7 +528,6 @@ const UserCartDetailsPageComponent = ({
       location,
       billingAddress,
       deliveryAddress,
-      abn: user.abn,
       id: deliveryBooks[0]._id,
       idSite: chosenDeliverySite._id
     };
@@ -588,31 +587,31 @@ const UserCartDetailsPageComponent = ({
               <h1 className="cartDetailTitle">CART DETAILS</h1>
             </div>
             <div>
-            <Row className="mb-4 p-0 cart_btn_wrapper">
-              <div className="cart_detail_btns">
-                <div className="d-flex gap-5 cart_detail_btns_email_download">
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <PDFDownloadLink
-                        document={
-                          <CartPrint
-                            cartItems={cartItems}
-                            userInfo={userInfo}
-                            userAddress={userAddress}
-                            purchaseNumber={purchaseNumber}
-                            cartSubtotal={cartSubtotal}
-                            taxAmount={taxAmount}
-                          />
-                        }
-                        fileName={userInfo.name + "'s Cart"}
-                        className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
-                      >
-                        <span>
-                          Download Cart <i className="bi bi-file-earmark-pdf"></i>
-                        </span>
-                      </PDFDownloadLink>
-                  </div>
-                  <div className="d-flex justify-content-end">
+              <Row className="mb-4 p-0 cart_btn_wrapper">
+                <div className="cart_detail_btns">
+                  <div className="d-flex gap-5 cart_detail_btns_email_download">
+                    <div className="d-flex justify-content-between">
+                      <div>
+                        <PDFDownloadLink
+                          document={
+                            <CartPrint
+                              cartItems={cartItems}
+                              userInfo={userInfo}
+                              userAddress={userAddress}
+                              purchaseNumber={purchaseNumber}
+                              cartSubtotal={cartSubtotal}
+                              taxAmount={taxAmount}
+                            />
+                          }
+                          fileName={userInfo.name + "'s Cart"}
+                          className="btn btn-success p-1 ps-3 pe-3 download_cart_btn rounded download_cart_btn_wrapper"
+                        >
+                          <span>
+                            Download Cart <i className="bi bi-file-earmark-pdf"></i>
+                          </span>
+                        </PDFDownloadLink>
+                      </div>
+                      <div className="d-flex justify-content-end">
                         <Button
                           type="button"
                           onClick={removeAllItems}
@@ -622,66 +621,66 @@ const UserCartDetailsPageComponent = ({
                           Empty Cart <i className="bi bi-trash" />
                         </Button>
                       </div>
-                      </div>
-                  <div>
-                    <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
+                    </div>
+                    <div>
+                      <ListGroup hidden={cartItems.length === 0} className="d-flex cart_detail_list_group">
 
-                      <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px", background: "transparent", border: "1px solid #DBA162" }}>
-                        <InputGroup size="sm">
-                          <Form.Control
-                            className="p-1 ps-2"
-                            onChange={enterManagerEmail}
-                            type="string"
-                            name="MangerEmail"
-                            placeholder={`Enter email`}
-                            required
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            style={{ border: "none", fontSize: "12px", background: "transparent" }}
-                          />
-                          <InputGroup.Text
-                            id="basic-addon2"
-                            style={{ border: "none", borderLeft: "1px solid #DBA162", borderRadius: "1px", fontSize: "12px", background: "#DBA162", color: "#483F55" }}
-                          >
-                            @{userEmail}
-                          </InputGroup.Text>
-                        </InputGroup>
-                        <Form.Control.Feedback type="invalid">
-                          Please Enter Your Manager's Email.{" "}
-                        </Form.Control.Feedback>
-                      </ListGroup.Item>
-                      <div className="d-grid gap-2">
-                        <QuoeteManagementApproval quotePriceData={quotePriceData} />
-                      </div>
+                        <ListGroup.Item controlid="validationMangerEmail" className="p-0 rounded" style={{ width: "300px", background: "transparent", border: "1px solid #DBA162" }}>
+                          <InputGroup size="sm">
+                            <Form.Control
+                              className="p-1 ps-2"
+                              onChange={enterManagerEmail}
+                              type="string"
+                              name="MangerEmail"
+                              placeholder={`Enter email`}
+                              required
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              style={{ border: "none", fontSize: "12px", background: "transparent" }}
+                            />
+                            <InputGroup.Text
+                              id="basic-addon2"
+                              style={{ border: "none", borderLeft: "1px solid #DBA162", borderRadius: "1px", fontSize: "12px", background: "#DBA162", color: "#483F55" }}
+                            >
+                              @{userEmail}
+                            </InputGroup.Text>
+                          </InputGroup>
+                          <Form.Control.Feedback type="invalid">
+                            Please Enter Your Manager's Email.{" "}
+                          </Form.Control.Feedback>
+                        </ListGroup.Item>
+                        <div className="d-grid gap-2">
+                          <QuoeteManagementApproval quotePriceData={quotePriceData} />
+                        </div>
 
-                    </ListGroup>
+                      </ListGroup>
+                    </div>
+                  </div>
+                  <div className="desktop">
+                    <Button
+                      type="button"
+                      onClick={removeAllItems}
+                      size="sm"
+                      className="empty_cart_wrapper"
+                    >
+                      Empty Cart <i className="bi bi-trash" />
+                    </Button>
                   </div>
                 </div>
-                <div className="desktop">
-                  <Button
-                    type="button"
-                    onClick={removeAllItems}
-                    size="sm"
-                    className="empty_cart_wrapper"
-                  >
-                    Empty Cart <i className="bi bi-trash" />
-                  </Button>
-                </div>
-              </div>
-            </Row>
-            <Col md={12}>
-              <ListGroup className="cart-items-list mb-3">
-                {cartItems.map((item, idx) => (
-                  <CartItemComponent
-                    item={item}
-                    key={idx}
-                    changeCount={changeCount}
-                    removeFromCartHandler={removeFromCartHandler}
-                  />
-                ))}
-              </ListGroup>
+              </Row>
+              <Col md={12}>
+                <ListGroup className="cart-items-list mb-3">
+                  {cartItems.map((item, idx) => (
+                    <CartItemComponent
+                      item={item}
+                      key={idx}
+                      changeCount={changeCount}
+                      removeFromCartHandler={removeFromCartHandler}
+                    />
+                  ))}
+                </ListGroup>
 
-            </Col>
+              </Col>
             </div>
           </div>
           <Col md={3} className="cart_detail_right">
