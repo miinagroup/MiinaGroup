@@ -496,8 +496,8 @@ const InvoicePrint = (invPrintData) => {
                 </View>
                 <View style={styles.tableColHeaderSide1}>
                   <Text>Miina Group</Text>
-                  <Text>BSB : 036-231</Text>
-                  <Text>ACC : 585602</Text>
+                  <Text>BSB : 036-187</Text>
+                  <Text>ACC : 367682</Text>
                   <Text>Westpac Bank</Text>
                 </View>
                 <View style={styles.tableColHeaderSide1}>
