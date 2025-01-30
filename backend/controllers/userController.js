@@ -86,8 +86,10 @@ const registerUser = async (req, res, next) => {
         abn
       });
 
+      console.log(deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain))));
+
       // verify email address if end with registered companies
-      if (!deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain)))) {
+      if (deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain)))) {
         const token = await new Token({
           userId: user._id,
           token: crypto.randomBytes(32).toString("hex"),
@@ -135,7 +137,6 @@ const registerUser = async (req, res, next) => {
 
 
 function requiresVerification(email, deliveryBooks) {
-  console.log("I am here to verify email step 1");
   return (deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain))))
 }
 
@@ -157,9 +158,7 @@ const loginUser = async (req, res, next) => {
       req.connection.remoteAddress;
 
     const user = await User.findOne({ email: email });
-    console.log("I found a user");
     if (user && comparePasswords(password, user.password)) {
-      console.log("I am here compare password!");
 
       let cookieParams = {
         httpOnly: true,
@@ -182,7 +181,6 @@ const loginUser = async (req, res, next) => {
       const deliveryBooks = await DeliveryBook.find({});
       // Verify Email
       if (!user.verified && requiresVerification(email, deliveryBooks)) {
-        console.log("I am here to verify email");
         let token = await Token.findOne({
           userId: user._id,
           category: "verifyEmail",
@@ -296,8 +294,8 @@ const verifyEmail = async (req, res) => {
 
 const forgotPassword = async (req, res, next) => {
   try {
-    console.log("I am here to forgot password");
     const { email } = req.body;
+
     if (!email) {
       return res.status(400).send("Email address is required");
     }
@@ -316,17 +314,16 @@ const forgotPassword = async (req, res, next) => {
       userId: user._id,
       category: "resetPassword",
     });
+
     if (!token) {
       token = await new Token({
         userId: user._id,
         token: crypto.randomBytes(32).toString("hex"),
         category: "resetPassword",
       }).save();
-
       const url = `${process.env.BASE_URL}user/${user.id}/resetPassword/${token.token}`;
       await sendResetPasswordEmail(user.email, "Reset Password", url);
     }
-
     return res.status(200).send({
       message: "A password reset link has been sent to your email address",
     });
@@ -356,7 +353,6 @@ const validateResetLink = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    console.log("I am here to reset password");
     const { userId, resetPasswordToken, newPassword } = req.body;
 
     const user = await User.findById(userId);
@@ -589,7 +585,6 @@ const capitalizeFirstLetter = (string) => {
 const formatUserName = async (req, res, next) => {
   let formattedUsers = [];
   let notFound = [];
-  console.log("I am here to update User Name and Last Name!!!");
   try {
     const users = await User.find({});
 

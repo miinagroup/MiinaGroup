@@ -305,7 +305,7 @@ const OrderDetailsPageComponent = ({
           purchaseNumber={purchaseNumber}
           cartSubtotal={cartSubtotal}
           dueDays={dueDays}
-          invoiceDate={createdAt}
+          invoiceDate={deliveredAt}
           selectedDeliverySite={selectedDeliverySite}
           companyAccount={companyAccount}
           taxAmount={taxAmount}
@@ -377,6 +377,7 @@ const OrderDetailsPageComponent = ({
         formDataToSend,
         config
       );
+
       setSendingInv(false);
       setRefreshOrder(!refreshOrder);
       return true;

@@ -33,14 +33,14 @@ const EmailVerify = () => {
     <Fragment>
       <div className="verifyEmail">
         <img
-           src="/images/miina_logo.png"
+          src="/images/miina_logo.png"
           alt="Miina Group Logo"
           className="verified_logo rotate linear infinite mb-5"
         />
         {validUrl ? (
           <>
             <h1>Email verified successfully</h1>
-            <Link to="/login">
+            <Link to="/">
               <button className="blue_btn">Login</button>
             </Link>
           </>

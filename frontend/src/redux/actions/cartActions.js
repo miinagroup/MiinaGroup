@@ -62,7 +62,6 @@ export const reOrder = (orderId) => async (dispatch, getState) => {
 
 /* ****** BACK_ORDER ****** */
 export const backOrder = (orderId) => async (dispatch, getState) => {
-  console.log("I am here back order!!!");
   try {
     const { data } = await axios.get("/api/orders/user/" + orderId);
     const reOrderProducts = data.cartItems
