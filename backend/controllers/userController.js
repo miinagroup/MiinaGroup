@@ -142,6 +142,8 @@ function requiresVerification(email, deliveryBooks) {
 
 const loginUser = async (req, res, next) => {
   try {
+    console.log("testing Login");
+
     const {
       email: rawEmail,
       password,
