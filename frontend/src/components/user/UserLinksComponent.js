@@ -24,7 +24,7 @@ const UserLinksComponent = () => {
       access: "isSuperAdmin, accounts, isSales, isAdmin",
     },
     {
-      title: "Orders",
+      title: "My Orders",
       link: "/user/my-orders",
       access: "all",
     },

@@ -30,6 +30,8 @@ const UserCartDetailsPageComponent = ({
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
+
+
   const [userInfo, setUserInfo] = useState(() =>
     JSON.parse(localStorage.getItem("userInfo"))
   );
@@ -158,10 +160,26 @@ const UserCartDetailsPageComponent = ({
     getdeliveryBooks()
       .then((deliveryBooks) => {
         setDeliveryBooks(deliveryBooks);
-        setChosenDeliverySite(deliveryBooks[0].sites[0]);
+
+        deliveryBooks.forEach((deliveryBook) => {
+          deliveryBook.sites.forEach((site, index) => {
+            if (site.name.toLowerCase() === userInfo.location.toLowerCase()) {
+              setSelectedIndex(index);
+              setChosenDeliverySite((prev) => ({
+                ...prev,
+                location: site.name,
+                billingAddress: site.billingAddress,
+                deliveryAddress: site.deliveryAddress,
+              }));
+    
+              return;
+            }
+          });
+        });
         setUserSites(deliveryBooks[0]);
         setDeliverySites(deliveryBooks[0]?.sites);
         setDueDays(deliveryBooks[0]?.dueDays);
+
       })
       .catch((err) =>
         console.log(
@@ -170,7 +188,7 @@ const UserCartDetailsPageComponent = ({
             : err.response.data
         )
       );
-  }, []);
+  }, []);  
 
   const changeDeliverySite = (e) => {
     setSelectedDeliverySite(e.target.value);
@@ -242,6 +260,7 @@ const UserCartDetailsPageComponent = ({
   }, [userInfo._id]);
 
   const orderHandler = () => {
+    console.log(chosenDeliverySite)
     const orderData = {
       orderTotal: {
         itemsCount: itemsCount,
@@ -279,7 +298,7 @@ const UserCartDetailsPageComponent = ({
       purchaseNumber: purchaseNumber,
       orderNote: orderNote,
       invoiceNumber: largestInvoice + 1,
-      deliverySite: chosenDeliverySite.name,
+      deliverySite: chosenDeliverySite.location,
       deliveryAddress: chosenDeliverySite.deliveryAddress,
       userName: userName,
       userCompany: userCompany,
@@ -288,6 +307,8 @@ const UserCartDetailsPageComponent = ({
       createdUserId: createdUserId ? createdUserId : "",
       createdUserName: createdUserName ? createdUserName : "",
     };
+
+    console.log(orderData)
 
     if (!shippingAddress) {
       setValidated(false);
@@ -492,7 +513,7 @@ const UserCartDetailsPageComponent = ({
       if (res.status === 200) {
         setChosenDeliverySite((prevSite) => ({
           ...prevSite,
-          name: location,
+          location: location,
           deliveryAddress,
           billingAddress
         }));
@@ -538,7 +559,7 @@ const UserCartDetailsPageComponent = ({
       if (res.status === 200) {
         setChosenDeliverySite((prevSite) => ({
           ...prevSite,
-          name: location,
+          location: location,
           deliveryAddress,
           billingAddress
         }));
@@ -571,7 +592,12 @@ const UserCartDetailsPageComponent = ({
 
   const handleSelect = (e) => {
     const newChosenSite = deliveryBooks[0].sites[e.target.value];
-    setChosenDeliverySite(newChosenSite);
+    setChosenDeliverySite((prevSite) => ({
+      ...prevSite,
+      location: newChosenSite.name,
+      deliveryAddress: newChosenSite.deliveryAddress,
+      billingAddress: newChosenSite.billingAddress
+    }));
 
     const selectedIndex = e.target.value;
     setSelectedIndex(selectedIndex);

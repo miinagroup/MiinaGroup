@@ -1,4 +1,4 @@
-import { Form, ListGroup, Button } from "react-bootstrap";
+import { Form, ListGroup } from "react-bootstrap";
 import { titleCase } from "../utils/utils";
 
 const CartAddressesSectionComponent = ({
@@ -9,18 +9,19 @@ const CartAddressesSectionComponent = ({
     handleSelect,
     chosenDeliverySite,
 }) => {
+
     return (
         <>
         <ListGroup.Item className="p-1 ps-2">
         <h4 className="m-0 address-title">Address</h4>
-        <div style={{ display: 'flex', alignItems: "center", gap: "10px" }}>
+        {/* <div style={{ display: 'flex', alignItems: "center", gap: "10px" }}>
           <Button onClick={() => setIsOpenNewAddressModal(true)} className="p-1 btn-add-address" style={{ width: "100%",  maxWidth: '120px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
             Add New Address
           </Button>
           <Button onClick={() => setIsOpenChangeAddressModal(true)} className="p-1 btn-change-address" style={{ width: "100%",  maxWidth: '120px', fontSize: "12px", display: "flex", justifyContent: "center", alignItems: "center" }}>
             Change Address
           </Button>
-        </div>
+        </div> */}
       </ListGroup.Item>
       
       <ListGroup.Item
@@ -30,7 +31,7 @@ const CartAddressesSectionComponent = ({
         <Form.Label className="fw-bold">Location / Site</Form.Label>
         {deliveryBooks && <Form.Select value={selectedIndex} onChange={(e) => handleSelect(e)} style={{backgroundColor: "transparent"}}>
           {deliveryBooks[0]?.sites?.map((site, index) => {
-            return <option value={index}>{site.name.toUpperCase()}</option>
+            return <option value={index}>{site?.name.toUpperCase()}</option>
           })}
         </Form.Select>}
       </ListGroup.Item>
@@ -47,7 +48,7 @@ const CartAddressesSectionComponent = ({
           name="billingAddress"
           placeholder="Billing Address"
           required
-          value={titleCase(chosenDeliverySite.billingAddress).split(',').map(sentence => sentence.trim()).join('\n')}
+          value={chosenDeliverySite && titleCase(chosenDeliverySite?.billingAddress).split(',').map(sentence => sentence.trim()).join('\n')}
           style={{ fontSize: '12px', height: "100px", background: "rgba(72, 63, 85, 0.20)" }}
           disabled
         />
@@ -68,7 +69,7 @@ const CartAddressesSectionComponent = ({
           name="shippingAddress"
           placeholder="Shipping Address"
           required
-          value={titleCase(chosenDeliverySite.deliveryAddress).split(',').map(sentence => sentence.trim()).join('\n')}
+          value={chosenDeliverySite && titleCase(chosenDeliverySite?.deliveryAddress).split(',').map(sentence => sentence.trim()).join('\n')}
           style={{ fontSize: '12px', height: "100px", background: "rgba(72, 63, 85, 0.20)" }}
           disabled
         />

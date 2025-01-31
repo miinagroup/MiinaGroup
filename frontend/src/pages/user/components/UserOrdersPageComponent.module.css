@@ -4,6 +4,10 @@
     color:#483F55
 }
 
+.ordersPageWrapper {
+    padding-bottom: 200px;
+}
+
 
 .searchPaginationWrapper {
     width: 100%; 
