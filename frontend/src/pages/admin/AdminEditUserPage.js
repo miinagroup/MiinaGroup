@@ -57,10 +57,16 @@ const AdminEditUserPage = () => {
     return data;
   };
 
+  const getdeliveryBooks = async (email) => {
+    const { data } = await axios.get("/api/deliveryBooks/deliveryBook/" + email);
+    return data;
+  };
+
   return (
     <EditUserPageComponent
       updateUserApiRequest={updateUserApiRequest}
       fetchUser={fetchUser}
+      getdeliveryBooks={getdeliveryBooks}
     />
   );
 };

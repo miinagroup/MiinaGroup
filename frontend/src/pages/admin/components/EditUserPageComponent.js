@@ -6,7 +6,7 @@ import FetchAuthFromServer from "../../../components/Utils/FetchAuthFromServer";
 import MaskedInput from 'react-text-mask';
 import styles from "../AdminPagesStyles.module.css"
 
-const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
+const EditUserPageComponent = ({ updateUserApiRequest, fetchUser, getdeliveryBooks }) => {
   const [validated, setValidated] = useState(false);
   const [user, setUser] = useState([]);
   const [isAdminState, setIsAdminState] = useState(false);
@@ -25,6 +25,8 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
   const abnMask = [/\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/];
   const [userRole, setUserRole] = useState();
   const [otherRole, setOtherRole] = useState();
+  const [deliverySites, setDeliverySites] = useState()
+  const [deliveryLocation, setDeliveryLocation] = useState()
 
   const handleOtherRole = (e) => {
     setOtherRole(e.target.value);
@@ -54,7 +56,7 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
     const phone = form.phone.value;
     const mobile = form.mobile.value;
     const company = form.company.value;
-    const location = form.location.value;
+    const location = deliveryLocation;
     let ipAddress = form.ipAddress.value;
     const isAdmin = form.isAdmin.checked;
     const verified = form.verified.checked;
@@ -133,9 +135,25 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
       );
   }, [id]);
 
+  useEffect(() => {
+    if (user.email) {
+      getdeliveryBooks(user.email)
+        .then((data) => {
+          setDeliverySites(data[0]?.sites)
+          data[0]?.sites?.some((site) => {
+            if (site?.name.toLowerCase() === user?.location.toLowerCase())
+              setDeliveryLocation(user.location)
+          })
+        }).catch((err) => console.log(err));
+    }
+  }, [user])
+
+  const handleChangeLocation = (e) => {
+    setDeliveryLocation(e.target.value)
+  }
 
   return (
-    <Container style={{paddingBottom: "200px"}}>
+    <Container style={{ paddingBottom: "200px" }}>
       <Row className="justify-content-md-center mt-5 content-container">
         <Col md={1}>
           <GoBackButton />
@@ -235,12 +253,29 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicBillLocation">
               <Form.Label>Location</Form.Label>
-              <Form.Control
+              <Form.Select
+                required
+                name="location"
+                onChange={handleChangeLocation}
+                style={{ textTransform: "capitalize" }}
+                value={deliveryLocation || user.location || ""}
+              >
+                <option value="">--Select Site--</option>
+                {
+                  deliverySites?.map((site, idx) => (
+                    <option key={idx} value={site.name} style={{ textTransform: "capitalize" }}>
+                      {site?.name.toLowerCase()}
+                    </option>))
+                }
+              </Form.Select>
+
+
+              {/* <Form.Control
                 name="location"
                 required
                 type="txt"
                 defaultValue={user.location}
-              />
+              /> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicipAddress">
               <Form.Label>
@@ -274,22 +309,24 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
                     onChange={(e) => setIsAdminState(e.target.checked)}
                   />
                 </Col>
-                <Col md={2}>
+                <Col md={2} hidden>
                   <Form.Check
                     name="isPD"
                     type="checkbox"
                     label="PD"
                     checked={isPD}
                     onChange={(e) => setIsPD(e.target.checked)}
+
                   />
                 </Col>
-                <Col md={3}>
+                <Col md={3} hidden>
                   <Form.Check
                     name="isSiteManager"
                     type="checkbox"
                     label="Site Manager"
                     checked={isSiteManager}
                     onChange={(e) => setIsSiteManager(e.target.checked)}
+
                   />
                 </Col>
                 <Col md={3}>
@@ -303,31 +340,34 @@ const EditUserPageComponent = ({ updateUserApiRequest, fetchUser }) => {
                 </Col>
               </Row>
               <Row>
-                <Col md={2}>
+                <Col md={2} hidden>
                   <Form.Check
                     name="isSales"
                     type="checkbox"
                     label="Sales"
                     checked={isSales}
                     onChange={(e) => setIsSales(e.target.checked)}
+
                   />
                 </Col>
-                <Col md={2}>
+                <Col md={2} hidden>
                   <Form.Check
                     name="accounts"
                     type="checkbox"
                     label="Accounts"
                     checked={accounts}
                     onChange={(e) => setAccounts(e.target.checked)}
+
                   />
                 </Col>
-                <Col md={3}>
+                <Col md={3} hidden>
                   <Form.Check
                     name="isMarketing"
                     type="checkbox"
                     label="Marketing"
                     checked={isMarketing}
                     onChange={(e) => setIsMarketing(e.target.checked)}
+
                   />
                 </Col>
               </Row>

@@ -339,7 +339,7 @@ const UserOrderDetailsPageComponent = ({
 
   return (
     <>
-    <div className="green-line"></div>
+      <div className="green-line"></div>
       <div className="desktop userCartDetailPage">
         <Row className="mt-4">
           <h1 className={styles.title}>ORDER DETAILS</h1>
@@ -370,7 +370,7 @@ const UserOrderDetailsPageComponent = ({
           <Col md={3} className="cart_detail_right">
             <ListGroup>
               <ListGroup.Item className="p-1 ps-2">
-                <h3  className="m-0 cart_detail_right-title">ORDER SUMMARY</h3>
+                <h3 className="m-0 cart_detail_right-title">ORDER SUMMARY</h3>
               </ListGroup.Item>
               <ListGroup.Item className="p-2 ps-3">
                 Item Price:{" "}
@@ -473,7 +473,7 @@ const UserOrderDetailsPageComponent = ({
               </Modal.Body>
               <Modal.Footer className="p-0 m-0">
                 <Button
-                  
+
                   onClick={handleClose}
                   className="p-1 pt-0 pb-0 m-1"
                 >
@@ -563,7 +563,7 @@ const UserOrderDetailsPageComponent = ({
                       <p className="mb-0">
                         Please Contact{" "}
                         <a
-                          href="mailto:sales@ctlaus.com"
+                          href="mailto:admin@miinagroup.com.au"
                           class="action remind fw-bold"
                           style={{ color: "#1E4881" }}
                         >
@@ -588,124 +588,42 @@ const UserOrderDetailsPageComponent = ({
                 ""
               )}
               {userInfo.isInvoiceViwer === true ? (
-                  <ListGroup.Item className="p-1 ps-2">
-                    <div className="d-grid gap-2">
-                      <PDFDownloadLink
-                        document={
-                          <InvoicePrint
-                            cartItems={cartItems}
-                            invoiceNumber={invoiceNumber}
-                            userInfo={userInfo}
-                            purchaseNumber={purchaseNumber}
-                            cartSubtotal={cartSubtotal}
-                            invoiceDate={createdAt}
-                            selectedDeliverySite={selectedDeliverySite}
-                            companyAccount={companyAccount}
-                            taxAmount={taxAmount}
-                          />
-                        }
-                        fileName={"INV" + invoiceNumber}
-                      >
-                        {({ loading }) =>
-                          loading ? (
-                            <Button className="p-0 m-0 pe-2 ps-2 ctl_blue_button">
-                              Loading Invoice...
-                            </Button>
-                          ) : (
-                            <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button">
-                              Download Invoice
-                            </Button>
-                          )
-                        }
-                      </PDFDownloadLink>
-                    </div>
-                  </ListGroup.Item>
+                <ListGroup.Item className="p-1 ps-2">
+                  <div className="d-grid gap-2">
+                    <PDFDownloadLink
+                      document={
+                        <InvoicePrint
+                          cartItems={cartItems}
+                          invoiceNumber={invoiceNumber}
+                          userInfo={userInfo}
+                          purchaseNumber={purchaseNumber}
+                          cartSubtotal={cartSubtotal}
+                          invoiceDate={createdAt}
+                          selectedDeliverySite={selectedDeliverySite}
+                          companyAccount={companyAccount}
+                          taxAmount={taxAmount}
+                        />
+                      }
+                      fileName={"INV" + invoiceNumber}
+                    >
+                      {({ loading }) =>
+                        loading ? (
+                          <Button className="p-0 m-0 pe-2 ps-2 ctl_blue_button">
+                            Loading Invoice...
+                          </Button>
+                        ) : (
+                          <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button">
+                            Download Invoice
+                          </Button>
+                        )
+                      }
+                    </PDFDownloadLink>
+                  </div>
+                </ListGroup.Item>
               ) : (
                 ""
               )}
             </ListGroup>
-
-            <div style={{ height: "200px" }}>
-              {
-                (userInfo.isSitePerson || userInfo.isSiteManager) ? (
-                  <ListGroup className="pt-3">
-                    <ListGroup.Item className="p-1 ps-2">
-                      <Form.Check
-                        type="switch"
-                        id="custom-switch"
-                        label="Assign Ownership"
-                        data-toggle="collapse"
-                        data-target="#ownership_div"
-                        aria-expanded="false"
-                        aria-controls="ownership_div"
-                        disabled={(order?.secondOwnerId !== " " && order?.secondOwnerId !== userInfo?._id)}
-
-                      />
-
-                      {
-                        order?.secondOwnerId !== " " ? (
-                          <span id="show_message">
-                            <b>This Order Assignee is :</b><br />
-                            <label style={{}}>{secondOwner?.name + " " + secondOwner?.lastName + " -"}</label>
-                            <label style={{ fontSize: "95%" }}>{" " + secondOwner?.location}</label>
-                          </span>
-                        ) : ("")
-                      }
-
-                    </ListGroup.Item>
-                    <ListGroupItem className="p-0" disabled={isSwitchOn} style={{}}>
-                      <div
-                        id="ownership_div"
-                        class="collapse"
-                      >
-
-                        <div class="m-2">
-                          {
-                            (order?.secondOwnerId !== " " && order?.secondOwnerId === userInfo?._id) ? (
-                              <span>
-                                <b>Re-Assign this Order?</b>
-                              </span>
-
-                            ) : ("")
-                          }
-                          <Form.Select
-                            required
-                            name="userNames"
-                            aria-label="Default select example"
-                            onChange={selectSecondOwner}
-                            className="mt-1 p-0 ps-1"
-
-                          >
-                            {usersList &&
-                              usersList
-                                .map((user, idx) => {
-                                  return user !== "" ? (
-                                    <option key={idx} value={user._id}>
-                                      {" "}
-                                      {user.name + " " + user.lastName + " ( " + user.location + " )"}
-                                    </option>
-                                  ) : ("");
-                                })}
-                          </Form.Select>
-                          <Row className="pt-2">
-                            <Col md={7}>
-                              <Button
-                                variant="success"
-                                onClick={saveOwnership}
-                                className="button-shadow p-0 pe-3 ps-3 m-0"
-                              >
-                                {buttonText}
-                              </Button>
-                            </Col>
-                          </Row>
-                        </div>
-                      </div>
-                    </ListGroupItem>
-                  </ListGroup>
-
-                ) : ("")
-              }
-            </div>
           </Col>
         </Row>
       </div>
@@ -821,15 +739,15 @@ const UserOrderDetailsPageComponent = ({
                     className="Re_Order_Modal"
                   >
                     <Modal.Header className="p-0 m-2 mb-0" closeButton>
-                      <span className="fw-bold p-0 m-0" style={{fontFamily: "GloriaHallelujah", color: "#483F55"}}>Confirmation</span>
+                      <span className="fw-bold p-0 m-0" style={{ fontFamily: "GloriaHallelujah", color: "#483F55" }}>Confirmation</span>
                     </Modal.Header>
-                    <Modal.Body className="p-2 pt-0" style={{fontFamily: "HelveticaNeue", color: "#483F55"}}>
+                    <Modal.Body className="p-2 pt-0" style={{ fontFamily: "HelveticaNeue", color: "#483F55" }}>
                       Some items already in your cart! Do you want to empty
                       your cart before re-ordering?
                     </Modal.Body>
                     <Modal.Footer className="p-0 d-flex justify-content-between">
                       <Button
-                        
+
                         onClick={() => handleConfirmationClose(true)}
                         className="p-1 pe-2 ps-2 confirm-btn"
                       >
@@ -838,7 +756,7 @@ const UserOrderDetailsPageComponent = ({
                       <Button
                         onClick={() => handleConfirmationClose(false)}
                         className={styles.reorderBtn}
-                        style={{backgroundColor: "#521712", border: "none" }}
+                        style={{ backgroundColor: "#521712", border: "none" }}
                       >
                         Keep Cart Items
                       </Button>
@@ -876,7 +794,7 @@ const UserOrderDetailsPageComponent = ({
 
         <Modal show={show} onHide={handleClose} className="edite_order_name">
           <Modal.Header className="p-1 ps-3 pe-3 m-0" closeButton>
-            <Modal.Title style={{color: "#483F55", fontFamily:"GloriaHallelujah"}}>Enter Order Note:</Modal.Title>
+            <Modal.Title style={{ color: "#483F55", fontFamily: "GloriaHallelujah" }}>Enter Order Note:</Modal.Title>
           </Modal.Header>
           <Modal.Body className="p-2 m-0">
             <Form.Control
@@ -893,7 +811,7 @@ const UserOrderDetailsPageComponent = ({
             <Button
               onClick={handleClose}
               className="p-2 pt-1 pb-1"
-              style={{backgroundColor: "#521712", border: "none"}}
+              style={{ backgroundColor: "#521712", border: "none" }}
             >
               Close
             </Button>
@@ -970,7 +888,7 @@ const UserOrderDetailsPageComponent = ({
                   <p className="mb-0">
                     Please Contact{" "}
                     <a
-                      href="mailto:sales@ctlaus.com"
+                      href="mailto:admin@miinagroup.com.au"
                       class="action remind fw-bold"
                       style={{ color: "#1E4881" }}
                     >
@@ -995,123 +913,42 @@ const UserOrderDetailsPageComponent = ({
             ""
           )}
           {userInfo.isInvoiceViwer === true ? (
-              <ListGroup.Item className="p-1 ps-2">
-                <div className="d-grid gap-2">
-                  <PDFDownloadLink
-                    document={
-                      <InvoicePrint
-                        cartItems={cartItems}
-                        invoiceNumber={invoiceNumber}
-                        userInfo={userInfo}
-                        purchaseNumber={purchaseNumber}
-                        cartSubtotal={cartSubtotal}
-                        invoiceDate={createdAt}
-                        selectedDeliverySite={selectedDeliverySite}
-                        companyAccount={companyAccount}
-                        taxAmount={taxAmount}
-                      />
-                    }
-                    fileName={"INV" + invoiceNumber}
-                  >
-                    {({ loading }) =>
-                      loading ? (
-                        <Button className="p-0 m-0 pe-2 ps-2 ctl_blue_button">
-                          Loading Invoice...
-                        </Button>
-                      ) : (
-                        <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button">
-                          Download Invoice
-                        </Button>
-                      )
-                    }
-                  </PDFDownloadLink>
-                </div>
-              </ListGroup.Item>
+            <ListGroup.Item className="p-1 ps-2">
+              <div className="d-grid gap-2">
+                <PDFDownloadLink
+                  document={
+                    <InvoicePrint
+                      cartItems={cartItems}
+                      invoiceNumber={invoiceNumber}
+                      userInfo={userInfo}
+                      purchaseNumber={purchaseNumber}
+                      cartSubtotal={cartSubtotal}
+                      invoiceDate={createdAt}
+                      selectedDeliverySite={selectedDeliverySite}
+                      companyAccount={companyAccount}
+                      taxAmount={taxAmount}
+                    />
+                  }
+                  fileName={"INV" + invoiceNumber}
+                >
+                  {({ loading }) =>
+                    loading ? (
+                      <Button className="p-0 m-0 pe-2 ps-2 ctl_blue_button">
+                        Loading Invoice...
+                      </Button>
+                    ) : (
+                      <Button className="p-0 m-0 pe-2 ps-2 w-50 ctl_blue_button">
+                        Download Invoice
+                      </Button>
+                    )
+                  }
+                </PDFDownloadLink>
+              </div>
+            </ListGroup.Item>
           ) : (
             ""
           )}
         </ListGroup>
-
-        <div style={{ height: "200px" }}>
-          {
-            (userInfo.isSitePerson || userInfo.isSiteManager) ? (
-              <ListGroup className={styles.UserOrderDetailsPageComponentSummary}>
-                <ListGroup.Item className="p-1 ps-2">
-                  <Form.Check
-                    type="switch"
-                    id="custom-switch"
-                    label="Assign Ownership"
-                    data-toggle="collapse"
-                    data-target="#ownership_div"
-                    aria-expanded="false"
-                    aria-controls="ownership_div"
-                    disabled={(order?.secondOwnerId !== " " && order?.secondOwnerId !== userInfo?._id)}
-                  />
-
-                  {
-                    order?.secondOwnerId !== " " ? (
-                      <span id="show_message">
-                        <b>This Order Assignee is :</b><br />
-                        <label style={{}}>{secondOwner?.name + " " + secondOwner?.lastName + " -"}</label>
-                        <label style={{ fontSize: "95%" }}>{" " + secondOwner?.location}</label>
-                      </span>
-                    ) : ("")
-                  }
-
-                </ListGroup.Item>
-                <ListGroupItem className="p-0" disabled={isSwitchOn} style={{}}>
-                  <div
-                    id="ownership_div"
-                    class="collapse"
-                  >
-
-                    <div class="m-2">
-                      {
-                        (order?.secondOwnerId !== " " && order?.secondOwnerId === userInfo?._id) ? (
-                          <span>
-                            <b>Re-Assign this Order?</b>
-                          </span>
-
-                        ) : ("")
-                      }
-                      <Form.Select
-                        required
-                        name="userNames"
-                        aria-label="Default select example"
-                        onChange={selectSecondOwner}
-                        className="mt-1 p-0 ps-1"
-
-                      >
-                        {usersList &&
-                          usersList
-                            .map((user, idx) => {
-                              return user !== "" ? (
-                                <option key={idx} value={user._id}>
-                                  {" "}
-                                  {user.name + " " + user.lastName + " ( " + user.location + " )"}
-                                </option>
-                              ) : ("");
-                            })}
-                      </Form.Select>
-                      <Row className="pt-2">
-                        <Col md={7}>
-                          <Button
-                            variant="success"
-                            onClick={saveOwnership}
-                            className="button-shadow p-0 pe-3 ps-3 m-0"
-                          >
-                            {buttonText}
-                          </Button>
-                        </Col>
-                      </Row>
-                    </div>
-                  </div>
-                </ListGroupItem>
-              </ListGroup>
-
-            ) : ("")
-          }
-        </div>
       </div>
     </>
   );

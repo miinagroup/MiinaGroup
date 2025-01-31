@@ -144,15 +144,20 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
         <UserLinksComponent />
         <div className="green-line"></div>
         <div className={styles.ordersWrapper}>
-          <h1 className={styles.title}>MY ORDERS</h1>
+          {userInfo?.isSitePerson ? (
+            <h1 className={styles.title}>MY SITE'S ORDERS</h1>
+          ) : (
+            <h1 className={styles.title}>MY ORDERS</h1>
+          )}
+
           <div className={`${styles.searchPaginationWrapper}`}>
             <div className="desktop">
-            <Pagination
-              total={totalProducts}
-              itemsPerPage={ITEMS_PER_PAGE}
-              currentPage={currentPage}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+              <Pagination
+                total={totalProducts}
+                itemsPerPage={ITEMS_PER_PAGE}
+                currentPage={currentPage}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
             </div>
             <Search
               onSearch={(value) => {
@@ -236,35 +241,35 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
 
 
           {productData && productData?.map((order, idx) => {
-              return (
-                <>
-                  <div className={styles.userOrdersMobile}>
-                    <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
-                    <div className={styles.userOrdersMobileInfo}>
-                      <div>
-                        <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
-                        <div className={styles.userOrdersMobileStatus}>
-                          {order.isDelivered ? (
-                            <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
-                          ) : (
-                            <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
-                          )}
-                        </div>
+            return (
+              <>
+                <div className={styles.userOrdersMobile}>
+                  <div className={styles.userOrdersMobileData}>{order.createdAt?.substring(0, 10).replaceAll("-", "/")} - AU$ {order.orderTotal?.cartSubtotal} - Invoice# {order.invoiceNumber}</div>
+                  <div className={styles.userOrdersMobileInfo}>
+                    <div>
+                      <div className={styles.userOrdersMobilePO}>PO# {order.purchaseNumber} </div>
+                      <div className={styles.userOrdersMobileStatus}>
+                        {order.isDelivered ? (
+                          <div className={styles.userOrdersMobileStatusShipped}>Shipped <i className="bi bi-truck text-success"></i></div>
+                        ) : (
+                          <div className={styles.userOrdersMobileStatusNonShipped}>Not Shipped <i className="bi bi-x-lg text-danger"></i></div>
+                        )}
                       </div>
-                      <Link
-                        to={`/user/order-details/${order._id}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.userOrdersMobileStatusViewDetails}
-                      >
-                        VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
-                      </Link>
                     </div>
+                    <Link
+                      to={`/user/order-details/${order._id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.userOrdersMobileStatusViewDetails}
+                    >
+                      VIEW DETAILS <i className="bi bi-box-arrow-in-right"></i>
+                    </Link>
                   </div>
-                  <hr className="mobile" />
-                </>
-              )
-            })}
+                </div>
+                <hr className="mobile" />
+              </>
+            )
+          })}
 
 
           <div className="row">

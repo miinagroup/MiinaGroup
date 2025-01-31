@@ -44,7 +44,7 @@ const DeliveryBookComponent = ({ fetchDeliveryBooks, deleteDeliveryBook }) => {
       </Col>
       <Col md={10}>
         <h1>
-          COMPANY BOOKS{" "}
+          COMPANY DIRECTORY{" "}
           <LinkContainer to="/admin/create-new-deliveryBook">
             <Button
               className={`m-0 me-4 ms-4 p-0 pe-1 ps-1 ${styles.btnGreenColor}`}

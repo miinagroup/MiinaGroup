@@ -40,7 +40,7 @@ const AdminLinksComponent = () => {
       access: "isAdmin",
     },
     {
-      title: "Delivery Books",
+      title: "Companies",
       link: "/admin/deliveryBooks",
       access: "isAdmin",
     },
@@ -54,15 +54,22 @@ const AdminLinksComponent = () => {
 
   const myselfLinks = [
     {
+      title: "My Orders",
+      link: "/user/my-orders",
+      access: "all",
+    },
+    {
       title: "Profile",
       link: "/user",
       access: "all",
     },
+
     {
       title: "Change Password",
       link: "/user/password",
       access: "all",
     },
+
   ];
 
   const hasAccess = (access) => {
@@ -86,7 +93,7 @@ const AdminLinksComponent = () => {
     return (
       <Navbar className="user_side_navBar" style={{ backgroundColor: "white" }}>
         <Nav className="flex-column user_side_nav">
-        <Spinner animation="border" role="status" variant="success"></Spinner>
+          <Spinner animation="border" role="status" variant="success"></Spinner>
         </Nav>
       </Navbar>
     );
