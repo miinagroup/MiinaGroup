@@ -10,6 +10,7 @@ const AdminLinksComponent = () => {
   const dispatch = useDispatch();
   const isAuth = FetchAuthFromServer();
   const location = useLocation();
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
