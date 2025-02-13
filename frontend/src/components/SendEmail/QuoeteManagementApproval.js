@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Quotes.css";
 
-const QuoeteManagementApproval = (quotePriceData, cartItems) => {
+const QuoeteManagementApproval = (quotePriceData) => {
   const [formData, setFormData] = useState({
     from: "",
     managerEmail: "",

@@ -171,7 +171,7 @@ const UserCartDetailsPageComponent = ({
                 billingAddress: site.billingAddress,
                 deliveryAddress: site.deliveryAddress,
               }));
-    
+
               return;
             }
           });
@@ -188,7 +188,7 @@ const UserCartDetailsPageComponent = ({
             : err.response.data
         )
       );
-  }, []);  
+  }, []);
 
   const changeDeliverySite = (e) => {
     setSelectedDeliverySite(e.target.value);
@@ -592,6 +592,7 @@ const UserCartDetailsPageComponent = ({
 
   const handleSelect = (e) => {
     const newChosenSite = deliveryBooks[0].sites[e.target.value];
+    setUserAddress(newChosenSite?.name)
     setChosenDeliverySite((prevSite) => ({
       ...prevSite,
       location: newChosenSite.name,
