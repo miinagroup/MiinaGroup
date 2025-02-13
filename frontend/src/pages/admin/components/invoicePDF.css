@@ -163,6 +163,11 @@
     max-width: 1120px */
 }
 
+.admin-order-page {
+    padding-bottom: 350px;
+    padding-top: 50px;
+}
+
 @media screen and (min-width: 1024px) {
     .product_replenishment_items .modal-content {
         width: 150%;
@@ -183,6 +188,34 @@
     text-overflow: ellipsis;
     max-width: 200px;
   }
+
+  @media (max-width: 1120px) {
+    .admin-order-page {
+        flex-direction: column;
+        font-size: 12px;
+        width: 100%;
+     }
+
+     .admin-page-order-user-company {
+        width: 100px;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .admin-page-users {
+         width: 100%;
+    }
+
+    .cart_detail_left {
+         width: 100%;
+    }
+
+    .admin-order-page-content {
+         width: 100% !important;
+    }
+}
 
   @media (max-width: 480px) {
     .user_side_navBar {

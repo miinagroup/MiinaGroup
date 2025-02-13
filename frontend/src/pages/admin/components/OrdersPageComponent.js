@@ -26,10 +26,10 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
 
   const headers = [
     { name: "No#", field: "index", sortable: false },
-    { name: "Customer Name", field: "name", sortable: true },
+    { name: "Customer", field: "name", sortable: true },
     { name: "Company", field: "userCompany", sortable: true },
     { name: "Delivery Site", field: "deliverySite", sortable: true },
-    { name: "Total Amount", field: "orderTotal.cartSubtotal", sortable: true },
+    { name: "Total", field: "orderTotal.cartSubtotal", sortable: true },
     { name: "Items", field: "items", sortable: false },
     { name: "Dsp", field: "isDelivered", sortable: true },
     { name: "PO#", field: "purchaseNumber", sortable: true },
@@ -174,7 +174,13 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     order.cartItems.map((item) => {
       const { cartProducts, ...restOfItem } = item;
       const combinedItem = { ...restOfItem, ...cartProducts[0] };
-      const { productId, image, saleunit, _idcount, supplierssku, quoteId, ...filteredItem } = combinedItem;
+      const { productId, image, saleunit, _id, count, supplierssku, quoteId, ...filteredItem } = combinedItem;
+      filteredItem.userCompany = order.userCompany;
+      filteredItem.invoiceNumber = order.invoiceNumber;
+      filteredItem.PONumber = order.purchaseNumber;
+      filteredItem.createdDate = order.createdAt;
+      filteredItem.deliveredDate = order.deliveredAt;
+      filteredItem.orderTotal = order.orderTotal.cartSubtotal;
       orderProductsList.push(filteredItem);
     });
   });
@@ -238,14 +244,14 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
 
   return (
     <>
-      <Row className="content-container m-5">
+      <Row className="content-container m-0 admin-order-page">
         <Col md={2}>
           <AdminLinksComponent />
         </Col>
-        <Col md={10}>
+        <Col md={10} className="admin-order-page-content">
           <div className="row">
             <div className="col-md-5" style={{ width: "33%" }}>
-              <h1>ORDERS </h1>
+              <h1>ORDERS</h1>
             </div>
             <div className="col-md-5" style={{ width: "33%" }}>
             </div>
@@ -323,14 +329,14 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
                   <td
                     onClick={() => handleShow(order._id)}
                     style={getOrderStyle(order)}
-                    className="no-wrap-td"
+                    className="no-wrap-td admin-page-order-user-company"
                   >
                     {order.userCompany}
                   </td>
                   <td
                     onClick={() => handleShow(order._id)}
                     style={getOrderStyle(order)}
-                    className="no-wrap-td"
+                    className="no-wrap-td admin-page-order-delivery-site"
                   >
                     {order.deliverySite.toUpperCase()}
                   </td>

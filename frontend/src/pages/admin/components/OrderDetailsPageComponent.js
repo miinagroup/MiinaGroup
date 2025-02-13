@@ -1,5 +1,4 @@
 import {
-  Container,
   Row,
   Col,
   Form,
@@ -15,9 +14,12 @@ import DeliveryNotePrint from "../../../components/Pdfs/DeliveryNotePrint";
 import PickingPackingPrint from "../../../components/Pdfs/PickingPackingPrint";
 import InvoicePrint from "../../../components/Pdfs/InvoicePrint";
 import ProformaInvoicePrint from "../../../components/Pdfs/ProformaInvoicePrint";
-import { pdf } from "@react-pdf/renderer";
+import OrderToCtl from "../../../components/Pdfs/OrderToCtl";
+import Order from "../../../components/Pdfs/Order";
+import { pdf, PDFDownloadLink } from "@react-pdf/renderer";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { emptyCart } from "../../../redux/actions/cartActions";
 
 import styles from "../AdminPagesStyles.module.css";
 
@@ -25,6 +27,7 @@ const OrderDetailsPageComponent = ({
   getOrder,
   getUser,
   markAsDelivered,
+  markAsSendToCtl,
   markAsPaid,
   sendInv,
   sendProformaInv,
@@ -39,7 +42,8 @@ const OrderDetailsPageComponent = ({
   updateAdminNote,
   adminCreateOrder,
   fetchProduct,
-  updateOrderClientCurrentSku
+  updateOrderClientCurrentSku,
+  reOrderReduxAction
 }) => {
   const { id } = useParams();
 
@@ -69,6 +73,7 @@ const OrderDetailsPageComponent = ({
   const [sentProformaInvButtonDisabled, setSentProformaInvButtonDisabled] = useState(false);
   const [orderDeliveredButton, setorderDeliveredButton] =
     useState("Mark as sent");
+  const [sendToCtlTextBtn, setSendToCtlTextBtn] = useState("Send To CTL Australia");
   const [invSentButton, setInvSentButton] = useState("Send Invoice");
   const [proformaInvSentButton, setProformaInvSentButton] = useState("Send P.Invoice");
   const [orderPaidButton, setorderPaidButton] = useState("Mark as Paid");
@@ -84,8 +89,9 @@ const OrderDetailsPageComponent = ({
   const [buttonText, setButtonText] = useState("Create");
   const reOrderItemsCheck = useSelector((state) => state.cart.cartItems);
   const [editingIndex, setEditingIndex] = useState(null);
-  const [showProformaInvoice, setShowProformaInvoice] = useState(false)
-  const [btnMarkAsPaid, setBtnMarkAsPaid] = useState(false)
+  const [showProformaInvoice, setShowProformaInvoice] = useState(false);
+  const [btnMarkAsPaid, setBtnMarkAsPaid] = useState(false);
+  const [sendOrderToCtl, setSendingOrderToCtl] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -111,6 +117,7 @@ const OrderDetailsPageComponent = ({
         setDueDays(order.dueDays);
         setPurchaseNumber(order.purchaseNumber);
         setTrackLink(order.trackLink);
+        setSendingOrderToCtl(order.isSentToCtl)
         order.isDelivered
           ? setIsDelivered(order.deliveredAt)
           : setIsDelivered(false);
@@ -326,6 +333,37 @@ const OrderDetailsPageComponent = ({
     }
   };
 
+  const generateOrederToCtlPdf= async () => {
+    try {
+      const blob = await pdf(
+        <OrderToCtl
+          cartItems={cartItems}
+          invoiceNumber={invoiceNumber}
+          userInfo={userInfo}
+          purchaseNumber={purchaseNumber}
+          cartSubtotal={cartSubtotal}
+          dueDays={dueDays}
+          invoiceDate={deliveredAt}
+          selectedDeliverySite={selectedDeliverySite}
+          companyAccount={companyAccount}
+          taxAmount={taxAmount}
+          isPaid={btnMarkAsPaid}
+        />
+      ).toBlob();
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        setBase64Data({
+          base64data,
+        });
+      };
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error("Failed to generate PDF:", error);
+    }
+  };
+
   const [invData, setInvData] = useState();
   const invBillingAddress = selectedDeliverySite?.billingAddress;
 
@@ -448,6 +486,7 @@ const OrderDetailsPageComponent = ({
 
   // email proforma invoice to client's account team
   const [base64ProformaData, setBase64ProformaData] = useState([]);
+  const [base64OrderData, setBase64OrderData] = useState([]);
 
   const generateProformaPdf = async () => {
     try {
@@ -479,7 +518,50 @@ const OrderDetailsPageComponent = ({
     }
   };
 
+  const generateOrederToCtl = async () => {
+    try {
+      const blob = await pdf(
+        <OrderToCtl
+          cartItems={cartItems}
+          invoiceNumber={invoiceNumber}
+          userInfo={userInfo}
+          purchaseNumber={purchaseNumber}
+          cartSubtotal={cartSubtotal}
+          dueDays={dueDays}
+          invoiceDate={createdAt}
+          selectedDeliverySite={selectedDeliverySite}
+          companyAccount={companyAccount}
+          taxAmount={taxAmount}
+        />
+      ).toBlob();
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        setBase64OrderData({
+          base64data,
+        });
+      };
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error("Failed to generate PDF:", error);
+    }
+  };
+
   const [proformaInvData, setProformaInvData] = useState();
+
+  useEffect(() => {
+    generateOrederToCtl();
+  }, [
+    orderData,
+    id,
+    edit,
+    removed,
+    editLocation,
+    deliveryBooks,
+    selectedDeliverySite,
+    invBillingAddress
+  ]);
 
   useEffect(() => {
     generateProformaPdf();
@@ -834,15 +916,84 @@ const OrderDetailsPageComponent = ({
     } else {
       setPaymentMessage("*please enter valid payment date")
     }
-
   }
+
+  const [clicked, setClicked] = useState(false);
+  const [orderCreated, setOrderCreated] = useState(true);
+  const [showConfirmationReorder, setShowConfirmationReorder] = useState(false);
+
+  const reOrderHandlerFunction = () => {
+    reduxDispatch(reOrderReduxAction(id));
+    setClicked(true);
+  };
+
+  const handleReorder = () => {
+    if (reOrderItemsCheck.length > 0) {
+      setShowConfirmationReorder(true);
+    } else {
+      reOrderHandlerFunction(id);
+    }
+  };
+
+  const removeAllItems = () => {
+    reduxDispatch(emptyCart());
+  };
+
+  const handleConfirmationClose = (emptyCart) => {
+    if (emptyCart) {
+      removeAllItems();
+      setTimeout(() => {
+        reOrderHandlerFunction(id);
+      }, 1000);
+    } else {
+      reOrderHandlerFunction(id);
+    }
+  };
+
+  const closeModalReorder = () => {
+    setShowConfirmationReorder(false);
+  };
+
+  const handleOrderToCtl = async (invData) => {
+    setSendingOrderToCtl(true);
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    const formDataToSend = new FormData();
+    formDataToSend.append("purchaseNumber", `${invData.purchaseNumber}`);
+    formDataToSend.append("totalPrice", `${invData.cartSubtotal}`);
+    formDataToSend.append("invoiceNumber", `${invData.invoiceNumber}`);
+    formDataToSend.append("base64data", `${base64OrderData.base64data}`);
+    formDataToSend.append("orderID", `${id}`);
+
+    try {
+      const res = await axios.post(
+        "/api/sendemail/emailToCtl",
+        formDataToSend,
+        config
+      );
+
+      if (res.status === 200) {
+        markAsSendToCtl(id, true)
+      }
+
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
+  document.title = "INV-" + invoiceNumber
   return (
     <>
       <div className="green-line"></div>
       <div className={styles.orderDetailsPageWrapper}>
-        <Row className="mt-4">
-          <h1 className={styles.title}>ORDER DETAILS</h1>
-          <Col md={9}>
+        <h1 className={styles.title}>ORDER DETAILS</h1>
+        <Row className={`mt-4 ${styles.adminOrderDetailContentWrapper}`}>
+          <Col md={9} className={styles.adminOrderDetailLeftPart}>
             <Row>
               <Col md={6} className="mb-0">
                 <b>Name</b>: {userInfo?.name} {userInfo?.lastName}{" "}
@@ -1030,8 +1181,73 @@ const OrderDetailsPageComponent = ({
               </table>
             </ListGroup>
           </Col>
-          <Col md={3}>
-            <div className={styles.btnGoToOrders}><a href="/admin/orders">Go to All Orders</a></div>
+          <Col md={3} className={styles.adminOrderDetailRightPart}>
+            <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "column", gap: "5px" }} className="mb-2">
+              <div className={styles.btnGoToOrders}><a href="/admin/orders">Go to All Orders</a></div>
+              <div>
+                <Button
+                  onClick={handleReorder}
+                  className={`p-1 pe-3 ps-3 m-0 ${styles.btnRedColor}`}
+                  style={{ width: "100%", maxWidth: "170px" }}
+                >
+                  Re-Order
+                </Button>
+                <Modal
+                  show={showConfirmationReorder}
+                  onHide={closeModalReorder}
+                  className="Re_Order_Modal"
+                >
+                  <Modal.Header className="p-0 m-2 mb-0" closeButton>
+                    <span className="fw-bold p-0 m-0">Confirmation</span>
+                  </Modal.Header>
+                  <Modal.Body className="p-2 pt-0">
+                    Some items already in your cart! Do you want to empty
+                    your cart before re-ordering?
+                  </Modal.Body>
+                  <Modal.Footer className="p-0 d-flex justify-content-between">
+                    <Button
+                      variant="success"
+                      onClick={() => handleConfirmationClose(true)}
+                      className="ms-5 p-0 pe-1 ps-1 button-shadow"
+                    >
+                      Empty Cart
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleConfirmationClose(false)}
+                      className="me-5 p-0 pe-1 ps-1 button-shadow"
+                    >
+                      Keep Cart Items
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </div>
+              <div>
+                <PDFDownloadLink
+                  document={
+                    <Order
+                      cartItems={cartItems}
+                      invoiceNumber={invoiceNumber}
+                      userInfo={userInfo}
+                      purchaseNumber={purchaseNumber}
+                      cartSubtotal={cartSubtotal}
+                      dueDays={dueDays}
+                      invoiceDate={createdAt}
+                      selectedDeliverySite={selectedDeliverySite}
+                      companyAccount={companyAccount}
+                      taxAmount={taxAmount}
+                    />
+                  }
+                  fileName={invoiceNumber + " Order"}
+                  className={`btn btn-success p-1 ps-3 pe-3 ${styles.btnRedColor}`}
+                >
+                  <span>
+                    Download Order <i className="bi bi-file-earmark-pdf"></i>
+                  </span>
+                </PDFDownloadLink>
+              </div>
+            </div>
+
             <ListGroup>
               <ListGroup.Item className="p-2 ps-2" style={{ backgroundColor: 'transparent' }}>
                 <h3 style={{ color: "#483F55" }}>ORDER SUMMARY</h3>
@@ -1109,6 +1325,18 @@ const OrderDetailsPageComponent = ({
                   style={{ cursor: "pointer", color: "#DBA162" }}
                 ></i>
               </ListGroup.Item>
+              {!isDelivered && <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
+                <div className="d-grid gap-2">
+                  <Button
+                    className={`p-0 m-0 w-50 ${sendOrderToCtl ? styles.btnRedColor : styles.btnGreenColor}`}
+                    onClick={() => handleOrderToCtl(invData)}
+                    type="button"
+                    disabled={sendOrderToCtl ? true : false}
+                  >
+                    {sendOrderToCtl ? "Sent to CTL" : "Send to CTL"}
+                  </Button>
+                </div>
+              </ListGroup.Item>}
               <ListGroup.Item className="p-1 ps-2" style={{ backgroundColor: 'transparent' }}>
                 <div className="d-grid gap-2">
                   <Button

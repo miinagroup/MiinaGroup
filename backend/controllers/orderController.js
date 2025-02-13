@@ -210,10 +210,21 @@ const markInvAsSent = async (req, res, next) => {
   }
 };
 
+const markAsSentToCtl = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id).orFail();
+    order.isSentToCtl = true;
+
+    const updatedOrder = await order.save();
+    res.send(updatedOrder);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const updateOrderToDelivered = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id).orFail();
-
 
     for (const item of order.cartItems) {
       const productId = item.productId;
@@ -678,5 +689,6 @@ module.exports = {
   deleteOrder,
   orderSalesToProduct,
   getSupplier,
-  updateApprovedPO
+  updateApprovedPO,
+  markAsSentToCtl
 };
