@@ -6,31 +6,22 @@ const GoodsReturnForm = () => {
       <br />
       <h1 className="service">Returns and Refund Policy:</h1>
       <p>
-        At CTL Australia, we are dedicated to providing our customers with
-        exceptional service and quality products. We understand that sometimes a
-        product may not fully meet your needs or expectations. In these
-        instances, we offer a comprehensive returns and refund policy to ensure
-        your satisfaction.
+        At Miina Group, we are dedicated to providing our customers with exceptional service and quality products.
+        We understand that sometimes a product may not fully meet your needs or expectations.
+        In these instances, we offer a comprehensive returns and refund policy to ensure your satisfaction.
       </p>
       <p>
-        <strong>Faulty or Damaged Goods:</strong> In the event you receive a
-        product that is faulty, damaged, or not as described, please contact us
-        within 14 days of receipt to arrange a return. Upon return, the product
-        will be assessed, and if deemed faulty, a replacement, repair, or refund
-        will be provided depending on your preference and the product's
-        availability.
+        <strong>Faulty or Damaged Goods:</strong> If you receive a product that is faulty, damaged, or not as described, please contact us within 14 days of receipt to arrange a return.
+        Upon return, the product will be assessed, and if deemed faulty, a replacement, repair, or refund will be provided depending on your preference and the product's availability.
       </p>
       <p>
-        <strong>Process for Returns:</strong> To initiate a return, please fill
-        out the Goods Return Form available on our website. This form is crucial
-        for processing your return quickly and efficiently. Please provide a
-        detailed description of the issue and whether you seek a replacement,
-        repair, or refund.
+        <strong>Process for Returns:</strong> To initiate a return, please fill out the Goods Return Form available on our website.
+        This form is crucial for processing your return quickly and efficiently. Please provide a detailed description of the issue and whether you seek a replacement, repair, or refund.
       </p>
       <p>
         Once the form is completed, please send it to us via email at{" "}
-        <a id="contact_sales" href="mailto:sales@ctlaus.com" style={{ textDecoration: "underline" }} className="minerals_price" >
-          sales@ctlaus.com
+        <a id="contact_sales" href="mailto:admin@miinagroup.com.au" style={{ textDecoration: "underline" }} className="minerals_price" >
+          admin@miinagroup.com.au
         </a>{" "}
         or include it with your returned item shipped to our postal address.
         Upon receiving your return, we will process it promptly and communicate
@@ -46,8 +37,8 @@ const GoodsReturnForm = () => {
         <strong>Contact Us:</strong> Should you have any questions about our
         returns and refund policy or the returns process, please do not hesitate
         to contact us at{" "}
-        <a id="contact_sales" href="mailto:sales@ctlaus.com" style={{ textDecoration: "underline" }} className="minerals_price" >
-          sales@ctlaus.com
+        <a id="contact_sales" href="mailto:admin@miinagroup.com.au" style={{ textDecoration: "underline" }} className="minerals_price" >
+          admin@miinagroup.com.au
         </a>
         . Our team is here to support you every step of the way.
       </p>
