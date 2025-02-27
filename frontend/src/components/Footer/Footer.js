@@ -32,7 +32,7 @@ const Footer = () => {
                         >
                             Cybersecurity Policy
                         </Nav.Link>
-                        <Nav.Link
+                        {/* <Nav.Link
                             id="indigenous-procurement"
                             href="/pdfpreview?/Indigenous%20Procurement%20Policy.pdf"
                             target="_blank"
@@ -40,7 +40,7 @@ const Footer = () => {
                         >
                             Indigenous Procurement Policy
                             <i className="bi bi-file-earmark-pdf-fill"></i>
-                        </Nav.Link>
+                        </Nav.Link> */}
                     </div>
 
                     <div>
