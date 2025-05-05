@@ -86,7 +86,7 @@ const registerUser = async (req, res, next) => {
         abn
       });
 
-      console.log(deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain))));
+      // console.log(deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain))));
 
       // verify email address if end with registered companies
       if (deliveryBooks.some(site => site.emailHost.split('/').some(domain => email.endsWith(domain)))) {
