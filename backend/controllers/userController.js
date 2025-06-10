@@ -96,7 +96,7 @@ const registerUser = async (req, res, next) => {
           category: "verifyEmail",
         }).save();
 
-        const url = `${process.env.BASE_URL}user/${user.id}/verify/${token.token}`;
+        const url = `${process.env.BASE_URL}/user/${user.id}/verify/${token.token}`;
         await sendVerificationEmail(user.email, "Verify Email", url);
       }
 
@@ -191,7 +191,7 @@ const loginUser = async (req, res, next) => {
             token: crypto.randomBytes(32).toString("hex"),
             category: "verifyEmail",
           }).save();
-          const url = `${process.env.BASE_URL}user/${user.id}/verify/${token.token}`;
+          const url = `${process.env.BASE_URL}/user/${user.id}/verify/${token.token}`;
           await sendVerificationEmail(user.email, "Verify Email", url);
         }
 
@@ -321,7 +321,7 @@ const forgotPassword = async (req, res, next) => {
         token: crypto.randomBytes(32).toString("hex"),
         category: "resetPassword",
       }).save();
-      const url = `${process.env.BASE_URL}user/${user.id}/resetPassword/${token.token}`;
+      const url = `${process.env.BASE_URL}/user/${user.id}/resetPassword/${token.token}`;
       await sendResetPasswordEmail(user.email, "Reset Password", url);
     }
     return res.status(200).send({
