@@ -217,7 +217,7 @@ const sendInvoice = async (req, res, next) => {
 
     const message = {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
-      to: `${billingEmail}`,
+      to: [`${billingEmail}`, "admin@miinagroup.com.au"],
       subject: `Invoice ${invoiceNumber} from Miina Group`,
       text: invoiceNumber,
       html: `
@@ -412,7 +412,7 @@ const sendProformaInvoice = async (req, res, next) => {
 
     const message = {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
-      to: `${billingEmail}`,
+      to: [`${billingEmail}`, "admin@miinagroup.com.au"],
       subject: `Proforma Invoice ${invoiceNumber} from Miina Group`,
       text: invoiceNumber,
       html: `
