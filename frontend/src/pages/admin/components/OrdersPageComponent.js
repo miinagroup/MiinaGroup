@@ -30,6 +30,7 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
     { name: "Company", field: "userCompany", sortable: true },
     { name: "Delivery Site", field: "deliverySite", sortable: true },
     { name: "Total", field: "orderTotal.cartSubtotal", sortable: true },
+    { name: "Paid", field: "isPaid", sortable: true },
     { name: "Items", field: "items", sortable: false },
     { name: "Dsp", field: "isDelivered", sortable: true },
     { name: "PO#", field: "purchaseNumber", sortable: true },
@@ -201,14 +202,15 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
 
   const columnWidths = [
     "3%",
+    "15%",
+    "15%",
+    "10%",
     "8%",
-    "19%",
-    "20%",
-    "5%",
-    "2%",
-    "2%",
+    "3%",
+    "3%",
+    "3%",
     "8%",
-    "8%",
+    "10%",
     "15%",
     "8%",
     "2%",
@@ -346,6 +348,17 @@ const OrdersPageComponent = ({ getOrders, deleteOrder }) => {
                     className="no-wrap-td"
                   >
                     $ {order.orderTotal.cartSubtotal.toLocaleString()}
+                  </td>
+                  <td
+                    onClick={() => handleShow(order._id)}
+                    style={getOrderStyle(order)}
+                    className="no-wrap-td"
+                  >
+                    {order.isPaid ? (
+                      <i className="bi bi-check-circle-fill text-success"></i>
+                    ) : (
+                      <i className="bi bi-x-lg text-danger"></i>
+                    )}
                   </td>
                   <td
                     onClick={() => handleShow(order._id)}

@@ -51,6 +51,9 @@ import PDFPreviewForVisitor from "./pages/user/components/HomePageForVisitors/PD
 import HomePageForVisitorNew from "./pages/HomePageForVisitorNew.js";
 import ProtectedRoutesFilterComponent from "./components/Routes/ProtectedRoutesFilterComponent.js";
 
+//utils
+import PaymentSuccessPage from "./pages/user/utils/PaymentSuccessPage";
+
 
 function App() {
   return (
@@ -83,6 +86,7 @@ function App() {
           <Route path="/product-list" element={<ProductListPage />} />
           <Route path="/product-details/:id" element={<ProductDetailsPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="*" element="Page not exists 404" />
         </Route>
 

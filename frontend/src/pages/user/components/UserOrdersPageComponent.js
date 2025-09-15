@@ -26,6 +26,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
     { name: "Invoice#", field: "invoiceNumber", sortable: true },
     { name: "Order Note", field: "orderNote", sortable: true },
     { name: "Created By", field: "userName", sortable: true },
+    { name: "Paid", field: "isPaid", sortable: true },
     { name: "Shipped", field: "isDelivered", sortable: true },
     { name: "Order details", field: "_id", sortable: false },
   ];
@@ -137,6 +138,7 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
   });
 
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  console.log(productData);
 
   return (
     <>
@@ -213,6 +215,16 @@ const UserOrdersPageComponent = ({ getOrders, getOrdersByCompany, updateApproved
                     >
                       {order.userName?.split("(")[0]}
                       {" ( " + order.deliverySite.toUpperCase() + " ) "}
+                    </td>
+                    <td
+                      onClick={() => handleShow(order._id)}
+                      style={getOrderStyle(order)}
+                    >
+                      {order.isPaid ? (
+                        <i className="bi bi-check-circle-fill text-success"></i>
+                      ) : (
+                        <i className="bi bi-x-lg text-danger"></i>
+                      )}
                     </td>
 
                     <td

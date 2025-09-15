@@ -7,6 +7,7 @@ const orderRoutes = require("./orderRoutes")
 const sendEmailRoutes = require("./sendEmailRoutes")
 const cartRoutes = require("./cartRoutes")
 const deliveryBookRoutes = require("./deliveryBookRoutes")
+const stripeRoutes = require("./stripeRoutes");
 
 const jwt = require("jsonwebtoken");
 app.get("/logout", (req, res) => {
@@ -31,5 +32,6 @@ app.use("/orders", orderRoutes)
 app.use("/sendemail", sendEmailRoutes)
 app.use("/cart", cartRoutes)
 app.use("/deliveryBooks", deliveryBookRoutes)
+app.use("/stripe", stripeRoutes);
 
 module.exports = app

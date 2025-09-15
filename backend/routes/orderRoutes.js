@@ -11,6 +11,7 @@ const {
   getUserOrdersByCompany,
   getOrder,
   createOrder,
+  createPaidOrder,
   adminCreateOrder,
   updateOrderToPaid,
   markAsBackOrder,
@@ -40,6 +41,7 @@ router.get("/", getUserOrders);
 router.get("/company:userCompany", getUserOrdersByCompany);
 router.get("/user/:id", getOrder);
 router.post("/", createOrder);
+router.post("/createPaidOrder", createPaidOrder)
 router.put("/paid/:id", updateOrderToPaid);
 router.get("/invoiceNumber", getOrdersInvNo);
 router.put("/updateOrderNote/:id", updateOrderNote);

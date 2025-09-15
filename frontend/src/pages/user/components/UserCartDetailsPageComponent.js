@@ -11,6 +11,7 @@ import AddNewAddressModalComponent from "./AddNewAddressModalComponent";
 import ChangeAddressModalComponent from "./ChangeAddressModalComponent";
 import CartAddressesSectionComponent from "./CartAddressesSectionComponent";
 import QuoeteManagementApproval from "../../../components/SendEmail/QuoeteManagementApproval";
+import { loadStripe } from "@stripe/stripe-js";
 
 const UserCartDetailsPageComponent = ({
   cartItems,
@@ -334,6 +335,87 @@ const UserCartDetailsPageComponent = ({
       })
       .catch((err) => console.log(err));
 
+  };
+
+  const handleStripePayment = async () => {
+    try {
+      const stripeKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
+      if (!stripeKey) {
+        console.error("Stripe public key is missing.");
+        return;
+      }
+      const stripe = await loadStripe(stripeKey);
+      const orderData = {
+        orderTotal: {
+          itemsCount: itemsCount,
+          cartSubtotal: cartSubtotal.toFixed(2),
+          taxAmount: taxAmount.toFixed(2),
+        },
+        cartItems: cartItems.map((item) => {
+          return {
+            productId: item.productId,
+            quoteId: item.quoteId,
+            name: item.name,
+            saleunit: item.saleunit,
+            image: item.image ? item.image ?? null : null,
+            cartProducts: [
+              {
+                attrs: item.cartProducts[0].attrs,
+                barcode: item.cartProducts[0].barcode,
+                count: item.cartProducts[0].count,
+                ctlsku: item.cartProducts[0].ctlsku,
+                price: item.cartProducts[0].price,
+                purchaseprice: item.cartProducts[0].purchaseprice,
+                quantity: item.cartProducts[0].quantity,
+                suppliedQty: item.cartProducts[0].quantity,
+                backOrder: 0,
+                sales: item.cartProducts[0].sales ?? null,
+                // [clientSiteSku]: item.cartProducts[0][clientSiteSku] ?? null,
+                suppliersku: item.cartProducts[0].suppliersku,
+                color: item.cartProducts[0].attrs?.toUpperCase().includes("UNIFORM/") || item.cartProducts[0].color ? item.cartProducts[0].color : "",
+                size: item.cartProducts[0].attrs?.toUpperCase().includes("UNIFORM/") || item.cartProducts[0].size ? item.cartProducts[0].size : "",
+                _id: item.cartProducts[0]._id,
+              },
+            ],
+          };
+        }),
+        paymentMethod: "creditCard",
+        purchaseNumber: purchaseNumber,
+        orderNote: orderNote,
+        invoiceNumber: largestInvoice + 1,
+        deliverySite: chosenDeliverySite.location,
+        deliveryAddress: chosenDeliverySite.deliveryAddress,
+        userName: userName,
+        userCompany: userCompany,
+        // quickBooksCustomerId: quickBooksCustomerId,
+        dueDays: dueDays,
+        storeId: storeId,
+        createdUserId: createdUserId ? createdUserId : "",
+        createdUserName: createdUserName ? createdUserName : "",
+        balance: 0,
+        isPaid: true,
+        paidAt: new Date()
+      };
+
+      if (!shippingAddress) {
+        setValidated(false);
+      }
+      localStorage.setItem("stripeOrderData", JSON.stringify(orderData));
+
+      const response = await axios.post("/api/stripe/create-checkout-session", {
+        cartItems,
+        cartSubtotal,
+        userInfo,
+        purchaseNumber,
+      });
+
+      if (response.data.id) {
+        const stripe = await loadStripe(stripeKey);
+        await stripe.redirectToCheckout({ sessionId: response.data.id });
+      }
+    } catch (error) {
+      console.error("Stripe Payment Error:", error);
+    }
   };
 
   const enterPurchaseNum = (e) => {
@@ -871,16 +953,25 @@ const UserCartDetailsPageComponent = ({
                   ""
                 )}
               </>
-              <ListGroup.Item className="p-1 ps-2 pe-2">
-                <div className="d-grid gap-2">
+              <ListGroup.Item className="p-1 ps-2">
+                <div className="d-flex justify-content-center gap-2">
                   <Button
                     size="lg"
                     onClick={orderHandler}
-                    disabled={purchaseNumber === "" ? true : false}
-                    className="btn p-1 ps-1 pe-1 download_cart_btn rounded confirm-btn"
-                    style={{ width: "100%", margin: "0 auto" }}
+                    disabled={purchaseNumber === ""}
+                    className="btn btn-success p-1 ps-1 pe-1 download_cart_btn rounded"
+                    style={{ width: "40%", maxWidth: "200px" }}
                   >
-                    Confirm Order
+                    Place Order
+                  </Button>
+                  <Button
+                    size="lg"
+                    onClick={handleStripePayment}
+                    disabled={purchaseNumber === ""}
+                    className="btn btn-primary p-1 ps-1 pe-1 download_cart_btn rounded"
+                    style={{ width: "40%", maxWidth: "200px" }}
+                  >
+                    Pay Now
                   </Button>
                 </div>
               </ListGroup.Item>

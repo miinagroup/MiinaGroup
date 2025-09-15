@@ -165,6 +165,10 @@ const orderSchema = mongoose.Schema(
       required: false,
       default: false,
     },
+    paidAt: {
+      type: Date,
+      required: false,
+    },
     editeHistroys: [
       {
         operator: {

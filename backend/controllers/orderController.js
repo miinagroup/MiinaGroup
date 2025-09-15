@@ -46,6 +46,85 @@ const getOrdersInvNo = async (req, res, next) => {
   }
 };
 
+const createPaidOrder = async (req, res, next) => {
+  try {
+    const {
+      orderTotal,
+      cartItems,
+      paymentMethod,
+      purchaseNumber,
+      orderNote,
+      invoiceNumber,
+      deliverySite,
+      deliveryAddress,
+      userName,
+      userCompany,
+      dueDays,
+      storeId,
+      createdUserId,
+      createdUserName,
+      isPaid,
+      paidAt,
+      balance,
+    } = req.body;
+
+    if (
+      !orderTotal ||
+      !cartItems ||
+      !paymentMethod ||
+      !purchaseNumber ||
+      !invoiceNumber ||
+      !deliverySite ||
+      !deliveryAddress ||
+      !userName ||
+      !userCompany ||
+      !dueDays ||
+      !storeId ||
+      !createdUserId ||
+      !createdUserName ||
+      !isPaid ||
+      !paidAt
+    ) {
+      return res.status(400).send("All inputs are required");
+    }
+
+    const order = new Order({
+      user: ObjectId(storeId),
+      userName: userName,
+      userCompany: userCompany,
+      orderTotal: orderTotal,
+      balance: balance,
+      cartItems: cartItems,
+      paymentMethod: paymentMethod,
+      purchaseNumber: purchaseNumber,
+      invoiceNumber: invoiceNumber,
+      orderNote: orderNote,
+      deliverySite: deliverySite,
+      deliveryAddress: deliveryAddress,
+      dueDays: dueDays,
+      createdUserId: createdUserId,
+      createdUserName: createdUserName,
+      isPaid: isPaid ?? true, // fallback to true
+      paidAt: paidAt
+    });
+
+    const savedOrder = await order.save();
+    await Promise.all(cartItems.map(async (item) => {
+      if (item.quoteId) {
+        await Quote.updateOne(
+          { _id: item.quoteId },
+          { $set: { purchased: true } }
+        );
+      }
+    }));
+    res.status(200).json(savedOrder);
+  } catch (err) {
+    console.error("Order Creation Error:", err);
+    res.status(500).json({ message: "Failed to create paid order", error: err.message });
+  }
+};
+
+
 const createOrder = async (req, res, next) => {
   try {
     const {
@@ -88,7 +167,7 @@ const createOrder = async (req, res, next) => {
       userName: userName,
       userCompany: userCompany,
       orderTotal: orderTotal,
-      balance: orderTotal.cartSubtotal,
+      balance: orderTotal?.cartSubtotal,
       cartItems: cartItems,
       paymentMethod: paymentMethod,
       purchaseNumber: purchaseNumber,
@@ -671,6 +750,7 @@ module.exports = {
   getUserOrdersByCompany,
   getOrdersInvNo,
   createOrder,
+  createPaidOrder,
   adminCreateOrder,
   updateOrderToPaid,
   markAsBackOrder,
