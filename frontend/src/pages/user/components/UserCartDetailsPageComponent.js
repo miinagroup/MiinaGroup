@@ -964,7 +964,7 @@ const UserCartDetailsPageComponent = ({
                   >
                     Place Order
                   </Button>
-                  {/* <Button
+                  <Button
                     size="lg"
                     onClick={handleStripePayment}
                     disabled={purchaseNumber === ""}
@@ -972,7 +972,7 @@ const UserCartDetailsPageComponent = ({
                     style={{ width: "40%", maxWidth: "200px" }}
                   >
                     Pay Now
-                  </Button> */}
+                  </Button>
                 </div>
               </ListGroup.Item>
             </ListGroup>
