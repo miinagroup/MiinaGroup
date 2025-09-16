@@ -339,7 +339,7 @@ const UserCartDetailsPageComponent = ({
 
   const handleStripePayment = async () => {
     try {
-      const stripeKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
+      const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
       if (!stripeKey) {
         console.error("Stripe public key is missing.");
         return;
