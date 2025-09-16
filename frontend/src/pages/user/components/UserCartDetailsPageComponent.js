@@ -964,21 +964,15 @@ const UserCartDetailsPageComponent = ({
                   >
                     Place Order
                   </Button>
-                  {
-                    userInfo?.email === "praveen@miinagroup.com.au" ? (
-                      <Button
-                        size="lg"
-                        onClick={handleStripePayment}
-                        disabled={purchaseNumber === ""}
-                        className="btn btn-primary p-1 ps-1 pe-1 download_cart_btn rounded"
-                        style={{ width: "40%", maxWidth: "200px" }}
-                      >
-                        Pay Now
-                      </Button>
-
-                    ) : ("")
-                  }
-
+                  <Button
+                    size="lg"
+                    onClick={handleStripePayment}
+                    disabled={purchaseNumber === ""}
+                    className="btn btn-primary p-1 ps-1 pe-1 download_cart_btn rounded"
+                    style={{ width: "40%", maxWidth: "200px" }}
+                  >
+                    Pay Now
+                  </Button>
                 </div>
               </ListGroup.Item>
             </ListGroup>
