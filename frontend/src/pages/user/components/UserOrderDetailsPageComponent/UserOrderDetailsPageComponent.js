@@ -563,7 +563,7 @@ const UserOrderDetailsPageComponent = ({
                       <p className="mb-0">
                         Please Contact{" "}
                         <a
-                          href="mailto:admin@miinagroup.com.au"
+                          href="mailto:sales@miinagroup.com.au"
                           class="action remind fw-bold"
                           style={{ color: "#1E4881" }}
                         >
@@ -888,7 +888,7 @@ const UserOrderDetailsPageComponent = ({
                   <p className="mb-0">
                     Please Contact{" "}
                     <a
-                      href="mailto:admin@miinagroup.com.au"
+                      href="mailto:sales@miinagroup.com.au"
                       class="action remind fw-bold"
                       style={{ color: "#1E4881" }}
                     >

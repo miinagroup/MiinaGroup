@@ -761,7 +761,7 @@ const OverdueInvoicesPrint = (invoicesData) => {
                         For Statement Enquiries Please Contact :
                       </Text>
                       <Text style={styles.tableCellBillBoxSpecial}>
-                        email : Admin@miinagroup.com.au
+                        email : sales@miinagroup.com.au
                       </Text>
                     </View>
                   </>
@@ -1000,7 +1000,7 @@ const OverdueInvoicesPrint = (invoicesData) => {
                               For Statement Enquiries Please Contact :
                             </Text>
                             <Text style={styles.tableCellBillBoxSpecial}>
-                              email : Admin@miinagroup.com.au
+                              email : sales@miinagroup.com.au
                             </Text>
                           </View>
                         </>

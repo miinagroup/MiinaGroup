@@ -217,7 +217,7 @@ const sendInvoice = async (req, res, next) => {
 
     const message = {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
-      to: [`${billingEmail}`, "admin@miinagroup.com.au"],
+      to: [`${billingEmail}`, "sales@miinagroup.com.au"],
       subject: `Invoice ${invoiceNumber} from Miina Group`,
       text: invoiceNumber,
       html: `
@@ -323,7 +323,7 @@ const sendInvoice = async (req, res, next) => {
                                         Please find the attached invoice for $${totalPrice}, with the INV#: ${invoiceNumber} corresponding to your P/O#: ${purchaseNumber}.
                                           <br />
                                           <br />
-                                          If you have any inquiries, please do not hesitate to contact us at: admin@miinagroup.com.au
+                                          If you have any inquiries, please do not hesitate to contact us at: sales@miinagroup.com.au
                                           <br />
                                           <br />
                                           <b>
@@ -412,7 +412,7 @@ const sendProformaInvoice = async (req, res, next) => {
 
     const message = {
       from: `"no-reply Miina Group" <${process.env.NOREPLY}>`,
-      to: [`${billingEmail}`, "admin@miinagroup.com.au"],
+      to: [`${billingEmail}`, "sales@miinagroup.com.au"],
       subject: `Proforma Invoice ${invoiceNumber} from Miina Group`,
       text: invoiceNumber,
       html: `
@@ -518,7 +518,7 @@ const sendProformaInvoice = async (req, res, next) => {
                                           Please find the attached proforma invoice for $${totalPrice}, with the INV#: ${invoiceNumber} corresponding to your P/O#: ${purchaseNumber}.
                                           <br />
                                           <br />
-                                          If you have any inquiries, please do not hesitate to contact us at: admin@miinagroup.com.au
+                                          If you have any inquiries, please do not hesitate to contact us at: sales@miinagroup.com.au
                                           <br />
                                           <br />
                                           <b>
@@ -734,10 +734,10 @@ const deliveryNotice = async (req, res, next) => {
                                         <br />
                                         If you have any other inquiries, please don't hesitate to contact
                                         <a
-                                          href="mailto:admin@miinagroup.com.au"
+                                          href="mailto:sales@miinagroup.com.au"
                                           target="_blank"
                                         >
-                                          admin@miinagroup.com.au
+                                          sales@miinagroup.com.au
                                         </a>.
                                         <br />
                                         <br />
@@ -1457,7 +1457,7 @@ const sendOrderToCtl = async (req, res, next) => {
                                         Please find the attached new order from Mina Group.
                                           <br />
                                           <br />
-                                          If you have any inquiries, please do not hesitate to contact us at: admin@miinagroup.com.au
+                                          If you have any inquiries, please do not hesitate to contact us at: sales@miinagroup.com.au
                                           <br />
                                           <br />
                                           <b>

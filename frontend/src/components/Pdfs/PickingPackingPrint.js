@@ -381,7 +381,7 @@ const PickingPackingPrint = (cartItems) => {
                             <View style={styles.tableColHeader}>
                                 <Text style={styles.tableCellBillHeader}>Picking List</Text>
                                 <Text style={styles.tableCellBill}>Miina Group</Text>
-                                <Text style={styles.tableCellBill}>E : Admin@miinagroup.com.au</Text>
+                                <Text style={styles.tableCellBill}>E : sales@miinagroup.com.au</Text>
                                 <Text style={styles.tableCellBill}>W : www.miinagroup.com.au</Text>
                                 <Text style={styles.tableCellBill}>ABN :  16 668 637 072</Text>
                             </View>
